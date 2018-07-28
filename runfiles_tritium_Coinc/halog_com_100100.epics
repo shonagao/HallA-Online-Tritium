@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100100
+ End of Run Comment:
+Run_type=Spot++,target_type=Carbon Hole,comment_text=COINC PS1=PS2=PS3=PS7=1
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 158001       
+
+TIME     : 8.867 mins  
+
+DEAD TIME: 1.0101%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1: 200.7   L_T2: 185.5   L_T3: 202.1   
+
+RHRS information:
+R_T1: 198.0   R_T2: 183.0   R_T3: 199.4   R_T4:  2.4   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 106790.0   L_T2: 98704.0   L_T3: 107547.0   
+
+RHRS information:
+R_T1: 105320.0   R_T2: 97367.0   R_T3: 106068.0   R_T4: 1264.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 17.8982 uA  L_Dnew: 17.5059 uA  L_U1: 17.8151 uA  L_D1: 15.3031 uA  L_D3: 17.5909 uA  L_D10: 17.8721 uA  
+
+RHRS information:
+R_Unew: 17.6446 uA  R_Dnew: 17.2580 uA  R_U1: 17.5688 uA  R_D1: 15.0915 uA  R_D3: 17.3427 uA  R_D10: 17.6190 uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 9522.4301 uC  L_Dnew: 9313.7048 uC  L_U1: 9478.2340 uC  L_D1: 8141.7408 uC  L_D3: 9358.9071 uC  L_D10: 9508.5189 uC  
+
+RHRS information:
+R_Unew: 9387.4865 uC  R_Dnew: 9181.8022 uC  R_U1: 9347.1483 uC  R_D1: 8029.1531 uC  R_D3: 9226.8954 uC  R_D10: 9373.8747 uC  
+
+
+****************************

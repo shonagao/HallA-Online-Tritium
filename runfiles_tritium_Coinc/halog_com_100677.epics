@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100677
+ End of Run Comment:
+Run_type=Production,target_type=Hydrogen,comment_text=ps1=ps2=ps3=ps7=1
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 1918769      
+
+TIME     : 44.329 mins  
+
+DEAD TIME: 2.4576%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1: 682.4   L_T2: 647.4   L_T3: 678.1   
+
+RHRS information:
+R_T1: 677.9   R_T2: 643.1   R_T3: 673.7   R_T4: 20.3   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 1815033.0   L_T2: 1721794.0   L_T3: 1803688.0   
+
+RHRS information:
+R_T1: 1803135.0   R_T2: 1710486.0   R_T3: 1791803.0   R_T4: 54016.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 14.2065 uA  L_Dnew: 13.8483 uA  L_U1: 14.5076 uA  L_D1: 12.4384 uA  L_D3: 14.1565 uA  L_D10: 14.3822 uA  
+
+RHRS information:
+R_Unew: 14.1123 uA  R_Dnew: 13.7564 uA  R_U1: 14.4103 uA  R_D1: 12.3566 uA  R_D3: 14.0626 uA  R_D10: 14.3900 uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 37785.3000 uC  L_Dnew: 36832.5230 uC  L_U1: 38586.2950 uC  L_D1: 33082.6140 uC  L_D3: 37652.2820 uC  L_D10: 38252.6100 uC  
+
+RHRS information:
+R_Unew: 37534.6900 uC  R_Dnew: 36588.2070 uC  R_U1: 38327.4210 uC  R_D1: 32865.1240 uC  R_D3: 37402.4850 uC  R_D10: 38273.3400 uC  
+
+
+****************************

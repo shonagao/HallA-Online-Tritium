@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100023
+ End of Run Comment:
+Run_type=Spot++,target_type=Carbon Hole,comment_text=Beam center PS1=PS2=PS3=1
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=0   ps8=0   
+
+EVENTS   : -747983178   
+
+TIME     : 4251.991 mins  
+
+DEAD TIME: 0.0913%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1:  0.1   R_T2:  0.0   R_T3:  0.1   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1: 19596.0   R_T2: 9776.0   R_T3: 20219.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: -0.0003 uA  L_D1: -0.0002 uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0365  uA  R_Dnew: 0.0359  uA  R_U1: 0.0346  uA  R_D1: 0.0303  uA  R_D3: 0.0353  uA  R_D10: 0.0361  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 7.9262  uC  L_Dnew: 7.8288  uC  L_U1: -81.8235 uC  L_D1: -40.1364 uC  L_D3: -3.0164 uC  L_D10: 0.3566  uC  
+
+RHRS information:
+R_Unew: 9310.0079 uC  R_Dnew: 9169.5187 uC  R_U1: 8822.3042 uC  R_D1: 7735.5487 uC  R_D3: 9007.9923 uC  R_D10: 9218.3714 uC  
+
+
+****************************

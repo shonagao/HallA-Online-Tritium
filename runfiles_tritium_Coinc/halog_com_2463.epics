@@ -1,0 +1,15 @@
+****************************
+ Run Number: 2463
+ End of Run Comment:
+Run_type=Other,target_type=Home,comment_text=T4=T5=T6=1 ps8=100
+ 
+
+can't read "map(L1A,0)": no such variable
+    (parsing index for array "scal")
+    invoked from within
+"set trigacc  $scal($map(L1A,0)..."
+    (procedure "halla_scaler_process_Coinc" line 152)
+    invoked from within
+"halla_scaler_process_Coinc .mid.tex scalerinfo "
+
+****************************

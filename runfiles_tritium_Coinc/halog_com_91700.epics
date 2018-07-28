@@ -1,0 +1,28 @@
+****************************
+ Run Number: 91700
+ End of Run Comment:
+Run_type=Spot++,target_type=T2,comment_text=Test
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=1   ps5=1   ps6=1   ps7=0   ps8=0   
+
+EVENTS   : 585166612    
+
+TIME     : 158.622 mins  
+
+DEAD TIME: 0.0393%      
+
+TRIGGER RATES:   Total/Clock
+T1:  0.0   T2:  0.0   T3:  0.0   T4:  0.0   T5:  0.0   T6:  0.1   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+TRIGGER TOTALS:  
+T1:  0.0   T2:  0.0   T3:  0.0   T4: 388.0   T5: 28.0   T6: 519.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+AVERAGE CURRENT (uA)
+Unew: 0.0000  uA  Dnew: 0.0000  uA  U1: -0.0000 uA  D1: 0.0032  uA  D3: -0.0000 uA  D10: 0.0000  uA  
+
+APPROXIMATE BCM CHARGES (uC)
+Unew: 0.2957  uC  Dnew: 0.2921  uC  U1: -0.3385 uC  D1: 30.8112 uC  D3: -0.1125 uC  D10: 0.0133  uC  
+
+
+****************************

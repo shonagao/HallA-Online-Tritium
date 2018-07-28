@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100003
+ End of Run Comment:
+Run_type=Other,target_type=Home,comment_text=FADC mode test LA=224, W=100
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=0   ps8=0   
+
+EVENTS   : 256900003    
+
+TIME     : 139.292 mins  
+
+DEAD TIME: 0.0000%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1: 301.0   R_T2: 20.0   R_T3: 304.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: -0.0003 uA  L_D1: -0.0002 uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: -0.0002 uA  R_D1: 0.0015  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.2597  uC  L_Dnew: 0.2565  uC  L_U1: -2.6805 uC  L_D1: -1.3148 uC  L_D3: -0.0988 uC  L_D10: 0.0117  uC  
+
+RHRS information:
+R_Unew: 0.2597  uC  R_Dnew: 0.2565  uC  R_U1: -1.4974 uC  R_D1: 12.8366 uC  R_D3: -0.0988 uC  R_D10: 0.0117  uC  
+
+
+****************************

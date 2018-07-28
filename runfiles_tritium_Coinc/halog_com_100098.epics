@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100098
+ End of Run Comment:
+Run_type=Production,target_type=Deuterium,comment_text=COINC PS1=PS2=PS3=PS7=1
+ Variable beam current.  ~40 mins equiv. at 22.5 uA
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 537785       
+
+TIME     : 64.298 mins  
+
+DEAD TIME: 0.4893%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1: 66.3   L_T2: 53.6   L_T3: 69.2   
+
+RHRS information:
+R_T1: 66.1   R_T2: 53.5   R_T3: 69.0   R_T4:  1.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 255772.0   L_T2: 206798.0   L_T3: 266821.0   
+
+RHRS information:
+R_T1: 255135.0   R_T2: 206283.0   R_T3: 266147.0   R_T4: 3687.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 13.9912 uA  L_Dnew: 13.6796 uA  L_U1: 13.8914 uA  L_D1: 11.9727 uA  L_D3: 13.7359 uA  L_D10: 13.9578 uA  
+
+RHRS information:
+R_Unew: 13.9563 uA  R_Dnew: 13.6455 uA  R_U1: 13.8569 uA  R_D1: 11.9436 uA  R_D3: 13.7018 uA  R_D10: 13.9230 uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 53976.2160 uC  L_Dnew: 52774.2900 uC  L_U1: 53591.4250 uC  L_D1: 46189.3010 uC  L_D3: 52991.5170 uC  L_D10: 53847.5050 uC  
+
+RHRS information:
+R_Unew: 53841.4730 uC  R_Dnew: 52642.6170 uC  R_U1: 53458.1870 uC  R_D1: 46076.9310 uC  R_D3: 52859.7860 uC  R_D10: 53713.1480 uC  
+
+
+****************************

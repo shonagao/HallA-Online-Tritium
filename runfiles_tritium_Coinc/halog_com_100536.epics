@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100536
+ End of Run Comment:
+Run_type=Production,target_type=Tritium,comment_text=ps1=ps2=ps3=ps7=1 - production run -
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 370299       
+
+TIME     : 57.200 mins  
+
+DEAD TIME: 0.3737%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1: 54.7   L_T2: 43.0   L_T3: 58.0   
+
+RHRS information:
+R_T1: 54.6   R_T2: 42.9   R_T3: 57.9   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 187720.0   L_T2: 147463.0   L_T3: 199164.0   
+
+RHRS information:
+R_T1: 187454.0   R_T2: 147273.0   R_T3: 198861.0   R_T4: 26.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 12.9379 uA  L_Dnew: 12.7743 uA  L_U1: 13.1730 uA  L_D1: 11.3245 uA  L_D3: 12.8460 uA  L_D10: 13.0447 uA  
+
+RHRS information:
+R_Unew: 12.9199 uA  R_Dnew: 12.7566 uA  R_U1: 13.1537 uA  R_D1: 11.3082 uA  R_D3: 12.8282 uA  R_D10: 13.0266 uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 44402.9500 uC  L_Dnew: 43841.4670 uC  L_U1: 45209.8560 uC  L_D1: 38865.7050 uC  L_D3: 44087.6960 uC  L_D10: 44769.5910 uC  
+
+RHRS information:
+R_Unew: 44341.3270 uC  R_Dnew: 43780.6630 uC  R_U1: 45143.7890 uC  R_D1: 38809.7590 uC  R_D3: 44026.5460 uC  R_D10: 44707.4970 uC  
+
+
+****************************

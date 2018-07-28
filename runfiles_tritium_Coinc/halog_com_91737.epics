@@ -1,0 +1,28 @@
+****************************
+ Run Number: 91737
+ End of Run Comment:
+Run_type=Production,target_type=Tritium,comment_text=Boiling Test ps4=ps5=ps6=1 ... 22 uA
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=1   ps5=1   ps6=1   ps7=0   ps8=0   
+
+EVENTS   : 1352406812   
+
+TIME     : 2694.882 mins  
+
+DEAD TIME: 0.0375%      
+
+TRIGGER RATES:   Total/Clock
+T1:  0.0   T2:  0.0   T3:  0.0   T4:  0.1   T5:  0.0   T6:  0.1   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+TRIGGER TOTALS:  
+T1:  0.0   T2:  0.0   T3:  0.0   T4: 12863.0   T5: 2165.0   T6: 18859.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+AVERAGE CURRENT (uA)
+Unew: 0.0849  uA  Dnew: 0.0833  uA  U1: 0.0846  uA  D1: 0.0740  uA  D3: 0.0829  uA  D10: 0.0843  uA  
+
+APPROXIMATE BCM CHARGES (uC)
+Unew: 13720.5820 uC  Dnew: 13465.9780 uC  U1: 13678.1960 uC  D1: 11961.7110 uC  D3: 13406.8790 uC  D10: 13628.7480 uC  
+
+
+****************************

@@ -1,0 +1,14 @@
+****************************
+ Run Number: 100636
+ End of Run Comment:
+Run_type=Production,target_type=Tritium,comment_text=ps1=ps2=ps3=ps7=1
+ 
+
+PRESCALE FACTORS:can't read "psfacline": no such variable
+    while executing
+"$w insert end "$psfacline..."
+    (procedure "halla_scaler_process_Coinc" line 332)
+    invoked from within
+"halla_scaler_process_Coinc .mid.tex scalerinfoL scalerinfoR "
+
+****************************

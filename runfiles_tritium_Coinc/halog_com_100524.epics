@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100524
+ End of Run Comment:
+Run_type=Other,target_type=3He,comment_text=ps1=ps2=ps3=ps7=1 - production run - test DAQ
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 184          
+
+TIME     : 0.178 mins  
+
+DEAD TIME: 100.0000%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1: 10.3   L_T2:  1.5   L_T3: 14.5   
+
+RHRS information:
+R_T1:  5.3   R_T2:  1.0   R_T3:  7.7   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 110.0   L_T2: 16.0   L_T3: 155.0   
+
+RHRS information:
+R_T1: 57.0   R_T2: 11.0   R_T3: 82.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: 0.0554  uA  L_D1: 0.6841  uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: 0.0278  uA  R_D1: 0.3454  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.0003  uC  L_Dnew: 0.0004  uC  L_U1: 0.5920  uC  L_D1: 7.3127  uC  L_D3: -0.0001 uC  L_D10: 0.0000  uC  
+
+RHRS information:
+R_Unew: 0.0003  uC  R_Dnew: 0.0004  uC  R_U1: 0.2967  uC  R_D1: 3.6924  uC  R_D3: -0.0001 uC  R_D10: 0.0000  uC  
+
+
+****************************

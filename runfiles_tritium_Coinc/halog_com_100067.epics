@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100067
+ End of Run Comment:
+Run_type=Commission,target_type=Tritium,comment_text=BPM PEDESTAL PS8=10
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=0   ps5=0   ps6=0   ps7=0   ps8=10   
+
+EVENTS   : 229980       
+
+TIME     : 0.974 mins  
+
+DEAD TIME: 6.8274%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS: 103700.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS: 6058128.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: 0.0338  uA  L_D1: 0.4117  uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: 0.0283  uA  R_D1: 0.3462  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.0019  uC  L_Dnew: 0.0019  uC  L_U1: 1.9746  uC  L_D1: 24.0525 uC  L_D3: -0.0006 uC  L_D10: 0.0001  uC  
+
+RHRS information:
+R_Unew: 0.0019  uC  R_Dnew: 0.0019  uC  R_U1: 1.6562  uC  R_D1: 20.2222 uC  R_D3: -0.0006 uC  R_D10: 0.0001  uC  
+
+
+****************************

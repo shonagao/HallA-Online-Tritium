@@ -1,0 +1,30 @@
+****************************
+ Run Number: 90546
+ End of Run Comment:
+Run_type=Spot++,target_type=T2,comment_text=Test
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=1   ps5=1   ps6=1   ps7=0   ps8=0   
+
+EVENTS   : 0            
+
+TIME     : 1751.183 mins  
+
+DEAD TIME: 0.0344%      
+
+TRIGGER RATES:   Total/Clock
+T1:  0.0   T2:  0.0   T3:  0.0   T4:  0.0   T5:  0.0   T6:  0.1   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+TRIGGER TOTALS:  
+T1:  0.0   T2:  0.0   T3:  0.0   T4: 3662.0   T5: 344.0   T6: 5369.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+AVERAGE CURRENT (uA)
+Unew: -0.0970 uA  Dnew: -0.1185 uA  Unser: 1.2073  uA  
+U1: 1.0403  uA  D1: 0.4734  uA  D3: 0.0954  uA  D10: 0.0011  uA  
+
+APPROXIMATE BCM CHARGES (uC)
+Unew: -10189.8150 uC  Dnew: -12450.9940 uC  Unser: 126853.4700 uC  
+U1: 109302.3000 uC  D1: 49739.1260 uC  D3: 10029.0190 uC  D10: 110.7416 uC  
+
+
+****************************

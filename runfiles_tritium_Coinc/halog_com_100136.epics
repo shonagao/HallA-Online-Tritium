@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100136
+ End of Run Comment:
+Run_type=Cosmics,target_type=Home,comment_text=coincidence PS1=PS2=PS3=PS7=1 cosmics
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 205173       
+
+TIME     : 215.011 mins  
+
+DEAD TIME: 0.0891%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  5.0   L_T2:  0.5   L_T3:  7.2   
+
+RHRS information:
+R_T1:  5.0   R_T2:  0.5   R_T3:  7.2   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 64473.0   L_T2: 6685.0   L_T3: 92850.0   
+
+RHRS information:
+R_T1: 64414.0   R_T2: 6684.0   R_T3: 92782.0   R_T4:  1.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: 0.0282  uA  L_D1: 0.3473  uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: 0.0282  uA  R_D1: 0.3470  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.4188  uC  L_Dnew: 0.4225  uC  L_U1: 364.3837 uC  L_D1: 4479.9894 uC  L_D3: -0.1411 uC  L_D10: 0.0229  uC  
+
+RHRS information:
+R_Unew: 0.4188  uC  R_Dnew: 0.4225  uC  R_U1: 364.0663 uC  R_D1: 4476.1611 uC  R_D3: -0.1411 uC  R_D10: 0.0229  uC  
+
+
+****************************
