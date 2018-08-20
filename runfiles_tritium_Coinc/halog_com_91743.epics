@@ -1,0 +1,28 @@
+****************************
+ Run Number: 91743
+ End of Run Comment:
+Run_type=Production,target_type=Tritium,comment_text=Boiling Test ps4=ps5=ps6=1 ... 11 uA
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=1   ps5=1   ps6=1   ps7=0   ps8=0   
+
+EVENTS   : -690082239   
+
+TIME     : 3304.963 mins  
+
+DEAD TIME: 0.0591%      
+
+TRIGGER RATES:   Total/Clock
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4:  0.1   R_T5:  0.0   R_T6:  0.1   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+TRIGGER TOTALS:  
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4: 12719.0   R_T5: 1883.0   R_T6: 18293.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+AVERAGE CURRENT (uA)
+R_Unew: 0.0547  uA  R_Dnew: 0.0536  uA  R_U1: 0.0526  uA  R_D1: 0.0470  uA  R_D3: 0.0531  uA  R_D10: 0.0541  uA  
+
+APPROXIMATE BCM CHARGES (uC)
+R_Unew: 10852.8700 uC  R_Dnew: 10621.5330 uC  R_U1: 10432.8740 uC  R_D1: 9310.2215 uC  R_D3: 10532.0540 uC  R_D10: 10734.4740 uC  
+
+
+****************************

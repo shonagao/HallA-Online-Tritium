@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100589
+ End of Run Comment:
+Run_type=Other,target_type=Carbon,comment_text=test coda
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 516          
+
+TIME     : 0.552 mins  
+
+DEAD TIME: 100.0000%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  6.4   L_T2:  0.7   L_T3: 10.1   
+
+RHRS information:
+R_T1:  5.1   R_T2:  0.5   R_T3:  6.9   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 213.0   L_T2: 22.0   L_T3: 333.0   
+
+RHRS information:
+R_T1: 169.0   R_T2: 16.0   R_T3: 228.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: 0.0371  uA  L_D1: 0.4558  uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: 0.0276  uA  R_D1: 0.3400  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.0011  uC  L_Dnew: 0.0011  uC  L_U1: 1.2298  uC  L_D1: 15.0944 uC  L_D3: -0.0004 uC  L_D10: 0.0001  uC  
+
+RHRS information:
+R_Unew: 0.0011  uC  R_Dnew: 0.0011  uC  R_U1: 0.9135  uC  R_D1: 11.2583 uC  R_D3: -0.0004 uC  R_D10: 0.0001  uC  
+
+
+****************************

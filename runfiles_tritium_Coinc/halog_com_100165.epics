@@ -1,0 +1,48 @@
+****************************
+ Run Number: 100165
+ End of Run Comment:
+Run_type=Cosmics,target_type=Home,comment_text=cosmic: FADC mode 10 with threshold
+ 
+
+PRESCALE FACTORS:ps1=1   ps2=1   ps3=1   ps4=0   ps5=0   ps6=0   ps7=1   ps8=0   
+
+EVENTS   : 688          
+
+TIME     : 0.736 mins  
+
+DEAD TIME: 0.0000%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  6.0   L_T2:  0.5   L_T3:  8.5   
+
+RHRS information:
+R_T1:  4.7   R_T2:  0.4   R_T3:  6.8   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1: 267.0   L_T2: 22.0   L_T3: 377.0   
+
+RHRS information:
+R_T1: 206.0   R_T2: 16.0   R_T3: 302.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS: Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: 0.0341  uA  L_D1: 0.4211  uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: 0.0275  uA  R_D1: 0.3405  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.0014  uC  L_Dnew: 0.0014  uC  L_U1: 1.5057  uC  L_D1: 18.5883 uC  L_D3: -0.0005 uC  L_D10: 0.0001  uC  
+
+RHRS information:
+R_Unew: 0.0014  uC  R_Dnew: 0.0014  uC  R_U1: 1.2137  uC  R_D1: 15.0300 uC  R_D3: -0.0005 uC  R_D10: 0.0001  uC  
+
+
+****************************

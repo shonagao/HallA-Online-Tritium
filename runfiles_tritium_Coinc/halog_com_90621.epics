@@ -1,0 +1,23 @@
+****************************
+ Run Number: 90621
+ End of Run Comment:
+Run_type=Cosmics,target_type=Optics,comment_text=Cosmics
+ 
+
+can't read "map(,S0_and_S2_RHRS0)": no such element in array
+    (parsing index for array "scal")
+    invoked from within
+"expr double( $scal($map(,S0_and_S2_RHRS0)..."
+    invoked from within
+"set S0_and_S2_RHRS(0) [expr double( $scal($map(,S0_and_S2_RHRS0)..."
+    invoked from within
+"if { $ps(7) != 0 } {
+	set S0_and_S2_RHRS(0) [expr double( $scal($map(,S0_and_S2_RHRS0)) ) ]
+    } else {
+	set  S0_and_S2_RHRS(0) 0
+    }"
+    (procedure "halla_scaler_process_Coinc" line 195)
+    invoked from within
+"halla_scaler_process_Coinc .mid.tex scalerinfo "
+
+****************************

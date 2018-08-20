@@ -1,0 +1,19 @@
+****************************
+ Run Number: 100013
+ End of Run Comment:
+Run_type=Cosmics,target_type=Home,comment_text=Cosmics, PS1=PS2=PS3=PS7=1
+ 
+
+can't read "mapR(,R_S0_and_S2_RHRS0)": no such element in array
+    (parsing index for array "scalR")
+    invoked from within
+"expr double( $scalR($mapR(,R_S0_and_S2_RHRS0)..."
+    invoked from within
+"set R_S0_and_S2_RHRS(0) [expr double( $scalR($mapR(,R_S0_and_S2_RHRS0)..."
+    invoked from within
+"if { $ps(7) != 0 } {set R_S0_and_S2_RHRS(0) [expr double( $scalR($mapR(,R_S0_and_S2_RHRS0)) ) ]} else {set  R_S0_and_S2_RHRS(0) 0}"
+    (procedure "halla_scaler_process_Coinc" line 122)
+    invoked from within
+"halla_scaler_process_Coinc .mid.tex scalerinfoL scalerinfoR "
+
+****************************

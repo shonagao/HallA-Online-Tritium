@@ -1,0 +1,27 @@
+****************************
+ Run Number: 91744
+ End of Run Comment:
+Run_type=Production,target_type=Tritium,comment_text=Boiling Test ps4=ps5=ps6=1 ... 11 uA
+ 
+
+invalid command name "fileR"
+    while executing
+"fileR exists $fileR"
+    invoked from within
+"if { ! [fileR exists $fileR] } {
+        halla_message "halla_scaler_read" "file $fileR not found!"
+        return 0;
+    }"
+    (procedure "halla_scaler_read_coinc" line 4)
+    invoked from within
+"halla_scaler_read_coinc scal  $scalerinfo(id) $scalerinfo(datafile) "
+    invoked from within
+"if { [ halla_scaler_read_coinc scal  $scalerinfo(id) $scalerinfo(datafile) ] == 0 } { 
+	$w insert end "Problem reading scaler file $scalerinfo(datafile)"
+	return
+    } "
+    (procedure "halla_scaler_process_Coinc" line 37)
+    invoked from within
+"halla_scaler_process_Coinc .mid.tex scalerinfo 8 "
+
+****************************

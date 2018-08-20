@@ -1,0 +1,28 @@
+****************************
+ Run Number: 91702
+ End of Run Comment:
+Run_type=Commission,target_type=Home,comment_text=T8=500 unser
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=1   ps5=1   ps6=1   ps7=0   ps8=0   
+
+EVENTS   : -2085834750   
+
+TIME     : 1763.208 mins  
+
+DEAD TIME: 0.7169%      
+
+TRIGGER RATES:   Total/Clock
+T1:  0.0   T2:  0.0   T3:  0.0   T4:  0.0   T5:  0.0   T6:  0.1   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+TRIGGER TOTALS:  
+T1:  0.0   T2:  0.0   T3:  0.0   T4: 4402.0   T5: 414.0   T6: 5757.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+AVERAGE CURRENT (uA)
+Unew: 0.0000  uA  Dnew: 0.0000  uA  U1: -0.0000 uA  D1: 0.0032  uA  D3: -0.0000 uA  D10: 0.0000  uA  
+
+APPROXIMATE BCM CHARGES (uC)
+Unew: 3.2868  uC  Dnew: 3.2464  uC  U1: -3.9617 uC  D1: 342.1126 uC  D3: -1.2508 uC  D10: 0.1479  uC  
+
+
+****************************

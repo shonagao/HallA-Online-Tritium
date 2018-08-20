@@ -1,0 +1,48 @@
+****************************
+ Run Number: 91861
+ End of Run Comment:
+Run_type=Other,target_type=Home,comment_text=Test Coincidence Scripts
+ 
+
+PRESCALE FACTORS:ps1=0   ps2=0   ps3=0   ps4=0   ps5=0   ps6=0   ps7=0   ps8=500   
+
+EVENTS   : 157328038    
+
+TIME     : 0.017 mins  
+
+DEAD TIME: 100.0000%      
+
+-----------------------------------------------------------------------------
+			TRIGGER RATES (Total/Clock):
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			TRIGGER TOTALS:
+LHRS information:
+L_T1:  0.0   L_T2:  0.0   L_T3:  0.0   
+
+RHRS information:
+R_T1:  0.0   R_T2:  0.0   R_T3:  0.0   R_T4:  0.0   R_T5:  0.0   R_T6:  0.0   S0&S2 RHRS:  0.0   Clock LHRS:  0.0   
+
+-----------------------------------------------------------------------------
+			AVERAGE CURRENT (uA)
+LHRS information:
+L_Unew: 0.0000  uA  L_Dnew: 0.0000  uA  L_U1: 0.6916  uA  L_D1: 8.5966  uA  L_D3: -0.0000 uA  L_D10: 0.0000  uA  
+
+RHRS information:
+R_Unew: 0.0000  uA  R_Dnew: 0.0000  uA  R_U1: 0.6935  uA  R_D1: 8.6207  uA  R_D3: -0.0000 uA  R_D10: 0.0000  uA  
+
+-----------------------------------------------------------------------------
+			APPROXIMATE BCM CHARGES (uC)
+LHRS information:
+L_Unew: 0.0000  uC  L_Dnew: 0.0000  uC  L_U1: 0.6916  uC  L_D1: 8.5966  uC  L_D3: -0.0000 uC  L_D10: 0.0000  uC  
+
+RHRS information:
+R_Unew: 0.0000  uC  R_Dnew: 0.0000  uC  R_U1: 0.6935  uC  R_D1: 8.6207  uC  R_D3: -0.0000 uC  R_D10: 0.0000  uC  
+
+
+****************************
