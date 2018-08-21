@@ -7,9 +7,6 @@ block R.cer.*
 block R.vdc.*
 block R.tr.*
 
-block FbusR.s0.*
-block FbusR.cer.*
-
 block DR.*
 
 # F1tdc and VETROC
@@ -44,8 +41,6 @@ FORMULA rbx 1000.*Rrb.x
 FORMULA rby 1000.*Rrb.y
 FORMULA bpmaws Rrb.BPMA.rawcur.1+Rrb.BPMA.rawcur.2+Rrb.BPMA.rawcur.3+Rrb.BPMA.rawcur.4
 FORMULA bpmbws Rrb.BPMB.rawcur.1+Rrb.BPMB.rawcur.2+Rrb.BPMB.rawcur.3+Rrb.BPMB.rawcur.4
-FORMULA bpmaws FbusRrb.BPMA.rawcur.1+FbusRrb.BPMA.rawcur.2+FbusRrb.BPMA.rawcur.3+FbusRrb.BPMA.rawcur.4
-FORMULA bpmbws FbusRrb.BPMB.rawcur.1+FbusRrb.BPMB.rawcur.2+FbusRrb.BPMB.rawcur.3+FbusRrb.BPMB.rawcur.4
 Variable Rrb.Raster.rawcur.x
 Variable Rrb.Raster.rawcur.y
 Variable Rrb.Raster2.rawcur.x
@@ -57,20 +52,6 @@ Variable Rrb.BPMB.y
 Variable Rrb.dir.x
 Variable Rrb.dir.y
 Variable Rrb.e
-
-Variable FbusRrb.Raster.rawcur.x
-Variable FbusRrb.Raster.rawcur.y
-Variable FbusRrb.Raster2.rawcur.x
-Variable FbusRrb.Raster2.rawcur.y
-Variable FbusRrb.x
-Variable FbusRrb.y
-Variable FbusRrb.BPMA.x
-Variable FbusRrb.BPMA.y
-Variable FbusRrb.BPMB.x
-Variable FbusRrb.BPMB.y
-Variable FbusRrb.dir.x
-Variable FbusRrb.dir.y
-Variable FbusRrb.e
 
 block RightBCM*
 
