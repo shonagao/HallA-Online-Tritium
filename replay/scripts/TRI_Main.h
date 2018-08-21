@@ -1,1 +1,1 @@
-./headers/TRI_Main.h
+headers/TRI_Main.h
