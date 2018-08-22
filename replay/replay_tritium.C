@@ -78,13 +78,6 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
     HRSR->AddDetector( new THaShower("ps", "Pre-shower pion rej." ));
     HRSR->AddDetector( new THaShower("sh", "Show pion rej." ));
     
-    THaHRS* FbusHRSR = new THaHRS("FbusR", "Fastbus RHRS Readout");
-    FbusHRSR->AutoStandardDetectors(kFALSE);
-    gHaApps->Add(FbusHRSR);
-    FbusHRSR->AddDetector( new THaCherenkov("cer", "Gas Cherenkov counter - Fastbus"));
-    //FbusHRSR->AddDetector( new THaScintillator("s2", "S2 Scintillator - Fastbus"));
-    FbusHRSR->AddDetector( new Tritium_Xscin("s0", "S0 Scintillator - Fastbus", kTRUE));
-
     if(bOldTrack){
        THaApparatus* OldTrackR = new TriHRS("OldTrackR","old analyzer track");
        OldTrackR->AddDetector( new TriXscin("s0","s0 sintillator",kTRUE) );
@@ -125,12 +118,6 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
 
       TriFadcRasteredBeam* Rrb = new TriFadcRasteredBeam("Rrb", "Rastered beam to the R-HRS");
       gHaApps->Add(Rrb);
-
-      THaRasteredBeam* FbusRrb = new THaRasteredBeam("FbusRrb", "Fastbus Rastered beam to R-HRS");
-      FbusRrb->AddDetector(new THaRaster("Raster2", "Downstream Raster"));
-      FbusRrb->AddDetector(new THaBPM("BPMA", "First BPM"));
-      FbusRrb->AddDetector(new THaBPM("BPMB", "Second BPM"));
-      gHaApps->Add(FbusRrb);
     }
     
     //==================================
@@ -240,13 +227,6 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
     HRSL->AddDetector( new TriFadcScin("s2", "S2 Scintillator" ));
     HRSL->AddDetector( new THaShower("prl1", "Pre-shower pion rej." ));
     HRSL->AddDetector( new THaShower("prl2", "Show pion rej." )); 
-    
-    THaHRS* FbusHRSL = new THaHRS("FbusL", "Fastbus LHRS Readout");
-    FbusHRSL->AutoStandardDetectors(kFALSE);
-    gHaApps->Add(FbusHRSL);
-    FbusHRSL->AddDetector( new THaCherenkov("cer", "Gas Cherenkov counter - Fastbus"));
-    FbusHRSL->AddDetector( new THaScintillator("s2", "S2 Scintillator - Fastbus"));
-    FbusHRSL->AddDetector( new Tritium_Xscin("s0", "S0 Scintillator - Fastbus", kFALSE));
 
     if(bOldTrack){
        THaApparatus* OldTrackL = new TriHRS("OldTrackL","old analyzer track");
@@ -289,12 +269,6 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
 
       TriFadcRasteredBeam* Lrb = new TriFadcRasteredBeam("Lrb", "Rastered beam to L-HRS");
       gHaApps->Add(Lrb);
-
-      THaRasteredBeam* FbusLrb = new THaRasteredBeam("FbusLrb", "Fastbus Rastered beam to L-HRS");
-      FbusLrb->AddDetector(new THaRaster("Raster2", "Downstream Raster"));
-      FbusLrb->AddDetector(new THaBPM("BPMA", "First BPM"));
-      FbusLrb->AddDetector(new THaBPM("BPMB", "Second BPM"));
-      gHaApps->Add(FbusLrb);  
     }
     
     //==================================

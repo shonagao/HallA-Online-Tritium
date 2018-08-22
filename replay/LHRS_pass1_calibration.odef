@@ -7,9 +7,6 @@ block L.cer.*
 block L.vdc.*
 block L.tr.*
 
-block FbusL.s0.*
-block FbusL.cer.*
-
 block DL.*
 
 # F1 tdc
@@ -41,8 +38,6 @@ FORMULA rbx 1000.*Lrb.x
 FORMULA rby 1000.*Lrb.y
 FORMULA bpmaws Lrb.BPMA.rawcur.1+Lrb.BPMA.rawcur.2+Lrb.BPMA.rawcur.3+Lrb.BPMA.rawcur.4
 FORMULA bpmbws Lrb.BPMB.rawcur.1+Lrb.BPMB.rawcur.2+Lrb.BPMB.rawcur.3+Lrb.BPMB.rawcur.4
-FORMULA bpmawsFbus FbusLrb.BPMA.rawcur.1+FbusLrb.BPMA.rawcur.2+FbusLrb.BPMA.rawcur.3+FbusLrb.BPMA.rawcur.4
-FORMULA bpmbwsFbus FbusLrb.BPMB.rawcur.1+FbusLrb.BPMB.rawcur.2+FbusLrb.BPMB.rawcur.3+FbusLrb.BPMB.rawcur.4
 Variable Lrb.Raster.rawcur.x
 Variable Lrb.Raster.rawcur.y
 Variable Lrb.Raster2.rawcur.x
@@ -54,20 +49,6 @@ Variable Lrb.BPMB.y
 Variable Lrb.dir.x
 Variable Lrb.dir.y
 Variable Lrb.e
-
-Variable FbusLrb.Raster.rawcur.x
-Variable FbusLrb.Raster.rawcur.y
-Variable FbusLrb.Raster2.rawcur.x
-Variable FbusLrb.Raster2.rawcur.y
-Variable FbusLrb.x
-Variable FbusLrb.y
-Variable FbusLrb.BPMA.x
-Variable FbusLrb.BPMA.y
-Variable FbusLrb.BPMB.x
-Variable FbusLrb.BPMB.y
-Variable FbusLrb.dir.x
-Variable FbusLrb.dir.y
-Variable FbusLrb.e
 
 block LeftBCM*
 
