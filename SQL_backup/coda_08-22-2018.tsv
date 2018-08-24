@@ -1,0 +1,8 @@
+first_run	last_run	experiment	tsscaler	evscaler	arm	trigger	bit
+1001	3000	MARATHON	Left	evLeft	L	DL.bit2	2
+90800	93000	MARATHON	Right	evRight	R	DR.bit5	5
+3001	5000	SRC	Left	evLeft	L	DL.bit2	2
+93001	95000	SRC	Right	evRight	R	DR.bit5	5
+100001	101000	EP	Right	evRight	L	DR.bit2	2
+1	1000	SRC	Left	evLeft	L	DL.bit2	2
+90100	90700	SRC	Right	evRight	R	DR.bit5	5

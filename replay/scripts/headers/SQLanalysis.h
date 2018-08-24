@@ -558,7 +558,7 @@ RunInfo GetRunInfo(int runnum){
 	RunInfo runinfo;
 	CODASetting   coda     = GetCODASetting(runnum);
   	TSQLServer*   Server   = TSQLServer::Connect(mysql_connection.Data(),mysql_user.Data(),mysql_password.Data());
-  	TString       query    = Form("select run_number,target,run_type,Kinematic,time_mins, prescale_T%d from %srunlist where run_number=%d", coda.bit,coda.experiment.Data(),runnum);
+  	TString       query    = Form("select run_number,target,run_type,Kinematic,time_mins, prescale_T%d from %srunlist where run_number=%d;", coda.bit,coda.experiment.Data(),runnum);
   	TSQLResult*   result   = Server->Query(query.Data());
 	Server->Close();
   	if(result->GetRowCount()==0){cout << "Not in list\n";return runinfo;}
@@ -570,7 +570,8 @@ RunInfo GetRunInfo(int runnum){
 //	cout<< row->GetField(4) <<endl;
 	if(row->GetField(4)==nullptr){runinfo.time_mins=1000000000000;}
 	else{runinfo.time_mins=atof(row->GetField(4));}
-	runinfo.PS_main=atoi(row->GetField(5));	
+	if(row->GetField(5)==nullptr){runinfo.PS_main=10000000;}
+	else{runinfo.PS_main=atoi(row->GetField(5));}
 	if(runinfo.PS_main>0){
 		if(runinfo.type!="Cosmic" && runinfo.time_mins>2.0){
 			runinfo.good_run=1;}
@@ -586,7 +587,48 @@ void PrintRunInfo(int run){
 	} 
 
 
+struct PositronCor{   // ln(e+/e-) =  A + Bx   where x is xbj
+	double par1=0.0; 
+	double err1=0.0;
+	double par2=0.0;
+	double err2=0.0;
+	double covariance=0.0;
+};
 
+
+PositronCor  GetPosInfo(int run=0, string tgt=""){
+	PositronCor PosC;
+	if(run>0)	{//Determine the target from run number!
+		RunInfo RI = GetRunInfo(run);
+		tgt= RI.target;	}
+  	TSQLServer*   Server   = TSQLServer::Connect(mysql_connection.Data(),mysql_user.Data(),mysql_password.Data());
+	TString query = Form("select positron_par_1, positron_err_1, positron_par_2, positron_err_2, positron_err_covariance from MARATHONTargetInfo where name='%s';",tgt.c_str());
+	TSQLResult* result = Server->Query(query.Data());
+	if(result->GetRowCount()==0){cout<< "Target not in list\n"; return PosC;}
+	TSQLRow *row =  result->Next();
+	PosC.par1=atof(row->GetField(0));
+	PosC.err1=atof(row->GetField(1));
+	PosC.par2=atof(row->GetField(2));
+	PosC.err2=atof(row->GetField(3));
+	PosC.covariance=atof(row->GetField(4));
+		
+
+	return PosC;
+}
+
+
+double GetPosCorFactor(double xbj, PositronCor PC, double& PC_error){
+	
+	double PCfact = exp(PC.par1+PC.par2*xbj);
+	PC_error = PCfact*sqrt(PC.err1+PC.err2*xbj*xbj +2.0*PC.covariance*xbj);
+
+	
+	
+
+	return PCfact;
+}
+
+	
 
 
 #endif
