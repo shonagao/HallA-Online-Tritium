@@ -6,8 +6,8 @@
 #include "../SQLanalysis.h"
 
 // where to store/find the beamtrip cut eventlist
-TString  listdir    = Form("%s/elist/",getenv("PWD")); 
-TString  plotdir    = "plots/";
+TString  listdir  ="/v/lustre2/expphy/volatile/halla/triton/MARATHON_elist/";//  = Form("%s/elist/",getenv("PWD"));
+ TString  plotdir    = "plots/";
 Int_t    maxpeaks   = 6; // maximum number of currents allowed in one run. 
 
 Double_t beamtrip_sql(Int_t runnum,Int_t timecut=5){
@@ -214,7 +214,7 @@ Double_t beamtrip_sql(Int_t runnum,Int_t timecut=5){
 
   TSQLServer* Server2   = TSQLServer::Connect(mysql_connection.Data(),mysql_user.Data(),mysql_password.Data());
 
-  query2=Form("insert into %sanalysis values (%d, %.2f, %g, '%s',%g,%d,%d, '%s') on duplicate key update charge=values(charge),livetime=values(livetime),trigger_counts=values(trigger_counts),trigger_events=values(trigger_events),elist=values(elist)",coda.experiment.Data(),runnum,xpeaks[i],goodcharge[i],coda.trigger.Data(),livetime,trgscaler_total,trgbit_total,listname.Data());
+  query2=Form("insert into %sanalysis values (%d, %.2f, %g, '%s',%g,%d,%d, '%s',-1) on duplicate key update charge=values(charge),livetime=values(livetime),trigger_counts=values(trigger_counts),trigger_events=values(trigger_events),elist=values(elist)",coda.experiment.Data(),runnum,xpeaks[i],goodcharge[i],coda.trigger.Data(),livetime,trgscaler_total,trgbit_total,listname.Data());
   cout<<query2<<endl;
   Server2->Query(query2.Data());
   Server2->Close();
