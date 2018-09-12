@@ -1,0 +1,15 @@
+time	name	type	encoder	encoder_err	density_par_0	density_par_1	density_err_1	density_par_2	density_err_2	Thickness	Thickness_err	positron_par_1	positron_err_1	positron_par_2	positron_err_2	positron_err_covariance	density_err_0	density_CV_0	density_CV_1	density_CV_2
+2018-01-01	Tritium	gas	33106235	200000	1	-0.00749	6.78e-07	0.000139	1.01e-09	0.077	1e-05	-2.704	0.0059	-7.652	0.0942	-0.0231	1.87e-05	-3.2e-06	1.12e-07	-2.57e-08
+2018-01-01	Deuterium	gas	29367355	200000	1	-0.00665	1.03e-06	0.000115	1.42e-09	0.1422	0.0008	0.088	0.007	8.447	0.33	0	3.3e-05	-5.44e-06	1.86e-07	-3.74e-08
+2018-01-01	Hydrogen	gas	25610043	200000	1	-0.00853	1.08e-06	0.000153	1.48e-09	0.0708	0.0004	0.079	0.012	8.58	0.66	0	3.52e-05	-5.66e-06	1.9e-07	-3.91e-08
+2018-01-01	Helium-3	gas	21875520	200000	1	-0.00475	8.29e-07	8.69e-05	1.23e-09	0.0534	0.0006	-2.573	0.0071	-7.862	0.1036	-0.0263	2.27e-05	-3.88e-06	1.34e-07	-3.13e-08
+2018-01-01	Empty Cell	solid	18119995	200000	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0
+2018-01-01	Dummy	solid	15175217	500	1	0	0	0	0	0.699	0.0012	1	0	0	0	0	0	0	0	0
+2018-01-01	Multifoils	solid	14394929	500	1	0	0	0	0	NULL	NULL	1	0	0	0	0	0	0	0	0
+2018-01-01	Carbon Hole	solid	13108119	500	1	0	0	0	0	0.0883	NULL	1	0	0	0	0	0	0	0	0
+2018-01-01	Raster Target	solid	12444209	500	1	0	0	0	0	NULL	NULL	1	0	0	0	0	0	0	0	0
+2018-01-01	Thick Aluminum	solid	11728945	500	1	0	0	0	0	1.37	0.007	1	0	0	0	0	0	0	0	0
+2018-01-01	Carbon	solid	11013681	500	1	0	0	0	0	0.0883	0.0002	1	0	0	0	0	0	0	0	0
+2018-01-01	Titanium	solid	10298417	500	1	0	0	0	0	0.4081	0.0008	1	0	0	0	0	0	0	0	0
+2018-01-01	BeO	solid	9583153	500	1	0	0	0	0	NULL	NULL	1	0	0	0	0	0	0	0	0
+2018-01-01	Home (No Target)	solid	0	500	1	0	0	0	0	NULL	NULL	1	0	0	0	0	0	0	0	0
