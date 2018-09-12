@@ -714,8 +714,8 @@ vector<double> DensityCor( int run, double current=0){
 	err = sqrt( Cerr1 + Cerr2 );
 //	cout << err0 <<" "<<err1<<" "<<err2<<" "<<CV0<<" "<<CV1<<" "<<CV2<<endl;	
 //	cout << err << " " <<Cerr1 << " " << Cerr2 <<endl;	
-	dens_vec.push_back(dens_cor);
-	dens_vec.push_back(err);
+	dens_vec[0]=dens_cor;
+	dens_vec[1]=err;
 
 	return dens_vec;	
 }
