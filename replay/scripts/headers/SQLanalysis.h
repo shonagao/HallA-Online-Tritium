@@ -47,7 +47,7 @@
 const TString mysql_connection = "mysql://halladb/triton-work";
 const TString mysql_user       = "triton-user";
 const TString mysql_password   = "3He3Hdata";
-
+const double current_error     = 0.01;	
 
 
 
@@ -135,10 +135,14 @@ struct TargetInfo
   Int_t    pos       = -999;
   Int_t    pos_err   = 0;
   Double_t dens_par0 = 1;
+  Double_t dens_err0 = 0;
+  Double_t dens_CV0 = 0;
   Double_t dens_par1 = 0;
   Double_t dens_err1 = 0;
+  Double_t dens_CV1 = 0;
   Double_t dens_par2 = 0;
   Double_t dens_err2 = 0;
+  Double_t dens_CV2 = 0;
 };
 
 
@@ -146,19 +150,20 @@ TargetInfo GetTargetInfo(TString name, Int_t pos=-999, Int_t runnum=0){
   TargetInfo     target;
   TString        query;
   CODASetting    coda     = GetCODASetting(runnum);
-
+  string prefix ="";
+  if(coda.experiment=="MARATHON")prefix="MARATHON";
   
   if (pos == -999){ 
     if(runnum>0)// find target name from runlist by runnumber, then get the target info from matching run date
-      query = Form("select * from TargetInfo where name=(select target from %srunlist where run_number=%d)  and time<(select start_time from `%srunlist` where run_number=%d) order by time desc", coda.experiment.Data(), runnum, coda.experiment.Data(),runnum);
+      query = Form("select * from %sTargetInfo where name=(select target from %srunlist where run_number=%d)  and time<(select start_time from `%srunlist` where run_number=%d) order by time desc",prefix.c_str(), coda.experiment.Data(), runnum, coda.experiment.Data(),runnum);
     else // get latest target info given target name
-      query = Form("select * from TargetInfo where name='%s' order by time desc", name.Data());
+      query = Form("select * from %sTargetInfo where name='%s' order by time desc",prefix.c_str(), name.Data());
     }
   else{ // find target info given position
     if(runnum>0)// use run number to locate run date
-      query = Form("select * from TargetInfo where abs(%d-encoder)<encoder_err and time<(select start_time from `%srunlist` where run_number=%d) order by time desc", pos, coda.experiment.Data(),runnum);
+      query = Form("select * from %sTargetInfo where abs(%d-encoder)<encoder_err and time<(select start_time from `%srunlist` where run_number=%d) order by time desc",prefix.c_str(), pos, coda.experiment.Data(),runnum);
     else // no time info, use the latest target info
-      query = Form("select * from TargetInfo where abs(%d-encoder)<encoder_err order by time desc", pos);
+      query = Form("select * from %sTargetInfo where abs(%d-encoder)<encoder_err order by time desc",prefix.c_str(), pos);
   }
   TSQLServer* Server = TSQLServer::Connect(mysql_connection.Data(),mysql_user.Data(),mysql_password.Data());
   TSQLResult* result = Server->Query(query.Data());
@@ -177,7 +182,15 @@ TargetInfo GetTargetInfo(TString name, Int_t pos=-999, Int_t runnum=0){
     target.dens_par1 = atof(row->GetField(6)); 
     target.dens_err1 = atof(row->GetField(7)); 
     target.dens_par2 = atof(row->GetField(8)); 
-    target.dens_err2 = atof(row->GetField(9)); 
+    target.dens_err2 = atof(row->GetField(9));
+    vector<string>  fields = {"density_par_0","density_err_0","density_CV_0","density_CV_1","density_CV_2"};
+    for(unsigned int f=0; f<result->GetFieldCount();f++){
+	    if(result->GetFieldName(f) == fields[0]) target.dens_par0=atof(row->GetField(f));
+	    if(result->GetFieldName(f) == fields[1]) target.dens_err0=atof(row->GetField(f));
+	    if(result->GetFieldName(f) == fields[2]) target.dens_CV0 =atof(row->GetField(f));
+	    if(result->GetFieldName(f) == fields[3]) target.dens_CV1 =atof(row->GetField(f));
+	    if(result->GetFieldName(f) == fields[4]) target.dens_CV2 =atof(row->GetField(f));
+ 	}
   }
 
   return target;
@@ -203,6 +216,7 @@ TargetInfo GetTarget(Int_t run)
   TargetInfo target = GetTargetInfo("",position,run);
   return target;
 }
+
 
 //-----------------------------
 // Get analysis info from SQL table <experiment>analysis
@@ -450,7 +464,10 @@ vector<RunList> SQL_Kin_Target_RL(TString kin="", TString tgt=""){
 	for(int i =0; i<result1->GetRowCount();i++){
 		row1 =  result1->Next();	
 		tmp.set_values(atoi(row1->GetField(0)),row1->GetField(1));
-		if((atoi(row1->GetField(2))+atoi(row1->GetField(3)))>0){//make sure main trigger fired
+		int PS5=0; int PS2=0;
+		if(row1->GetField(2)!=nullptr) PS2=atoi(row1->GetField(2));
+		if(row1->GetField(3)!=nullptr) PS5=atoi(row1->GetField(3));
+		if((PS2+PS5)>0){//make sure main trigger fired
 			runlist.push_back(tmp);}
 
 	}
@@ -587,6 +604,7 @@ void PrintRunInfo(int run){
 	} 
 
 
+//Positron information structure 
 struct PositronCor{   // ln(e+/e-) =  A + Bx   where x is xbj
 	double par1=0.0; 
 	double err1=0.0;
@@ -594,8 +612,10 @@ struct PositronCor{   // ln(e+/e-) =  A + Bx   where x is xbj
 	double err2=0.0;
 	double covariance=0.0;
 };
+/////////////////////////////////
 
 
+//Uses the positron struct to get info from SQL to make the positron cor factor. 
 PositronCor  GetPosInfo(int run=0, string tgt=""){
 	PositronCor PosC;
 	if(run>0)	{//Determine the target from run number!
@@ -616,19 +636,91 @@ PositronCor  GetPosInfo(int run=0, string tgt=""){
 	return PosC;
 }
 
-
+//Calculates the positron correction factor using the PositronCor structure. 
+//Values are retrived form the MARATHONTargetInfo SQL DB
+//This script needs the xbj of the calculation, PositronCor struct, and a pointer to a double for the 
+//the error calculation
 double GetPosCorFactor(double xbj, PositronCor PC, double& PC_error){
 	
 	double PCfact = exp(PC.par1+PC.par2*xbj);
 	PC_error = PCfact*sqrt(PC.err1+PC.err2*xbj*xbj +2.0*PC.covariance*xbj);
 
-	
-	
-
 	return PCfact;
 }
-
+////////////////////////////////////////////////////////////////////////////////
 	
+
+//Get the density correction of a target given a current, if you do not provide a current one will be retrieved from SQL if possible. 
+double DensityCor( TargetInfo TI, int run, double &err, double current=0){
+	double current_err = current_error *current;
+	double dens_cor=1;
+	if(current==0)
+		{
+		AnalysisInfo AI;
+		AI = GetAnalysisInfo(run);
+		current = AI.current;
+		}
+	dens_cor = TI.dens_par0 - TI.dens_par1*current + TI.dens_par2*pow(current,2);
+	double err0 = TI.dens_err0;
+	double err1 = TI.dens_err1*pow(current,2);
+	double err2 = TI.dens_err2*pow(current,4);
+	double CV0 = 2*current*TI.dens_CV0;
+	double CV1 = 2*current*current*TI.dens_CV1;
+	double CV2 = 2*pow(current,3)*TI.dens_CV2;
+	//Sum up the error for the fit parameters including covarient terms.
+
+	double Cerr1 = err0 + err1 + err2 + CV0 + CV1 + CV2;
+	//Now look at the error on current
+	double Cerr2 = pow((TI.dens_par1 + 2* TI.dens_par2 *current),2) * pow(current_error,2);
+	//combind the two
+	err = sqrt( Cerr1 + Cerr2 );
+//	cout << err0 <<" "<<err1<<" "<<err2<<" "<<CV0<<" "<<CV1<<" "<<CV2<<endl;	
+//	cout << err << " " <<Cerr1 << " " << Cerr2 <<endl;	
+
+
+	return dens_cor;	
+}
+
+
+//Get the density correction of a target given a current, if you do not provide a current one will be retrieved from SQL if possible. 
+vector<double> DensityCor( int run, double current=0){
+	vector<double> dens_vec = {1.0,0.0};
+	double err=0;
+	double current_err = current_error *current;
+	double dens_cor=1;
+	
+	TargetInfo TI = GetTarget(run);
+	if(TI.type=="solid") return dens_vec;
+
+	if(current==0)
+		{
+		AnalysisInfo AI;
+		AI = GetAnalysisInfo(run);
+		current = AI.current;
+		}
+	dens_cor = TI.dens_par0 - TI.dens_par1*current + TI.dens_par2*pow(current,2);
+	double err0 = TI.dens_err0;
+	double err1 = TI.dens_err1*pow(current,2);
+	double err2 = TI.dens_err2*pow(current,4);
+	double CV0 = 2*current*TI.dens_CV0;
+	double CV1 = 2*current*current*TI.dens_CV1;
+	double CV2 = 2*pow(current,3)*TI.dens_CV2;
+	//Sum up the error for the fit parameters including covarient terms.
+
+	double Cerr1 = err0 + err1 + err2 + CV0 + CV1 + CV2;
+	//Now look at the error on current
+	double Cerr2 = pow((TI.dens_par1 + 2* TI.dens_par2 *current),2) * pow(current_error,2);
+	//combind the two
+	err = sqrt( Cerr1 + Cerr2 );
+//	cout << err0 <<" "<<err1<<" "<<err2<<" "<<CV0<<" "<<CV1<<" "<<CV2<<endl;	
+//	cout << err << " " <<Cerr1 << " " << Cerr2 <<endl;	
+	dens_vec.push_back(dens_cor);
+	dens_vec.push_back(err);
+
+	return dens_vec;	
+}
+
+
 
 
 #endif

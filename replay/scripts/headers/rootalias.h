@@ -49,6 +49,7 @@
 #include "TVector.h"
 
 const char* ROOTPATHS[] = {
+  "/volatile/halla/triton/Marathon_Rootfiles/optics_trial/",
   "./tmproot/",
   "/home/shujie/jlab/MyTritium/Rootfiles/",
   "/volatile/halla/triton/nathaly/Rootfiles/",  
@@ -108,9 +109,9 @@ TCut electron_cut_L = cer_cut_L+sh_cut_L+beta_cut_L;
 
 TCut track_L        = "L.tr.n==1";
 TCut aperture_L     = "((L.tr.tg_y+L.tr.tg_ph*1.5)^2/0.64+(L.tr.tg_th*1.5)^2/0.49)<0.01";
-const double tg_dp_L=0.05;
-const double tg_th_L=0.05;
-const double tg_ph_L=0.04;
+const double tg_dp_L=0.24;
+const double tg_th_L=0.26;
+const double tg_ph_L=0.25;
 const double tg_vz_L=0.09;
 TCut dp_cut_L=Form("fabs(L.tr.tg_dp)<%g",tg_dp_L);
 TCut th_cut_L=Form("fabs(L.tr.tg_th)<%g",tg_th_L);

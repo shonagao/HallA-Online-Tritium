@@ -1,4 +1,4 @@
--- MySQL dump 10.14  Distrib 5.5.56-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
 --
 -- Host: halladb    Database: triton-work
 -- ------------------------------------------------------
@@ -58,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-06  0:00:04
+-- Dump completed on 2018-09-12 14:11:00
