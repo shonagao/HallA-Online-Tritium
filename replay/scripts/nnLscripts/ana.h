@@ -54,7 +54,7 @@ class ana
 
     TH1D *h_R_tr_n, *h_R_tr_chi2;
     TH1D *h_R_p, *h_R_pathl, *h_R_px, *h_R_py, *h_R_pz;
-    TH1D *h_R_tgy, *h_R_tgth, *h_R_tgph, *h_Rvz;
+    TH1D *h_R_tgy, *h_R_tgth, *h_R_tgph, *h_R_tgz;
     TH2D *h_R_y_x, *h_R_th_x, *h_R_ph_y;
     TH2D *h_R_tgph_tgth;
 
@@ -73,7 +73,7 @@ class ana
 
     TH1D *h_L_tr_n, *h_L_tr_chi2;
     TH1D *h_L_p, *h_L_pathl, *h_L_px, *h_L_py, *h_L_pz;
-    TH1D *h_L_tgy, *h_L_tgth, *h_L_tgph, *h_Rvz;
+    TH1D *h_L_tgy, *h_L_tgth, *h_L_tgph, *h_L_tgz;
     TH2D *h_L_y_x, *h_L_th_x, *h_L_ph_y;
     TH2D *h_L_tgph_tgth;
 
