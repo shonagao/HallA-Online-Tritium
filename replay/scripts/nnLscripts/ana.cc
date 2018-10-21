@@ -1,5 +1,4 @@
 using namespace std;
-
 #include "ana.h"
 
 bool batch = false;

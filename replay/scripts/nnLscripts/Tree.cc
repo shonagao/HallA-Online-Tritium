@@ -319,7 +319,6 @@ void Tree::readtree_LHRS()
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Tree::readtree_COIN()
-{
+void Tree::readtree_COIN(){
 }
 
