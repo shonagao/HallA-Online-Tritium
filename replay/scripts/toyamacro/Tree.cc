@@ -59,14 +59,14 @@ void Tree::readtreeS2L()
   tree->SetBranchStatus("L.s2.runderflow" ,1);tree->SetBranchAddress("L.s2.runderflow", L_s2_runderflow);
   tree->SetBranchStatus("L.s2.t_pads"     ,1);tree->SetBranchAddress("L.s2.t_pads"    ,&L_s2_t_pads    );
   tree->SetBranchStatus("L.s2.time"       ,1);tree->SetBranchAddress("L.s2.time"      , L_s2_time      );
-  tree->SetBranchStatus("L.s2.trdx"       ,1);tree->SetBranchAddress("L.s2.trdx"      ,&L_s2_trdx      );
+  tree->SetBranchStatus("L.s2.trdx"       ,0);tree->SetBranchAddress("L.s2.trdx"      ,&L_s2_trdx      );//not used
   tree->SetBranchStatus("L.s2.troff"      ,1);tree->SetBranchAddress("L.s2.troff"     , L_s2_troff     );
-  tree->SetBranchStatus("L.s2.trpad"      ,1);tree->SetBranchAddress("L.s2.trpad"     ,&L_s2_trpad     );
-  tree->SetBranchStatus("L.s2.trpath"     ,1);tree->SetBranchAddress("L.s2.trpath"    ,&L_s2_trpath    );
-  tree->SetBranchStatus("L.s2.trx"        ,1);tree->SetBranchAddress("L.s2.trx"       ,&L_s2_trx       );
-  tree->SetBranchStatus("L.s2.try"        ,1);tree->SetBranchAddress("L.s2.try"       ,&L_s2_try       );
-  tree->SetBranchStatus("L.s2.y_adc"      ,1);tree->SetBranchAddress("L.s2.y_adc"     ,L_s2_y_adc     );
-  tree->SetBranchStatus("L.s2.y_t"        ,1);tree->SetBranchAddress("L.s2.y_t"       ,L_s2_y_t       );
+  tree->SetBranchStatus("L.s2.trpad"      ,0);tree->SetBranchAddress("L.s2.trpad"     ,&L_s2_trpad     );//not used
+  tree->SetBranchStatus("L.s2.trpath"     ,0);tree->SetBranchAddress("L.s2.trpath"    ,&L_s2_trpath    );//not used
+  tree->SetBranchStatus("L.s2.trx"        ,0);tree->SetBranchAddress("L.s2.trx"       ,&L_s2_trx       );//not used
+  tree->SetBranchStatus("L.s2.try"        ,0);tree->SetBranchAddress("L.s2.try"       ,&L_s2_try       );//not used
+  tree->SetBranchStatus("L.s2.y_adc"      ,1);tree->SetBranchAddress("L.s2.y_adc"     , L_s2_y_adc     );
+  tree->SetBranchStatus("L.s2.y_t"        ,1);tree->SetBranchAddress("L.s2.y_t"       , L_s2_y_t       );
 }                                 
 //////////////////////////////////////////////////
 void Tree::readtreeS2R()
