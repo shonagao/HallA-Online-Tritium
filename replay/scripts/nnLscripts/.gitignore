@@ -1,0 +1,5 @@
+rootfiles
+old
+bin/*
+lib/*
+!.gitkeep
