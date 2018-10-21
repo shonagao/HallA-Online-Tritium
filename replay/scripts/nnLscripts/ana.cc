@@ -86,7 +86,7 @@ void ana::DrawText(double x, double y, string str, double size, int color){
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 void ana::MakeHist(){
 //// BPM ////
-  TH2D *h_rbay_rbax = new TH2D("h_rbay_rbax","h_rbay_rbax",200,-20,20,200,-20,20);
+  h_rbay_rbax = new TH2D("h_rbay_rbax","h_rbay_rbax",200,-20,20,200,-20,20);
   set->SetTH2(h_rbay_rbax,"BPM A","X","Y");
 
 //////////////
