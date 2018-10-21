@@ -200,6 +200,7 @@ public:
   void merge(string ifname);
   int GetEntries()    const { return tree->GetEntries(); }
 
+
 };
 
 #endif
