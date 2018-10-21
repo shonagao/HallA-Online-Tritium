@@ -152,14 +152,14 @@ s2_t0_calib::s2_t0_calib()
 
   gErrorIgnoreLevel = kError;
   gROOT->SetStyle("Plain");
-  gROOT->SetBatch(0);
+  gROOT->SetBatch(1);
 
   gStyle->SetOptDate(0);
   gStyle->SetOptFit(1);
   gStyle->SetHistFillStyle(3002);
   gStyle->SetHistFillColor(0);
-  gStyle->SetPadGridX(1);
-  gStyle->SetPadGridY(1);
+  gStyle->SetPadGridX(0);
+  gStyle->SetPadGridY(0);
   gStyle->SetFrameLineWidth(1);
   gStyle->SetLineWidth(1);
   gStyle->SetOptDate(0);
@@ -210,9 +210,11 @@ void s2_t0_calib::loop(){
 
   if( GetMaxEvent()>0 && GetMaxEvent()<ENum) ENum = GetMaxEvent();
   for(int n=0;n<ENum;n++){
+    if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
     for(int i=0;i<16;i++){
-      h_s2l_time[i] ->Fill(L_s2_time[i]);
+      if(L_s2_t_pads==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
+      //cout<<L_s2_time[i]<<endl;
     }
   }
 
@@ -313,6 +315,7 @@ int main(int argc, char** argv){
   if(output_flag)calib->savecanvas(ofname);
   delete calib;
 
+  gSystem->Exit(1);
   theApp->Run();
   return 0;
 }
