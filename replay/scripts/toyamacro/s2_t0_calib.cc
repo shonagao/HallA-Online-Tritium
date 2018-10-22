@@ -38,89 +38,12 @@ using namespace std;
 #include "TPaveText.h"
 #include "TMath.h"
 #include "TGaxis.h"
-
 #include "TRandom.h"
+
 #include "Tree.h"
+#include "Setting.h"
 
 #define Calibration
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void SetTH1(TH1 *h, TString name, TString xname, TString yname, int LColor=1, int FStyle=0, int FColor=0){
-  h->SetTitle(name);
-  h->SetLineColor(LColor);
-  h->SetLineWidth(1);
-  h->SetFillStyle(FStyle);
-  h->SetFillColor(FColor);
-  h->SetMinimum(0.8);
-
-  h->GetXaxis()->SetTitle(xname);
-  h->GetXaxis()->CenterTitle();
-  h->GetXaxis()->SetTitleFont(42);
-  h->GetXaxis()->SetTitleOffset(1.0);
-  h->GetXaxis()->SetTitleSize(0.06);
-  h->GetXaxis()->SetLabelFont(42);
-  h->GetXaxis()->SetLabelOffset(0.01);
-
-  h->GetYaxis()->SetTitle(yname);
-  h->GetYaxis()->CenterTitle();
-  h->GetYaxis()->SetTitleFont(42);
-  h->GetYaxis()->SetTitleOffset(0.8);
-  h->GetYaxis()->SetTitleSize(0.06);
-  h->GetYaxis()->SetLabelFont(42);
-  h->GetYaxis()->SetLabelOffset(0.01);
-  ((TGaxis*)h->GetYaxis())->SetMaxDigits(3);
-}
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void SetTH2(TH2 *h, TString name, TString xname, TString yname, double min=0.8, double MStyle=1, double MSize=1.0){
-  h->SetTitle(name);
-  h->SetMinimum(min);
-  h->SetLineWidth(1);
-  h->SetTitleSize(0.05,"");
-  h->SetMarkerStyle(1);
-  h->SetMarkerSize(0.1);
-  h->SetMarkerColor(1);
-
-  h->GetXaxis()->SetTitle(xname);
-  h->GetXaxis()->CenterTitle();
-  h->GetXaxis()->SetTitleFont(42);
-  h->GetXaxis()->SetTitleOffset(1.0);
-  h->GetXaxis()->SetTitleSize(0.06);
-  h->GetXaxis()->SetLabelFont(42);
-  h->GetXaxis()->SetLabelOffset(0.01);
-
-  h->GetYaxis()->SetTitle(yname);
-  h->GetYaxis()->CenterTitle();
-  h->GetYaxis()->SetTitleFont(42);
-  h->GetYaxis()->SetTitleOffset(0.7);
-  h->GetYaxis()->SetTitleSize(0.06);
-  h->GetYaxis()->SetLabelFont(42);
-  h->GetYaxis()->SetLabelOffset(0.01);
-  ((TGaxis*)h->GetYaxis())->SetMaxDigits(3);
-}
-
-void SetGrErr(TGraphErrors *gr, TString hname, TString xname, TString yname, int LColor, int MColor, int MStyle, double Yoffset, double min, double max){
-  gr->SetTitle(hname);
-  gr->SetName(hname);
-  gr->GetXaxis()->SetTitle(xname);
-  gr->GetXaxis()->CenterTitle();
-  gr->GetYaxis()->SetTitle(yname);
-  gr->GetYaxis()->CenterTitle();
-  gr->SetLineColor(LColor);
-  gr->SetMarkerStyle(MStyle);
-  gr->SetMarkerColor(MColor);
-  gr->SetMarkerSize(0.5);
-  gr->GetYaxis()->SetTitleOffset(Yoffset);
-  //  gr->GetYaxis()->SetRangeUser(min,max);
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void SetTF1(TF1 *f, int LColor, int LStyle,double LWidth){
-  f->SetLineColor(LColor);
-  f->SetLineStyle(LStyle);
-  f->SetLineWidth(LWidth);
-  f->SetNpx(2000);
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class s2_t0_calib : public Tree
@@ -135,6 +58,7 @@ class s2_t0_calib : public Tree
   void savecanvas(string ofname); 
   void SetMaxEvent( int N )  { ENumMax = N; }
   void SetRoot(string ifname);
+  Setting *set;
 
   private:
     int GetMaxEvent() { return ENumMax; }
@@ -185,6 +109,7 @@ s2_t0_calib::s2_t0_calib()
   c4= new TCanvas("c4","c4",1400,800 );
   c5= new TCanvas("c5","c5",1400,800 );
 
+  set = new Setting();
 }
 ////////////////////////////////////////////////////////////////////////////
 s2_t0_calib::~s2_t0_calib(){
@@ -201,7 +126,7 @@ void s2_t0_calib::SetRoot(string ifname){
 void s2_t0_calib::makehist(){
   for(int i=0;i<16;i++){
     h_s2l_time[i] = new TH1F(Form("h_s2l_time",i+1), Form("h_s2l_time",i+1)     ,800,-10,10);
-    SetTH1(h_s2l_time[i]  ,Form("time S2L%d",i+1),"time","counts");
+    set->SetTH1(h_s2l_time[i]  ,Form("time S2L%d",i+1),"time","counts");
   }
 
 }

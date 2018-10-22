@@ -11,11 +11,12 @@ Tree::Tree()
   tree = new TChain("T");
   //  cout<<"start tree class"<<endl;
 }
-
+//////////////////////////////////////////////////
 Tree::~Tree()
 {
   //cout<<"end tree class"<<endl;
 }
+//////////////////////////////////////////////////
 void Tree::chain_tree(string ifname)
 {
   tree->Add(Form("%s",ifname.c_str()));
