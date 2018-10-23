@@ -50,26 +50,30 @@ class ana
     TH2D *h_rby_rbx;
 
 //// RHRS ////
-    TH1D *h_R_T1, *h_R_T2, *h_R_T3, *h_R_T4, *h_R_T5, *h_R_T6, *h_R_T7, *h_R_T8;
+    TH1D *h_R_trig;
 
-    TH1D *h_R_tr_n, *h_R_tr_chi2;
+    TH1D *h_R_tr_n, *h_R_tr_ch2;
     TH1D *h_R_p, *h_R_pathl, *h_R_px, *h_R_py, *h_R_pz;
-    TH1D *h_R_tgy, *h_R_tgth, *h_R_tgph, *h_R_tgz;
+    TH1D *h_R_tgy, *h_R_tgth, *h_R_tgph;
+    TH1D *h_R_vx, *h_R_vy, *h_R_vz;
     TH2D *h_R_y_x, *h_R_th_x, *h_R_ph_y;
     TH2D *h_R_tgph_tgth;
 
-    TH1D *h_R_dedx, *h_R_beta;
+    TH1D *h_R_beta, *h_R_m2;
+    TH2D *h_R_beta_p , *h_R_beta_m2;
+    TH2D *h_R_dedx_p, *h_R_dedx_m2;
+    TH1D *h_R_s0_dedx;
+    TH2D *h_R_s0_dedx_x, *h_R_s0_beta_x;
+    TH1D *h_R_s2_dedx;
     TH2D *h_R_s2_dedx_x, *h_R_s2_beta_x;
-    TH2D *h_R_s2_dedx_beta;
     TH2D *h_R_a1_asum_x, *h_R_a2_asum_x;
-
-    TH1D *h_R_mass2;
-    TH2D *h_R_a1_asum_mass2, *h_R_a2_asum_mass2;
+    TH2D *h_R_a1_asum_p, *h_R_a2_asum_p;
+    TH2D *h_R_a1_asum_m2, *h_R_a2_asum_m2;
 
     TH1D *h_R_tgtime;
 
 //// LHRS ////
-    TH1D *h_L_T1, *h_L_T2, *h_L_T3, *h_L_T4, *h_L_T5, *h_L_T6, *h_L_T7, *h_L_T8;
+    TH1D *h_L_trig;
 
     TH1D *h_L_tr_n, *h_L_tr_chi2;
     TH1D *h_L_p, *h_L_pathl, *h_L_px, *h_L_py, *h_L_pz;
