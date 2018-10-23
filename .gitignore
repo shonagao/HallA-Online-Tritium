@@ -45,6 +45,9 @@ replay/RootFiles
 replay/RootFiles_chafs
 replay/ScratchRootFiles
 replay/summaryfiles/*
+replay/t2root
+replay/scripts/toyamacro/bin
+replay/scripts/toyamacro/lib
 
 scaler/xscaler
 scaler/hana_decode/THaDecDict.C

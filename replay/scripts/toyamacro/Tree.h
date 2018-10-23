@@ -27,6 +27,8 @@ public:
   ////////
   //Left//
   ////////
+  //S0L
+
   //S2L
   double L_s2_dedx[16]      , L_s2_dtime[16] , L_s2_la[16]      , L_s2_la_c[16]     , L_s2_la_p[16]       , L_s2_lbadped[16]   , L_s2_lnhits[16]    ;
   double L_s2_loverflow[16] , L_s2_lpeak[16] , L_s2_lt[16]      , L_s2_lt_c[16]     , L_s2_lt_fadc[16]    , L_s2_ltc_fadc[16]  , L_s2_lunderflow[16];
