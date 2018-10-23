@@ -1,0 +1,10 @@
+ Number of iteration: 10
+ Input  ROOT file:    new.root (1652)
+ Output ROOT file:    phc_test.root (0)
+ Chi-square file:     chi2.dat
+ Weights:             1 1 1 1 1
+ TOF sigma after correction = 120 +/- 0 ps
+ --> One segment time resolution (sigma) =  84.8528 +/- 0 ps
+
+ dragonvaio:~/ehodo/phCorrection/
+ Toshiyuki Gogami , 19Nov2017
