@@ -12,7 +12,7 @@ CXXFLAGS = -Wall -O2 $(ROOTFLAGS)
 CXXLIBS = $(ROOTLIBS)
 
 TARGET1=     s2_t0_calib
-OBJS1=       s2_t0_calib.o Tree.o
+OBJS1=       s2_t0_calib.o Tree.o Setting.o
 
 all: $(TARGET1)
 

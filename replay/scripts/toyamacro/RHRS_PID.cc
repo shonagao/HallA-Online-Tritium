@@ -1,5 +1,5 @@
 ////////////////////////////
-//t0 calibration of S2    //
+//PID plots HRSR          //
 // by Y. Toyama Oct. 2018 //
 ////////////////////////////
 
@@ -46,11 +46,11 @@ using namespace std;
 #define Calibration
 
 
-class s2_t0_calib : public Tree
+class RHRS_PID : public Tree
 {
  public:
-         s2_t0_calib();
-        ~s2_t0_calib();
+         RHRS_PID();
+        ~RHRS_PID();
   void makehist();
   void loop();
   void fit();
@@ -64,20 +64,20 @@ class s2_t0_calib : public Tree
     int GetMaxEvent() { return ENumMax; }
     int ENumMax;
 
-    TH1F *h_s2l_time[16];
+    TH1F *h_s2l_time[RS2];
 
-    TH1F *h_s2r_time[16];
+    TH1F *h_s2r_time[RS2];
     int run_num;
     TCanvas *c1,*c2,*c3,*c4,*c5;
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-s2_t0_calib::s2_t0_calib()
+RHRS_PID::RHRS_PID()
 {
 
   gErrorIgnoreLevel = kError;
   gROOT->SetStyle("Plain");
-  gROOT->SetBatch(1);
+  gROOT->SetBatch(0);
 
   gStyle->SetOptDate(0);
   gStyle->SetOptFit(1);
@@ -113,62 +113,68 @@ s2_t0_calib::s2_t0_calib()
   set = new Setting();
 }
 ////////////////////////////////////////////////////////////////////////////
-s2_t0_calib::~s2_t0_calib(){
+RHRS_PID::~RHRS_PID(){
 }
 ////////////////////////////////////////////////////////////////////////////
-void s2_t0_calib::SetRoot(string ifname){
-  chain_tree(ifname);
-  //readtreeS0L();
-  //readtreeS2L();
-  //readtreeS0R();
-  readtreeS2R();
+void RHRS_PID::SetRoot(string ifname){
+  add_tree(ifname);
+  pack_tree();
+  readtreeHRSR();
 }
 ////////////////////////////////////////////////////////////////////////////
-void s2_t0_calib::makehist(){
-  for(int i=0;i<16;i++){
+void RHRS_PID::makehist(){
+  for(int i=0;i<RS2;i++){
     h_s2l_time[i] = new TH1F(Form("h_s2l_time",i+1), Form("h_s2l_time",i+1)     ,800,-10,10);
     set->SetTH1(h_s2l_time[i]  ,Form("time S2L%d",i+1),"time","counts");
 
-    h_s2r_time[i] = new TH1F(Form("h_s2r_time",i+1), Form("h_s2r_time",i+1)     ,800,-10,10);
-    set->SetTH1(h_s2r_time[i]  ,Form("time S2R%d",i+1),"time","counts");
+    h_s2r_time[i] = new TH1F(Form("h_s2r_time",i+1), Form("h_s2r_time",i+1)     ,2000,-100,100);
+    set->SetTH1(h_s2r_time[i]  ,Form("ToF(S2R%d - S0R)",i+1),"time[ns]","counts");
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void s2_t0_calib::loop(){
+void RHRS_PID::loop(){
 
   if( GetMaxEvent()>0 && GetMaxEvent()<ENum) ENum = GetMaxEvent();
   for(int n=0;n<ENum;n++){
     if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
-    for(int i=0;i<16;i++){
-      //if(L_s2_t_pads==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
-      if(R_s2_t_pads==i)h_s2r_time[i] ->Fill(1.e+6*R_s2_time[i]);
-      //cout<<L_s2_time[i]<<endl;
+    //cout<<"ntrack : "<<R_tr_n<<endl;
+    for(int i=0;i<RS2;i++){
+      //for(int j=0;j<L_n_tr;j++){
+      //  if(L_s2_t_pads[j]==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
+      //  //cout<<L_s2_time[i]<<endl;
+      //}
+      for(int j=0;j<R_tr_n;j++){
+        if(R_s2_t_pads[j]==i  && R_s0_lt[0]>0&& R_s0_rt[0]>0){
+          h_s2r_time[i] ->Fill(1.e+9*(R_s2_time[i] - R_s0_time[0]));
+          //cout<<"ntrack : "<<R_tr_n<<endl;
+        }
+      }
     }
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void s2_t0_calib::fit(){
+void RHRS_PID::fit(){
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void s2_t0_calib::draw(){
+void RHRS_PID::draw(){
 
   c1->Clear();c1->Divide(3,4);
   for(int i=0;i<12;i++){
     c1->cd(i+1);gPad->SetLogy(1);h_s2l_time[i]->Draw();
   }
 
-  c2->Clear();c2->Divide(3,4);
-  for(int i=0;i<12;i++){
+  c2->Clear();c2->Divide(4,4);
+  for(int i=0;i<16;i++){
     c2->cd(i+1);gPad->SetLogy(1);h_s2r_time[i]->Draw();
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void s2_t0_calib::savecanvas(string ofname){
+void RHRS_PID::savecanvas(string ofname){
   c1->Print(Form("%s[",ofname.c_str()) );
   c1->Print(Form("%s" ,ofname.c_str()) );
   c2->Print(Form("%s" ,ofname.c_str()) );
@@ -184,7 +190,7 @@ cout<<ofname<<" saved"<<endl;
 int main(int argc, char** argv){
 
   string ifname = "rootfiles/cosmic1020.root";
-  string ofname = "toyamacro/pdf/s2_t0_calib1020.pdf";
+  string ofname = "toyamacro/pdf/RHRS_PID1020.pdf";
   string paramname = "twlk_param/default.param";
   int ch;
   int MaxNum = 0;
@@ -239,18 +245,18 @@ int main(int argc, char** argv){
   }
 
   TApplication *theApp = new TApplication("App", &argc, argv);
-  s2_t0_calib *calib = new s2_t0_calib();
+  RHRS_PID *pid = new RHRS_PID();
 
-  calib->SetMaxEvent(MaxNum);
-  calib->SetRoot(ifname);
-  calib->makehist();
-  calib->loop();
-  calib->fit();
-  calib->draw();
-  if(output_flag)calib->savecanvas(ofname);
-  delete calib;
+  pid->SetMaxEvent(MaxNum);
+  pid->SetRoot(ifname);
+  pid->makehist();
+  pid->loop();
+  pid->fit();
+  pid->draw();
+  if(output_flag)pid->savecanvas(ofname);
+  delete pid;
 
-  gSystem->Exit(1);
+  //gSystem->Exit(1);
   theApp->Run();
   return 0;
 }

@@ -27,6 +27,8 @@ public:
   ////////
   //Left//
   ////////
+  //S0L
+
   //S2L
   double L_s2_dedx[16]      , L_s2_dtime[16] , L_s2_la[16]      , L_s2_la_c[16]     , L_s2_la_p[16]       , L_s2_lbadped[16]   , L_s2_lnhits[16]    ;
   double L_s2_loverflow[16] , L_s2_lpeak[16] , L_s2_lt[16]      , L_s2_lt_c[16]     , L_s2_lt_fadc[16]    , L_s2_ltc_fadc[16]  , L_s2_lunderflow[16];
@@ -43,6 +45,18 @@ public:
   /////////
   //Right//
   /////////
+  //S2R
+  double R_s2_dedx[16]      , R_s2_dtime[16] , R_s2_la[16]      , R_s2_la_c[16]     , R_s2_la_p[16]       , R_s2_lbadped[16]   , R_s2_lnhits[16]    ;
+  double R_s2_loverflow[16] , R_s2_lpeak[16] , R_s2_lt[16]      , R_s2_lt_c[16]     , R_s2_lt_fadc[16]    , R_s2_ltc_fadc[16]  , R_s2_lunderflow[16];
+  double R_s2_ra[16]        , R_s2_ra_c[16]  , R_s2_ra_p[16]    , R_s2_rbadped[16]  , R_s2_rnhits[16]     , R_s2_roverflow[16] , R_s2_rpeak[16]     ;
+  double R_s2_rt[16]        , R_s2_rt_c[16]  , R_s2_rt_fadc[16] , R_s2_rtc_fadc[16] , R_s2_runderflow[16] ;
+  double R_s2_t_pads;
+  double R_s2_time[16], R_s2_troff[16], R_s2_y_adc[16], R_s2_y_t[16];
+  double R_s2_trdx      ;//not filled
+  double R_s2_trpath    ;//not filled
+  double R_s2_trpad     ;//not filled
+  double R_s2_trx       ;//not filled
+  double R_s2_try       ;//not filled
 //private:
 public:
   TChain *tree;
