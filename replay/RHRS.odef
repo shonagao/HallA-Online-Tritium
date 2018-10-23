@@ -59,13 +59,14 @@ FORMULA bpmbws Rrb.BPMB.rawcur.1+Rrb.BPMB.rawcur.2+Rrb.BPMB.rawcur.3+Rrb.BPMB.ra
 #FORMULA bpmbws FbusRrb.BPMB.rawcur.1+FbusRrb.BPMB.rawcur.2+FbusRrb.BPMB.rawcur.3+FbusRrb.BPMB.rawcur.4
 
 #Toyama
-FORMULA m2 (1./(R.tr.beta*R.tr.beta)-1.)*R.gold.p*R.gold.p
+#FORMULA m2 R.tr.beta + R.tr.beta
+FORMULA m2 ( 1. / (R.tr.beta * R.tr.beta) -1. ) * R.tr.p * R.tr.p
 
 
 
 #-------------------------------------------------------------------
 #
-formula Rep (R.ps.e+R.sh.e)/(R.gold.p*1000)
+FORMULA Rep (R.ps.e+R.sh.e)/(R.gold.p*1000)
 # RIGHT ARM S0
 #
 TH1F Rs0lt 'Right arm S0-Top(B) TDC' R.s0.lt 500 1500 2500 R.s0.lt>0.
