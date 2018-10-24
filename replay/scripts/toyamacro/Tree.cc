@@ -72,6 +72,42 @@ void Tree::readtreeS2L()
 //////////////////////////////////////////////////
 void Tree::readtreeS2R()
 {
+  tree->SetBranchStatus("R.s2.dedx"       ,1);tree->SetBranchAddress("R.s2.dedx"      , R_s2_dedx      );
+  tree->SetBranchStatus("R.s2.dtime"      ,1);tree->SetBranchAddress("R.s2.dtime"     , R_s2_dtime     );
+  tree->SetBranchStatus("R.s2.la"         ,1);tree->SetBranchAddress("R.s2.la"        , R_s2_la        );
+  tree->SetBranchStatus("R.s2.la_c"       ,1);tree->SetBranchAddress("R.s2.la_c"      , R_s2_la_c      );
+  tree->SetBranchStatus("R.s2.la_p"       ,1);tree->SetBranchAddress("R.s2.la_p"      , R_s2_la_p      );
+  tree->SetBranchStatus("R.s2.lbadped"    ,1);tree->SetBranchAddress("R.s2.lbadped"   , R_s2_lbadped   );
+  tree->SetBranchStatus("R.s2.lnhits"     ,1);tree->SetBranchAddress("R.s2.lnhits"    , R_s2_lnhits    );
+  tree->SetBranchStatus("R.s2.loverflow"  ,1);tree->SetBranchAddress("R.s2.loverflow" , R_s2_loverflow );
+  tree->SetBranchStatus("R.s2.lpeak"      ,1);tree->SetBranchAddress("R.s2.lpeak"     , R_s2_lpeak     );
+  tree->SetBranchStatus("R.s2.lt"         ,1);tree->SetBranchAddress("R.s2.lt"        , R_s2_lt        );
+  tree->SetBranchStatus("R.s2.lt_c"       ,1);tree->SetBranchAddress("R.s2.lt_c"      , R_s2_lt_c      );
+  tree->SetBranchStatus("R.s2.lt_fadc"    ,1);tree->SetBranchAddress("R.s2.lt_fadc"   , R_s2_lt_fadc   );
+  tree->SetBranchStatus("R.s2.ltc_fadc"   ,1);tree->SetBranchAddress("R.s2.ltc_fadc"  , R_s2_ltc_fadc  );
+  tree->SetBranchStatus("R.s2.lunderflow" ,1);tree->SetBranchAddress("R.s2.lunderflow", R_s2_lunderflow);
+  tree->SetBranchStatus("R.s2.ra"         ,1);tree->SetBranchAddress("R.s2.ra"        , R_s2_ra        );
+  tree->SetBranchStatus("R.s2.ra_c"       ,1);tree->SetBranchAddress("R.s2.ra_c"      , R_s2_ra_c      );
+  tree->SetBranchStatus("R.s2.ra_p"       ,1);tree->SetBranchAddress("R.s2.ra_p"      , R_s2_ra_p      );
+  tree->SetBranchStatus("R.s2.rbadped"    ,1);tree->SetBranchAddress("R.s2.rbadped"   , R_s2_rbadped   );
+  tree->SetBranchStatus("R.s2.rnhits"     ,1);tree->SetBranchAddress("R.s2.rnhits"    , R_s2_rnhits    );
+  tree->SetBranchStatus("R.s2.roverflow"  ,1);tree->SetBranchAddress("R.s2.roverflow" , R_s2_roverflow );
+  tree->SetBranchStatus("R.s2.rpeak"      ,1);tree->SetBranchAddress("R.s2.rpeak"     , R_s2_rpeak     );
+  tree->SetBranchStatus("R.s2.rt"         ,1);tree->SetBranchAddress("R.s2.rt"        , R_s2_rt        );
+  tree->SetBranchStatus("R.s2.rt_c"       ,1);tree->SetBranchAddress("R.s2.rt_c"      , R_s2_rt_c      );
+  tree->SetBranchStatus("R.s2.rt_fadc"    ,1);tree->SetBranchAddress("R.s2.rt_fadc"   , R_s2_rt_fadc   );
+  tree->SetBranchStatus("R.s2.rtc_fadc"   ,1);tree->SetBranchAddress("R.s2.rtc_fadc"  , R_s2_rtc_fadc  );
+  tree->SetBranchStatus("R.s2.runderflow" ,1);tree->SetBranchAddress("R.s2.runderflow", R_s2_runderflow);
+  tree->SetBranchStatus("R.s2.t_pads"     ,1);tree->SetBranchAddress("R.s2.t_pads"    ,&R_s2_t_pads    );
+  tree->SetBranchStatus("R.s2.time"       ,1);tree->SetBranchAddress("R.s2.time"      , R_s2_time      );
+  tree->SetBranchStatus("R.s2.trdx"       ,0);tree->SetBranchAddress("R.s2.trdx"      ,&R_s2_trdx      );//not used
+  tree->SetBranchStatus("R.s2.troff"      ,1);tree->SetBranchAddress("R.s2.troff"     , R_s2_troff     );
+  tree->SetBranchStatus("R.s2.trpad"      ,0);tree->SetBranchAddress("R.s2.trpad"     ,&R_s2_trpad     );//not used
+  tree->SetBranchStatus("R.s2.trpath"     ,0);tree->SetBranchAddress("R.s2.trpath"    ,&R_s2_trpath    );//not used
+  tree->SetBranchStatus("R.s2.trx"        ,0);tree->SetBranchAddress("R.s2.trx"       ,&R_s2_trx       );//not used
+  tree->SetBranchStatus("R.s2.try"        ,0);tree->SetBranchAddress("R.s2.try"       ,&R_s2_try       );//not used
+  tree->SetBranchStatus("R.s2.y_adc"      ,1);tree->SetBranchAddress("R.s2.y_adc"     , R_s2_y_adc     );
+  tree->SetBranchStatus("R.s2.y_t"        ,1);tree->SetBranchAddress("R.s2.y_t"       , R_s2_y_t       );
 }                                 
 //////////////////////////////////////////////////
 void Tree::readtreeS0R()
