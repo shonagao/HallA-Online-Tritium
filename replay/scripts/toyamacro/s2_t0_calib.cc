@@ -66,6 +66,7 @@ class s2_t0_calib : public Tree
 
     TH1F *h_s2l_time[16];
 
+    TH1F *h_s2r_time[16];
     int run_num;
     TCanvas *c1,*c2,*c3,*c4,*c5;
 };
@@ -117,9 +118,9 @@ s2_t0_calib::~s2_t0_calib(){
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::SetRoot(string ifname){
   chain_tree(ifname);
-  readtreeS0L();
-  readtreeS2L();
-  readtreeS0R();
+  //readtreeS0L();
+  //readtreeS2L();
+  //readtreeS0R();
   readtreeS2R();
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -127,6 +128,9 @@ void s2_t0_calib::makehist(){
   for(int i=0;i<16;i++){
     h_s2l_time[i] = new TH1F(Form("h_s2l_time",i+1), Form("h_s2l_time",i+1)     ,800,-10,10);
     set->SetTH1(h_s2l_time[i]  ,Form("time S2L%d",i+1),"time","counts");
+
+    h_s2r_time[i] = new TH1F(Form("h_s2r_time",i+1), Form("h_s2r_time",i+1)     ,800,-10,10);
+    set->SetTH1(h_s2r_time[i]  ,Form("time S2R%d",i+1),"time","counts");
   }
 
 }
@@ -138,7 +142,8 @@ void s2_t0_calib::loop(){
     if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
     for(int i=0;i<16;i++){
-      if(L_s2_t_pads==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
+      //if(L_s2_t_pads==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
+      if(R_s2_t_pads==i)h_s2r_time[i] ->Fill(1.e+6*R_s2_time[i]);
       //cout<<L_s2_time[i]<<endl;
     }
   }
@@ -154,6 +159,11 @@ void s2_t0_calib::draw(){
   c1->Clear();c1->Divide(3,4);
   for(int i=0;i<12;i++){
     c1->cd(i+1);gPad->SetLogy(1);h_s2l_time[i]->Draw();
+  }
+
+  c2->Clear();c2->Divide(3,4);
+  for(int i=0;i<12;i++){
+    c2->cd(i+1);gPad->SetLogy(1);h_s2r_time[i]->Draw();
   }
 
 }

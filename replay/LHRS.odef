@@ -210,7 +210,7 @@ block Lrb*
 	#
 	TH1F reactx 'L-arm Reaction X vertex' rpl.x 200 -.6 .6
 	TH1F reacty 'L-arm Reaction Y vertex' rpl.y 200 -.6 .6
-	TH1F reactz 'L-arm Reaction Z vertex' rpl.z 200 -.5 .8
+	TH1F reactz 'L-arm Reaction Z vertex' rpl.z 200 -0.2 0.2
 
 	#-------------------------------------------------------------------------------
 	#Beam Information
