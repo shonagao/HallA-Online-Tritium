@@ -41,6 +41,15 @@ void Tree::readtree_RHRS()
 {
   tree->SetBranchStatus("*",0);
 
+  tree->SetBranchStatus("Ndata.DR.T1"          ,1);  tree->SetBranchAddress("Ndata.DR.T1"          ,&R_T1                );
+  tree->SetBranchStatus("Ndata.DR.T2"          ,1);  tree->SetBranchAddress("Ndata.DR.T2"          ,&R_T2                );
+  tree->SetBranchStatus("Ndata.DR.T3"          ,1);  tree->SetBranchAddress("Ndata.DR.T3"          ,&R_T3                );
+  tree->SetBranchStatus("Ndata.DR.T4"          ,1);  tree->SetBranchAddress("Ndata.DR.T4"          ,&R_T4                );
+  tree->SetBranchStatus("Ndata.DR.T5"          ,1);  tree->SetBranchAddress("Ndata.DR.T5"          ,&R_T5                );
+  tree->SetBranchStatus("Ndata.DR.T6"          ,1);  tree->SetBranchAddress("Ndata.DR.T6"          ,&R_T6                );
+  tree->SetBranchStatus("Ndata.DR.T7"          ,1);  tree->SetBranchAddress("Ndata.DR.T7"          ,&R_T7                );
+  tree->SetBranchStatus("Ndata.DR.T8"          ,1);  tree->SetBranchAddress("Ndata.DR.T8"          ,&R_T8                );
+
   tree->SetBranchStatus("R.s0.la"              ,1);  tree->SetBranchAddress("R.s0.la"              , R_s0_la             );
   tree->SetBranchStatus("R.s0.la_c"            ,1);  tree->SetBranchAddress("R.s0.la_c"            , R_s0_la_c           );
   tree->SetBranchStatus("R.s0.la_p"            ,1);  tree->SetBranchAddress("R.s0.la_p"            , R_s0_la_p           );
@@ -210,12 +219,24 @@ void Tree::readtree_RHRS()
   tree->SetBranchStatus("R.tr.vy"              ,1);  tree->SetBranchAddress("R.tr.vy"              , R_tr_vy             );
   tree->SetBranchStatus("R.tr.vz"              ,1);  tree->SetBranchAddress("R.tr.vz"              , R_tr_vz             );
 
+  tree->SetBranchStatus("DR.rtRFtime"          ,1);  tree->SetBranchAddress("DR.rtRFtime"          , R_rtRFtime          );
+
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 void Tree::readtree_LHRS()
 {
   tree->SetBranchStatus("*",0);
+
+  tree->SetBranchStatus("Ndata.DL.T1"          ,1);  tree->SetBranchAddress("Ndata.DL.T1"          ,&L_T1                );
+  tree->SetBranchStatus("Ndata.DL.T2"          ,1);  tree->SetBranchAddress("Ndata.DL.T2"          ,&L_T2                );
+  tree->SetBranchStatus("Ndata.DL.T3"          ,1);  tree->SetBranchAddress("Ndata.DL.T3"          ,&L_T3                );
+  tree->SetBranchStatus("Ndata.DL.T4"          ,1);  tree->SetBranchAddress("Ndata.DL.T4"          ,&L_T4                );
+  tree->SetBranchStatus("Ndata.DL.T5"          ,1);  tree->SetBranchAddress("Ndata.DL.T5"          ,&L_T5                );
+  tree->SetBranchStatus("Ndata.DL.T6"          ,1);  tree->SetBranchAddress("Ndata.DL.T6"          ,&L_T6                );
+  tree->SetBranchStatus("Ndata.DL.T7"          ,1);  tree->SetBranchAddress("Ndata.DL.T7"          ,&L_T7                );
+  tree->SetBranchStatus("Ndata.DL.T8"          ,1);  tree->SetBranchAddress("Ndata.DL.T8"          ,&L_T8                );
+
   tree->SetBranchStatus("L.s0.la"              ,1);  tree->SetBranchAddress("L.s0.la"              , L_s0_la             );
   tree->SetBranchStatus("L.s0.la_c"            ,1);  tree->SetBranchAddress("L.s0.la_c"            , L_s0_la_c           );
   tree->SetBranchStatus("L.s0.la_p"            ,1);  tree->SetBranchAddress("L.s0.la_p"            , L_s0_la_p           );
@@ -315,6 +336,7 @@ void Tree::readtree_LHRS()
   tree->SetBranchStatus("L.tr.vy"              ,1);  tree->SetBranchAddress("L.tr.vy"              , L_tr_vy             );
   tree->SetBranchStatus("L.tr.vz"              ,1);  tree->SetBranchAddress("L.tr.vz"              , L_tr_vz             );
 
+  tree->SetBranchStatus("DL.rtRFtime"          ,1);  tree->SetBranchAddress("DL.rtRFtime"          , L_rtRFtime          );
 
 }
 

@@ -12,7 +12,7 @@ Setting::Setting()
 void Setting::SetTH1(TH1 *h, TString name, TString xname, TString yname, int LColor, int FStyle, int FColor){
   h->SetTitle(name);
   h->SetLineColor(LColor);
-  h->SetLineWidth(0);
+  h->SetLineWidth(1);
   h->SetFillStyle(FStyle);
   h->SetFillColor(FColor);
 
@@ -41,7 +41,7 @@ void Setting::SetTH1(TH1 *h, TString name, TString xname, TString yname, int LCo
 void Setting::SetTH2(TH2 *h, TString name, TString xname, TString yname, double min){
   h->SetTitle(name);
   h->SetMinimum(min);
-  h->SetLineWidth(0);
+  h->SetLineWidth(1);
   h->SetMarkerStyle(20);
   h->SetMarkerSize(1.5);
   h->SetMarkerColor(1);
@@ -276,8 +276,8 @@ void Setting::Initialize(){
   gStyle->SetHistFillColor(0);
   gStyle->SetPadGridX(0);
   gStyle->SetPadGridY(0);
-  gStyle->SetFrameLineWidth(0);
-  gStyle->SetLineWidth(0);
+  gStyle->SetFrameLineWidth(1);
+  gStyle->SetLineWidth(1);
 
   gStyle->SetOptDate(0);
   gStyle->SetOptStat("ei");
@@ -312,8 +312,6 @@ void Setting::Initialize(){
   gStyle->SetNumberContours(NCont);
 
   gStyle->SetGridWidth(0);
-  gStyle->SetFrameLineWidth(0);
-  gStyle->SetLineWidth(0);
   gStyle->SetNdivisions(505,"X"); // tertiary*10000 + secondary*100 + first
   gStyle->SetNdivisions(505,"Y"); // tertiary*10000 + secondary*100 + first
   gStyle->SetNdivisions(505,"Z"); // tertiary*10000 + secondary*100 + first

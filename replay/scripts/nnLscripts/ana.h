@@ -64,10 +64,15 @@ class ana
     TH2D *h_L_dedx_p, *h_L_dedx_m2;
     TH1D *h_L_s0_dedx;
     TH2D *h_L_s0_dedx_x, *h_L_s0_beta_x;
+    TH1D *h_L_s2_pad;
     TH1D *h_L_s2_dedx;
     TH2D *h_L_s2_dedx_x, *h_L_s2_beta_x;
+    TH2D *h_L_s2_dedx_pad, *h_L_s2_beta_pad;
 
-    TH1D *h_L_tgtime;
+    TH1D *h_L_tgt;
+    TH1D *h_L_s2pad_tgt;
+    TH1D *h_L_p_tgt, *h_L_pathl_tgt, *h_L_tgy_tgt, *h_L_tgth_tgt, *h_L_tgph_tgt;
+    TH1D *h_L_x_tgt, *h_L_y_tgt, *h_L_z_tgt;
 
 //// RHRS ////
     TH1D *h_R_trig;
@@ -84,14 +89,19 @@ class ana
     TH2D *h_R_dedx_p, *h_R_dedx_m2;
     TH1D *h_R_s0_dedx;
     TH2D *h_R_s0_dedx_x, *h_R_s0_beta_x;
+    TH1D *h_R_s2_pad;
     TH1D *h_R_s2_dedx;
     TH2D *h_R_s2_dedx_x, *h_R_s2_beta_x;
+    TH2D *h_R_s2_dedx_pad, *h_R_s2_beta_pad;
     TH1D *h_R_a1_sum, *h_R_a2_sum;
     TH2D *h_R_a1_sum_x, *h_R_a2_sum_x;
     TH2D *h_R_a1_sum_p, *h_R_a2_sum_p;
     TH2D *h_R_a1_sum_m2, *h_R_a2_sum_m2;
 
-    TH1D *h_R_tgtime;
+    TH1D *h_R_tgt;
+    TH1D *h_R_s2pad_tgt;
+    TH1D *h_R_p_tgt, *h_R_pathl_tgt, *h_R_tgy_tgt, *h_R_tgth_tgt, *h_R_tgph_tgt;
+    TH1D *h_R_x_tgt, *h_R_y_tgt, *h_R_z_tgt;
 
 //// Coin ////
     TH1D *h_ct;

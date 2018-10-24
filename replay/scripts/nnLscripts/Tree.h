@@ -39,10 +39,69 @@ public:
   double bpmaws, bpmbws;  // Sum of BPM raw cur
 
 ///////////////////
+// HRS Light Arm //
+///////////////////
+//// Event Flag ////
+  int L_T1, L_T2, L_T3, L_T4, L_T5, L_T6, L_T7, L_T8;
+
+//// S0 ////
+  double L_s0_la[LS0], L_s0_la_c[LS0], L_s0_la_p[LS0];                 // Bottom ADC, decADC, ADC(ped-supp)
+  double L_s0_lt[LS0], L_s0_lt_c[LS0];                                 // Bottom TDC, decTDC
+  double L_s0_ra[LS0], L_s0_ra_c[LS0], L_s0_ra_p[LS0];                 // Top ADC, decADC, ADC(ped-supp)
+  double L_s0_rt[LS0], L_s0_rt_c[LS0];                                 // Top TDC, decTDC
+  double L_s0_t_pads[MAX];                                             // Paddle T&B TDC coin
+  double L_s0_time[LS0];                                               // Time of hit (sec)
+  double L_s0_dedx[LS0];                                               // dE/dx (no angle correction)
+  double L_s0_trdy[MAX], L_s0_troff[LS0];                              // Track Deviation (m), Trigger offset
+  double L_s0_trpad[MAX], L_s0_trpath[MAX];                            // hit-pad associated with track, track path length
+  double L_s0_trx[MAX], L_s0_try[MAX];                                 // track x-pos, track y-pos
+// FADC
+  double L_s0_lnhits[LS0], L_s0_lpeak[LS0];                            // Hits of Bottom, FADC peak val
+  double L_s0_lt_fadc[LS0], L_s0_ltc_fadc[LS0];                        // FADC TDC, FADC decTDC
+  double L_s0_lbadped[LS0], L_s0_lunderflow[LS0], L_s0_loverflow[LS0]; // FADC ped-quality, underflow, overflow bit
+  double L_s0_rnhits[LS0], L_s0_rpeak[LS0];                            // Hits of Bottom, FADC peak val
+  double L_s0_rt_fadc[LS0], L_s0_rtc_fadc[LS0];                        // FADC TDC, FADC decTDC
+  double L_s0_rbadped[LS0], L_s0_runderflow[LS0], L_s0_roverflow[LS0]; // FADC ped-quality, underflow, overflow bit
+
+//// S2 ////
+  double L_s2_la[LS2], L_s2_la_c[LS2], L_s2_la_p[LS2];                 // Bottom ADC, decADC, ADC(ped-supp)
+  double L_s2_lt[LS2], L_s2_lt_c[LS2];                                 // Bottom TDC, decTDC
+  double L_s2_ra[LS2], L_s2_ra_c[LS2], L_s2_ra_p[LS2];                 // Top ADC, decADC, ADC(ped-supp)
+  double L_s2_rt[LS2], L_s2_rt_c[LS2];                                 // Top TDC, decTDC
+  double L_s2_t_pads[LS2];                                             // Paddle T&B TDC coin
+  double L_s2_time[LS2];                                               // Time of hit (sec)
+  double L_s2_dedx[LS2];                                               // dE/dx (no angle correction)
+  double L_s2_trdx[MAX], L_s2_troff[LS2];                              // Track Deviation (m), Trigger offset
+  double L_s2_trpad[MAX], L_s2_trpath[MAX];                            // hit-pad associated with track, track path length
+  double L_s2_trx[MAX], L_s2_try[MAX];                                 // track x-pos, track y-pos
+// FADC
+  double L_s2_lnhits[LS2], L_s2_lpeak[LS2];                            // Hits of Bottom, FADC peak val
+  double L_s2_lt_fadc[LS2], L_s2_ltc_fadc[LS2];                        // FADC TDC, FADC decTDC
+  double L_s2_lbadped[LS2], L_s2_lunderflow[LS2], L_s2_loverflow[LS2]; // FADC ped-quality, underflow, overflow bit
+  double L_s2_rnhits[LS2], L_s2_rpeak[LS2];                            // Hits of Bottom, FADC peak val
+  double L_s2_rt_fadc[LS2], L_s2_rtc_fadc[LS2];                        // FADC TDC, FADC decTDC
+  double L_s2_rbadped[LS2], L_s2_runderflow[LS2], L_s2_roverflow[LS2]; // FADC ped-quality, underflow, overflow bit
+
+//// Tracking ////
+  double L_tr_n;                                                                 // No. of Tracks
+  double L_tr_flag[MAX], L_tr_ndof[MAX];                                         // track status, track NDoF
+  double L_tr_chi2[MAX];                                                         // track chi2
+  double L_tr_beta[MAX];                                                         // beta of track
+  double L_tr_d_x[MAX], L_tr_d_y[MAX], L_tr_d_th[MAX], L_tr_d_ph[MAX];           // x, y, theta, phi at Detector
+  double L_tr_r_x[MAX], L_tr_r_y[MAX], L_tr_r_th[MAX], L_tr_r_ph[MAX];           // x, y, theta, phi at Rot-Coordinate
+  double L_tr_x[MAX], L_tr_y[MAX], L_tr_th[MAX], L_tr_ph[MAX];                   // x, y, theta, phi
+  double L_tr_time[MAX];                                                         // theta, time@RF
+  double L_tr_p[MAX], L_tr_pathl[MAX], L_tr_px[MAX], L_tr_py[MAX], L_tr_pz[MAX]; // mom, length(TtoP), momx, momy, momz
+  double L_tr_tg_dp[MAX], L_tr_tg_y[MAX], L_tr_tg_th[MAX], L_tr_tg_ph[MAX];      // dp, y, theta, phi at target
+  double L_tr_vx[MAX], L_tr_vy[MAX], L_tr_vz[MAX]; // vertex X, Y, Z
+
+  double L_rtRFtime[6];
+
+///////////////////
 // HRS Right Arm //
 ///////////////////
 //// Event Flag ////
-  double DR_T1, DR_T2, DR_T3, DR_T4, DR_T5, DR_T6, DR_T7, DR_T8;
+  int R_T1, R_T2, R_T3, R_T4, R_T5, R_T6, R_T7, R_T8;
 
 //// S0 ////
   double R_s0_la[RS0], R_s0_la_c[RS0], R_s0_la_p[RS0];                 // Bottom ADC, decADC, ADC(ped-supp)
@@ -132,62 +191,6 @@ public:
   double R_tr_vx[MAX], R_tr_vy[MAX], R_tr_vz[MAX]; // vertex X, Y, Z
 
   double R_rtRFtime[6];
-
-///////////////////
-// HRS Light Arm //
-///////////////////
-//// S0 ////
-  double L_s0_la[LS0], L_s0_la_c[LS0], L_s0_la_p[LS0];                 // Bottom ADC, decADC, ADC(ped-supp)
-  double L_s0_lt[LS0], L_s0_lt_c[LS0];                                 // Bottom TDC, decTDC
-  double L_s0_ra[LS0], L_s0_ra_c[LS0], L_s0_ra_p[LS0];                 // Top ADC, decADC, ADC(ped-supp)
-  double L_s0_rt[LS0], L_s0_rt_c[LS0];                                 // Top TDC, decTDC
-  double L_s0_t_pads[MAX];                                             // Paddle T&B TDC coin
-  double L_s0_time[LS0];                                               // Time of hit (sec)
-  double L_s0_dedx[LS0];                                               // dE/dx (no angle correction)
-  double L_s0_trdy[MAX], L_s0_troff[LS0];                              // Track Deviation (m), Trigger offset
-  double L_s0_trpad[MAX], L_s0_trpath[MAX];                            // hit-pad associated with track, track path length
-  double L_s0_trx[MAX], L_s0_try[MAX];                                 // track x-pos, track y-pos
-// FADC
-  double L_s0_lnhits[LS0], L_s0_lpeak[LS0];                            // Hits of Bottom, FADC peak val
-  double L_s0_lt_fadc[LS0], L_s0_ltc_fadc[LS0];                        // FADC TDC, FADC decTDC
-  double L_s0_lbadped[LS0], L_s0_lunderflow[LS0], L_s0_loverflow[LS0]; // FADC ped-quality, underflow, overflow bit
-  double L_s0_rnhits[LS0], L_s0_rpeak[LS0];                            // Hits of Bottom, FADC peak val
-  double L_s0_rt_fadc[LS0], L_s0_rtc_fadc[LS0];                        // FADC TDC, FADC decTDC
-  double L_s0_rbadped[LS0], L_s0_runderflow[LS0], L_s0_roverflow[LS0]; // FADC ped-quality, underflow, overflow bit
-
-//// S2 ////
-  double L_s2_la[LS2], L_s2_la_c[LS2], L_s2_la_p[LS2];                 // Bottom ADC, decADC, ADC(ped-supp)
-  double L_s2_lt[LS2], L_s2_lt_c[LS2];                                 // Bottom TDC, decTDC
-  double L_s2_ra[LS2], L_s2_ra_c[LS2], L_s2_ra_p[LS2];                 // Top ADC, decADC, ADC(ped-supp)
-  double L_s2_rt[LS2], L_s2_rt_c[LS2];                                 // Top TDC, decTDC
-  double L_s2_t_pads[LS2];                                             // Paddle T&B TDC coin
-  double L_s2_time[LS2];                                               // Time of hit (sec)
-  double L_s2_dedx[LS2];                                               // dE/dx (no angle correction)
-  double L_s2_trdx[MAX], L_s2_troff[LS2];                               // Track Deviation (m), Trigger offset
-  double L_s2_trpad[MAX], L_s2_trpath[MAX];                            // hit-pad associated with track, track path length
-  double L_s2_trx[MAX], L_s2_try[MAX];                                 // track x-pos, track y-pos
-// FADC
-  double L_s2_lnhits[LS2], L_s2_lpeak[LS2];                            // Hits of Bottom, FADC peak val
-  double L_s2_lt_fadc[LS2], L_s2_ltc_fadc[LS2];                        // FADC TDC, FADC decTDC
-  double L_s2_lbadped[LS2], L_s2_lunderflow[LS2], L_s2_loverflow[LS2]; // FADC ped-quality, underflow, overflow bit
-  double L_s2_rnhits[LS2], L_s2_rpeak[LS2];                            // Hits of Bottom, FADC peak val
-  double L_s2_rt_fadc[LS2], L_s2_rtc_fadc[LS2];                        // FADC TDC, FADC decTDC
-  double L_s2_rbadped[LS2], L_s2_runderflow[LS2], L_s2_roverflow[LS2]; // FADC ped-quality, underflow, overflow bit
-
-//// Tracking ////
-  double L_tr_n;                                                                 // No. of Tracks
-  double L_tr_flag[MAX], L_tr_ndof[MAX];                                         // track status, track NDoF
-  double L_tr_chi2[MAX];                                                         // track chi2
-  double L_tr_beta[MAX];                                                         // beta of track
-  double L_tr_d_x[MAX], L_tr_d_y[MAX], L_tr_d_th[MAX], L_tr_d_ph[MAX];           // x, y, theta, phi at Detector
-  double L_tr_r_x[MAX], L_tr_r_y[MAX], L_tr_r_th[MAX], L_tr_r_ph[MAX];           // x, y, theta, phi at Rot-Coordinate
-  double L_tr_x[MAX], L_tr_y[MAX], L_tr_th[MAX], L_tr_ph[MAX];                   // x, y, theta, phi
-  double L_tr_time[MAX];                                                         // theta, time@RF
-  double L_tr_p[MAX], L_tr_pathl[MAX], L_tr_px[MAX], L_tr_py[MAX], L_tr_pz[MAX]; // mom, length(TtoP), momx, momy, momz
-  double L_tr_tg_dp[MAX], L_tr_tg_y[MAX], L_tr_tg_th[MAX], L_tr_tg_ph[MAX];      // dp, y, theta, phi at target
-  double L_tr_vx[MAX], L_tr_vy[MAX], L_tr_vz[MAX]; // vertex X, Y, Z
-
-  double L_rtRFtime[6];
 
 
 public:
