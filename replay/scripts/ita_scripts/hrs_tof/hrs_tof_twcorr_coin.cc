@@ -345,7 +345,6 @@ double corr[chmax];
  
  min_tof[i]=range_para(i,0);
  max_tof[i]=range_para(i,1);
-
  min_tof[i]=-1.0e-5;
  max_tof[i]=1.0e-5;
  bin_tof[i]=(range_para(i,1)-range_para(i,0))/tdcTime;
@@ -753,7 +752,6 @@ sig_ital[ch][s][t]=ftof_c[ch]->GetParameter(2);
 
 
 double range_para(int i,int j){
-
   int npara=6;// number of parameters
   double par[chmax][npara];
   double param;

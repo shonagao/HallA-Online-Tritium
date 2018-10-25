@@ -29,19 +29,21 @@ void RHRStime_5()
   TH1F *h1 = new TH1F("h1", "",1000,0.65e-6,0.7e-6);// one dimensional Histogram
    //  TProfile *p1 = new TProfile("p1", "",200,-1,1,0.3190e-6,0.3221e-6);
   TString filename;
-  for(int irun= 93498;irun<93510;irun++)
+  // for(int irun= 93498;irun<93510;irun++)
+ for(int irun= 94010;irun<94016;irun++)
     {
-
       if (irun == 100422) continue;
- 
 
       for(int subrun =1; subrun<2; subrun++)
       	{
-	 
-      if( irun==100422 || subrun>>5) continue;
+	       if( irun==100422 || subrun>>5) continue;
 
-      // filename = (Form("/adaqfs/home/a-onl/tritium_work/bishnu/Rootfiles/Rootfiles/tritium_%d_%d.root", irun, subrun)); // for marathan run
-      filename = (Form("/adaqfs/home/a-onl/tritium_work/bishnu/Rootfiles/Rootfiles/tritium_%d.root", irun)); // For coincidence run
+  
+	       //  filename = (Form("/adaqfs/home/a-onl/tritium_work/bishnu/Rootfiles/Rootfiles/tritium_%d_%d.root", irun, subrun)); // for marathan run
+            filename = (Form("/adaqfs/home/a-onl/tritium_work/bishnu/Rootfiles/Rootfiles/tritium_%d.root", irun)); // For coincidence run
+
+      //      filename = ("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_94003_toyama.root");
+		  //Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/Rootfiles/tritium_%d.root", irun)); // For coincidence run
 	   TFile *data_file = new TFile(filename,"READ");
            TTree *T = (TTree*)data_file->Get("T");
  
