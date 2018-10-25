@@ -12,14 +12,20 @@ CXXFLAGS = -Wall -O2 $(ROOTFLAGS)
 CXXLIBS = $(ROOTLIBS)
 
 TARGET1=     s2_t0_calib
-OBJS1=       s2_t0_calib.o Tree.o Setting.o
+OBJS1=       s2_t0_calib.o Tree.o Setting.o ParamMan.o
+TARGET2=     RHRS_PID
+OBJS2=       RHRS_PID.o Tree.o Setting.o ParamMan.o
 
-all: $(TARGET1)
+all: $(TARGET1) \
+     $(TARGET2)
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
 
 $(TARGET1): $(patsubst %,$(LIBDIR)/%,$(OBJS1))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET2): $(patsubst %,$(LIBDIR)/%,$(OBJS2))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 

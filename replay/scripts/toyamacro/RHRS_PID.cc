@@ -45,6 +45,7 @@ using namespace std;
 
 #define Calibration
 
+const int NCanvas = 5;//num of canvas
 
 class RHRS_PID : public Tree
 {
@@ -64,11 +65,23 @@ class RHRS_PID : public Tree
     int GetMaxEvent() { return ENumMax; }
     int ENumMax;
 
-    TH1F *h_s2l_time[RS2];
+    //General
+    TH1F *h_tof, *h_beta, *h_msq, *h_mom, *h_path;
+    TH2F *h2_tof_beta, *h2_beta, *h2_msq_beta, *h2_mom_beta, *h2_path_beta;
 
-    TH1F *h_s2r_time[RS2];
+    //Each S2 paddle
+    TH1F *h_s2r_tof[RS2], *h_s2r_beta[RS2], *h_s2r_msq[RS2];
+    TH2F *h2_s2r_tof_beta[RS2], *h2_s2r_msq_beta[RS2], *h2_s2r_mom_beta[RS2], *h2_s2r_path_beta[RS2];
+
     int run_num;
-    TCanvas *c1,*c2,*c3,*c4,*c5;
+    TCanvas *c[NCanvas];
+
+    TF1 *ga_beta[16];
+    TGraphErrors *tg_beta_pos, *tg_beta_wid;
+    TH2F *h_frame[2];
+
+    double beta_pos[16],beta_wid[16];
+    double ebeta_pos[16],ebeta_wid[16];
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -104,11 +117,9 @@ RHRS_PID::RHRS_PID()
   gStyle->SetPadTopMargin(0.08);
   gStyle->SetPadBottomMargin(0.13);
 
-  c1= new TCanvas("c1","c1",1400,800 );
-  c2= new TCanvas("c2","c2",1400,800 );
-  c3= new TCanvas("c3","c3",1400,800 );
-  c4= new TCanvas("c4","c4",1400,800 );
-  c5= new TCanvas("c5","c5",1400,800 );
+  for(int i=0;i<NCanvas;i++){
+    c[i]= new TCanvas(Form("c%d",i+1),Form("c%d",i+1),1400,800 );
+  }
 
   set = new Setting();
 }
@@ -123,12 +134,28 @@ void RHRS_PID::SetRoot(string ifname){
 }
 ////////////////////////////////////////////////////////////////////////////
 void RHRS_PID::makehist(){
-  for(int i=0;i<RS2;i++){
-    h_s2l_time[i] = new TH1F(Form("h_s2l_time",i+1), Form("h_s2l_time",i+1)     ,800,-10,10);
-    set->SetTH1(h_s2l_time[i]  ,Form("time S2L%d",i+1),"time","counts");
+  h2_tof_beta    = new TH2F("h2_tof_beta"  ,"h2_tof_beta"  , 2000, -100,  100,  200,   -2,   2);
+  h2_msq_beta    = new TH2F("h2_msq_beta"  ,"h2_msq_beta"  , 2000,   -1,    1,  200,   -2,   2);
+  h2_mom_beta    = new TH2F("h2_mom_beta"  ,"h2_mom_beta"  , 2000, 0.5,  3.5,  200,   -2,   2);
+  h2_path_beta   = new TH2F("h2_path_beta" ,"h2_path_beta" , 2000,  20,   30,  200,   -2,   2);
+  set->SetTH2(h2_tof_beta ,"ToF vs beta" ,"ToF"  ,"#beta");
+  set->SetTH2(h2_msq_beta ,"Msq vs beta" ,"m^{2}","#beta");
+  set->SetTH2(h2_mom_beta ,"Mom vs beta" ,"mom"  ,"#beta");
+  set->SetTH2(h2_path_beta,"Path vs beta","pathl","#beta");
 
-    h_s2r_time[i] = new TH1F(Form("h_s2r_time",i+1), Form("h_s2r_time",i+1)     ,2000,-100,100);
-    set->SetTH1(h_s2r_time[i]  ,Form("ToF(S2R%d - S0R)",i+1),"time[ns]","counts");
+  for(int i=0;i<RS2;i++){
+    h_s2r_tof[i]  = new TH1F(Form("h_s2r_tof",i) , Form("h_s2r_tof",i+1)      ,2000,-100,100);
+    h_s2r_msq[i]  = new TH1F(Form("h_s2r_msq",i) , Form("h_s2r_msq",i+1)      , 200,  -1,  1);
+    h_s2r_beta[i] = new TH1F(Form("h_s2r_beta",i), Form("h_s2r_beta",i+1)     , 100,   0,  2);
+    set->SetTH1(h_s2r_tof[i]  ,Form("ToF(S2R%d - S0R)",i),"time[ns]","counts");
+    set->SetTH1(h_s2r_msq[i]  ,Form("Mass^2F(S2R%d)",i)  ,"mass[]","counts");
+    set->SetTH1(h_s2r_beta[i] ,Form("#beta(S2R%d)",i)    ,"#beta","counts");
+
+    h2_s2r_tof_beta[i]    = new TH2F(Form("h2_s2r_tof_beta%d", i+1)  , Form("h2_s2r_tof_beta%d", i) , 2000, -100,  100,  200,   -2,   2);
+    h2_s2r_msq_beta[i]    = new TH2F(Form("h2_s2r_msq_beta%d", i+1)  , Form("h2_s2r_msq_beta%d", i) , 2000,   -1,    1,  200,   -2,   2);
+    h2_s2r_mom_beta[i]    = new TH2F(Form("h2_s2r_mom_beta%d", i+1)  , Form("h2_s2r_mom_beta%d", i) , 2000,  0.5,  3.5,  200,   -2,   2);
+    h2_s2r_path_beta[i]   = new TH2F(Form("h2_s2r_path_beta%d", i+1) , Form("h2_s2r_path_beta%d", i), 2000,   20,   30,  200,   -2,   2);
+
   }
 
 }
@@ -139,50 +166,100 @@ void RHRS_PID::loop(){
   for(int n=0;n<ENum;n++){
     if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
+    double Rm2[MAX];
     //cout<<"ntrack : "<<R_tr_n<<endl;
-    for(int i=0;i<RS2;i++){
-      //for(int j=0;j<L_n_tr;j++){
-      //  if(L_s2_t_pads[j]==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
-      //  //cout<<L_s2_time[i]<<endl;
-      //}
-      for(int j=0;j<R_tr_n;j++){
-        if(R_s2_t_pads[j]==i  && R_s0_lt[0]>0&& R_s0_rt[0]>0){
-          h_s2r_time[i] ->Fill(1.e+9*(R_s2_time[i] - R_s0_time[0]));
-          //cout<<"ntrack : "<<R_tr_n<<endl;
-        }
-      }
-    }
+    for(int itrack=0;itrack<R_tr_n;itrack++){//each track
+      if(DR_T4>0.){
+        Rm2[itrack] = ( 1. / (R_tr_beta[itrack] * R_tr_beta[itrack]) -1. ) * R_tr_p[itrack] * R_tr_p[itrack];
+        h2_msq_beta   ->Fill(Rm2[itrack]        , R_tr_beta[itrack]);
+        h2_mom_beta   ->Fill(R_tr_p[itrack]*10. , R_tr_beta[itrack]);
+        h2_path_beta  ->Fill(R_tr_pathl[itrack] , R_tr_beta[itrack]);
+        for(int i=0;i<RS2;i++){
+          if(R_s2_trpad[itrack]==i  && R_s0_lt[0]>0&& R_s0_rt[0]>0){
+            h2_tof_beta   ->Fill(1.e+9*(R_s2_time[i] - R_s0_time[0]) , R_tr_beta[itrack]);
+            h_s2r_tof[i]  ->Fill(1.e+9*(R_s2_time[i] - R_s0_time[0]));
+            h_s2r_msq[i]  ->Fill(Rm2[itrack]);
+            h_s2r_beta[i] ->Fill(R_tr_beta[itrack]);
+
+            h2_s2r_tof_beta[i]  ->Fill(1.e+9*(R_s2_time[i] - R_s0_time[0]), R_tr_beta[itrack]);
+            h2_s2r_msq_beta[i]  ->Fill(Rm2[itrack]       , R_tr_beta[itrack]);
+            h2_s2r_mom_beta[i]  ->Fill(R_tr_p[itrack]*10., R_tr_beta[itrack]);
+            h2_s2r_path_beta[i] ->Fill(R_tr_pathl[itrack], R_tr_beta[itrack]);
+
+            //cout<<"ntrack : "<<R_tr_n<<endl;
+          }
+        }//each S2 paddle
+      }//
+    }//each track
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
 void RHRS_PID::fit(){
+  h_frame[0] = new TH2F("h_frame0","h_frame0",10, -0.5, 15.5,10,0.8,1.2);
+  h_frame[1] = new TH2F("h_frame1","h_frame1",10, -0.5, 15.5,10,0.0,0.3);
+  set->SetTH2(h_frame[0] , "#beta peak pos each S2","S2 paddle","#beta peak");
+  set->SetTH2(h_frame[1] , "#beta width each S2"   ,"S2 paddle","#beta width");
+  tg_beta_pos = new TGraphErrors(); 
+  tg_beta_wid = new TGraphErrors();
+  set->SetGrErr(tg_beta_pos, "#beta peak pos each S2","S2 paddle","#beta peak",1,4,23);
+  set->SetGrErr(tg_beta_wid, "#beta width each S2"   ,"S2 paddle","#beta width",1,4,24);
 
+  for(int i=0;i<16;i++){
+    ga_beta[i] = new TF1(Form("ga_beta%d",i+1),"gaus",-2,2);
+    set->SetTF1(ga_beta[i],2,1,1);
+    double min=0.5,max=1.5;
+    set->FitGaus(h_s2r_beta[i],min,max,1.5,5);
+    h_s2r_beta[i]->Fit(ga_beta[i],"QR","",min,max);
+    beta_pos[i]  = ga_beta[i]->GetParameter(1);
+    beta_wid[i]  = ga_beta[i]->GetParameter(2);
+    ebeta_pos[i] = ga_beta[i]->GetParError(1);
+    ebeta_wid[i] = ga_beta[i]->GetParError(2);;
+
+    tg_beta_pos ->SetPoint(i,i,beta_pos[i]); 
+    tg_beta_wid ->SetPoint(i,i,beta_wid[i]);
+    tg_beta_pos ->SetPointError(i,0,ebeta_pos[i]); 
+    tg_beta_wid ->SetPointError(i,0,ebeta_wid[i]);
+    
+  }
 }
 ////////////////////////////////////////////////////////////////////////////
 void RHRS_PID::draw(){
 
-  c1->Clear();c1->Divide(3,4);
-  for(int i=0;i<12;i++){
-    c1->cd(i+1);gPad->SetLogy(1);h_s2l_time[i]->Draw();
+  c[0]->Clear();c[0]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[0]->cd(i+1);gPad->SetLogy(1);h_s2r_tof[i]->Draw();
   }
 
-  c2->Clear();c2->Divide(4,4);
+  c[1]->Clear();c[1]->Divide(4,4);
   for(int i=0;i<16;i++){
-    c2->cd(i+1);gPad->SetLogy(1);h_s2r_time[i]->Draw();
+    c[1]->cd(i+1);gPad->SetLogy(1);h_s2r_beta[i]->Draw();
   }
+
+  c[2]->Clear();c[2]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[2]->cd(i+1);gPad->SetLogy(1);h_s2r_msq[i]->Draw();
+  }
+  c[3]->Clear();c[3]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[3]->cd(i+1);gPad->SetLogz(1);h2_s2r_tof_beta[i]  ->Draw("colz");
+  }
+
+  c[4]->Clear();c[4]->Divide(2,2);
+  c[4]->cd(1);gPad->SetLogz(1);h2_msq_beta   ->Draw("colz");
+  c[4]->cd(2);gPad->SetLogz(1);h2_mom_beta   ->Draw("colz");
+  c[4]->cd(3);gPad->SetLogz(1);h_frame[0]->Draw();tg_beta_pos ->Draw("sameP");//h2_path_beta  ->Draw("colz");
+  c[4]->cd(4);gPad->SetLogz(1);h_frame[1]->Draw();tg_beta_wid ->Draw("sameP");//h2_tof_beta   ->Draw("colz");
 
 }
 ////////////////////////////////////////////////////////////////////////////
 void RHRS_PID::savecanvas(string ofname){
-  c1->Print(Form("%s[",ofname.c_str()) );
-  c1->Print(Form("%s" ,ofname.c_str()) );
-  c2->Print(Form("%s" ,ofname.c_str()) );
-  c3->Print(Form("%s" ,ofname.c_str()) );
-  c4->Print(Form("%s" ,ofname.c_str()) );
-  c5->Print(Form("%s" ,ofname.c_str()) );
-  c5->Print(Form("%s]",ofname.c_str()) );
-cout<<ofname<<" saved"<<endl;
+  c[0]->Print(Form("%s[",ofname.c_str()) );
+  for(int i=0;i<NCanvas;i++){
+    c[i]->Print(Form("%s" ,ofname.c_str()) );
+  }
+  c[NCanvas-1]->Print(Form("%s]",ofname.c_str()) );
+  cout<<ofname<<" saved"<<endl;
 }
 ////////////////////////////////////////////////////////////////////////////
 //////////////////////////// main //////////////////////////////////////////
