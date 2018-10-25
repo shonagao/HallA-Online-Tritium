@@ -14,4 +14,6 @@ const int nS2=16;
 const int nS0=1;
 const int nRF=1;
 const int MaxChar= 100;
+const double LightVelocity = 0.299792458;          // speed of light in vacuum (m/ns)
+
 #endif

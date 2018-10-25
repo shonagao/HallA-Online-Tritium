@@ -222,6 +222,7 @@ void Tree::readtreeS0R()
 //////////////////////////////////////////////////
 void Tree::readtreeS2R()
 {
+  cout<<"Tree::readtreeS2R"<<endl;
   tree->SetBranchStatus("R.s2.la"              ,1);  tree->SetBranchAddress("R.s2.la"              , R_s2_la             );
   tree->SetBranchStatus("R.s2.la_c"            ,1);  tree->SetBranchAddress("R.s2.la_c"            , R_s2_la_c           );
   tree->SetBranchStatus("R.s2.la_p"            ,1);  tree->SetBranchAddress("R.s2.la_p"            , R_s2_la_p           );
@@ -346,4 +347,22 @@ void Tree::convertF1TDCR(ParamMan *param)
     RS2_F1time[i]  = 0.5*(RS2T_F1time[i] + RS2B_F1time[i]);
   }
 
+  //S0
+  for(int i=0;i<RS0;i++){
+    RS0T_F1time[i] = param->time(2,i,1,0, RTDC_F1FirstHit[i+43] - RTDC_F1FirstHit[46]  );
+    RS0B_F1time[i] = param->time(2,i,1,1, RTDC_F1FirstHit[i+44] - RTDC_F1FirstHit[46] );
+    RS0_F1time[i]  = 0.5*(RS0T_F1time[i] + RS0B_F1time[i]);
+  }
+
+  //RF
+  RRF_F1time = param->time(3,0,1,0, RTDC_F1FirstHit[15] - RTDC_F1FirstHit[9]  );
+
+}
+//////////////////////////////////////////////////
+double Tree::GetBeta_S0S2wF1TDCR(int itrack)
+{
+  double betaR = -999.;
+  betaR = LightVelocity*(R_s2_trpath[itrack] - R_s0_trpath[itrack])/(RS2_F1time[(int)R_s2_trpad[itrack]] - RS0_F1time[(int)R_s0_trpad[itrack]]);
+
+  return betaR;
 }

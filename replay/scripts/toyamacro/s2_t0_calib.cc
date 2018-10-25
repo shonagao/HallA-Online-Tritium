@@ -1,7 +1,7 @@
-////////////////////////////
-//t0 calibration of S2    //
-// by Y. Toyama Oct. 2018 //
-////////////////////////////
+///////////////////////////////
+//t0 calibration of S2(F1TDC)//
+// by Y. Toyama Oct. 2018    //
+///////////////////////////////
 
 #include <iostream>
 #include <fstream>
@@ -42,9 +42,11 @@ using namespace std;
 
 #include "Tree.h"
 #include "Setting.h"
+#include "ParamMan.h"
 
 #define Calibration
 
+const int NCanvas = 2;//num of canvas
 
 class s2_t0_calib : public Tree
 {
@@ -58,17 +60,27 @@ class s2_t0_calib : public Tree
   void savecanvas(string ofname); 
   void SetMaxEvent( int N )  { ENumMax = N; }
   void SetRoot(string ifname);
-  Setting *set;
+  void SetInputParam(string ifname);
+  void SetLR(int lr){LR=lr;}
 
   private:
     int GetMaxEvent() { return ENumMax; }
     int ENumMax;
+    bool anaL_oneevent();
+    bool anaR_oneevent();
 
-    TH1F *h_s2l_time[16];
-
-    TH1F *h_s2r_time[16];
+    TH1F *h_s2s0_tof[16], *h_s2s0_tdiff[16];
+    int LR;//L = 0, R = 1
     int run_num;
-    TCanvas *c1,*c2,*c3,*c4,*c5;
+    Setting *set;
+    ParamMan *param;
+    TCanvas *c[NCanvas];
+
+
+    int tr_n;//num. of track
+    double betaF1[MAX],s2_trpad[MAX],paths2s0[MAX];
+    double S2_F1time[16],S0_F1time[1];
+
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -77,7 +89,7 @@ s2_t0_calib::s2_t0_calib()
 
   gErrorIgnoreLevel = kError;
   gROOT->SetStyle("Plain");
-  gROOT->SetBatch(1);
+  gROOT->SetBatch(0);
 
   gStyle->SetOptDate(0);
   gStyle->SetOptFit(1);
@@ -104,11 +116,9 @@ s2_t0_calib::s2_t0_calib()
   gStyle->SetPadTopMargin(0.08);
   gStyle->SetPadBottomMargin(0.13);
 
-  c1= new TCanvas("c1","c1",1400,800 );
-  c2= new TCanvas("c2","c2",1400,800 );
-  c3= new TCanvas("c3","c3",1400,800 );
-  c4= new TCanvas("c4","c4",1400,800 );
-  c5= new TCanvas("c5","c5",1400,800 );
+  for(int i=0;i<NCanvas;i++){
+    c[i]= new TCanvas(Form("c%d",i+1),Form("c%d",i+1),1400,800 );
+  }
 
   set = new Setting();
 }
@@ -117,20 +127,27 @@ s2_t0_calib::~s2_t0_calib(){
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::SetRoot(string ifname){
-  chain_tree(ifname);
-  //readtreeS0L();
-  //readtreeS2L();
-  //readtreeS0R();
-  readtreeS2R();
+  add_tree(ifname);
+  pack_tree();
+  if(LR==0)     readtreeHRSL();
+  else if(LR==1)readtreeHRSR();
+
+}
+////////////////////////////////////////////////////////////////////////////
+void s2_t0_calib::SetInputParam(string ifname){
+  param = new ParamMan(ifname.c_str());
+  if(param -> SetVal())cout<<"F1TDC parameter setted : really cool acutually"<<endl; 
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::makehist(){
+  string LorR;
+  if(LR==0)     LorR="L";
+  else if(LR==1)LorR="R";
   for(int i=0;i<16;i++){
-    h_s2l_time[i] = new TH1F(Form("h_s2l_time",i+1), Form("h_s2l_time",i+1)     ,800,-10,10);
-    set->SetTH1(h_s2l_time[i]  ,Form("time S2L%d",i+1),"time","counts");
-
-    h_s2r_time[i] = new TH1F(Form("h_s2r_time",i+1), Form("h_s2r_time",i+1)     ,800,-10,10);
-    set->SetTH1(h_s2r_time[i]  ,Form("time S2R%d",i+1),"time","counts");
+    h_s2s0_tof[i]   = new TH1F(Form("h_s2s0_tof%d",i)  , Form("h_s2s0_tof%d",i)   ,800,-100,100);
+    h_s2s0_tdiff[i] = new TH1F(Form("h_s2s0_tdiff%d",i), Form("h_s2s0_tdiff%d",i) ,800,-100,100);
+    set->SetTH1(h_s2s0_tof[i]    ,Form("ToF S2%s%d - S0"               ,LorR.c_str(),i+1),"ToF[ns]","counts");
+    set->SetTH1(h_s2s0_tdiff[i]  ,Form("TDiff (S2%s%d - S0) - ToF calc",LorR.c_str(),i+1),"ToF[ns]","counts");
   }
 
 }
@@ -141,10 +158,20 @@ void s2_t0_calib::loop(){
   for(int n=0;n<ENum;n++){
     if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
+    if(LR==0 && anaL_oneevent());
+    else if(LR==1&&anaR_oneevent());
+    else continue;
+
     for(int i=0;i<16;i++){
-      //if(L_s2_t_pads==i)h_s2l_time[i] ->Fill(1.e+6*L_s2_time[i]);
-      if(R_s2_t_pads==i)h_s2r_time[i] ->Fill(1.e+6*R_s2_time[i]);
-      //cout<<L_s2_time[i]<<endl;
+      for(int j=0;j<tr_n;j++){
+        if(s2_trpad[j]==i){
+          //cout<<i<<" : "<<S2_F1time[i] <<" ns"<<endl;
+          //h_s2s0_tof[i]   ->Fill(S2_F1time[i]);
+          h_s2s0_tdiff[i] ->Fill(S0_F1time[0]);
+          h_s2s0_tof[i]   ->Fill(S2_F1time[i] - S0_F1time[0]);
+          //h_s2s0_tdiff[i] ->Fill(S2_F1time[i] - S0_F1time[0]);
+        }
+      }
     }
   }
 
@@ -156,27 +183,57 @@ void s2_t0_calib::fit(){
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::draw(){
 
-  c1->Clear();c1->Divide(3,4);
-  for(int i=0;i<12;i++){
-    c1->cd(i+1);gPad->SetLogy(1);h_s2l_time[i]->Draw();
+  c[0]->Clear();c[0]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[0]->cd(i+1);gPad->SetLogy(1);h_s2s0_tof[i]->Draw();
   }
 
-  c2->Clear();c2->Divide(3,4);
-  for(int i=0;i<12;i++){
-    c2->cd(i+1);gPad->SetLogy(1);h_s2r_time[i]->Draw();
+  c[1]->Clear();c[1]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[1]->cd(i+1);gPad->SetLogy(1);h_s2s0_tdiff[i]->Draw();
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::savecanvas(string ofname){
-  c1->Print(Form("%s[",ofname.c_str()) );
-  c1->Print(Form("%s" ,ofname.c_str()) );
-  c2->Print(Form("%s" ,ofname.c_str()) );
-  c3->Print(Form("%s" ,ofname.c_str()) );
-  c4->Print(Form("%s" ,ofname.c_str()) );
-  c5->Print(Form("%s" ,ofname.c_str()) );
-  c5->Print(Form("%s]",ofname.c_str()) );
-cout<<ofname<<" saved"<<endl;
+  c[0]->Print(Form("%s[",ofname.c_str()) );
+  for(int i=0;i<NCanvas;i++){
+    c[i]->Print(Form("%s" ,ofname.c_str()) );
+  }
+  c[NCanvas-1]->Print(Form("%s]",ofname.c_str()) );
+  cout<<ofname<<" saved"<<endl;
+}
+////////////////////////////////////////////////////////////////////////////
+bool s2_t0_calib::anaL_oneevent(){
+return false;
+}
+////////////////////////////////////////////////////////////////////////////
+bool s2_t0_calib::anaR_oneevent(){
+  //cout<<"s2_t0_calib::anaR_oneevent"<<endl;
+
+  convertF1TDCR(param);
+
+  tr_n = (int)R_tr_n;
+  //cout<<"tr_n" <<tr_n<<endl;
+  if(tr_n>MAX)tr_n=MAX;
+
+  for(int i=0;i<tr_n;i++){
+  //cout<<"s2_trpad : "<<R_s2_trpad[i]<<endl;
+    s2_trpad[i]=R_s2_trpad[i];
+    paths2s0[i]=R_s2_trpath[i] - R_s0_trpath[i];
+    betaF1[i]  =GetBeta_S0S2wF1TDCR(i);
+  }
+
+  for(int i=0;i<RS2;i++){
+    S2_F1time[i] = RS2_F1time[i];
+  }
+  for(int i=0;i<RS0;i++){
+    S0_F1time[i] = RS0_F1time[i];
+  }
+
+
+  if(DR_T5>0. ) return true;
+  else return false;
 }
 ////////////////////////////////////////////////////////////////////////////
 //////////////////////////// main //////////////////////////////////////////
@@ -187,6 +244,7 @@ int main(int argc, char** argv){
   string ofname = "toyamacro/pdf/s2_t0_calib1020.pdf";
   string paramname = "twlk_param/default.param";
   int ch;
+  int lr=0;
   int MaxNum = 0;
   bool output_flag = false;
   bool output_tree_flag = false;
@@ -194,7 +252,7 @@ int main(int argc, char** argv){
   bool coin_flag = false;
   string pngname;
   extern char *optarg;
-  while((ch=getopt(argc,argv,"hf:w:n:bcop:"))!=-1){
+  while((ch=getopt(argc,argv,"hf:w:n:bcop:LR"))!=-1){
     switch(ch){
     case 'f':
       ifname = optarg;
@@ -221,11 +279,17 @@ int main(int argc, char** argv){
       paramname = optarg;
       cout<<"input param name : "<<paramname<<endl;
       break;
+    case 'L':
+      lr = 0;
+      break;
+    case 'R':
+      lr = 1;
+      break;
     case 'h':
       cout<<"-f : input root filename"<<endl;
       cout<<"-w : output pdf filename"<<endl;
       cout<<"-n : maximum number of analysed events"<<endl;
-      cout<<"-p : print png file"<<endl;
+      cout<<"-p : input param file"<<endl;
       return 0;
       break;
     case '?':
@@ -242,6 +306,8 @@ int main(int argc, char** argv){
   s2_t0_calib *calib = new s2_t0_calib();
 
   calib->SetMaxEvent(MaxNum);
+  calib->SetInputParam(paramname);
+  calib->SetLR(lr);
   calib->SetRoot(ifname);
   calib->makehist();
   calib->loop();
@@ -250,7 +316,7 @@ int main(int argc, char** argv){
   if(output_flag)calib->savecanvas(ofname);
   delete calib;
 
-  gSystem->Exit(1);
+  //gSystem->Exit(1);
   theApp->Run();
   return 0;
 }
