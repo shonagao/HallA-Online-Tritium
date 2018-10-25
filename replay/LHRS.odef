@@ -55,6 +55,7 @@ block Lrb*
 	#-------------------------------------------------------------------
 	#
 	formula Lep (L.prl1.e+L.prl2.e)/(L.gold.p*1000)
+	
 	# LEFT ARM S0
 	#
 	TH1F Ls0lt 'S0-Bottom(B) TDC' L.s0.lt 500 1300 2300 L.s0.lt>0.
@@ -68,7 +69,11 @@ block Lrb*
 	TH1F Ls0ra 'S0-Top(A) ADC' L.s0.ra 12000 0 120000 L.s0.ra>0.
 	TH1F Ls0la_p 'S0-Bottom(B) ADC (PedSub)' L.s0.la_p 1000 -500 4500 L.s0.la_p>-500.
 	TH1F Ls0ra_p 'S0-Top(A) ADC (PedSub)' L.s0.ra_p 1000 -500 4500 L.s0.ra_p>-500.
-
+	
+	TH1F Ls0lt_fadc 'S0-Bottom(B) FADC TDC' L.s0.lt_fadc 500 1300 2300 L.s0.lt_fadc>0.
+	TH1F Ls0rt_fadc 'S0-Top(A) FADC TDC' L.s0.rt_fadc 500 1300 2300 L.s0.rt_fadc>0.
+	TH1F Ls0ltc_fadc 'S0-Bottom(B) FADC TDC (corrected)' L.s0.ltc_fadc 500 1300 2300 L.s0.ltc_fadc>0.
+	TH1F Ls0rtc_fadc 'S0-Top(A) FADC TDC (corrected)' L.s0.rtc_fadc 500 1300 2300 L.s0.rtc_fadc>0.
 
 	#-------------------------------------------------------------------
 	# LEFT ARM S2
@@ -85,6 +90,11 @@ block Lrb*
 	TH1F Ls2ra 'S2 ADC R-PMT ' L.s2.ra 4000 0 40000 L.s2.ra>0.
 	TH1F Ls2la_p 'S2 ADC(PedSub) L-PMT ' L.s2.la_p 1000 -200 1800 L.s2.la_p>-6000.
 	TH1F Ls2ra_p 'S2 ADC(PedSub) R-PMT ' L.s2.ra_p 1000 -200 1800 L.s2.ra_p>-6000.
+
+	TH1F Ls2lt_fadc 'S2-Bottom(B) FADC TDC PMT ' L.s2.lt_fadc 500 1300 2300 L.s2.lt_fadc>0.
+	TH1F Ls2rt_fadc 'S2-Top(A) FADC TDC PMT ' L.s2.rt_fadc 500 1300 2300 L.s2.rt_fadc>0.
+	TH1F Ls2ltc_fadc 'S2-Bottom(B) FADC TDC (corrected) PMT ' L.s2.ltc_fadc 500 1300 2300 L.s2.ltc_fadc>0.
+	TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 2300 L.s2.rtc_fadc>0.
 
 	# ------------------------------------------------------------------
 	# LEFT ARM GAS CHERENKOV  ADC and TDC :
@@ -208,9 +218,9 @@ block Lrb*
 	#-------------------------------------------------------------------------------
 	# LEFT Arm Reaction Vertex Histograms  :
 	#
-	TH1F reactx 'L-arm Reaction X vertex' rpl.x 200 -.6 .6
-	TH1F reacty 'L-arm Reaction Y vertex' rpl.y 200 -.6 .6
-	TH1F reactz 'L-arm Reaction Z vertex' rpl.z 200 -0.2 0.2
+	TH1F L_reactx 'L-arm Reaction X vertex' rpl.x 200 -.6 .6
+	TH1F L_reacty 'L-arm Reaction Y vertex' rpl.y 200 -.6 .6
+	TH1F L_reactz 'L-arm Reaction Z vertex' rpl.z 200 -0.2 0.2
 
 	#-------------------------------------------------------------------------------
 	#Beam Information

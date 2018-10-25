@@ -247,9 +247,9 @@ TH2F EKR_xQ2 'R-arm Q2 vs xbj'  EKR.x_bj EKR.Q2  100 0 3.5 200 0 4
 #-------------------------------------------------------------------------------
 # RIGHT Arm Reaction Vertex Histograms  :
 #
-TH1F reactx 'R-arm Reaction X vertex' rpr.x 200 -.6 .6
-TH1F reacty 'R-arm Reaction Y vertex' rpr.y 200 -.6 .6
-TH1F reactz 'R-arm Reaction Z vertex' rpr.z 200 -.5 .8
+TH1F R_reactx 'R-arm Reaction X vertex' rpr.x 200 -.6 .6
+TH1F R_reacty 'R-arm Reaction Y vertex' rpr.y 200 -.6 .6
+TH1F R_reactz 'R-arm Reaction Z vertex' rpr.z 200 -0.2 0.2
 
 #-------------------------------------------------------------------------------
 # RIGHT Arm Mass Square Histograms  :  by Toyama

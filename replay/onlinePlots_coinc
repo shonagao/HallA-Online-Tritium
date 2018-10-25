@@ -1,0 +1,24 @@
+# Adapted from Marathon script
+# by Reynier Cruz Torres
+# on April 12, 2018
+# for the (e,e'p) tritium SRC experiment
+
+#!/bin/bash
+
+if [ $# -eq 0 ] 
+then
+	echo "Please enter run number"
+	read RUNNUM
+else
+	RUNNUM=$1
+fi
+
+# --- Display GUI with LHRS plots ---
+onlineGUI64/online -f onlineGUI64/config_coinc_2018/LHRS_online.cfg -r $RUNNUM
+
+# --- Display GUI with RHRS plots ---
+onlineGUI64/online -f onlineGUI64/config_coinc_2018/RHRS_online.cfg -r $RUNNUM
+
+# --- Display GUI with Coincidence plots ---
+onlineGUI64/online -f onlineGUI64/config_coinc_2018/Coinc.cfg -r $RUNNUM
+
