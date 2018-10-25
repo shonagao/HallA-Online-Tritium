@@ -220,6 +220,7 @@ void Tree::readtree_RHRS()
   tree->SetBranchStatus("R.tr.vz"              ,1);  tree->SetBranchAddress("R.tr.vz"              , R_tr_vz             );
 
   tree->SetBranchStatus("DR.rtRFtime"          ,1);  tree->SetBranchAddress("DR.rtRFtime"          , R_rtRFtime          );
+  tree->SetBranchStatus("RTDC.F1FirstHit"      ,1);  tree->SetBranchAddress("RTDC.F1FirstHit"      , R_F1Fhit            );
 
 }
 
@@ -336,7 +337,8 @@ void Tree::readtree_LHRS()
   tree->SetBranchStatus("L.tr.vy"              ,1);  tree->SetBranchAddress("L.tr.vy"              , L_tr_vy             );
   tree->SetBranchStatus("L.tr.vz"              ,1);  tree->SetBranchAddress("L.tr.vz"              , L_tr_vz             );
 
-  tree->SetBranchStatus("DL.rtRFtime"          ,1);  tree->SetBranchAddress("DL.rtRFtime"          , L_rtRFtime          );
+  tree->SetBranchStatus("DL.ltRFtime"          ,1);  tree->SetBranchAddress("DL.ltRFtime"          , L_rtRFtime          );
+  tree->SetBranchStatus("LTDC.F1FirstHit"      ,1);  tree->SetBranchAddress("LTDC.F1FirstHit"      , L_F1Fhit            );
 
 }
 
