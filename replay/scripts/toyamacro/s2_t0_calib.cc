@@ -46,7 +46,7 @@ using namespace std;
 
 #define Calibration
 
-const int NCanvas = 2;//num of canvas
+const int NCanvas = 6;//num of canvas
 
 class s2_t0_calib : public Tree
 {
@@ -69,17 +69,28 @@ class s2_t0_calib : public Tree
     bool anaL_oneevent();
     bool anaR_oneevent();
 
-    TH1F *h_s2s0_tof[16], *h_s2s0_tdiff[16];
+    TH1F *h_s2s0_tof[16], *h_s2s0_tdiff[16], *h_s2s0_tof_FB[16], *h_s2s0_tdiff_FB[16];
+    TH2F *h2_s2s0_f1tof_fbtof[16];
+    TF1 *ga_tdiffFB[16];
+    TH2F *h_frame[2];
     int LR;//L = 0, R = 1
     int run_num;
     Setting *set;
     ParamMan *param;
     TCanvas *c[NCanvas];
+    TGraphErrors *tg_tdiffFB_pos, *tg_tdiffFB_wid;
+
+    double tdiffFB_pos[16], tdiffFB_wid[16], etdiffFB_pos[16], etdiffFB_wid[16];
+
 
 
     int tr_n;//num. of track
     double betaF1[MAX],s2_trpad[MAX],paths2s0[MAX];
+    double S2T_F1TDC[16],S0T_F1TDC[1];
+    double S2B_F1TDC[16],S0B_F1TDC[1];
     double S2_F1time[16],S0_F1time[1];
+    double S2_lt[16],S2_rt[16],S0_lt[1],S0_rt[1];
+    double S2_time[16],S0_time[1];
 
 };
 
@@ -144,10 +155,17 @@ void s2_t0_calib::makehist(){
   if(LR==0)     LorR="L";
   else if(LR==1)LorR="R";
   for(int i=0;i<16;i++){
-    h_s2s0_tof[i]   = new TH1F(Form("h_s2s0_tof%d",i)  , Form("h_s2s0_tof%d",i)   ,800,-100,100);
-    h_s2s0_tdiff[i] = new TH1F(Form("h_s2s0_tdiff%d",i), Form("h_s2s0_tdiff%d",i) ,800,-100,100);
-    set->SetTH1(h_s2s0_tof[i]    ,Form("ToF S2%s%d - S0"               ,LorR.c_str(),i+1),"ToF[ns]","counts");
-    set->SetTH1(h_s2s0_tdiff[i]  ,Form("TDiff (S2%s%d - S0) - ToF calc",LorR.c_str(),i+1),"ToF[ns]","counts");
+    h_s2s0_tof[i]      = new TH1F(Form("h_s2s0_tof%d",i)     , Form("h_s2s0_tof%d",i)      ,800,-100,100);
+    h_s2s0_tdiff[i]    = new TH1F(Form("h_s2s0_tdiff%d",i)   , Form("h_s2s0_tdiff%d",i)    ,800,-100,100);
+    h_s2s0_tof_FB[i]   = new TH1F(Form("h_s2s0_tof_FB%d",i)  , Form("h_s2s0_tof_FB%d",i)   ,800,-100,100);
+    h_s2s0_tdiff_FB[i] = new TH1F(Form("h_s2s0_tdiff_FB%d",i), Form("h_s2s0_tdiff_FB%d",i) ,800, -50, 50);
+    set->SetTH1(h_s2s0_tof[i]       ,Form("ToF S2%s%d - S0"                    ,LorR.c_str(),i+1),"ToF[ns]"  ,"counts");
+    set->SetTH1(h_s2s0_tdiff[i]     ,Form("TDiff (S2%s%d - S0) - ToF calc"     ,LorR.c_str(),i+1),"Tdiff[ns]","counts");
+    set->SetTH1(h_s2s0_tof_FB[i]    ,Form("ToF S2%s%d - S0 (FB)"               ,LorR.c_str(),i+1),"ToF[ns]"  ,"counts");
+    set->SetTH1(h_s2s0_tdiff_FB[i]  ,Form("TDiff (S2%s%d - S0) - ToF calc (FB)",LorR.c_str(),i+1),"Tdiff[ns]","counts");
+
+    h2_s2s0_f1tof_fbtof[i]  = new TH2F(Form("h2_s2s0_f1tof_fbtof%d",i),Form("h2_s2s0_f1tof_fbtof%d",i), 800, -100, 100, 800, -100, 100);
+    set->SetTH2(h2_s2s0_f1tof_fbtof[i],Form("ToF F1 vs Fbus S2%s%d",LorR.c_str(),i),"ToF(F1)[ns]","ToF(Fbus)[ns]");
   }
 
 }
@@ -164,12 +182,21 @@ void s2_t0_calib::loop(){
 
     for(int i=0;i<16;i++){
       for(int j=0;j<tr_n;j++){
+        bool F1Hits = false, FbusHits = false;
         if(s2_trpad[j]==i){
-          //cout<<i<<" : "<<S2_F1time[i] <<" ns"<<endl;
-          //h_s2s0_tof[i]   ->Fill(S2_F1time[i]);
-          h_s2s0_tdiff[i] ->Fill(S0_F1time[0]);
-          h_s2s0_tof[i]   ->Fill(S2_F1time[i] - S0_F1time[0]);
-          //h_s2s0_tdiff[i] ->Fill(S2_F1time[i] - S0_F1time[0]);
+          if(S2T_F1TDC[i]>0 && S2B_F1TDC[i]>0 && S0T_F1TDC[0]>0. && S0B_F1TDC[0]>0.)F1Hits=true;
+          if(S2_lt[i]>0. && S2_rt[i]>0. && S0_lt[0]>0 && S0_rt[0]>0)FbusHits=true;
+          if(F1Hits){
+            h_s2s0_tdiff[i] ->Fill(S0_F1time[0]);
+            h_s2s0_tof[i]   ->Fill(S2_F1time[i] - S0_F1time[0]);
+          }
+          if(FbusHits){
+            h_s2s0_tdiff_FB[i] ->Fill(S2_time[i] - S0_time[0] + paths2s0[j]/LightVelocity);
+            h_s2s0_tof_FB[i]   ->Fill(S2_time[i] - S0_time[0]);
+          }
+          if(F1Hits&&FbusHits){
+            h2_s2s0_f1tof_fbtof[i] ->Fill(S2_F1time[i] - S0_F1time[0],S2_time[i] - S0_time[0]);
+          }
         }
       }
     }
@@ -179,6 +206,34 @@ void s2_t0_calib::loop(){
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::fit(){
 
+  h_frame[0] = new TH2F("h_frame0","h_frame0",10, -50.5, 51.5,10,0.8,1.2);
+  h_frame[1] = new TH2F("h_frame1","h_frame1",10, -50.5, 51.5,10,0.0,0.3);
+  set->SetTH2(h_frame[0] , "TDiff peak pos each S2","S2 paddle","TDiff peak[ns]" );
+  set->SetTH2(h_frame[1] , "TDiff width each S2"   ,"S2 paddle","TDiff width[ns]");
+  tg_tdiffFB_pos = new TGraphErrors(); 
+  tg_tdiffFB_wid = new TGraphErrors();
+  set->SetGrErr(tg_tdiffFB_pos, "TDiff peak pos each S2","S2 paddle","TDiff peak[ns]" ,1,4,23);
+  set->SetGrErr(tg_tdiffFB_wid, "TDiff width each S2"   ,"S2 paddle","TDiff width[ns]",1,4,24);
+
+  for(int i=0;i<16;i++){
+    ga_tdiffFB[i] = new TF1(Form("ga_tdiffFB%d",i+1),"gaus",-2,2);
+    set->SetTF1(ga_tdiffFB[i],2,1,1);
+    double min=-50,max=50;
+    set->FitGaus(h_s2s0_tdiff_FB[i],min,max,1.5,5);
+    h_s2s0_tdiff_FB[i]->Fit(ga_tdiffFB[i],"QR","",min,max);
+    tdiffFB_pos[i]  = ga_tdiffFB[i]->GetParameter(1);
+    tdiffFB_wid[i]  = ga_tdiffFB[i]->GetParameter(2);
+    etdiffFB_pos[i] = ga_tdiffFB[i]->GetParError(1);
+    etdiffFB_wid[i] = ga_tdiffFB[i]->GetParError(2);;
+
+    tg_tdiffFB_pos ->SetPoint(i,i,tdiffFB_pos[i]); 
+    tg_tdiffFB_wid ->SetPoint(i,i,tdiffFB_wid[i]);
+    tg_tdiffFB_pos ->SetPointError(i,0,etdiffFB_pos[i]); 
+    tg_tdiffFB_wid ->SetPointError(i,0,etdiffFB_wid[i]);
+    
+    param->SetTimeTune(CID_FbS2,i,LR,0,tdiffFB_pos[i]);
+    param->SetTimeTune(CID_FbS2,i,LR,1,tdiffFB_pos[i]);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::draw(){
@@ -193,6 +248,25 @@ void s2_t0_calib::draw(){
     c[1]->cd(i+1);gPad->SetLogy(1);h_s2s0_tdiff[i]->Draw();
   }
 
+  c[2]->Clear();c[2]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[2]->cd(i+1);gPad->SetLogy(1);h_s2s0_tof_FB[i]->Draw();
+  }
+
+  c[3]->Clear();c[3]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[3]->cd(i+1);gPad->SetLogy(1);h_s2s0_tdiff_FB[i]->Draw();
+  }
+
+  c[4]->Clear();c[4]->Divide(4,4);
+  for(int i=0;i<16;i++){
+    c[4]->cd(i+1);gPad->SetLogz(1);h2_s2s0_f1tof_fbtof[i] ->Draw("colz");
+  }
+  c[5]->Clear();c[5]->Divide(2,2);
+  c[5]->cd(1);tg_tdiffFB_pos ->Draw("AP");///h_frame[0]->Draw();
+  c[5]->cd(2);tg_tdiffFB_wid ->Draw("AP");///h_frame[1]->Draw();
+
+  param->WriteToFile("param/tmp.param");
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::savecanvas(string ofname){
@@ -225,14 +299,28 @@ bool s2_t0_calib::anaR_oneevent(){
   }
 
   for(int i=0;i<RS2;i++){
+    //F1TDC
+    S2T_F1TDC[i] = RS2T_F1TDC[i];
+    S2B_F1TDC[i] = RS2B_F1TDC[i];
     S2_F1time[i] = RS2_F1time[i];
+    //Fbus TDC
+    S2_time[i]   = 1.e+9*R_s2_time[i];
+    S2_lt[i]     = R_s2_lt[i];
+    S2_rt[i]     = R_s2_rt[i];
   }
   for(int i=0;i<RS0;i++){
+    //F1TDC
+    S0T_F1TDC[i] = RS0T_F1TDC[i];
+    S0B_F1TDC[i] = RS0B_F1TDC[i];
     S0_F1time[i] = RS0_F1time[i];
+    //Fbus TDC
+    S0_time[i]   = 1.e+9*R_s0_time[i];
+    S0_lt[i]     = R_s0_lt[i];
+    S0_rt[i]     = R_s0_rt[i];
   }
 
 
-  if(DR_T5>0. ) return true;
+  if(DR_T6>0. ) return true;
   else return false;
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -242,7 +330,7 @@ int main(int argc, char** argv){
 
   string ifname = "rootfiles/cosmic1020.root";
   string ofname = "toyamacro/pdf/s2_t0_calib1020.pdf";
-  string paramname = "twlk_param/default.param";
+  string paramname = "param/default.param";
   int ch;
   int lr=0;
   int MaxNum = 0;
