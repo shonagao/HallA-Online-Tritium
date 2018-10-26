@@ -51,7 +51,6 @@ block Lrb*
 	FORMULA bpmaws Lrb.BPMA.rawcur.1+Lrb.BPMA.rawcur.2+Lrb.BPMA.rawcur.3+Lrb.BPMA.rawcur.4
 	FORMULA bpmbws Lrb.BPMB.rawcur.1+Lrb.BPMB.rawcur.2+Lrb.BPMB.rawcur.3+Lrb.BPMB.rawcur.4
 
-
 	#-------------------------------------------------------------------
 	#
 	formula Lep (L.prl1.e+L.prl2.e)/(L.gold.p*1000)
@@ -109,6 +108,10 @@ block Lrb*
 	TH1F Lcera_p 'Cerenkov FADC(PedSub) PMT' L.cer.a_p 1000 -200 10000 L.cer.a_p>-200
 	TH2F Lcer_x  'Cerenkov FADC sum (corrected) vs. X' L.cer.trx L.cer.asum_c  60 -1.2 1.2 10100 -100 15000 L.tr.n>0&&L.cer.asum_c>-1000
 	TH2F Lcer_y  'Cerenkov FADC sum (corrected) vs. Y' L.cer.try L.cer.asum_c  60 -0.12 0.12 10100 -100 15000 L.tr.n>0&&L.cer.asum_c>-1000
+
+	TH1F Lcert_fadc   'Cerenkov FADC TDC PMT ' L.cer.t_fadc 500 0 2500 L.cer.t>0
+	TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 0 2500 L.cer.t>0
+
 	# ------------------------------------------------------------------
 
 	# LEFT ARM Pion Rejector 1,2 (Preshower/Shower):
