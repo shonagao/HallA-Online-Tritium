@@ -241,7 +241,7 @@ public:
   void readtreeTrackR();
   void readtreeF1TDCR();
   void convertF1TDCR(ParamMan *param);
-
+  double GetBeta_S0S2wF1TDCR(int itrack);
 };
 
 #endif

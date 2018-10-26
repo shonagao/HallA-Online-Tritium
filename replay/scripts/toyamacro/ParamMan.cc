@@ -18,17 +18,17 @@ ParamMan::ParamMan( const char* filename )
 {
   S2.cid=CID_S2;
   for(int i=0; i<nS2*4; i++){
-    S2.tdcOffset[i]=-9999.00;   S2.tdcGain[i]=0.0560;
+    S2.tdcOffset[i]=0.00;   S2.tdcGain[i]=0.0560;
   }
 
   S0.cid=CID_S0;
   for(int i=0; i<nS0*4; i++){
-    S0.tdcOffset[i]=-9999.00;   S0.tdcGain[i]=0.0560;
+    S0.tdcOffset[i]=0.00;   S0.tdcGain[i]=0.0560;
   }
 
   RF.cid=CID_RF;
   for(int i=0; i<nRF*2; i++){
-    RF.tdcOffset[i]=-9999.00;   RF.tdcGain[i]=0.0560;
+    RF.tdcOffset[i]=0.00;   RF.tdcGain[i]=0.0560;
   }
 }
 ////////////////////////////////

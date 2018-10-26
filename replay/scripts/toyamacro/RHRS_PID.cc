@@ -42,6 +42,7 @@ using namespace std;
 
 #include "Tree.h"
 #include "Setting.h"
+#include "ParamMan.h"
 
 #define Calibration
 

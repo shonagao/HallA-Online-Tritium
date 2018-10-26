@@ -16,11 +16,13 @@ class ana
   private:
     Setting *set;
     Tree *tr;
+    TFile *ofp;
 
     int GetMaxEvent()     { return ENumMax; }
 
   public:
     void ReadTree(string name);
+    void ReadParam(string name);
     void Roop();
     void Draw();
 
@@ -70,9 +72,9 @@ class ana
     TH2D *h_L_s2_dedx_pad, *h_L_s2_beta_pad;
 
     TH1D *h_L_tgt;
-    TH1D *h_L_s2pad_tgt;
-    TH1D *h_L_p_tgt, *h_L_pathl_tgt, *h_L_tgy_tgt, *h_L_tgth_tgt, *h_L_tgph_tgt;
-    TH1D *h_L_x_tgt, *h_L_y_tgt, *h_L_z_tgt;
+    TH2D *h_L_s2pad_tgt;
+    TH2D *h_L_p_tgt, *h_L_pathl_tgt, *h_L_tgy_tgt, *h_L_tgth_tgt, *h_L_tgph_tgt;
+    TH2D *h_L_x_tgt, *h_L_y_tgt;
 
 //// RHRS ////
     TH1D *h_R_trig;
@@ -99,22 +101,22 @@ class ana
     TH2D *h_R_a1_sum_m2, *h_R_a2_sum_m2;
 
     TH1D *h_R_tgt;
-    TH1D *h_R_s2pad_tgt;
-    TH1D *h_R_p_tgt, *h_R_pathl_tgt, *h_R_tgy_tgt, *h_R_tgth_tgt, *h_R_tgph_tgt;
-    TH1D *h_R_x_tgt, *h_R_y_tgt, *h_R_z_tgt;
+    TH2D *h_R_s2pad_tgt;
+    TH2D *h_R_p_tgt, *h_R_pathl_tgt, *h_R_tgy_tgt, *h_R_tgth_tgt, *h_R_tgph_tgt;
+    TH2D *h_R_x_tgt, *h_R_y_tgt;
 
 //// Coin ////
     TH1D *h_ct;
-    TH2D *h_Rs2x_ct;
     TH2D *h_Ls2x_ct;
-    TH2D *h_m2_ct, *h_beta_ct, *h_dedx_ct, *h_a1sum_ct, *h_a2sum_ct;
+    TH2D *h_Rs2x_ct;
+    TH2D *h_a1sum_ct, *h_a2sum_ct;
     TH1D *h_mm, *h_mmall, *h_mmfoil;
-    TH2D *h_Rp_mm, *h_Rl_mm, *h_Rtgy_mm, *h_Rtgth_mm, *h_Rtgph_mm;
-    TH2D *h_Rvx_mm, *h_Rvy_mm, *h_Rvz_mm;
-    TH2D *h_Rx_mm, *h_Ry_mm, *h_Rth_mm, *h_Rph_mm;
     TH2D *h_Lp_mm, *h_Ll_mm, *h_Ltgy_mm, *h_Ltgth_mm, *h_Ltgph_mm;
     TH2D *h_Lvx_mm, *h_Lvy_mm, *h_Lvz_mm;
     TH2D *h_Lx_mm, *h_Ly_mm, *h_Lth_mm, *h_Lph_mm;
+    TH2D *h_Rp_mm, *h_Rl_mm, *h_Rtgy_mm, *h_Rtgth_mm, *h_Rtgph_mm;
+    TH2D *h_Rvx_mm, *h_Rvy_mm, *h_Rvz_mm;
+    TH2D *h_Rx_mm, *h_Ry_mm, *h_Rth_mm, *h_Rph_mm;
 
 };
 
