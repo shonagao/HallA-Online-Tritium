@@ -51,9 +51,11 @@ private:
   };
 
 
-  S2param S2;
-  S0param S0;
+  S2param F1S2;
+  S0param F1S0;
   RFparam RF;
+  S2param FbS2;
+  S0param FbS0;
 
 public:
   void SetFileName( const char* filename )

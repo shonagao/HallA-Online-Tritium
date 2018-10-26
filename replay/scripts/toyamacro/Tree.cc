@@ -342,15 +342,19 @@ void Tree::convertF1TDCR(ParamMan *param)
 {
   //S2
   for(int i=0;i<RS2;i++){
-    RS2T_F1time[i] = param->time(1,i,1,0, RTDC_F1FirstHit[i+16] - RTDC_F1FirstHit[9]  );
-    RS2B_F1time[i] = param->time(1,i,1,1, RTDC_F1FirstHit[i+48] - RTDC_F1FirstHit[46] );
+    RS2T_F1TDC[i]  =  RTDC_F1FirstHit[i+16];
+    RS2B_F1TDC[i]  =  RTDC_F1FirstHit[i+48];
+    RS2T_F1time[i] = param->time(1,i,1,0, RS2T_F1TDC[i] - RTDC_F1FirstHit[9]  );
+    RS2B_F1time[i] = param->time(1,i,1,1, RS2B_F1TDC[i] - RTDC_F1FirstHit[46] );
     RS2_F1time[i]  = 0.5*(RS2T_F1time[i] + RS2B_F1time[i]);
   }
 
   //S0
   for(int i=0;i<RS0;i++){
-    RS0T_F1time[i] = param->time(2,i,1,0, RTDC_F1FirstHit[i+43] - RTDC_F1FirstHit[46]  );
-    RS0B_F1time[i] = param->time(2,i,1,1, RTDC_F1FirstHit[i+44] - RTDC_F1FirstHit[46] );
+    RS0T_F1TDC[i]  =  RTDC_F1FirstHit[i+43];
+    RS0B_F1TDC[i]  =  RTDC_F1FirstHit[i+44];
+    RS0T_F1time[i] = param->time(2,i,1,0, RS0T_F1TDC[i] - RTDC_F1FirstHit[46]  );
+    RS0B_F1time[i] = param->time(2,i,1,1, RS0B_F1TDC[i] - RTDC_F1FirstHit[46] );
     RS0_F1time[i]  = 0.5*(RS0T_F1time[i] + RS0B_F1time[i]);
   }
 
@@ -362,7 +366,7 @@ void Tree::convertF1TDCR(ParamMan *param)
 double Tree::GetBeta_S0S2wF1TDCR(int itrack)
 {
   double betaR = -999.;
-  betaR = LightVelocity*(R_s2_trpath[itrack] - R_s0_trpath[itrack])/(RS2_F1time[(int)R_s2_trpad[itrack]] - RS0_F1time[(int)R_s0_trpad[itrack]]);
+  betaR = (R_s2_trpath[itrack] - R_s0_trpath[itrack])/(RS2_F1time[(int)R_s2_trpad[itrack]] - RS0_F1time[(int)R_s0_trpad[itrack]])/LightVelocity;
 
   return betaR;
 }

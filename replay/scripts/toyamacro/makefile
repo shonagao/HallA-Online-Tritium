@@ -17,7 +17,7 @@ TARGET2=     RHRS_PID
 OBJS2=       RHRS_PID.o Tree.o Setting.o ParamMan.o
 
 all: $(TARGET1) \
-     $(TARGET2)
+     $(TARGET2) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
