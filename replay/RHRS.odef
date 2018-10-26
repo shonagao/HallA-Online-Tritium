@@ -10,7 +10,6 @@ block R.a1.*
 block R.a2.*
 
 block DR.*
-
 # F1tdc and VETROC
 variable RTDC.F1nhits
 variable RTDC.F1Warnings
@@ -277,54 +276,54 @@ TH1F mass_sq 'R-arm mass^2' m2 200 -0.2 1.5
 #Beam Information
 #
 
-TH1F bpma_x 'BPMA x [mm]' rbax 4000 -15. 15.
-TH1F bpma_y 'BPMA y [mm]' rbay 4000 -15. 15.
-TH1F bpmb_x 'BPMB x [mm]' rbbx 4000 -15. 15.
-TH1F bpmb_y 'BPMB y [mm]' rbby 4000 -15. 15.
-TH1F beam_rasterx 'x at target (from Rasters) [mm]' rbx 4000  -15. 15.
-TH1F beam_rastery 'y at target (from Rasters) [mm]' rby 4000  -15. 15.
+TH1F R_bpma_x 'BPMA x [mm]' rbax 4000 -15. 15.
+TH1F R_bpma_y 'BPMA y [mm]' rbay 4000 -15. 15.
+TH1F R_bpmb_x 'BPMB x [mm]' rbbx 4000 -15. 15.
+TH1F R_bpmb_y 'BPMB y [mm]' rbby 4000 -15. 15.
+TH1F R_beam_rasterx 'x at target (from Rasters) [mm]' rbx 4000  -15. 15.
+TH1F R_beam_rastery 'y at target (from Rasters) [mm]' rby 4000  -15. 15.
 
 
-TH2F bpma_xy 'BPMA y vs x'  rbax rbay 2000 -15. 15. 2000 -15. 15.
-TH2F bpmb_xy 'BPMB y vs x'  rbbx rbby 2000 -15. 15. 2000 -15. 15.
-TH2F beam_rasterxy 'Beam at target y vs x (from Rasters)'  rbx rby 200 -15. 15.  200 -15. 15.
-TH2F beam_unrasterxy 'Beam at target y vs x (unrastered)'  urbx urby 800 -15. 15.  800 -15. 15. 
+TH2F R_bpma_xy 'BPMA y vs x'  rbax rbay 2000 -15. 15. 2000 -15. 15.
+TH2F R_bpmb_xy 'BPMB y vs x'  rbbx rbby 2000 -15. 15. 2000 -15. 15.
+TH2F R_beam_rasterxy 'Beam at target y vs x (from Rasters)'  rbx rby 200 -15. 15.  200 -15. 15.
+TH2F R_beam_unrasterxy 'Beam at target y vs x (unrastered)'  urbx urby 800 -15. 15.  800 -15. 15. 
 #Note that rawcur1.y refers to the current for the magnetic field in the y-direction (but electron deflection in x-direction!!!)
 #This was changed back to the standard definitions by Barak in July 2015 (avoids off-diagonal terms in Raster current-to-position matrix)
-TH1F rastx1 'Fast Raster 1 X current' Rrb.Raster.rawcur.x 500 50000 100000
-TH1F rasty1 'Fast Raster 1 Y current' Rrb.Raster.rawcur.y 500 20000 120000
-TH1F rastx2 'Fast Raster 2 X current' Rrb.Raster2.rawcur.x 500 50000 100000
-TH1F rasty2 'Fast Raster 2 Y current' Rrb.Raster2.rawcur.y 500 20000 120000
+TH1F R_rastx1 'Fast Raster 1 X current' Rrb.Raster.rawcur.x 500 50000 100000
+TH1F R_rasty1 'Fast Raster 1 Y current' Rrb.Raster.rawcur.y 500 20000 120000
+TH1F R_rastx2 'Fast Raster 2 X current' Rrb.Raster2.rawcur.x 500 50000 100000
+TH1F R_rasty2 'Fast Raster 2 Y current' Rrb.Raster2.rawcur.y 500 20000 120000
 
-TH2F rastxy1 'Fast Raster 1 X vs Y (current)' Rrb.Raster.rawcur.x Rrb.Raster.rawcur.y 500 50000 100000 500 20000 120000
-TH2F rastxy2 'Fast Raster 2 X vs Y (current)' Rrb.Raster2.rawcur.x Rrb.Raster2.rawcur.y 500 50000 100000 500 20000 120000
-TH2F rastx1x2 'Fast Raster 1 X vs 2 X (current)' Rrb.Raster2.rawcur.x Rrb.Raster.rawcur.x 500 50000 100000 500 50000 100000
-TH2F rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Raster.rawcur.y 500 20000 120000 500 20000 120000
-TH2F rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Raster.rawcur.x 500 20000 120000 500 50000 100000
-TH2F rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Rrb.Raster.rawcur.y Rrb.Raster2.rawcur.x 500 20000 120000 500 50000 100000
+TH2F R_rastxy1 'Fast Raster 1 X vs Y (current)' Rrb.Raster.rawcur.x Rrb.Raster.rawcur.y 500 50000 100000 500 20000 120000
+TH2F R_rastxy2 'Fast Raster 2 X vs Y (current)' Rrb.Raster2.rawcur.x Rrb.Raster2.rawcur.y 500 50000 100000 500 20000 120000
+TH2F R_rastx1x2 'Fast Raster 1 X vs 2 X (current)' Rrb.Raster2.rawcur.x Rrb.Raster.rawcur.x 500 50000 100000 500 50000 100000
+TH2F R_rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Raster.rawcur.y 500 20000 120000 500 20000 120000
+TH2F R_rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Raster.rawcur.x 500 20000 120000 500 50000 100000
+TH2F R_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Rrb.Raster.rawcur.y Rrb.Raster2.rawcur.x 500 20000 120000 500 50000 100000
 
-TH2F urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Rrb.Raster.rawcur.x rbax 500 50000 100000 200 -5. 5.
-TH2F urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Rrb.Raster.rawcur.y rbay 500 20000 120000 200 -5. 5.
-TH2F urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Rrb.Raster.rawcur.x rbbx 500 50000 100000 200 -5. 5.
-TH2F urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Rrb.Raster.rawcur.y rbby 500 20000 120000 200 -5. 5.
+TH2F R_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Rrb.Raster.rawcur.x rbax 500 50000 100000 200 -5. 5.
+TH2F R_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Rrb.Raster.rawcur.y rbay 500 20000 120000 200 -5. 5.
+TH2F R_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Rrb.Raster.rawcur.x rbbx 500 50000 100000 200 -5. 5.
+TH2F R_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Rrb.Raster.rawcur.y rbby 500 20000 120000 200 -5. 5.
 
-TH2F urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Rrb.Raster.rawcur.y rbax 500 20000 120000 200 -5. 5.
-TH2F urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Rrb.Raster.rawcur.x rbay 500 50000 100000 200 -5. 5.
-TH2F urastraw_y_bpmb_x 'Up Fast Raster Current Y vs BPMB X' Rrb.Raster.rawcur.y rbbx 500 20000 120000 200 -5. 5.
-TH2F urastraw_x_bpmb_y 'Up Fast Raster Current X vs BPMB Y' Rrb.Raster.rawcur.x rbby 500 50000 100000 200 -5. 5.
+TH2F R_urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Rrb.Raster.rawcur.y rbax 500 20000 120000 200 -5. 5.
+TH2F R_urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Rrb.Raster.rawcur.x rbay 500 50000 100000 200 -5. 5.
+TH2F R_urastraw_y_bpmb_x 'Up Fast Raster Current Y vs BPMB X' Rrb.Raster.rawcur.y rbbx 500 20000 120000 200 -5. 5.
+TH2F R_urastraw_x_bpmb_y 'Up Fast Raster Current X vs BPMB Y' Rrb.Raster.rawcur.x rbby 500 50000 100000 200 -5. 5.
 
-TH2F drastraw_bpma_x 'Down Fast Raster Current vs BPMA X' Rrb.Raster2.rawcur.x rbax 500 50000 100000 200 -5. 5.
-TH2F drastraw_bpma_y 'Down Fast Raster Current vs BPMA Y' Rrb.Raster2.rawcur.y rbay 500 20000 120000 200 -5. 5.
-TH2F drastraw_bpmb_x 'Down Fast Raster Current vs BPMB X' Rrb.Raster2.rawcur.x rbbx 500 50000 100000 200 -5. 5.
-TH2F drastraw_bpmb_y 'Down Fast Raster Current vs BPMB Y' Rrb.Raster2.rawcur.y rbby 500 20000 120000 200 -5. 5.
+TH2F R_drastraw_bpma_x 'Down Fast Raster Current vs BPMA X' Rrb.Raster2.rawcur.x rbax 500 50000 100000 200 -5. 5.
+TH2F R_drastraw_bpma_y 'Down Fast Raster Current vs BPMA Y' Rrb.Raster2.rawcur.y rbay 500 20000 120000 200 -5. 5.
+TH2F R_drastraw_bpmb_x 'Down Fast Raster Current vs BPMB X' Rrb.Raster2.rawcur.x rbbx 500 50000 100000 200 -5. 5.
+TH2F R_drastraw_bpmb_y 'Down Fast Raster Current vs BPMB Y' Rrb.Raster2.rawcur.y rbby 500 20000 120000 200 -5. 5.
 
-TH2F drastraw_y_bpma_x 'Down Fast Raster Current Y vs BPMA X' Rrb.Raster2.rawcur.y rbax 500 20000 120000 200 -5. 5.
-TH2F drastraw_x_bpma_y 'Down Fast Raster Current X vs BPMA Y' Rrb.Raster2.rawcur.x rbay 500 50000 100000 200 -5. 5.
-TH2F drastraw_y_bpmb_x 'Down Fast Raster Current Y vs BPMB X' Rrb.Raster2.rawcur.y rbbx 500 20000 120000 200 -5. 5.
-TH2F drastraw_x_bpmb_y 'Down Fast Raster Current X vs BPMB Y' Rrb.Raster2.rawcur.x rbby 500 50000 100000 200 -5. 5.
+TH2F R_drastraw_y_bpma_x 'Down Fast Raster Current Y vs BPMA X' Rrb.Raster2.rawcur.y rbax 500 20000 120000 200 -5. 5.
+TH2F R_drastraw_x_bpma_y 'Down Fast Raster Current X vs BPMA Y' Rrb.Raster2.rawcur.x rbay 500 50000 100000 200 -5. 5.
+TH2F R_drastraw_y_bpmb_x 'Down Fast Raster Current Y vs BPMB X' Rrb.Raster2.rawcur.y rbbx 500 20000 120000 200 -5. 5.
+TH2F R_drastraw_x_bpmb_y 'Down Fast Raster Current X vs BPMB Y' Rrb.Raster2.rawcur.x rbby 500 50000 100000 200 -5. 5.
 
-TH1F E_p 'E/p' Rep 300 -0.5 1.5 R.gold.p<1000000000&&R.gold.p>0
-TH1F E_p_cut 'E/p with cut' Rep 300 -0.5 1.5 R.cer.asum_c>2000&&R.gold.p<1000000000&&R.gold.p>0
+TH1F R_E_p 'E/p' Rep 300 -0.5 1.5 R.gold.p<1000000000&&R.gold.p>0
+TH1F R_E_p_cut 'E/p with cut' Rep 300 -0.5 1.5 R.cer.asum_c>2000&&R.gold.p<1000000000&&R.gold.p>0
 
 #-------------------------------------------------------------------------------
 #Event type 140 scaler

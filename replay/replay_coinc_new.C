@@ -36,7 +36,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	const char* RNAME=rootname.Data();
 	TString ODEF = "coinc.odef";
 	TString CUTS = "coinc.cuts";
-	if(autoreplay)  ODEF=Form(REPLAY_DIR_PREFIX,"coinc_auto.odef");
+	if(autoreplay)  ODEF=Form(REPLAY_DIR_PREFIX,"coinc.odef");
 
 	//=====================================================================================================================
 	// Detectors
