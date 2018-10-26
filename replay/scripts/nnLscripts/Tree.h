@@ -96,6 +96,7 @@ public:
   double L_tr_vx[MAX], L_tr_vy[MAX], L_tr_vz[MAX]; // vertex X, Y, Z
 
   double L_rtRFtime[6];
+  double L_F1Fhit[64];
 
 ///////////////////
 // HRS Right Arm //
@@ -191,6 +192,7 @@ public:
   double R_tr_vx[MAX], R_tr_vy[MAX], R_tr_vz[MAX]; // vertex X, Y, Z
 
   double R_rtRFtime[6];
+  double R_F1Fhit[64];
 
 
 public:
