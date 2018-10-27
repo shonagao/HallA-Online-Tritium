@@ -15,9 +15,15 @@ TARGET1=     s2_t0_calib
 OBJS1=       s2_t0_calib.o Tree.o Setting.o ParamMan.o
 TARGET2=     RHRS_PID
 OBJS2=       RHRS_PID.o Tree.o Setting.o ParamMan.o
+TARGET3=     s2_twc
+OBJS3=       s2_twc.o Tree.o Setting.o ParamMan.o
+TARGET4=     mk_twc_tree
+OBJS4=       mk_twc_tree.o Tree.o ParamMan.o
 
 all: $(TARGET1) \
      $(TARGET2) \
+     $(TARGET3) \
+     $(TARGET4) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -26,6 +32,12 @@ $(TARGET1): $(patsubst %,$(LIBDIR)/%,$(OBJS1))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET2): $(patsubst %,$(LIBDIR)/%,$(OBJS2))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET3): $(patsubst %,$(LIBDIR)/%,$(OBJS3))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET4): $(patsubst %,$(LIBDIR)/%,$(OBJS4))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 
