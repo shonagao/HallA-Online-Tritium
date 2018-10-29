@@ -334,8 +334,8 @@ void s2_t0_calib::draw(){
   c[5]->Clear();c[5]->Divide(2,2);
   c[5]->cd(1);h_frame[0]->Draw("");tg_tdiffFB_pos ->Draw("sameP");///
   c[5]->cd(2);h_frame[1]->Draw("");tg_tdiffFB_wid ->Draw("sameP");///
-  c[5]->cd(1);h_frame[2]->Draw("");tg_tdiffF1_pos ->Draw("sameP");///
-  c[5]->cd(2);h_frame[3]->Draw("");tg_tdiffF1_wid ->Draw("sameP");///
+  c[5]->cd(3);h_frame[2]->Draw("");tg_tdiffF1_pos ->Draw("sameP");///
+  c[5]->cd(4);h_frame[3]->Draw("");tg_tdiffF1_wid ->Draw("sameP");///
 
   c[6]->Clear();c[6]->Divide(4,4);
   for(int i=0;i<16;i++){
@@ -492,7 +492,7 @@ int main(int argc, char** argv){
   if(output_flag)calib->savecanvas(ofname);
   delete calib;
 
-  //gSystem->Exit(1);
+  gSystem->Exit(1);
   theApp->Run();
   return 0;
 }

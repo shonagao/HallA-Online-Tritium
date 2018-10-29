@@ -43,6 +43,7 @@ using namespace std;
 #include "Tree.h"
 #include "Setting.h"
 #include "ParamMan.h"
+#include "define.h"
 
 #define Calibration
 
@@ -60,14 +61,16 @@ class RHRS_PID : public Tree
   void savecanvas(string ofname); 
   void SetMaxEvent( int N )  { ENumMax = N; }
   void SetRoot(string ifname);
+  void SetInputParam(string ifname);
   Setting *set;
+  ParamMan *param;
 
   private:
     int GetMaxEvent() { return ENumMax; }
     int ENumMax;
 
     //General
-    TH1F *h_tof, *h_beta, *h_msq, *h_mom, *h_path;
+    TH1F *h_tof, *h_beta, *h_msq, *h_mom, *h_path, *h_t_at_targ;
     TH2F *h2_tof_beta, *h2_beta, *h2_msq_beta, *h2_mom_beta, *h2_path_beta;
 
     //Each S2 paddle
@@ -134,6 +137,12 @@ void RHRS_PID::SetRoot(string ifname){
   readtreeHRSR();
 }
 ////////////////////////////////////////////////////////////////////////////
+void RHRS_PID::SetInputParam(string ifname){
+  param = new ParamMan(ifname.c_str());
+  if(param -> SetVal())cout<<"F1TDC parameter setted"<<endl; 
+}
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 void RHRS_PID::makehist(){
   h2_tof_beta    = new TH2F("h2_tof_beta"  ,"h2_tof_beta"  , 2000, -100,  100,  200,   -2,   2);
   h2_msq_beta    = new TH2F("h2_msq_beta"  ,"h2_msq_beta"  , 2000,   -1,    1,  200,   -2,   2);
@@ -167,8 +176,9 @@ void RHRS_PID::loop(){
   for(int n=0;n<ENum;n++){
     if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
+    convertF1TDCR(param);
+
     double Rm2[MAX];
-    //cout<<"ntrack : "<<R_tr_n<<endl;
     for(int itrack=0;itrack<R_tr_n;itrack++){//each track
       if(DR_T4>0.){
         Rm2[itrack] = ( 1. / (R_tr_beta[itrack] * R_tr_beta[itrack]) -1. ) * R_tr_p[itrack] * R_tr_p[itrack];
@@ -182,15 +192,13 @@ void RHRS_PID::loop(){
             h_s2r_msq[i]  ->Fill(Rm2[itrack]);
             h_s2r_beta[i] ->Fill(R_tr_beta[itrack]);
 
-            h2_s2r_tof_beta[i]  ->Fill(1.e+9*(R_s2_time[i] - R_s0_time[0]), R_tr_beta[itrack]);
+            h2_s2r_tof_beta[i]  ->Fill(s2ns*(R_s2_time[i] - R_s0_time[0]), R_tr_beta[itrack]);
             h2_s2r_msq_beta[i]  ->Fill(Rm2[itrack]       , R_tr_beta[itrack]);
             h2_s2r_mom_beta[i]  ->Fill(R_tr_p[itrack]*10., R_tr_beta[itrack]);
             h2_s2r_path_beta[i] ->Fill(R_tr_pathl[itrack], R_tr_beta[itrack]);
-
-            //cout<<"ntrack : "<<R_tr_n<<endl;
           }
         }//each S2 paddle
-      }//
+      }//S0&&S2
     }//each track
   }
 
@@ -309,7 +317,7 @@ int main(int argc, char** argv){
       cout<<"-f : input root filename"<<endl;
       cout<<"-w : output pdf filename"<<endl;
       cout<<"-n : maximum number of analysed events"<<endl;
-      cout<<"-p : print png file"<<endl;
+      cout<<"-p : input param file"<<endl;
       return 0;
       break;
     case '?':
@@ -326,6 +334,7 @@ int main(int argc, char** argv){
   RHRS_PID *pid = new RHRS_PID();
 
   pid->SetMaxEvent(MaxNum);
+  pid->SetInputParam(paramname);
   pid->SetRoot(ifname);
   pid->makehist();
   pid->loop();

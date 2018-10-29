@@ -106,10 +106,13 @@ int main(int argc, char** argv){
 
   
   double tof,s0time,s2time,s0at,s0ab,s2at,s2ab;
+  double s2tt,s2tb;
   tree_out->Branch("s2seg"  ,&s2seg ,"s2seg/I");
   tree_out->Branch("tof"    ,&tof   ,"tof/D");
   tree_out->Branch("s0time" ,&s0time,"s0time/D");
   tree_out->Branch("s2time" ,&s2time,"s2time/D");
+  tree_out->Branch("s2tt"   ,&s2tt  ,"s2tt/D");
+  tree_out->Branch("s2tb"   ,&s2tb  ,"s2tb/D");
   tree_out->Branch("s0at"   ,&s0at  ,"s0at/D");
   tree_out->Branch("s0ab"   ,&s0ab  ,"s0ab/D");
   tree_out->Branch("s2at"   ,&s2at  ,"s2at/D");
@@ -151,13 +154,15 @@ int main(int argc, char** argv){
 
     //for(int i=0;i<MAX;i++){
       if(lr==0 && (int)tr->L_s0_t_pads[0]==0 && s2seg==(int)tr->L_s2_t_pads[0]){//Left HRL
-        s0time = tr->R_s0_time[0];
-        s2time = tr->R_s2_time[s2seg];
-        tof    = tr->L_s2_time[s2seg] - tr->L_s0_time[0];
+        s0time = s2ns*tr->R_s0_time[0];
+        s2time = s2ns*tr->R_s2_time[s2seg];
+        tof    = s2time - s0time;
         s0at   = tr->L_s0_ra_p[0];
         s0ab   = tr->L_s0_la_p[0];
         s2at   = tr->L_s2_ra_p[s2seg];
         s2ab   = tr->L_s2_la_p[s2seg];
+        s2tt   = s2ns*tr->L_s2_rt_c[s2seg];
+        s2tb   = s2ns*tr->L_s2_lt_c[s2seg];
         tree_out->Fill();
         fill_ev++;
       }
@@ -170,6 +175,8 @@ int main(int argc, char** argv){
         s0ab   = tr->R_s0_la_p[0];
         s2at   = tr->R_s2_ra_p[s2seg];
         s2ab   = tr->R_s2_la_p[s2seg];
+        s2tt   = s2ns*tr->R_s2_rt_c[s2seg];
+        s2tb   = s2ns*tr->R_s2_lt_c[s2seg];
         tree_out->Fill();
         fill_ev++;
       }

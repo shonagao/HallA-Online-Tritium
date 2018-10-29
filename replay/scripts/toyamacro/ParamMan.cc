@@ -22,10 +22,10 @@ ParamMan::ParamMan( const char* filename )
   L_F1S2T.tb=0;L_F1S2B.tb=1;
   R_F1S2T.tb=0;R_F1S2B.tb=1;
   for(int i=0; i<nS2; i++){
-    L_F1S2T.tdcOffset[i]=0.00;   L_F1S2T.tdcGain[i]=0.05623;
-    L_F1S2B.tdcOffset[i]=0.00;   L_F1S2B.tdcGain[i]=0.05623;
-    R_F1S2T.tdcOffset[i]=0.00;   R_F1S2T.tdcGain[i]=0.05623;
-    R_F1S2B.tdcOffset[i]=0.00;   R_F1S2B.tdcGain[i]=0.05623;
+    L_F1S2T.tdcOffset[i]=0.00; L_F1S2T.timeWalk[i]=0.00;   L_F1S2T.tdcGain[i]=0.05623;
+    L_F1S2B.tdcOffset[i]=0.00; L_F1S2B.timeWalk[i]=0.00;   L_F1S2B.tdcGain[i]=0.05623;
+    R_F1S2T.tdcOffset[i]=0.00; R_F1S2T.timeWalk[i]=0.00;   R_F1S2T.tdcGain[i]=0.05623;
+    R_F1S2B.tdcOffset[i]=0.00; R_F1S2B.timeWalk[i]=0.00;   R_F1S2B.tdcGain[i]=0.05623;
   }
 
   L_F1S0T.cid=CID_F1S0;L_F1S0B.cid=CID_F1S0;
@@ -35,10 +35,10 @@ ParamMan::ParamMan( const char* filename )
   L_F1S0T.tb=0;L_F1S0B.tb=1;
   R_F1S0T.tb=0;R_F1S0B.tb=1;
   for(int i=0; i<nS0; i++){
-    L_F1S0T.tdcOffset[i]=0.00;   L_F1S0T.tdcGain[i]=0.05623;
-    L_F1S0B.tdcOffset[i]=0.00;   L_F1S0B.tdcGain[i]=0.05623;
-    R_F1S0T.tdcOffset[i]=0.00;   R_F1S0T.tdcGain[i]=0.05623;
-    R_F1S0B.tdcOffset[i]=0.00;   R_F1S0B.tdcGain[i]=0.05623;
+    L_F1S0T.tdcOffset[i]=0.00; L_F1S0T.timeWalk[i]=0.00;   L_F1S0T.tdcGain[i]=0.05623;
+    L_F1S0B.tdcOffset[i]=0.00; L_F1S0B.timeWalk[i]=0.00;   L_F1S0B.tdcGain[i]=0.05623;
+    R_F1S0T.tdcOffset[i]=0.00; R_F1S0T.timeWalk[i]=0.00;   R_F1S0T.tdcGain[i]=0.05623;
+    R_F1S0B.tdcOffset[i]=0.00; R_F1S0B.timeWalk[i]=0.00;   R_F1S0B.tdcGain[i]=0.05623;
   }
 
   L_RF.cid=CID_RF;
@@ -57,10 +57,10 @@ ParamMan::ParamMan( const char* filename )
   L_FbS2T.tb=0;L_FbS2B.tb=1;
   R_FbS2T.tb=0;R_FbS2B.tb=1;
   for(int i=0; i<nS2; i++){
-    L_FbS2T.tdcOffset[i]=0.00;  L_FbS2T.tdcGain[i]=0.5;
-    L_FbS2B.tdcOffset[i]=0.00;  L_FbS2B.tdcGain[i]=0.5;
-    R_FbS2T.tdcOffset[i]=0.00;  R_FbS2T.tdcGain[i]=0.5;
-    R_FbS2B.tdcOffset[i]=0.00;  R_FbS2B.tdcGain[i]=0.5;
+    L_FbS2T.tdcOffset[i]=0.00; L_FbS2T.timeWalk[i]=0.00;  L_FbS2T.tdcGain[i]=0.5;
+    L_FbS2B.tdcOffset[i]=0.00; L_FbS2B.timeWalk[i]=0.00;  L_FbS2B.tdcGain[i]=0.5;
+    R_FbS2T.tdcOffset[i]=0.00; R_FbS2T.timeWalk[i]=0.00;  R_FbS2T.tdcGain[i]=0.5;
+    R_FbS2B.tdcOffset[i]=0.00; R_FbS2B.timeWalk[i]=0.00;  R_FbS2B.tdcGain[i]=0.5;
   }
 
   L_FbS0T.cid=CID_FbS0;L_FbS0B.cid=CID_FbS0;
@@ -70,10 +70,10 @@ ParamMan::ParamMan( const char* filename )
   L_FbS0T.tb=0;L_FbS0B.tb=1;
   R_FbS0T.tb=0;R_FbS0B.tb=1;
   for(int i=0; i<nS0; i++){
-    L_FbS0T.tdcOffset[i]=0.00;   L_FbS0T.tdcGain[i]=0.5;
-    L_FbS0B.tdcOffset[i]=0.00;   L_FbS0B.tdcGain[i]=0.5;
-    R_FbS0T.tdcOffset[i]=0.00;   R_FbS0T.tdcGain[i]=0.5;
-    R_FbS0B.tdcOffset[i]=0.00;   R_FbS0B.tdcGain[i]=0.5;
+    L_FbS0T.tdcOffset[i]=0.00; L_FbS0T.timeWalk[i]=0.00;   L_FbS0T.tdcGain[i]=0.5;
+    L_FbS0B.tdcOffset[i]=0.00; L_FbS0B.timeWalk[i]=0.00;   L_FbS0B.tdcGain[i]=0.5;
+    R_FbS0T.tdcOffset[i]=0.00; R_FbS0T.timeWalk[i]=0.00;   R_FbS0T.tdcGain[i]=0.5;
+    R_FbS0B.tdcOffset[i]=0.00; R_FbS0B.timeWalk[i]=0.00;   R_FbS0B.tdcGain[i]=0.5;
   }
 
 }
@@ -100,22 +100,42 @@ bool ParamMan::SetVal( void )
     if(line[0]=='-') {cout<<line<<endl;continue;}
     if(line[0]=='#') continue;
     if( ifs.eof() ) break;
-    name = "R.s2.R.off =" ;     npar=16; SetAParam(line,name,R_FbS2T.tdcOffset,npar);
-    name = "R.s2.L.off =" ;     npar=16; SetAParam(line,name,R_FbS2B.tdcOffset,npar);
-    name = "R.s0.R.off =" ;     npar=1;  SetAParam(line,name,R_FbS0T.tdcOffset,npar);
-    name = "R.s0.L.off =" ;     npar=1;  SetAParam(line,name,R_FbS0B.tdcOffset,npar);
-    name = "R.s2.R.off_F1 =" ;  npar=16; SetAParam(line,name,R_F1S2T.tdcOffset,npar);//tmp
-    name = "R.s2.L.off_F1 =" ;  npar=16; SetAParam(line,name,R_F1S2B.tdcOffset,npar);//tmp
-    name = "R.s0.R.off_F1 =" ;  npar=1;  SetAParam(line,name,R_F1S0T.tdcOffset,npar);//tmp
-    name = "R.s0.L.off_F1 =" ;  npar=1;  SetAParam(line,name,R_F1S0B.tdcOffset,npar);//tmp
-    name = "L.s2.R.off =" ;     npar=16; SetAParam(line,name,L_FbS2T.tdcOffset,npar);
-    name = "L.s2.L.off =" ;     npar=16; SetAParam(line,name,L_FbS2B.tdcOffset,npar);
-    name = "L.s0.R.off =" ;     npar=1;  SetAParam(line,name,L_FbS0T.tdcOffset,npar);
-    name = "L.s0.L.off =" ;     npar=1;  SetAParam(line,name,L_FbS0B.tdcOffset,npar);
-    name = "L.s2.R.off_F1 =" ;  npar=16; SetAParam(line,name,L_F1S2T.tdcOffset,npar);//tmp
-    name = "L.s2.L.off_F1 =" ;  npar=16; SetAParam(line,name,L_F1S2B.tdcOffset,npar);//tmp
-    name = "L.s0.R.off_F1 =" ;  npar=1;  SetAParam(line,name,L_F1S0T.tdcOffset,npar);//tmp
-    name = "L.s0.L.off_F1 =" ;  npar=1;  SetAParam(line,name,L_F1S0B.tdcOffset,npar);//tmp
+    name = "R.s2.R.off =" ;             npar=16; SetAParam(line,name,R_FbS2T.tdcOffset,npar);
+    name = "R.s2.L.off =" ;             npar=16; SetAParam(line,name,R_FbS2B.tdcOffset,npar);
+    name = "R.s0.R.off =" ;             npar=1;  SetAParam(line,name,R_FbS0T.tdcOffset,npar);
+    name = "R.s0.L.off =" ;             npar=1;  SetAParam(line,name,R_FbS0B.tdcOffset,npar);
+    name = "R.s2.R.off_F1 =" ;          npar=16; SetAParam(line,name,R_F1S2T.tdcOffset,npar);//tmp
+    name = "R.s2.L.off_F1 =" ;          npar=16; SetAParam(line,name,R_F1S2B.tdcOffset,npar);//tmp
+    name = "R.s0.R.off_F1 =" ;          npar=1;  SetAParam(line,name,R_F1S0T.tdcOffset,npar);//tmp
+    name = "R.s0.L.off_F1 =" ;          npar=1;  SetAParam(line,name,R_F1S0B.tdcOffset,npar);//tmp
+    name = "R.RF.off =" ;               npar=1;  SetAParam(line,name,R_RF.tdcOffset,npar);//tmp
+    name = "L.s2.R.off =" ;             npar=16; SetAParam(line,name,L_FbS2T.tdcOffset,npar);
+    name = "L.s2.L.off =" ;             npar=16; SetAParam(line,name,L_FbS2B.tdcOffset,npar);
+    name = "L.s0.R.off =" ;             npar=1;  SetAParam(line,name,L_FbS0T.tdcOffset,npar);
+    name = "L.s0.L.off =" ;             npar=1;  SetAParam(line,name,L_FbS0B.tdcOffset,npar);
+    name = "L.s2.R.off_F1 =" ;          npar=16; SetAParam(line,name,L_F1S2T.tdcOffset,npar);//tmp
+    name = "L.s2.L.off_F1 =" ;          npar=16; SetAParam(line,name,L_F1S2B.tdcOffset,npar);//tmp
+    name = "L.s0.R.off_F1 =" ;          npar=1;  SetAParam(line,name,L_F1S0T.tdcOffset,npar);//tmp
+    name = "L.s0.L.off_F1 =" ;          npar=1;  SetAParam(line,name,L_F1S0B.tdcOffset,npar);//tmp
+    name = "L.RF.off =" ;               npar=1;  SetAParam(line,name,L_RF.tdcOffset,npar);//tmp
+    
+    //time walk correction parameters style is different from replay DB. Sorry.
+    name = "R.s2.R.timewalk_params =" ;    npar=16; SetAParam(line,name,R_FbS2T.timeWalk ,npar);
+    name = "R.s2.L.timewalk_params =" ;    npar=16; SetAParam(line,name,R_FbS2B.timeWalk ,npar);
+    name = "R.s0.R.timewalk_params =" ;    npar=1;  SetAParam(line,name,R_FbS0T.timeWalk ,npar);
+    name = "R.s0.L.timewalk_params =" ;    npar=1;  SetAParam(line,name,R_FbS0B.timeWalk ,npar);
+    name = "R.s2.R.timewalk_params_F1 =" ; npar=16; SetAParam(line,name,R_F1S2T.timeWalk,npar);//tmp
+    name = "R.s2.L.timewalk_params_F1 =" ; npar=16; SetAParam(line,name,R_F1S2B.timeWalk,npar);//tmp
+    name = "R.s0.R.timewalk_params_F1 =" ; npar=1;  SetAParam(line,name,R_F1S0T.timeWalk,npar);//tmp
+    name = "R.s0.L.timewalk_params_F1 =" ; npar=1;  SetAParam(line,name,R_F1S0B.timeWalk,npar);//tmp
+    name = "L.s2.R.timewalk_params =" ;    npar=16; SetAParam(line,name,L_FbS2T.timeWalk,npar);
+    name = "L.s2.L.timewalk_params =" ;    npar=16; SetAParam(line,name,L_FbS2B.timeWalk,npar);
+    name = "L.s0.R.timewalk_params =" ;    npar=1;  SetAParam(line,name,L_FbS0T.timeWalk,npar);
+    name = "L.s0.L.timewalk_params =" ;    npar=1;  SetAParam(line,name,L_FbS0B.timeWalk,npar);
+    name = "L.s2.R.timewalk_params_F1 =" ; npar=16; SetAParam(line,name,L_F1S2T.timeWalk,npar);//tmp
+    name = "L.s2.L.timewalk_params_F1 =" ; npar=16; SetAParam(line,name,L_F1S2B.timeWalk,npar);//tmp
+    name = "L.s0.R.timewalk_params_F1 =" ; npar=1;  SetAParam(line,name,L_F1S0T.timeWalk,npar);//tmp
+    name = "L.s0.L.timewalk_params_F1 =" ; npar=1;  SetAParam(line,name,L_F1S0B.timeWalk,npar);//tmp
   }
   
 //   std::cout << "[" << funcname << "]: Initialization finished" << std::endl;
@@ -138,28 +158,28 @@ void ParamMan::SetAParam( string &line, string &name, double *par, int &npar )
   }
 }
 //____________________________________________________________________________________________
-double ParamMan::time( int cid, int seg, int lr, int tb, double tdc )
+double ParamMan::time( int cid, int seg, int lr, int tb, double tdc , double adc)
 {
   static const std::string funcname = "ParamMan::time";
 
-  if     (cid==L_F1S2T.cid && lr==L_F1S2T.lr && tb==L_F1S2T.tb) return L_F1S2T.tdcGain[seg]*(tdc-L_F1S2T.tdcOffset[seg]);
-  else if(cid==L_F1S2B.cid && lr==L_F1S2B.lr && tb==L_F1S2B.tb) return L_F1S2B.tdcGain[seg]*(tdc-L_F1S2B.tdcOffset[seg]);
-  else if(cid==R_F1S2T.cid && lr==R_F1S2T.lr && tb==R_F1S2T.tb) return R_F1S2T.tdcGain[seg]*(tdc-R_F1S2T.tdcOffset[seg]);
-  else if(cid==R_F1S2B.cid && lr==R_F1S2B.lr && tb==R_F1S2B.tb) return R_F1S2B.tdcGain[seg]*(tdc-R_F1S2B.tdcOffset[seg]);
-  else if(cid==L_F1S0T.cid && lr==L_F1S0T.lr && tb==L_F1S0T.tb) return L_F1S0T.tdcGain[seg]*(tdc-L_F1S0T.tdcOffset[seg]);
-  else if(cid==L_F1S0B.cid && lr==L_F1S0B.lr && tb==L_F1S0B.tb) return L_F1S0B.tdcGain[seg]*(tdc-L_F1S0B.tdcOffset[seg]);
-  else if(cid==R_F1S0T.cid && lr==R_F1S0T.lr && tb==R_F1S0T.tb) return R_F1S0T.tdcGain[seg]*(tdc-R_F1S0T.tdcOffset[seg]);
-  else if(cid==R_F1S0B.cid && lr==R_F1S0B.lr && tb==R_F1S0B.tb) return R_F1S0B.tdcGain[seg]*(tdc-R_F1S0B.tdcOffset[seg]);
+  if     (cid==L_F1S2T.cid && lr==L_F1S2T.lr && tb==L_F1S2T.tb) return L_F1S2T.tdcGain[seg]*(tdc-L_F1S2T.tdcOffset[seg]) - TimewalkCorrection(L_F1S2T.timeWalk[seg], adc);
+  else if(cid==L_F1S2B.cid && lr==L_F1S2B.lr && tb==L_F1S2B.tb) return L_F1S2B.tdcGain[seg]*(tdc-L_F1S2B.tdcOffset[seg]) - TimewalkCorrection(L_F1S2B.timeWalk[seg], adc);
+  else if(cid==R_F1S2T.cid && lr==R_F1S2T.lr && tb==R_F1S2T.tb) return R_F1S2T.tdcGain[seg]*(tdc-R_F1S2T.tdcOffset[seg]) - TimewalkCorrection(R_F1S2T.timeWalk[seg], adc);
+  else if(cid==R_F1S2B.cid && lr==R_F1S2B.lr && tb==R_F1S2B.tb) return R_F1S2B.tdcGain[seg]*(tdc-R_F1S2B.tdcOffset[seg]) - TimewalkCorrection(R_F1S2B.timeWalk[seg], adc);
+  else if(cid==L_F1S0T.cid && lr==L_F1S0T.lr && tb==L_F1S0T.tb) return L_F1S0T.tdcGain[seg]*(tdc-L_F1S0T.tdcOffset[seg]) - TimewalkCorrection(L_F1S0T.timeWalk[seg], adc);
+  else if(cid==L_F1S0B.cid && lr==L_F1S0B.lr && tb==L_F1S0B.tb) return L_F1S0B.tdcGain[seg]*(tdc-L_F1S0B.tdcOffset[seg]) - TimewalkCorrection(L_F1S0B.timeWalk[seg], adc);
+  else if(cid==R_F1S0T.cid && lr==R_F1S0T.lr && tb==R_F1S0T.tb) return R_F1S0T.tdcGain[seg]*(tdc-R_F1S0T.tdcOffset[seg]) - TimewalkCorrection(R_F1S0T.timeWalk[seg], adc);
+  else if(cid==R_F1S0B.cid && lr==R_F1S0B.lr && tb==R_F1S0B.tb) return R_F1S0B.tdcGain[seg]*(tdc-R_F1S0B.tdcOffset[seg]) - TimewalkCorrection(R_F1S0B.timeWalk[seg], adc);
   else if(cid==L_RF.cid    && lr==L_RF.lr)                      return L_RF.tdcGain[seg]   *(tdc-L_RF.tdcOffset[seg]);
   else if(cid==R_RF.cid    && lr==R_RF.lr)                      return R_RF.tdcGain[seg]   *(tdc-R_RF.tdcOffset[seg]);
-  else if(cid==L_FbS2T.cid && lr==L_FbS2T.lr && tb==L_FbS2T.tb) return L_FbS2T.tdcGain[seg]*(tdc-L_FbS2T.tdcOffset[seg]);
-  else if(cid==L_FbS2B.cid && lr==L_FbS2B.lr && tb==L_FbS2B.tb) return L_FbS2B.tdcGain[seg]*(tdc-L_FbS2B.tdcOffset[seg]);
-  else if(cid==R_FbS2T.cid && lr==R_FbS2T.lr && tb==R_FbS2T.tb) return R_FbS2T.tdcGain[seg]*(tdc-R_FbS2T.tdcOffset[seg]);
-  else if(cid==R_FbS2B.cid && lr==R_FbS2B.lr && tb==R_FbS2B.tb) return R_FbS2B.tdcGain[seg]*(tdc-R_FbS2B.tdcOffset[seg]);
-  else if(cid==L_FbS0T.cid && lr==L_FbS0T.lr && tb==L_FbS0T.tb) return L_FbS0T.tdcGain[seg]*(tdc-L_FbS0T.tdcOffset[seg]);
-  else if(cid==L_FbS0B.cid && lr==L_FbS0B.lr && tb==L_FbS0B.tb) return L_FbS0B.tdcGain[seg]*(tdc-L_FbS0B.tdcOffset[seg]);
-  else if(cid==R_FbS0T.cid && lr==R_FbS0T.lr && tb==R_FbS0T.tb) return R_FbS0T.tdcGain[seg]*(tdc-R_FbS0T.tdcOffset[seg]);
-  else if(cid==R_FbS0B.cid && lr==R_FbS0B.lr && tb==R_FbS0B.tb) return R_FbS0B.tdcGain[seg]*(tdc-R_FbS0B.tdcOffset[seg]);
+  else if(cid==L_FbS2T.cid && lr==L_FbS2T.lr && tb==L_FbS2T.tb) return L_FbS2T.tdcGain[seg]*(tdc-L_FbS2T.tdcOffset[seg]) - TimewalkCorrection(L_FbS2T.timeWalk[seg] , adc);
+  else if(cid==L_FbS2B.cid && lr==L_FbS2B.lr && tb==L_FbS2B.tb) return L_FbS2B.tdcGain[seg]*(tdc-L_FbS2B.tdcOffset[seg]) - TimewalkCorrection(L_FbS2B.timeWalk[seg] , adc);
+  else if(cid==R_FbS2T.cid && lr==R_FbS2T.lr && tb==R_FbS2T.tb) return R_FbS2T.tdcGain[seg]*(tdc-R_FbS2T.tdcOffset[seg]) - TimewalkCorrection(R_FbS2T.timeWalk[seg] , adc);
+  else if(cid==R_FbS2B.cid && lr==R_FbS2B.lr && tb==R_FbS2B.tb) return R_FbS2B.tdcGain[seg]*(tdc-R_FbS2B.tdcOffset[seg]) - TimewalkCorrection(R_FbS2B.timeWalk[seg] , adc);
+  else if(cid==L_FbS0T.cid && lr==L_FbS0T.lr && tb==L_FbS0T.tb) return L_FbS0T.tdcGain[seg]*(tdc-L_FbS0T.tdcOffset[seg]) - TimewalkCorrection(L_FbS0T.timeWalk[seg] , adc);
+  else if(cid==L_FbS0B.cid && lr==L_FbS0B.lr && tb==L_FbS0B.tb) return L_FbS0B.tdcGain[seg]*(tdc-L_FbS0B.tdcOffset[seg]) - TimewalkCorrection(L_FbS0B.timeWalk[seg] , adc);
+  else if(cid==R_FbS0T.cid && lr==R_FbS0T.lr && tb==R_FbS0T.tb) return R_FbS0T.tdcGain[seg]*(tdc-R_FbS0T.tdcOffset[seg]) - TimewalkCorrection(R_FbS0T.timeWalk[seg] , adc);
+  else if(cid==R_FbS0B.cid && lr==R_FbS0B.lr && tb==R_FbS0B.tb) return R_FbS0B.tdcGain[seg]*(tdc-R_FbS0B.tdcOffset[seg]) - TimewalkCorrection(R_FbS0B.timeWalk[seg] , adc);
   else   cerr << "[" << funcname << "]: unknown id" << endl;
 
   return -1.;
@@ -299,7 +319,17 @@ double ParamMan::GetTdcGain( int cid, int seg, int lr, int tb )
 
   return -1.;
 }
+///////////////////////////////////
+double ParamMan::TimewalkCorrection( double par ,double adc,double peak)
+{
+  double tw=0.,tw_ref=0.;
 
+  //if(par<=0.)return 0.;
+  if(adc<=0.)return 0.;
+  tw = par/sqrt(adc);  
+  tw_ref = par/sqrt(2000.);  
+  return tw-tw_ref;
+}
 
 ///////////////////////////////////
 void ParamMan::WriteToFile(const char* OutputFileName)   //wrinting param file
@@ -367,6 +397,63 @@ void ParamMan::WriteToFile(const char* OutputFileName)   //wrinting param file
   }
   fout<<endl;
 
+
+  //Left
+  fout<<"L.s2.R.off = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<L_FbS2T.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s2.L.off = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<L_FbS2B.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s0.R.off = "<<flush;
+  for(int i=0; i<nS0;i++){
+    fout << std::setprecision(2)
+         <<L_FbS0T.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s0.L.off = "<<flush;
+  for(int i=0; i<nS0;i++){
+    fout << std::setprecision(2)
+         <<L_FbS0B.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s2.R.off_F1 = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<L_F1S2T.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s2.L.off_F1 = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<L_F1S2B.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s0.R.off_F1 = "<<flush;
+  for(int i=0; i<nS0;i++){
+    fout << std::setprecision(2)
+         <<L_F1S0T.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s0.L.off_F1 = "<<flush;
+  for(int i=0; i<nS0;i++){
+    fout << std::setprecision(2)
+         <<L_F1S0B.tdcOffset[i]<<" "<<flush;
+  }
+  fout<<endl;
 
 
   if(fout.is_open()) fout.close();

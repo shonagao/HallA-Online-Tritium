@@ -19,11 +19,14 @@ TARGET3=     s2_twc
 OBJS3=       s2_twc.o Tree.o Setting.o ParamMan.o
 TARGET4=     mk_twc_tree
 OBJS4=       mk_twc_tree.o Tree.o ParamMan.o
+TARGET5=     draw_s2tof
+OBJS5=       draw_s2tof.o Tree.o ParamMan.o Setting.o
 
 all: $(TARGET1) \
      $(TARGET2) \
      $(TARGET3) \
      $(TARGET4) \
+     $(TARGET5) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -38,6 +41,9 @@ $(TARGET3): $(patsubst %,$(LIBDIR)/%,$(OBJS3))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET4): $(patsubst %,$(LIBDIR)/%,$(OBJS4))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET5): $(patsubst %,$(LIBDIR)/%,$(OBJS5))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 

@@ -33,6 +33,7 @@ private:
     int tb;
     double tdcOffset[nS2];//LR,TB
     double tdcGain[nS2];
+    double timeWalk[nS2];
   };
 
   struct S0param{
@@ -41,6 +42,7 @@ private:
     int tb;
     double tdcOffset[nS0];
     double tdcGain[nS0];
+    double timeWalk[nS0];
   };
 
   struct RFparam{
@@ -70,7 +72,8 @@ public:
   bool SetVal( void );
   double GetTdcOffset( int cid, int seg, int lr, int tb );
   double GetTdcGain(   int cid, int seg, int lr, int tb );
-  double time(         int cid, int seg, int lr, int tb, double tdc);
+  double time(         int cid, int seg, int lr, int tb, double tdc, double adc=-1.);
+  double TimewalkCorrection(double par, double adc, double peak=2000.);
   void WriteToFile( const char* OutputFileName );
 };
 

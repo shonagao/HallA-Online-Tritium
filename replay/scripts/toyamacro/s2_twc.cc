@@ -41,10 +41,11 @@ using namespace std;
 #include "TRandom.h"
 
 #include "Setting.h"
+#include "ParamMan.h"
 
 #define Calibration
 
-const int NCanvas = 3;//num of canvas
+const int NCanvas = 4;//num of canvas
 
 class s2_twc_calib
 {
@@ -64,13 +65,21 @@ class s2_twc_calib
   int ENum;
   int s2seg;
   double tof,s0time,s2time,s0at,s0ab,s2at,s2ab;
+  double s2tt,s2tb;
+  double par_T,par_B;
+  double fact_T,fact_B;
+  double fact_min,fact_max,dfact;
+  int nfact;
+  double ga_min,ga_max;
 
   private:
     int GetMaxEvent() { return ENumMax; }
     int ENumMax;
 
     TH2F *h2_tof_s0at, *h2_tof_s0ab, *h2_tof_s2at, *h2_tof_s2ab;
+    TH2F *h2_tof_s0at_c, *h2_tof_s0ab_c, *h2_tof_s2at_c, *h2_tof_s2ab_c;
     TH2F *h2_factor;
+    TH1F *h_tof_tmp, *h_tof;
     TH1D *h_s2at, *h_s2ab;
     TH2F *h_frame[4];
     int LR;//L = 0, R = 1
@@ -80,9 +89,11 @@ class s2_twc_calib
     TGraphErrors *tg_tdiffF1_pos, *tg_tdiffF1_wid;
 
     TF1 *f_T,*f_B;
+    TF1 *f_g;
 
     TFile *ifp;
     TTree *tree;
+    ParamMan *param;
 
 };
 
@@ -124,6 +135,11 @@ s2_twc_calib::s2_twc_calib()
   }
 
   set = new Setting();
+  param = new ParamMan("param/default.param");
+  fact_min=0.5;
+  fact_max=1.5;
+  nfact = 20;
+  dfact = (double)(fact_max - fact_min)/nfact;
 }
 ////////////////////////////////////////////////////////////////////////////
 s2_twc_calib::~s2_twc_calib(){
@@ -140,6 +156,8 @@ void s2_twc_calib::SetRoot(string ifname){
   tree->SetBranchAddress("s0ab"   ,&s0ab  );
   tree->SetBranchAddress("s2at"   ,&s2at  );
   tree->SetBranchAddress("s2ab"   ,&s2ab  );
+  tree->SetBranchAddress("s2tt"   ,&s2tt  );
+  tree->SetBranchAddress("s2tb"   ,&s2tb  );
   ENum = tree->GetEntries();
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -147,22 +165,35 @@ void s2_twc_calib::makehist(){
   string LorR;
   if(LR==0)     LorR="L";
   else if(LR==1)LorR="R";
-  h2_tof_s0at  = new TH2F("h2_tof_s0at"  ,"h2_tof_s0at", 100, -100, 4000, 100, -20, 20);
-  h2_tof_s0ab  = new TH2F("h2_tof_s0ab"  ,"h2_tof_s0ab", 100, -100, 8000, 100, -20, 20);
-  h2_tof_s2at  = new TH2F("h2_tof_s2at"  ,"h2_tof_s2at", 100, -100, 1000, 100, -20, 20);
-  h2_tof_s2ab  = new TH2F("h2_tof_s2ab"  ,"h2_tof_s2ab", 100, -100, 1000, 100, -20, 20);
-  h2_factor    = new TH2F("h2_factor"    ,"h2_factor"  , 100, 0.4,1.8, 100, 0.4,1.8);
+  h_tof         = new TH1F("h_tof"    ,"h_tof",200,-20,20);
+  set->SetTH1(h_tof    ,Form("ToF S2%s%d"   ,LorR.c_str(),s2seg)     ,"ToF[ns]" ,"counts"   ,1,0,0);
 
-  set->SetTH2(h2_tof_s0at  ,Form("ToF vs S0%s top ADC"        ,LorR.c_str())       ,"ADC[ch]" ,"ToF[ns]" );
-  set->SetTH2(h2_tof_s0ab  ,Form("ToF vs S0%s bottom ADC"     ,LorR.c_str())       ,"ADC[ch]" ,"ToF[ns]" );
-  set->SetTH2(h2_tof_s2at  ,Form("ToF vs S2%s%d top ADC"      ,LorR.c_str(),s2seg) ,"ADC[ch]" ,"ToF[ns]" );
-  set->SetTH2(h2_tof_s2ab  ,Form("ToF vs S2%s%d bottom ADC"   ,LorR.c_str(),s2seg) ,"ADC[ch]" ,"ToF[ns]" );
+  h2_tof_s0at   = new TH2F("h2_tof_s0at"    ,"h2_tof_s0at"  , 100, -100, 4000, 100, -20, 20);
+  h2_tof_s0ab   = new TH2F("h2_tof_s0ab"    ,"h2_tof_s0ab"  , 100, -100, 8000, 100, -20, 20);
+  h2_tof_s2at   = new TH2F("h2_tof_s2at"    ,"h2_tof_s2at"  , 100, -100, 1000, 100, -20, 20);
+  h2_tof_s2ab   = new TH2F("h2_tof_s2ab"    ,"h2_tof_s2ab"  , 100, -100, 1000, 100, -20, 20);
+  h2_tof_s0at_c = new TH2F("h2_tof_s0at_c"  ,"h2_tof_s0at_c", 100, -100, 4000, 100, -20, 20);
+  h2_tof_s0ab_c = new TH2F("h2_tof_s0ab_c"  ,"h2_tof_s0ab_c", 100, -100, 8000, 100, -20, 20);
+  h2_tof_s2at_c = new TH2F("h2_tof_s2at_c"  ,"h2_tof_s2at_c", 100, -100, 1000, 100, -20, 20);
+  h2_tof_s2ab_c = new TH2F("h2_tof_s2ab_c"  ,"h2_tof_s2ab_c", 100, -100, 1000, 100, -20, 20);
+  h2_factor     = new TH2F("h2_factor"      ,"h2_factor"    , nfact, fact_min,fact_max, nfact, fact_min,fact_max);
+
+  set->SetTH2(h2_tof_s0at    ,Form("ToF vs S0%s top ADC"                ,LorR.c_str())       ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s0ab    ,Form("ToF vs S0%s bottom ADC"             ,LorR.c_str())       ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s2at    ,Form("ToF vs S2%s%d top ADC"              ,LorR.c_str(),s2seg) ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s2ab    ,Form("ToF vs S2%s%d bottom ADC"           ,LorR.c_str(),s2seg) ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s0at_c  ,Form("ToF vs S0%s top ADC(w/ twc)"        ,LorR.c_str())       ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s0ab_c  ,Form("ToF vs S0%s bottom ADC(w/ twc)"     ,LorR.c_str())       ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s2at_c  ,Form("ToF vs S2%s%d top ADC(w/ twc)"      ,LorR.c_str(),s2seg) ,"ADC[ch]" ,"ToF[ns]" );
+  set->SetTH2(h2_tof_s2ab_c  ,Form("ToF vs S2%s%d bottom ADC(w/ twc)"   ,LorR.c_str(),s2seg) ,"ADC[ch]" ,"ToF[ns]" );
   set->SetTH2(h2_factor    ,Form("S2%s%d time walk correction",LorR.c_str(),s2seg) ,"Factor T","Factor B");
 
   f_T = new TF1("f_T","[0]/sqrt(x)-[1]",-100,1000);
   f_B = new TF1("f_B","[0]/sqrt(x)-[1]",-100,1000);
+  f_g = new TF1("f_g","gaus",-20,20);
   set->SetTF1(f_T,2,1,1);
   set->SetTF1(f_B,2,1,1);
+  set->SetTF1(f_g,2,1,1);
 
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -196,12 +227,82 @@ void s2_twc_calib::fit(){
   h_s2ab = (TH1D*)gROOT->FindObject("h2_tof_s2ab_1");
   h_s2ab ->Fit(f_B,"QR","",0,800);
 
+  par_T = f_T->GetParameter(0);
+  par_B = f_B->GetParameter(0);
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_twc_calib::search_best(){
   cout<<"search best parameter"<<endl;
+  cout<<par_T<<" "<<par_B<<endl;
 
-}
+  double reso;
+  double best_reso = 999., best_fT=1., best_fB=1.;
+      cout<<dfact<<endl;
+  fact_T = fact_min + dfact*0.5;
+  fact_B = fact_min + dfact*0.5;
+  cout<<"processing"<<flush;
+
+  for(int i=0;i<nfact;i++){
+    fact_T = fact_min + dfact*0.5;
+    cout<<"."<<endl;
+
+    for(int j=0;j<nfact;j++){
+      h_tof_tmp  = new TH1F("h_tof_tmp"    ,"h_tof_tmp",200,-20,20);
+      //cout<<"."<<fact_T<<" "<<fact_B<<" "<<flush;
+      cout<<"."<<flush;
+      for(int n=0;n<ENum;n++){
+        tree->GetEntry(n);
+        s2tt -= param->TimewalkCorrection(fact_T*par_T,s2at);
+        s2tb -= param->TimewalkCorrection(fact_B*par_B,s2ab);
+        tof = 0.5*(s2tt+s2tb) - s0time;
+        if(s0time>205){//to cut double peak(run94010) should be checked and removed if you can
+          h_tof_tmp ->Fill(tof);
+        }
+      }
+      ga_min=-20;ga_max=20;
+      set->FitGaus(h_tof_tmp,ga_min,ga_max,2.5);
+      reso = (ga_max-ga_min)/5.;
+      //cout<<fact_T<<" "<<fact_B<<" "<<reso <<flush;
+      if(reso<best_reso){best_reso=reso;best_fT=fact_T;best_fB=fact_B;}
+      //h2_factor ->Fill(fact_T,fact_B);
+      h2_factor ->Fill(fact_T,fact_B,reso);
+      fact_T += dfact;
+      h_tof_tmp->BufferEmpty();
+    }
+
+    fact_B += dfact;
+  }
+  cout<<endl;
+  h2_factor->SetMinimum(best_reso*0.95);
+
+  for(int n=0;n<ENum;n++){
+    //if(n%5000==0)cout<<n <<" / "<<ENum<<endl;
+    tree->GetEntry(n);
+    s2tt -= param->TimewalkCorrection(fact_T*par_T,s2at);
+    s2tb -= param->TimewalkCorrection(fact_B*par_B,s2ab);
+    tof = 0.5*(s2tt+s2tb) - s0time;
+    if(s0time>205){
+      h_tof  ->Fill(tof);
+      h2_tof_s0at_c  ->Fill(s0at,tof);
+      h2_tof_s0ab_c  ->Fill(s0ab,tof);
+      h2_tof_s2at_c  ->Fill(s2at,tof);
+      h2_tof_s2ab_c  ->Fill(s2ab,tof);
+    }
+  }
+
+  ga_min=-20;ga_max=20;
+  set->FitGaus(h_tof,ga_min,ga_max,2.5);
+  h_tof->Fit(f_g,"","QR",ga_min,ga_max);
+  cout<<"best factor T: "<<best_fT <<", B: "<<best_fB<<endl;
+
+  cout<<"==time walk parameter=="<<endl;
+  cout<<"Top=    "<< ns2s*best_fT*par_T <<endl;
+  cout<<"Bottom= "<< ns2s*best_fB*par_B <<endl;
+ 
+  ofstream fout;
+  fout.open("timewalk.param", ios::out|ios::app);
+  fout<<s2seg<<" "<<ns2s*best_fT*par_T << " "<<ns2s*best_fB*par_B<<endl;
+}                   
 ////////////////////////////////////////////////////////////////////////////
 void s2_twc_calib::draw(){
 
@@ -217,9 +318,15 @@ void s2_twc_calib::draw(){
   c[1]->cd(3);gPad->SetLogz(1);h_s2at->Draw("PE");
   c[1]->cd(4);gPad->SetLogz(1);h_s2ab->Draw("PE");
 
-  c[2]->Clear();c[2]->Divide(1,1);
-  c[2]->cd(1);gPad->SetLogz(0);h2_factor->Draw("colz");
+  c[2]->Clear();c[2]->Divide(2,2);
+  c[2]->cd(1);gPad->SetLogz(1);h2_tof_s0at_c ->Draw("colz");
+  c[2]->cd(2);gPad->SetLogz(1);h2_tof_s0ab_c ->Draw("colz");
+  c[2]->cd(3);gPad->SetLogz(1);h2_tof_s2at_c ->Draw("colz");
+  c[2]->cd(4);gPad->SetLogz(1);h2_tof_s2ab_c ->Draw("colz");
 
+  c[3]->Clear();c[3]->Divide(2,2);
+  c[3]->cd(1);gPad->SetLogz(0);h2_factor->Draw("colz");
+  c[3]->cd(2);h_tof->Draw();
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_twc_calib::savecanvas(string ofname){
