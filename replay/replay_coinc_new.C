@@ -74,6 +74,8 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	HRSR->AddDetector( new TriFadcScin     ("s2" , "S2 Scintillator - FADC"       ));
 	HRSR->AddDetector( new THaShower       ("ps" , "Pre-shower pion rej."         ));
 	HRSR->AddDetector( new THaShower       ("sh" , "Show pion rej."               ));
+	HRSR->AddDetector( new TriFadcCherenkov("a1" , "Aerogel counter -FADC"        ));
+	HRSR->AddDetector( new TriFadcCherenkov("a2" , "Aerogel counter -FADC"        ));
 
 	THaHRS* FbusHRSR = new THaHRS("FbusR", "Fastbus RHRS Readout");
 	FbusHRSR->AutoStandardDetectors(kFALSE);
@@ -351,7 +353,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	ReplayCore(
 			runnumber,      // run #
 			numevents,      // -1=replay all;0=ask for a number
-			50000,          // default replay event num
+			1,          // default replay event num
 			RNAME,          // output file format
 			ODEF.Data(),	// out define
 			CUTS.Data(),	// empty cut define
@@ -409,7 +411,6 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 		gSystem->Exec(Form("ln -s %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"     ,path_to_plots,runnumber       ,SUM_DIR                ));    
 		gSystem->Exec(Form("ln -sf %scoinc_physics_%d.pdf %scoinc_physics_latest.pdf"    ,path_to_plots,runnumber       ,path_to_plots          ));
 	}
-
 	exit(0);
 }
 
