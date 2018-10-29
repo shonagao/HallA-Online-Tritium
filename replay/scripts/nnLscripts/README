@@ -1,0 +1,33 @@
+#########################
+# Oct.21 2018 Sho Nagao #
+#########################
+
+Macro files in this directory is for analysis of nnL experiment.
+
+#### ana.cc ####
+ana.cc is a large macrofile for offline analysis.
+
+1. Compile
+$ make
+
+2. Execute
+$ ./bin/ana -R -f runlist/run.list  # for Right HRS
+$ ./bin/ana -L -f runlist/run.list  # for Left HRS
+$ ./bin/ana -LR -f runlist/run.list # for Both Arm
+
+3. See more options with "./bin/ana -h"
+
+Please write a runlist you want to analyze. The rootfiles in the runlist is merged in the macro file.
+
+#### draw.cc ####
+draw.cc is a simple macrofile.
+
+1. Example
+$ root
+[0] .L draw.cc
+[1] R_S2S0TOF(2);
+
+2.Functions
+// R_S2S0TOF(seg no) //
+macro file to check TOF of S2-S0 (with F1TDC) in RHRS. You can select a paddle No. of s2.
+

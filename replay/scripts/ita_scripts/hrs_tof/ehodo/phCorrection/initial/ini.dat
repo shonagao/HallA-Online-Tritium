@@ -1,0 +1,14 @@
+#CH1: [p0]+[p1]/sqrt(x)+[p2]/x 3 31.2128 33.2097 -565.855
+#CH2: [p0]+[p1]/sqrt(x)+[p2]/x 3 -1071.57 71972.7 -1.18462e+06
+#CH3: [p0]+[p1]/sqrt(x)+[p2]/x 3 50.4616 -205.64 -10666.7
+#CH4: [p0]+[p1]/sqrt(x)+[p2]/x 3 7.82141 931.463 -14071.1
+
+ CH1: [p0]+[p1]/sqrt(x)+[p2]/x 3 0.2128 77.2097 -565.855
+ CH2: [p0]+[p1]/sqrt(x)+[p2]/x 3 -1071.57 72.7 -1.18462e+04
+ CH3: [p0]+[p1]/sqrt(x)+[p2]/x 3 50.4616 -205.64 -166.7
+ CH4: [p0]+[p1]/sqrt(x)+[p2]/x 3 7.82141 931.463 -14071.1
+
+
+ Initial parameters for pulse height correction.
+ dragonvaio:~/ehodo/phCorrection/initial/ini.cc
+ Toshiyuki Gogami , 19Nov2017

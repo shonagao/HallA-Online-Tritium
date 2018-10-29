@@ -1,0 +1,8 @@
+Nite:       10
+InputFile:  new_20171119.root
+OutputFile: phc_test.root
+Chi2File:   chi2.dat
+Result:     result.dat
+Parameter:  par.dat
+Weights:    1.0 1.0 1.0 1.0 0.1
+PrintFlag:  phc_toftest 0

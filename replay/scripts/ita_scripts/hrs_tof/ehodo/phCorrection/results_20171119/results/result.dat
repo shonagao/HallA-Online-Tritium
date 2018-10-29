@@ -1,0 +1,10 @@
+ Number of iteration: 50
+ Input  ROOT file:    new_20171119.root (60189)
+ Output ROOT file:    phc_test.root (30000)
+ Chi-square file:     chi2.dat
+ Weights:             0 0 0 0 5
+ TOF sigma after correction = 170.891 +/- 1.41244 ps
+ --> One segment time resolution (sigma) =  120.838 +/- 0.998744 ps
+
+ dragonvaio:~/pict_13Oct2014/correction/
+ Toshiyuki Gogami , 16Oct2014

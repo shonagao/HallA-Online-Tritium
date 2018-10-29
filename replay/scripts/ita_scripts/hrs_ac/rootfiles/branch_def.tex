@@ -1,0 +1,39 @@
+#Auther K. Itabashi 2018 21th
+# Recreate tree tritium experiment
+
+
+#-------------------------------------------------------------------
+# RIGHT ARM S0
+#
+Rs0la 'Right arm S0-Top(B) ADC' R.s0.la
+Rs0ra 'Right arm S0-Bottom(A) ADC' R.s0.ra
+Rs0lt 'Right arm S0-Top(B) TDC' R.s0.lt
+Rs0rt 'Right arm S0-Bottom(A) TDC' R.s0.rt
+Rs0la_p 'Right arm S0-Top(B) ADC (PedSub)' R.s0.la_p
+Rs0ra_p 'Right arm S0-Bottom(A) ADC (PedSub)' R.s0.ra_p
+
+#-------------------------------------------------------------------
+# RIGHT ARM S2
+#
+Rs2la 'Right arm S2 L-PMT ADCs' R.s2.la
+Rs2ra 'Right arm S2 R-PMT ADCs' R.s2.ra
+Rs2lt 'Right arm S2 L-PMT TDCs' R.s2.lt
+Rs2rt 'Right arm S2 R-PMT TDCs' R.s2.rt
+Rs2la_p 'Right arm S2 L-PMT ADCs (PedSub)' R.s2.la_p 
+Rs2ra_p 'Right arm S2 R-PMT ADCs (PedSub)' R.s2.ra_p 
+
+# RIGHT ARM Pion Rejector 1,2 (Preshower/Shower):
+#
+Rpsa   'Preshower ADCs' R.ps.a
+Rpsa_p 'Preshower ADCs (PedSub)' R.ps.a_p
+Rpssum 'Preshower sum' R.ps.asum_c
+Rsha   'Shower ADCs' R.sh.a
+Rsha_p 'Shower ADCs (PedSub)' R.sh.a_p
+Rshsum  'Shower sum' R.sh.asum_c
+
+Rpr1_2 'Preshower vs. Shower' R.sh.asum_c R.ps.asum_c
+Rp1sumx 'Preshower sum vs. x' R.ps.trx R.ps.asum_c
+Rp2sumx 'Shower sum vs. x' R.sh.trx R.sh.asum_c
+Rp1sumy 'Preshower sum vs. y' R.ps.try R.ps.asum_c
+Rp2sumy 'Shower sum vs. y' R.sh.try R.sh.asum_c
+
