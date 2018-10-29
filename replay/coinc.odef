@@ -137,6 +137,12 @@ TH1F Rs2ltc_fadc 'S2 FADC TDC (corrected) L-PMT' R.s2.ltc_fadc 500 1500 2500 R.s
 TH1F Rs2rtc_fadc 'S2 FADC TDC (corrected) R-PMT' R.s2.rtc_fadc 500 1500 2500 R.s2.rtc_fadc>0.
 
 # ------------------------------------------------------------------
+#RIGHT ARM F1TDC
+#
+
+TH1F Rf1tdc_fh 'Right arm F1TDC(F1FirstHit) Channel' RTDC.F1FirstHit 500 1500 2500 RTDC.F1FirstHit>0.
+
+# ------------------------------------------------------------------
 # RIGHT ARM GAS CHERENKOV  ADC and TDC :
 #
 TH1F Rcert 'Cerenkov TDC PMT ' R.cer.t 500 0 2500 R.cer.t>0
@@ -641,6 +647,12 @@ TH1F Ls2lt_fadc 'S2-Bottom(B) FADC TDC PMT ' L.s2.lt_fadc 500 1300 2300 L.s2.lt_
 TH1F Ls2rt_fadc 'S2-Top(A) FADC TDC PMT ' L.s2.rt_fadc 500 1300 2300 L.s2.rt_fadc>0.
 TH1F Ls2ltc_fadc 'S2-Bottom(B) FADC TDC (corrected) PMT ' L.s2.ltc_fadc 500 1300 2300 L.s2.ltc_fadc>0.
 TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 2300 L.s2.rtc_fadc>0.
+
+# ------------------------------------------------------------------
+#LEFT ARM F1TDC
+#
+
+TH1F Lf1tdc_fh 'Light arm F1TDC(F1FirstHit) Channel' LTDC.F1FirstHit 500 1500 2500 LTDC.F1FirstHit>0.
 
 # ------------------------------------------------------------------
 # LEFT ARM GAS CHERENKOV  ADC and TDC :

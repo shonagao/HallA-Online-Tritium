@@ -94,6 +94,12 @@ block Lrb*
 	TH1F Ls2rt_fadc 'S2-Top(A) FADC TDC PMT ' L.s2.rt_fadc 500 1300 2300 L.s2.rt_fadc>0.
 	TH1F Ls2ltc_fadc 'S2-Bottom(B) FADC TDC (corrected) PMT ' L.s2.ltc_fadc 500 1300 2300 L.s2.ltc_fadc>0.
 	TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 2300 L.s2.rtc_fadc>0.
+	# ------------------------------------------------------------------
+	#LEFT ARM F1TDC
+	#      
+
+	TH1F Lf1tdc_fh 'Left arm F1TDC(F1FirstHit) Channel' LTDC.F1FirstHit 500 1500 2500 LTDC.F1FirstHit>0.
+
 
 	# ------------------------------------------------------------------
 	# LEFT ARM GAS CHERENKOV  ADC and TDC :
