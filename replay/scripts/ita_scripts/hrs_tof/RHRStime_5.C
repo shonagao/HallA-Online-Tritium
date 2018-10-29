@@ -121,7 +121,7 @@ for( int i=2;i<16;i++)
       if( HRS_trig>1 && Rs2_nthit==1 && Rs2_pads[0]==i &&  R_trbeta>0.76 && R_trbeta<1.01  ) // R.tr.beta>0.76 && R.tr.beta<80
 	{
 	  //Calc RF_S2mean depending on i
-	  double RF_s2_mean = (Rs2_tdchit[8] - Rs2_tdchit[1]) * tdcTime  - (((Rs2_tdchit[8]-Rs2_tdchit[i+16])*tdcTime + (Rs2_tdchit[46]-Rs2_tdchit[i+48])*tdcTime)/2.0 + corr_x[i-2]*R_trx[0] + corr_th[i-2]*R_trth[0] + corr_adc[i-2]*Rs2_lac[i] + alignment[i-2]);
+	  double RF_s2_mean = (Rs2_tdchit[8] - Rs2_tdchit[15]) * tdcTime  - (((Rs2_tdchit[8]-Rs2_tdchit[i+16])*tdcTime + (Rs2_tdchit[46]-Rs2_tdchit[i+48])*tdcTime)/2.0 + corr_x[i-2]*R_trx[0] + corr_th[i-2]*R_trth[0] + corr_adc[i-2]*Rs2_lac[i] + alignment[i-2]);
 	    
 
 

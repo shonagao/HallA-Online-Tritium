@@ -105,9 +105,9 @@ HRS_name="Coinc_eep"
 
 echo "Running online replay for ${HRS_name} run: ${RUNNUM}"
 
-./onlineReplay $RUNNUM
+./onlineReplay_coinc $RUNNUM
 sleep 1
-./onlinePlots $RUNNUM
+./onlinePlots_coinc $RUNNUM
 
 HRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_online_latest.pdf
 HRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_detectors_latest.pdf 

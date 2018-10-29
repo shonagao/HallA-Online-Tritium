@@ -16,8 +16,8 @@ void Setting::SetTH1(TH1 *h, TString name, TString xname, TString yname, int LCo
   h->SetFillStyle(FStyle);
   h->SetFillColor(FColor);
 
-  h->SetTitleFont(42,"title");
-  h->SetTitleSize(0.04);
+  h->SetTitleFont(42,"");
+  h->SetTitleSize(0.04,"");
 
   h->GetXaxis()->SetTitle(xname);
   h->GetXaxis()->CenterTitle();
@@ -46,8 +46,8 @@ void Setting::SetTH2(TH2 *h, TString name, TString xname, TString yname, double 
   h->SetMarkerSize(1.5);
   h->SetMarkerColor(1);
 
-  h->SetTitleFont(42,"title");
-  h->SetTitleSize(0.04);
+  h->SetTitleFont(42,"");
+  h->SetTitleSize(0.04,"");
 
   h->GetXaxis()->SetTitle(xname);
   h->GetXaxis()->CenterTitle();
@@ -278,29 +278,44 @@ void Setting::Initialize(){
   gStyle->SetPadGridY(0);
   gStyle->SetFrameLineWidth(1);
   gStyle->SetLineWidth(1);
-
   gStyle->SetOptDate(0);
-  gStyle->SetOptStat("ei");
+  gStyle->SetStatFont(42);
+  gStyle->SetGridWidth(1);
+  gStyle->SetNdivisions(505);
+  gStyle->SetNdivisions(505,"X"); // tertiary*10000 + secondary*100 + first
+  gStyle->SetNdivisions(505,"Y"); // tertiary*10000 + secondary*100 + first
+  gStyle->SetNdivisions(505,"Z"); // tertiary*10000 + secondary*100 + first
+
+// stat box
+  gStyle->SetOptStat("");
 //  gStyle->SetStatW(0.15);
   gStyle->SetStatFontSize(0.04);
-  gStyle->SetStatFont(42);
   gStyle->SetStatTextColor(1);
   gStyle->SetStatBorderSize(1);
+  gStyle->SetStatFont(42);
 
-  gStyle->SetTitleX(0.18);
-  gStyle->SetTitleFontSize(0.035);
+// Pad
+  gStyle->SetPadRightMargin(0.12);
+  gStyle->SetPadLeftMargin(0.15);
+  gStyle->SetPadTopMargin(0.10);
+  gStyle->SetPadBottomMargin(0.13);
+
+// Title
+  gStyle->SetTitleX(0.15);
+  gStyle->SetTitleFontSize(0.050);
   gStyle->SetTitleFont(42,"");
   gStyle->SetTitleBorderSize(0);
   gStyle->SetTitleTextColor(1);
   gStyle->SetTitleStyle(0);
 
-  gStyle->SetPadRightMargin(0.15);
-  gStyle->SetPadLeftMargin(0.18);
-  gStyle->SetPadTopMargin(0.10);
-  gStyle->SetPadBottomMargin(0.15);
-  gStyle->SetTextFont(42);
-  gStyle->SetTextSize(0.02);
-  gStyle->SetEndErrorSize(5);
+//  gStyle->SetTextFont(42);
+//  gStyle->SetTextSize(0.02);
+//  gStyle->SetEndErrorSize(5);
+// Label
+  gStyle->SetStripDecimals(kFALSE);
+  gStyle->SetLabelFont(42,"XYZ");
+  gStyle->SetLabelOffset(0.012,"X");
+  gStyle->SetLegendFont(42);
 
   const Int_t NRGBs = 5;
   const Int_t NCont = 99;
@@ -311,8 +326,4 @@ void Setting::Initialize(){
   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
   gStyle->SetNumberContours(NCont);
 
-  gStyle->SetGridWidth(0);
-  gStyle->SetNdivisions(505,"X"); // tertiary*10000 + secondary*100 + first
-  gStyle->SetNdivisions(505,"Y"); // tertiary*10000 + secondary*100 + first
-  gStyle->SetNdivisions(505,"Z"); // tertiary*10000 + secondary*100 + first
 }

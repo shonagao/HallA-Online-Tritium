@@ -51,10 +51,10 @@ block Lrb*
 	FORMULA bpmaws Lrb.BPMA.rawcur.1+Lrb.BPMA.rawcur.2+Lrb.BPMA.rawcur.3+Lrb.BPMA.rawcur.4
 	FORMULA bpmbws Lrb.BPMB.rawcur.1+Lrb.BPMB.rawcur.2+Lrb.BPMB.rawcur.3+Lrb.BPMB.rawcur.4
 
-
 	#-------------------------------------------------------------------
 	#
 	formula Lep (L.prl1.e+L.prl2.e)/(L.gold.p*1000)
+	
 	# LEFT ARM S0
 	#
 	TH1F Ls0lt 'S0-Bottom(B) TDC' L.s0.lt 500 1300 2300 L.s0.lt>0.
@@ -68,7 +68,11 @@ block Lrb*
 	TH1F Ls0ra 'S0-Top(A) ADC' L.s0.ra 12000 0 120000 L.s0.ra>0.
 	TH1F Ls0la_p 'S0-Bottom(B) ADC (PedSub)' L.s0.la_p 1000 -500 4500 L.s0.la_p>-500.
 	TH1F Ls0ra_p 'S0-Top(A) ADC (PedSub)' L.s0.ra_p 1000 -500 4500 L.s0.ra_p>-500.
-
+	
+	TH1F Ls0lt_fadc 'S0-Bottom(B) FADC TDC' L.s0.lt_fadc 500 1300 2300 L.s0.lt_fadc>0.
+	TH1F Ls0rt_fadc 'S0-Top(A) FADC TDC' L.s0.rt_fadc 500 1300 2300 L.s0.rt_fadc>0.
+	TH1F Ls0ltc_fadc 'S0-Bottom(B) FADC TDC (corrected)' L.s0.ltc_fadc 500 1300 2300 L.s0.ltc_fadc>0.
+	TH1F Ls0rtc_fadc 'S0-Top(A) FADC TDC (corrected)' L.s0.rtc_fadc 500 1300 2300 L.s0.rtc_fadc>0.
 
 	#-------------------------------------------------------------------
 	# LEFT ARM S2
@@ -86,6 +90,17 @@ block Lrb*
 	TH1F Ls2la_p 'S2 ADC(PedSub) L-PMT ' L.s2.la_p 1000 -200 1800 L.s2.la_p>-6000.
 	TH1F Ls2ra_p 'S2 ADC(PedSub) R-PMT ' L.s2.ra_p 1000 -200 1800 L.s2.ra_p>-6000.
 
+	TH1F Ls2lt_fadc 'S2-Bottom(B) FADC TDC PMT ' L.s2.lt_fadc 500 1300 2300 L.s2.lt_fadc>0.
+	TH1F Ls2rt_fadc 'S2-Top(A) FADC TDC PMT ' L.s2.rt_fadc 500 1300 2300 L.s2.rt_fadc>0.
+	TH1F Ls2ltc_fadc 'S2-Bottom(B) FADC TDC (corrected) PMT ' L.s2.ltc_fadc 500 1300 2300 L.s2.ltc_fadc>0.
+	TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 2300 L.s2.rtc_fadc>0.
+	# ------------------------------------------------------------------
+	#LEFT ARM F1TDC
+	#      
+
+	TH1F Lf1tdc_fh 'Left arm F1TDC(F1FirstHit) Channel' LTDC.F1FirstHit 500 1500 2500 LTDC.F1FirstHit>0.
+
+
 	# ------------------------------------------------------------------
 	# LEFT ARM GAS CHERENKOV  ADC and TDC :
 	#
@@ -99,6 +114,10 @@ block Lrb*
 	TH1F Lcera_p 'Cerenkov FADC(PedSub) PMT' L.cer.a_p 1000 -200 10000 L.cer.a_p>-200
 	TH2F Lcer_x  'Cerenkov FADC sum (corrected) vs. X' L.cer.trx L.cer.asum_c  60 -1.2 1.2 10100 -100 15000 L.tr.n>0&&L.cer.asum_c>-1000
 	TH2F Lcer_y  'Cerenkov FADC sum (corrected) vs. Y' L.cer.try L.cer.asum_c  60 -0.12 0.12 10100 -100 15000 L.tr.n>0&&L.cer.asum_c>-1000
+
+	TH1F Lcert_fadc   'Cerenkov FADC TDC PMT ' L.cer.t_fadc 500 0 2500 L.cer.t>0
+	TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 0 2500 L.cer.t>0
+
 	# ------------------------------------------------------------------
 
 	# LEFT ARM Pion Rejector 1,2 (Preshower/Shower):
@@ -208,64 +227,64 @@ block Lrb*
 	#-------------------------------------------------------------------------------
 	# LEFT Arm Reaction Vertex Histograms  :
 	#
-	TH1F reactx 'L-arm Reaction X vertex' rpl.x 200 -.6 .6
-	TH1F reacty 'L-arm Reaction Y vertex' rpl.y 200 -.6 .6
-	TH1F reactz 'L-arm Reaction Z vertex' rpl.z 200 -0.2 0.2
+	TH1F L_reactx 'L-arm Reaction X vertex' rpl.x 200 -.6 .6
+	TH1F L_reacty 'L-arm Reaction Y vertex' rpl.y 200 -.6 .6
+	TH1F L_reactz 'L-arm Reaction Z vertex' rpl.z 200 -0.2 0.2
 
 	#-------------------------------------------------------------------------------
 	#Beam Information
 	#
 
-	TH1F bpma_x 'BPMA x [mm]' rbax 4000 -15. 15.
-	TH1F bpma_y 'BPMA y [mm]' rbay 4000 -15. 15.
-	TH1F bpmb_x 'BPMB x [mm]' rbbx 4000 -15. 15.
-	TH1F bpmb_y 'BPMB y [mm]' rbby 4000 -15. 15.
-	TH1F beam_rasterx 'x at target (from Rasters) [mm]' rbx 4000  -15. 15.
-	TH1F beam_rastery 'y at target (from Rasters) [mm]' rby 4000  -15. 15.
+	TH1F L_bpma_x 'BPMA x [mm]' rbax 4000 -15. 15.
+	TH1F L_bpma_y 'BPMA y [mm]' rbay 4000 -15. 15.
+	TH1F L_bpmb_x 'BPMB x [mm]' rbbx 4000 -15. 15.
+	TH1F L_bpmb_y 'BPMB y [mm]' rbby 4000 -15. 15.
+	TH1F L_beam_rasterx 'x at target (from Rasters) [mm]' rbx 4000  -15. 15.
+	TH1F L_beam_rastery 'y at target (from Rasters) [mm]' rby 4000  -15. 15.
 
 
-	TH2F bpma_xy 'BPMA y vs x'  rbax rbay 2000 -15. 15. 2000 -15. 15.
-	TH2F bpmb_xy 'BPMB y vs x'  rbbx rbby 2000 -15. 15. 2000 -15. 15.
-	TH2F beam_rasterxy 'Beam y:x from Rasters, if see hot spot, call RC!'  rbx rby 800 -8. 8.  800 -8. 8.
-	TH2F beam_unrasterxy 'Beam at target y vs x (unrastered)'  urbx urby 800 -8. 8.  800 -8. 8. 
+	TH2F L_bpma_xy 'BPMA y vs x'  rbax rbay 2000 -15. 15. 2000 -15. 15.
+	TH2F L_bpmb_xy 'BPMB y vs x'  rbbx rbby 2000 -15. 15. 2000 -15. 15.
+	TH2F L_beam_rasterxy 'Beam y:x from Rasters, if see hot spot, call RC!'  rbx rby 800 -8. 8.  800 -8. 8.
+	TH2F L_beam_unrasterxy 'Beam at target y vs x (unrastered)'  urbx urby 800 -8. 8.  800 -8. 8. 
 
 
 	#Note that rawcur1.y refers to the current for the magnetic field in the y-direction (but electron deflection in x-direction!!!)
 	#This was changed back to the standard definitions by Barak in July 2015 (avoids off-diagonal terms in Raster current-to-position matrix)
-	TH1F rastx1 'Fast Raster 1 X current' Lrb.Raster.rawcur.x  500 50000 100000 evLeftdnew_r>1000
-	TH1F rasty1 'Fast Raster 1 Y current' Lrb.Raster.rawcur.y  500 20000 120000 evLeftdnew_r>1000
-	TH1F rastx2 'Fast Raster 2 X current' Lrb.Raster2.rawcur.x 500 45000 95000 evLeftdnew_r>1000
-	TH1F rasty2 'Fast Raster 2 Y current' Lrb.Raster2.rawcur.y 500 20000 120000 evLeftdnew_r>1000
+	TH1F L_rastx1 'Fast Raster 1 X current' Lrb.Raster.rawcur.x  500 50000 100000 evLeftdnew_r>1000
+	TH1F L_rasty1 'Fast Raster 1 Y current' Lrb.Raster.rawcur.y  500 20000 120000 evLeftdnew_r>1000
+	TH1F L_rastx2 'Fast Raster 2 X current' Lrb.Raster2.rawcur.x 500 45000 95000 evLeftdnew_r>1000
+	TH1F L_rasty2 'Fast Raster 2 Y current' Lrb.Raster2.rawcur.y 500 20000 120000 evLeftdnew_r>1000
 
-	TH2F rastxy1 'Fast Raster 1 X vs Y (current)' Lrb.Raster.rawcur.x Lrb.Raster.rawcur.y 2000 50000 100000 2000 20000 120000 L.tr.n==1
-	TH2F rastxy2 'Fast Raster 2 X vs Y (current)' Lrb.Raster2.rawcur.x Lrb.Raster2.rawcur.y 2000 45000 95000 2000 20000 120000 L.tr.n==1
-	TH2F rastx1x2 'Fast Raster 1 X vs 2 X (current)' Lrb.Raster2.rawcur.x Lrb.Raster.rawcur.x 2000 45000 95000 2000 50000 100000 L.tr.n==1
-	TH2F rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.y 2000 20000 120000 2000 20000 120000 L.tr.n==1
-	TH2F rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.x 2000 20000 120000 2000 50000 100000 L.tr.n==1
-	TH2F rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Lrb.Raster.rawcur.y Lrb.Raster2.rawcur.x 2000 20000 120000 2000 45000 95000 L.tr.n==1
+	TH2F L_rastxy1 'Fast Raster 1 X vs Y (current)' Lrb.Raster.rawcur.x Lrb.Raster.rawcur.y 2000 50000 100000 2000 20000 120000 L.tr.n==1
+	TH2F L_rastxy2 'Fast Raster 2 X vs Y (current)' Lrb.Raster2.rawcur.x Lrb.Raster2.rawcur.y 2000 45000 95000 2000 20000 120000 L.tr.n==1
+	TH2F L_rastx1x2 'Fast Raster 1 X vs 2 X (current)' Lrb.Raster2.rawcur.x Lrb.Raster.rawcur.x 2000 45000 95000 2000 50000 100000 L.tr.n==1
+	TH2F L_rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.y 2000 20000 120000 2000 20000 120000 L.tr.n==1
+	TH2F L_rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.x 2000 20000 120000 2000 50000 100000 L.tr.n==1
+	TH2F L_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Lrb.Raster.rawcur.y Lrb.Raster2.rawcur.x 2000 20000 120000 2000 45000 95000 L.tr.n==1
 
-	TH2F urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.x rbax 5000 50000 100000 200 -5. 5. evLeftdnew_r>1000
-TH2F urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.y rbay 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000
-TH2F urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.x rbbx 5000 50000 100000 200 -5. 5. evLeftdnew_r>1000
-TH2F urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.y rbby 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000
+	TH2F L_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.x rbax 5000 50000 100000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.y rbay 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.x rbbx 5000 50000 100000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.y rbby 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000
 
-TH2F urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Lrb.Raster.rawcur.y rbax 500 0 5000 200 -5. 5. evLeftdnew_r>1000
-TH2F urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Lrb.Raster.rawcur.x rbay 500 0 5000 200 -5. 5. evLeftdnew_r>1000
-TH2F urastraw_y_bpmb_x 'Up Fast Raster Current Y vs BPMB X' Lrb.Raster.rawcur.y rbbx 500 0 5000 200 -5. 5. evLeftdnew_r>1000
-TH2F urastraw_x_bpmb_y 'Up Fast Raster Current X vs BPMB Y' Lrb.Raster.rawcur.x rbby 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Lrb.Raster.rawcur.y rbax 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Lrb.Raster.rawcur.x rbay 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_y_bpmb_x 'Up Fast Raster Current Y vs BPMB X' Lrb.Raster.rawcur.y rbbx 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_urastraw_x_bpmb_y 'Up Fast Raster Current X vs BPMB Y' Lrb.Raster.rawcur.x rbby 500 0 5000 200 -5. 5. evLeftdnew_r>1000
 
-TH2F drastraw_bpma_x 'Down Fast Raster Current vs BPMA X' Lrb.Raster2.rawcur.x rbax 5000 45000 95000 200 -5. 5. evLeftdnew_r>1000
-TH2F drastraw_bpma_y 'Down Fast Raster Current vs BPMA Y' Lrb.Raster2.rawcur.y rbay 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000
-TH2F drastraw_bpmb_x 'Down Fast Raster Current vs BPMB X' Lrb.Raster2.rawcur.x rbbx 5000 45000 95000 200 -5. 5. evLeftdnew_r>1000
-TH2F drastraw_bpmb_y 'Down Fast Raster Current vs BPMB Y' Lrb.Raster2.rawcur.y rbby 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000 
+TH2F L_drastraw_bpma_x 'Down Fast Raster Current vs BPMA X' Lrb.Raster2.rawcur.x rbax 5000 45000 95000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_bpma_y 'Down Fast Raster Current vs BPMA Y' Lrb.Raster2.rawcur.y rbay 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_bpmb_x 'Down Fast Raster Current vs BPMB X' Lrb.Raster2.rawcur.x rbbx 5000 45000 95000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_bpmb_y 'Down Fast Raster Current vs BPMB Y' Lrb.Raster2.rawcur.y rbby 5000 20000 120000 200 -5. 5. evLeftdnew_r>1000 
 
-TH2F drastraw_y_bpma_x 'Down Fast Raster Current Y vs BPMA X' Lrb.Raster2.rawcur.y rbax 500 0 5000 200 -5. 5. evLeftdnew_r>1000
-TH2F drastraw_x_bpma_y 'Down Fast Raster Current X vs BPMA Y' Lrb.Raster2.rawcur.x rbay 500 0 5000 200 -5. 5. evLeftdnew_r>1000
-TH2F drastraw_y_bpmb_x 'Down Fast Raster Current Y vs BPMB X' Lrb.Raster2.rawcur.y rbbx 500 0 5000 200 -5. 5. evLeftdnew_r>1000
-TH2F drastraw_x_bpmb_y 'Down Fast Raster Current X vs BPMB Y' Lrb.Raster2.rawcur.x rbby 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_y_bpma_x 'Down Fast Raster Current Y vs BPMA X' Lrb.Raster2.rawcur.y rbax 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_x_bpma_y 'Down Fast Raster Current X vs BPMA Y' Lrb.Raster2.rawcur.x rbay 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_y_bpmb_x 'Down Fast Raster Current Y vs BPMB X' Lrb.Raster2.rawcur.y rbbx 500 0 5000 200 -5. 5. evLeftdnew_r>1000
+TH2F L_drastraw_x_bpmb_y 'Down Fast Raster Current X vs BPMB Y' Lrb.Raster2.rawcur.x rbby 500 0 5000 200 -5. 5. evLeftdnew_r>1000
 
-TH1F E_p 'E/p' Lep 300 -0.5 1.5 L.gold.p<1000000000&&L.gold.p>0
-TH1F E_p_cut 'E/p with cut' Lep 300 -0.5 1.5 L.cer.asum_c>2000&&L.gold.p<1000000000&&L.gold.p>0
+TH1F L_E_p 'E/p' Lep 300 -0.5 1.5 L.gold.p<1000000000&&L.gold.p>0
+TH1F L_E_p_cut 'E/p with cut' Lep 300 -0.5 1.5 L.cer.asum_c>2000&&L.gold.p<1000000000&&L.gold.p>0
 
 # ------------------------------------------------------------------
 # Event type 140 
