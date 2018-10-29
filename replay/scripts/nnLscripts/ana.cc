@@ -19,8 +19,8 @@ bool root_out = false;
 string ofname("output.pdf");
 string ofroot("output.root");
 
-//#define F1TDC
-#define FADC
+#define F1TDC
+//#define FADC
 
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 ana::ana()
@@ -32,6 +32,7 @@ ana::ana()
 
   tr = new Tree();
 
+  tr->tree->SetBranchStatus("*",0);
   tr->readtree_COMN();
   if(RHRS)
     tr->readtree_RHRS();
@@ -71,7 +72,6 @@ void ana::Roop(){
     h_rbay_rbax->Fill( tr->rbax, tr->rbay );
     h_rbby_rbbx->Fill( tr->rbbx, tr->rbby );
     h_rby_rbx  ->Fill( tr->rbx , tr->rby );
-
 //////////////
 //// LHRS ////
 //////////////
@@ -81,34 +81,36 @@ void ana::Roop(){
       if(tr->L_T2>0){ h_L_trig->Fill(2); }
       if(tr->L_T3>0){ h_L_trig->Fill(3); }
 
-      double s0l_tdc , s0r_tdc , s0_time;
-      double s2l_tdc[16], s2r_tdc[16], s2_time[16];
 #ifdef F1TDC
-      s0l_tdc = tr->L_F1Fhit[27] - tr->L_F1Fhit[30]; // S0 Top
-      s0r_tdc = tr->L_F1Fhit[28] - tr->L_F1Fhit[30]; // S0 Bottom
-#endif
-#ifdef FADC
-      s0l_tdc = tr->L_s0_ltc_fadc[0]; // S0 Top
-      s0r_tdc = tr->L_s0_rtc_fadc[0]; // S0 Bottom
-#endif
-      if( s0l_tdc>0 && s0r_tdc>0 ){
-        s0_time = (s0l_tdc + s0r_tdc) / 2. * TDCtoT * 1E-9;
-      }
-      else{ s0_time = -99; }
+      L_s0l_t = CalcF1TDC( tr->L_F1Fhit[27] - tr->L_F1Fhit[30], L_s0l_toff );
+      L_s0r_t = CalcF1TDC( tr->L_F1Fhit[28] - tr->L_F1Fhit[30], L_s0r_toff );
+      if( tr->L_F1Fhit[27]>0 && tr->L_F1Fhit[28]>0 ){
+        L_s0_t = (L_s0l_t + L_s0r_t) / 2.;
+      } else{ L_s0_t = -99; }
+
       for(int i=0;i<16;i++){
-#ifdef F1TDC
-        s2l_tdc[i] = tr->L_F1Fhit[i]    - tr->L_F1Fhit[30]; // S2 Left
-        s2r_tdc[i] = tr->L_F1Fhit[i+48] - tr->L_F1Fhit[40]; // S2 Right
+        L_s2l_t[i] = CalcF1TDC( tr->L_F1Fhit[i]    - tr->L_F1Fhit[30], L_s2l_toff[i] );
+        L_s2r_t[i] = CalcF1TDC( tr->L_F1Fhit[i+48] - tr->L_F1Fhit[40], L_s2r_toff[i] );
+        if( tr->L_F1Fhit[i]>0 && tr->L_F1Fhit[i+48]>0 ){
+          L_s2_t[i] = (L_s2l_t[i] + L_s2r_t[i]) / 2.;
+        } else{ L_s2_t[i] = -9999; }
+      }
 #endif
 #ifdef FADC
-        s2l_tdc[i] = tr->L_s2_ltc_fadc[i]; // S0 Top
-        s2r_tdc[i] = tr->L_s2_rtc_fadc[i]; // S0 Bottom
-#endif
-        if( s2l_tdc[i]>0 && s2r_tdc[i]>0 ){
-          s2_time[i] = (s2l_tdc[i] + s2r_tdc[i]) / 2. * TDCtoT * 1E-9;
-        }
-        else{ s2_time[i] = -9999; }
+      L_s0l_t = CalcFADCTDC( tr->L_s0_ltc_fadc[0], L_s0l_toff );
+      L_s0r_t = CalcFADCTDC( tr->L_s0_rtc_fadc[0], L_s0r_toff );
+      if( tr->L_s0_ltc_fadc[0]>0 && tr->L_s0_rtc_fadc[0]>0 ){
+        L_s0_t = (L_s0l_t + L_s0r_t) / 2.;
+      } else{ L_s0_t = -99; }
+
+      for(int i=0;i<16;i++){
+        L_s2l_t[i] = CalcFADCTDC( tr->L_s2_ltc_fadc[i], L_s2l_toff[i] );
+        L_s2r_t[i] = CalcFADCTDC( tr->L_s2_rtc_fadc[i], L_s2r_toff[i] );
+        if( tr->L_s2_ltc_fadc[i]>0 && tr->L_s2_rtc_fadc[i]>0 ){
+          L_s2_t[i] = (L_s2l_t[i] + L_s2r_t[i]) / 2.;
+        } else{ L_s2_t[i] = -9999; }
       }
+#endif
 
       h_L_tr_n->Fill( tr->L_tr_n );
       for(int t=0;t<NLtr;t++){
@@ -123,8 +125,8 @@ void ana::Roop(){
         double p    = tr->L_tr_p[t];
         double path = tr->L_s2_trpath[t] - tr->L_s0_trpath[t];
         double beta = -99, m2 = -99;
-        if( s2_time[s2pad]>0 && s0_time>0 && s2pad>=0 ){
-          beta = path / ( s2_time[s2pad] - s0_time ) / c;
+        if( L_s2_t[s2pad]>0 && L_s0_t>0 && s2pad>=0 ){
+          beta = path / ( L_s2_t[s2pad] - L_s0_t ) / c;
           m2 = ( 1./beta/beta - 1. ) * p * p;
         }
         double betae = p / sqrt(Me*Me + p*p);
@@ -165,7 +167,7 @@ void ana::Roop(){
           h_L_s2_beta_pad->Fill( s2pad, beta );
 
           double rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[40]) * TDCtoT;
-          double tgt = (rftime - s2_time[s2pad]) -  tr->L_tr_pathl[t]/betae/c;
+          double tgt = (rftime - L_s2_t[s2pad]) -  tr->L_tr_pathl[t]/betae/c;
           h_L_tgt      ->Fill( tgt );
           h_L_s2pad_tgt->Fill( tgt, s2pad );
           h_L_p_tgt    ->Fill( tgt, p );
@@ -188,34 +190,37 @@ void ana::Roop(){
       if(tr->R_T5>0){ h_R_trig->Fill(5); }
       if(tr->R_T6>0){ h_R_trig->Fill(6); }
 
-      double s0l_tdc , s0r_tdc , s0_time;
-      double s2l_tdc[16], s2r_tdc[16], s2_time[16];
 #ifdef F1TDC
-      s0l_tdc = tr->R_F1Fhit[43] - tr->R_F1Fhit[46]; // S0 Top
-      s0r_tdc = tr->R_F1Fhit[44] - tr->R_F1Fhit[46]; // S0 Bottom
-#endif
-#ifdef FADC
-      s0l_tdc = tr->R_s0_ltc_fadc[0]; // S0 Top
-      s0r_tdc = tr->R_s0_rtc_fadc[0]; // S0 Bottom
-#endif
-      if( s0l_tdc>0 && s0r_tdc>0 ){
-        s0_time = (s0l_tdc + s0r_tdc) / 2. * TDCtoT * 1E-9;
-      }
-      else{ s0_time = -99; }
+      R_s0l_t = CalcF1TDC( tr->R_F1Fhit[27] - tr->R_F1Fhit[30], R_s0l_toff );
+      R_s0r_t = CalcF1TDC( tr->R_F1Fhit[28] - tr->R_F1Fhit[30], R_s0r_toff );
+      if( tr->R_F1Fhit[27]>0 && tr->R_F1Fhit[28]>0 ){
+        R_s0_t = (R_s0l_t + R_s0r_t) / 2.;
+      } else{ R_s0_t = -99; }
+
       for(int i=0;i<16;i++){
-#ifdef F1TDC
-        s2l_tdc[i] = tr->R_F1Fhit[i+16] - tr->R_F1Fhit[9];  // S2 Left
-        s2r_tdc[i] = tr->R_F1Fhit[i+48] - tr->R_F1Fhit[46]; // S2 Right
+        R_s2l_t[i] = CalcF1TDC( tr->R_F1Fhit[i]    - tr->R_F1Fhit[30], R_s2l_toff[i] );
+        R_s2r_t[i] = CalcF1TDC( tr->R_F1Fhit[i+48] - tr->R_F1Fhit[40], R_s2r_toff[i] );
+        if( tr->R_F1Fhit[i]>0 && tr->R_F1Fhit[i+48]>0 ){
+          R_s2_t[i] = (R_s2l_t[i] + R_s2r_t[i]) / 2.;
+        } else{ R_s2_t[i] = -9999; }
+      }
 #endif
 #ifdef FADC
-        s2l_tdc[i] = tr->R_s2_ltc_fadc[i]; // S0 Top
-        s2r_tdc[i] = tr->R_s2_rtc_fadc[i]; // S0 Bottom
-#endif
-        if( s2l_tdc[i]>0 && s2r_tdc[i]>0 ){
-          s2_time[i] = (s2l_tdc[i] + s2r_tdc[i]) / 2. * TDCtoT * 1E-9;
-        }
-        else{ s2_time[i] = 9999; }
+      R_s0l_t = CalcFADCTDC( tr->R_s0_ltc_fadc[0], R_s0l_toff );
+      R_s0r_t = CalcFADCTDC( tr->R_s0_rtc_fadc[0], R_s0r_toff );
+      if( tr->R_s0_ltc_fadc[0]>0 && tr->R_s0_rtc_fadc[0]>0 ){
+        R_s0_t = (R_s0l_t + R_s0r_t) / 2.;
+      } else{ R_s0_t = -99; }
+
+      for(int i=0;i<16;i++){
+        R_s2l_t[i] = CalcFADCTDC( tr->R_s2_ltc_fadc[i], R_s2l_toff[i] );
+        R_s2r_t[i] = CalcFADCTDC( tr->R_s2_rtc_fadc[i], R_s2r_toff[i] );
+        if( tr->R_s2_ltc_fadc[i]>0 && tr->R_s2_rtc_fadc[i]>0 ){
+          R_s2_t[i] = (R_s2l_t[i] + R_s2r_t[i]) / 2.;
+        } else{ R_s2_t[i] = -9999; }
       }
+#endif
+
 
       h_R_tr_n->Fill( tr->R_tr_n );
       for(int t=0;t<NRtr;t++){
@@ -230,8 +235,8 @@ void ana::Roop(){
         double p    = tr->R_tr_p[t];
         double path = tr->R_s2_trpath[t] - tr->R_s0_trpath[t];
         double beta = 0, m2 = 0;
-        if( s2_time[s2pad]>0 && s0_time>0 && s2pad>=0 ){
-          beta = path / ( s2_time[s2pad] - s0_time ) / c;
+        if( R_s2_t[s2pad]>0 && R_s0_t>0 && s2pad>=0 ){
+          beta = path / ( R_s2_t[s2pad] - R_s0_t ) / c;
           m2 = ( 1./beta/beta - 1. ) * p * p;
         } 
         double betaK = p / sqrt(MK*MK + p*p);
@@ -281,7 +286,7 @@ void ana::Roop(){
           h_R_a2_sum_m2 ->Fill(              m2, tr->R_a2_asum_c );
 
           double rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9]) * TDCtoT;
-          double tgt = (rftime - s2_time[s2pad]) -  tr->R_tr_pathl[t]/betaK/c;
+          double tgt = (rftime - R_s2_t[s2pad]) -  tr->R_tr_pathl[t]/betaK/c;
           h_R_tgt      ->Fill( tgt );
           h_R_s2pad_tgt->Fill( tgt, s2pad );
           h_R_p_tgt    ->Fill( tgt, p );
@@ -317,42 +322,11 @@ void ana::Roop(){
            && tr->R_tr_th[rt]<0.40*tr->R_tr_x[rt]+0.130 ) R_FP = true;
         
           if( L_Tr && L_FP && R_Tr && R_FP ){
-            double L_s2l_tdc[16], L_s2r_tdc[16], L_s2_time[16];
-            for(int i=0;i<16;i++){
-#ifdef F1TDC
-              L_s2l_tdc[i] = tr->L_F1Fhit[i]    - tr->L_F1Fhit[30]; // S2 Left
-              L_s2r_tdc[i] = tr->L_F1Fhit[i+48] - tr->L_F1Fhit[40]; // S2 Right
-#endif
-#ifdef FADC
-              L_s2l_tdc[i] = tr->L_s2_ltc_fadc[i]; // S0 Top
-              L_s2r_tdc[i] = tr->L_s2_rtc_fadc[i]; // S0 Bottom
-#endif
-              if( L_s2l_tdc[i]>0 && L_s2r_tdc[i]>0 ){
-                L_s2_time[i] = (L_s2l_tdc[i] + L_s2r_tdc[i]) / 2. * TDCtoT * 1E-9;
-              }
-              else{ L_s2_time[i] = -9999; }
-            }
 
             int L_s2pad = (int)tr->L_s2_trpad[lt];
             double L_p     = tr->L_tr_p[lt];
             double L_E     = sqrt( Me*Me + L_p*L_p );
             double L_betae = L_p / sqrt(Me*Me + L_p*L_p);
-
-            double R_s2l_tdc[16], R_s2r_tdc[16], R_s2_time[16];
-            for(int i=0;i<16;i++){
-#ifdef F1TDC
-              R_s2l_tdc[i] = tr->R_F1Fhit[i+16] - tr->R_F1Fhit[9];  // S2 Left
-              R_s2r_tdc[i] = tr->R_F1Fhit[i+48] - tr->R_F1Fhit[46]; // S2 Right
-#endif
-#ifdef FADC
-              R_s2l_tdc[i] = tr->R_s2_ltc_fadc[i]; // S0 Top
-              R_s2r_tdc[i] = tr->R_s2_rtc_fadc[i]; // S0 Bottom
-#endif
-              if( R_s2l_tdc[i]>0 && R_s2r_tdc[i]>0 ){
-                R_s2_time[i] = (R_s2l_tdc[i] + R_s2r_tdc[i]) / 2. * TDCtoT * 1E-9;
-              }
-              else{ R_s2_time[i] = 9999; }
-            }
 
             int R_s2pad    = (int)tr->R_s2_trpad[rt];
             double R_p     = tr->R_tr_p[rt];
@@ -361,8 +335,8 @@ void ana::Roop(){
 
             double L_rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[40]) * TDCtoT;
             double R_rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9] ) * TDCtoT;
-            double L_tgt    = (L_rftime - L_s2_time[L_s2pad]) - tr->L_tr_pathl[lt]/L_betae/c;
-            double R_tgt    = (R_rftime - R_s2_time[R_s2pad]) - tr->R_tr_pathl[rt]/R_betaK/c;
+            double L_tgt    = (L_rftime - L_s2_t[L_s2pad]) - tr->L_tr_pathl[lt]/L_betae/c;
+            double R_tgt    = (R_rftime - R_s2_t[R_s2pad]) - tr->R_tr_pathl[rt]/R_betaK/c;
             double ct = L_tgt - R_tgt;
             h_ct->Fill( ct );
             h_Ls2x_ct ->Fill( tr->L_s2_trx[lt], ct );
@@ -679,9 +653,9 @@ void ana::MakeHist(){
 /////////////
 //// BPM ////
 /////////////
-  h_rbay_rbax = new TH2D("h_rbay_rbax","h_rbay_rbax",200,-20,20,200,-20,20);
-  h_rbby_rbbx = new TH2D("h_rbby_rbbx","h_rbby_rbbx",200,-20,20,200,-20,20);
-  h_rby_rbx   = new TH2D("h_rby_rbx"  ,"h_rby_rbx"  ,200,-20,20,200,-20,20);
+  h_rbay_rbax = new TH2D("h_rbay_rbax","h_rbay_rbax",200,-4,4,200,-3,7);
+  h_rbby_rbbx = new TH2D("h_rbby_rbbx","h_rbby_rbbx",200,-4,4,200,-3,7);
+  h_rby_rbx   = new TH2D("h_rby_rbx"  ,"h_rby_rbx"  ,200,-6,4,200,-6,4);
   set->SetTH2(h_rbay_rbax,"BPM A"         ,"X","Y");
   set->SetTH2(h_rbby_rbbx,"BPM B"         ,"X","Y");
   set->SetTH2(h_rby_rbx  ,"Raster Pattern","X","Y");
@@ -693,18 +667,18 @@ void ana::MakeHist(){
   set->SetTH1(h_L_trig,"Trigger Flag","Trig No.","Counts");
 
   h_L_tr_n      = new TH1D("h_L_tr_n"     ,"h_L_tr_n"     ,30 ,    0,  30);
-  h_L_tr_ch2    = new TH1D("h_L_tr_ch2"   ,"h_L_tr_ch2"   ,400,    0,  10);
+  h_L_tr_ch2    = new TH1D("h_L_tr_ch2"   ,"h_L_tr_ch2"   ,400,    0,0.05);
   h_L_p         = new TH1D("h_L_p"        ,"h_L_p"        ,400,    1,   3);
   h_L_pathl     = new TH1D("h_L_pathl"    ,"h_L_pathl"    ,400,   20,  30);
   h_L_px        = new TH1D("h_L_px"       ,"h_L_px"       ,400,    0,   2);
   h_L_py        = new TH1D("h_L_py"       ,"h_L_px"       ,400,   -1,   1);
   h_L_pz        = new TH1D("h_L_pz"       ,"h_L_px"       ,400,    1,   3);
-  h_L_tgy       = new TH1D("h_L_tgy"      ,"h_L_tgy"      ,400,   -1,   1);
+  h_L_tgy       = new TH1D("h_L_tgy"      ,"h_L_tgy"      ,400, -0.5, 0.5);
   h_L_tgth      = new TH1D("h_L_tgth"     ,"h_L_tgth"     ,400, -0.2, 0.2);
   h_L_tgph      = new TH1D("h_L_tgph"     ,"h_L_tgph"     ,400, -0.2, 0.2);
   h_L_vx        = new TH1D("h_L_vx"       ,"h_L_vx"       ,400,-0.01,0.01);
   h_L_vy        = new TH1D("h_L_vy"       ,"h_L_vy"       ,400,-0.01,0.01);
-  h_L_vz        = new TH1D("h_L_vz"       ,"h_L_vz"       ,400,   -1,  1);
+  h_L_vz        = new TH1D("h_L_vz"       ,"h_L_vz"       ,400, -0.5, 0.5);
   h_L_y_x       = new TH2D("h_L_y_x"      ,"h_L_y_x"      ,200,   -1,  1 ,200,-0.2,0.2);
   h_L_th_x      = new TH2D("h_L_th_x"     ,"h_L_th_x"     ,200,   -1,  1 ,200,-0.3,0.3);
   h_L_ph_y      = new TH2D("h_L_ph_y"     ,"h_L_ph_y"     ,200, -0.2, 0.2,200,-0.2,0.2);
@@ -762,7 +736,7 @@ void ana::MakeHist(){
   h_L_s2pad_tgt = new TH2D("h_L_s2pad_tgt","h_L_s2pad_tgt" ,200,0,1000, 16,   0, 16);
   h_L_p_tgt     = new TH2D("h_L_p_tgt"    ,"h_L_p_tgt"     ,200,0,1000,200,   1,  3);
   h_L_pathl_tgt = new TH2D("h_L_pathl_tgt","h_L_pathl_tgt" ,200,0,1000,200,  20, 30);
-  h_L_tgy_tgt   = new TH2D("h_L_tgy_tgt"  ,"h_L_tgy_tgt"   ,200,0,1000,200,  -1,  1);
+  h_L_tgy_tgt   = new TH2D("h_L_tgy_tgt"  ,"h_L_tgy_tgt"   ,200,0,1000,200,-0.5,0.5);
   h_L_tgth_tgt  = new TH2D("h_L_tgth_tgt" ,"h_L_tgth_tgt"  ,200,0,1000,200,-0.2,0.2);
   h_L_tgph_tgt  = new TH2D("h_L_tgph_tgt" ,"h_L_tgph_tgt"  ,200,0,1000,200,-0.2,0.2);
   h_L_x_tgt     = new TH2D("h_L_x_tgt"    ,"h_L_x_tgt"     ,200,0,1000,200,  -1,  1);
@@ -784,20 +758,20 @@ void ana::MakeHist(){
   set->SetTH1(h_R_trig,"Trigger Flag","Trig No.","Counts");
 
   h_R_tr_n      = new TH1D("h_R_tr_n"     ,"h_R_tr_n"     , 30,    0,  30); 
-  h_R_tr_ch2    = new TH1D("h_R_tr_ch2"   ,"h_R_tr_ch2"   ,400,    0,  10); 
+  h_R_tr_ch2    = new TH1D("h_R_tr_ch2"   ,"h_R_tr_ch2"   ,400,    0,0.05); 
   h_R_p         = new TH1D("h_R_p"        ,"h_R_p"        ,400,    1,   3); 
   h_R_pathl     = new TH1D("h_R_pathl"    ,"h_R_pathl"    ,400,   20,  30); 
   h_R_px        = new TH1D("h_R_px"       ,"h_R_px"       ,400,    0,   2); 
   h_R_py        = new TH1D("h_R_py"       ,"h_R_px"       ,400,   -1,   1); 
   h_R_pz        = new TH1D("h_R_pz"       ,"h_R_px"       ,400,    1,   3); 
-  h_R_tgy       = new TH1D("h_R_tgy"      ,"h_R_tgy"      ,400,   -1,   1); 
+  h_R_tgy       = new TH1D("h_R_tgy"      ,"h_R_tgy"      ,400, -0.5, 0.5); 
   h_R_tgth      = new TH1D("h_R_tgth"     ,"h_R_tgth"     ,400, -0.2, 0.2); 
   h_R_tgph      = new TH1D("h_R_tgph"     ,"h_R_tgph"     ,400, -0.2, 0.2); 
   h_R_vx        = new TH1D("h_R_vx"       ,"h_R_vx"       ,400,-0.01,0.01); 
   h_R_vy        = new TH1D("h_R_vy"       ,"h_R_vy"       ,400,-0.01,0.01); 
-  h_R_vz        = new TH1D("h_R_vz"       ,"h_R_vz"       ,400,-1   ,1   ); 
-  h_R_y_x       = new TH2D("h_R_y_x"      ,"h_R_y_x"      ,200,-1   ,1  ,200,-0.2,0.2);
-  h_R_th_x      = new TH2D("h_R_th_x"     ,"h_R_th_x"     ,200,-1   ,1  ,200,-0.3,0.3);
+  h_R_vz        = new TH1D("h_R_vz"       ,"h_R_vz"       ,400, 0.5, 0.5); 
+  h_R_y_x       = new TH2D("h_R_y_x"      ,"h_R_y_x"      ,200,   -1,  1,200,-0.2,0.2);
+  h_R_th_x      = new TH2D("h_R_th_x"     ,"h_R_th_x"     ,200,   -1,  1,200,-0.3,0.3);
   h_R_ph_y      = new TH2D("h_R_ph_y"     ,"h_R_ph_y"     ,200,-0.2 ,0.2,200,-0.2,0.2);
   h_R_tgph_tgth = new TH2D("h_R_tgph_tgth","h_R_tgph_tgth",200, -0.2, 0.2,200,-0.2,0.2);
   set->SetTH1(h_R_tr_n  ,"No. of Tracks"           ,"No. of Tracks"   ,"Counts");
@@ -869,7 +843,7 @@ void ana::MakeHist(){
   h_R_s2pad_tgt = new TH2D("h_R_s2pad_tgt","h_R_s2pad_tgt" ,200,0,1000, 16,   0, 16);
   h_R_p_tgt     = new TH2D("h_R_p_tgt"    ,"h_R_p_tgt"     ,200,0,1000,200,   1,  3);
   h_R_pathl_tgt = new TH2D("h_R_pathl_tgt","h_R_pathl_tgt" ,200,0,1000,200,  20, 30);
-  h_R_tgy_tgt   = new TH2D("h_R_tgy_tgt"  ,"h_R_tgy_tgt"   ,200,0,1000,200,  -1,  1);
+  h_R_tgy_tgt   = new TH2D("h_R_tgy_tgt"  ,"h_R_tgy_tgt"   ,200,0,1000,200,-0.5,0.5);
   h_R_tgth_tgt  = new TH2D("h_R_tgth_tgt" ,"h_R_tgth_tgt"  ,200,0,1000,200,-0.2,0.2);
   h_R_tgph_tgt  = new TH2D("h_R_tgph_tgt" ,"h_R_tgph_tgt"  ,200,0,1000,200,-0.2,0.2);
   h_R_x_tgt     = new TH2D("h_R_x_tgt"    ,"h_R_x_tgt"     ,200,0,1000,200,  -1,  1);
@@ -903,23 +877,23 @@ void ana::MakeHist(){
   h_Rtgph_mm = new TH2D("h_Rtgph_mm","h_Rtgph_mm",200,-0.05,0.25,200, -0.2, 0.2); 
   h_Rvx_mm   = new TH2D("h_Rvx_mm"  ,"h_Rvx_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
   h_Rvy_mm   = new TH2D("h_Rvy_mm"  ,"h_Rvy_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
-  h_Rvz_mm   = new TH2D("h_Rvz_mm"  ,"h_Rvz_mm"  ,200,-0.05,0.25,200,-1   ,   1); 
-  h_Rx_mm    = new TH2D("h_Rx_mm"   ,"h_Rx_mm"   ,200,-0.05,0.25,200,-1   ,   1); 
-  h_Ry_mm    = new TH2D("h_Ry_mm"   ,"h_Ry_mm"   ,200,-0.05,0.25,200,-0.2 , 0.2); 
-  h_Rth_mm   = new TH2D("h_Rth_mm"  ,"h_Rth_mm"  ,200,-0.05,0.25,200,-0.3 , 0.3); 
-  h_Rph_mm   = new TH2D("h_Rph_mm"  ,"h_Rph_mm"  ,200,-0.05,0.25,200,-0.2 , 0.2); 
-  h_Lp_mm    = new TH2D("h_Lp_mm"   ,"h_Lp_mm"   ,200,-0.05,0.25,200,1    ,   3); 
-  h_Ll_mm    = new TH2D("h_Ll_mm"   ,"h_Ll_mm"   ,200,-0.05,0.25,200,20   ,  30); 
-  h_Ltgy_mm  = new TH2D("h_Ltgy_mm" ,"h_Ltgy_mm" ,200,-0.05,0.25,200,20   ,  30); 
-  h_Ltgth_mm = new TH2D("h_Ltgth_mm","h_Ltgth_mm",200,-0.05,0.25,200,-0.2 , 0.2); 
-  h_Ltgph_mm = new TH2D("h_Ltgph_mm","h_Ltgph_mm",200,-0.05,0.25,200,-0.2 , 0.2); 
+  h_Rvz_mm   = new TH2D("h_Rvz_mm"  ,"h_Rvz_mm"  ,200,-0.05,0.25,200, -0.5, 0.5); 
+  h_Rx_mm    = new TH2D("h_Rx_mm"   ,"h_Rx_mm"   ,200,-0.05,0.25,200,   -1,   1); 
+  h_Ry_mm    = new TH2D("h_Ry_mm"   ,"h_Ry_mm"   ,200,-0.05,0.25,200, -0.2, 0.2); 
+  h_Rth_mm   = new TH2D("h_Rth_mm"  ,"h_Rth_mm"  ,200,-0.05,0.25,200, -0.3, 0.3); 
+  h_Rph_mm   = new TH2D("h_Rph_mm"  ,"h_Rph_mm"  ,200,-0.05,0.25,200, -0.2, 0.2); 
+  h_Lp_mm    = new TH2D("h_Lp_mm"   ,"h_Lp_mm"   ,200,-0.05,0.25,200,    1,   3); 
+  h_Ll_mm    = new TH2D("h_Ll_mm"   ,"h_Ll_mm"   ,200,-0.05,0.25,200,   20,  30); 
+  h_Ltgy_mm  = new TH2D("h_Ltgy_mm" ,"h_Ltgy_mm" ,200,-0.05,0.25,200,   20,  30); 
+  h_Ltgth_mm = new TH2D("h_Ltgth_mm","h_Ltgth_mm",200,-0.05,0.25,200, -0.2, 0.2); 
+  h_Ltgph_mm = new TH2D("h_Ltgph_mm","h_Ltgph_mm",200,-0.05,0.25,200, -0.2, 0.2); 
   h_Lvx_mm   = new TH2D("h_Lvx_mm"  ,"h_Lvx_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
   h_Lvy_mm   = new TH2D("h_Lvy_mm"  ,"h_Lvy_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
-  h_Lvz_mm   = new TH2D("h_Lvz_mm"  ,"h_Lvz_mm"  ,200,-0.05,0.25,200,-1   ,   1); 
-  h_Lx_mm    = new TH2D("h_Lx_mm"   ,"h_Lx_mm"   ,200,-0.05,0.25,200,-1   ,   1); 
-  h_Ly_mm    = new TH2D("h_Ly_mm"   ,"h_Ly_mm"   ,200,-0.05,0.25,200,-0.2 , 0.2); 
-  h_Lth_mm   = new TH2D("h_Lth_mm"  ,"h_Lth_mm"  ,200,-0.05,0.25,200,-0.3 , 0.3); 
-  h_Lph_mm   = new TH2D("h_Lph_mm"  ,"h_Lph_mm"  ,200,-0.05,0.25,200,-0.2 , 0.2); 
+  h_Lvz_mm   = new TH2D("h_Lvz_mm"  ,"h_Lvz_mm"  ,200,-0.05,0.25,200, -0.5, 0.5); 
+  h_Lx_mm    = new TH2D("h_Lx_mm"   ,"h_Lx_mm"   ,200,-0.05,0.25,200,   -1,   1); 
+  h_Ly_mm    = new TH2D("h_Ly_mm"   ,"h_Ly_mm"   ,200,-0.05,0.25,200, -0.2, 0.2); 
+  h_Lth_mm   = new TH2D("h_Lth_mm"  ,"h_Lth_mm"  ,200,-0.05,0.25,200, -0.3, 0.3); 
+  h_Lph_mm   = new TH2D("h_Lph_mm"  ,"h_Lph_mm"  ,200,-0.05,0.25,200, -0.2, 0.2); 
   set->SetTH1(h_ct      ,"Coincidence Time"                      ,"Cointime (ns)"           ,"Counts");
   set->SetTH2(h_Rs2x_ct ,"RHRS S2 X-pos v.s Cointime"            ,"Cointime (ns)"           ,"X (m)");
   set->SetTH2(h_Ls2x_ct ,"LHRS S2 X-pos v.s Cointime"            ,"Cointime (ns)"           ,"X (m)");
@@ -986,6 +960,15 @@ bool ana::Close(){
 
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 void ana::ReadParam(string name){
+
+  L_s0l_toff = 10.;  L_s0r_toff = 0.;
+  R_s0l_toff = 0.;  R_s0r_toff = 0.;
+  for(int i=0;i<16;i++){
+    L_s2l_toff[i] = 0.;
+    L_s2r_toff[i] = 0.;
+    R_s2l_toff[i] = 0.;
+    R_s2r_toff[i] = 0.;
+  }
 
 }
 

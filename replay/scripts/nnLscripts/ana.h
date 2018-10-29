@@ -38,6 +38,9 @@ class ana
 
     bool GetEntry(int n);
 
+    double CalcF1TDC(double tdc, double toff)   { return (tdc-toff)*0.05623;  }
+    double CalcFADCTDC(double tdc, double toff) { return (tdc-toff);  }
+
     int LineID;
     int TextID;
     void DrawLine(double xmin, double ymin, double xmax, double ymax, int color=2, int style=1);
@@ -117,6 +120,17 @@ class ana
     TH2D *h_Rp_mm, *h_Rl_mm, *h_Rtgy_mm, *h_Rtgth_mm, *h_Rtgph_mm;
     TH2D *h_Rvx_mm, *h_Rvy_mm, *h_Rvz_mm;
     TH2D *h_Rx_mm, *h_Ry_mm, *h_Rth_mm, *h_Rph_mm;
+
+  private:
+    double L_s0l_toff    , L_s0r_toff;
+    double L_s2l_toff[16], L_s2r_toff[16];
+    double R_s0l_toff    , R_s0r_toff;
+    double R_s2l_toff[16], R_s2r_toff[16];
+
+    double L_s0l_t    , L_s0r_t    , L_s0_t;
+    double L_s2l_t[16], L_s2r_t[16], L_s2_t[16];
+    double R_s0l_t    , R_s0r_t    , R_s0_t;
+    double R_s2l_t[16], R_s2r_t[16], R_s2_t[16];
 
 };
 

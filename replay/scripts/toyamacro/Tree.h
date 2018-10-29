@@ -205,7 +205,9 @@ public:
   //F1TDC//
   /////////
   double RTDC_F1FirstHit[RF1TDC];
+  double RS2T_F1TDC[RS2], RS2B_F1TDC[RS2];
   double RS2_F1time[RS2], RS2T_F1time[RS2], RS2B_F1time[RS2];
+  double RS0T_F1TDC[RS2], RS0B_F1TDC[RS2];
   double RS0_F1time[RS0], RS0T_F1time[RS0], RS0B_F1time[RS0];
   double RRF_F1time;
   double LTDC_F1FirstHit[LF1TDC];
