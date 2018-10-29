@@ -11,11 +11,12 @@ block R.a2.*
 
 block DR.*
 # F1tdc and VETROC
-variable RTDC.F1nhits
-variable RTDC.F1Warnings
-variable RTDC.F1FirstHit
+block RTDC.*
+#variable RTDC.F1nhits
+#variable RTDC.F1Warnings
+#variable RTDC.F1FirstHit
 #variable RightBCMtHit
-variable RTDC.F1AllHits_014
+#variable RTDC.F1AllHits_014
 #variable vfnhits
 #variable vfFirstHit
 #variable vfAllHits_126
