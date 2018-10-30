@@ -5,7 +5,7 @@
  int chmax=17; // channel of S2 PMT 
 // int ch=8;// defolt ch 8;
  double tdc_time=56.25e-12;//TDC converse ch->sec [sec/ch]
-//int ch=8;
+int ch=8;
 bool s2=true;
 
 //====== Define Function ===========//
@@ -46,8 +46,6 @@ using namespace std;
 #include "TRandom.h"
 
 
-
-
 //=====================================================================//
 //============================= Main =================================//
 //===================================================================//
@@ -58,14 +56,9 @@ int main(int argc, char** argv){
 //-------- TTree data input ---------------//
   TChain*  T=new TChain("T");
 
-  int nrun,ch;
-  cout<<"run number :";
-  cin>>nrun;
-  cout<<"S2 Channel :";
-  cin>>ch;
-  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));
-bool rarm;
- if(nrun>90000){rarm=true;}else{rarm=false;}
+
+  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",94003));
+
  gStyle->SetOptFit(0001);
  //=================================================//
  //========== Get Tree Branch ======================//
@@ -78,7 +71,7 @@ bool rarm;
   double s2radc[max];
   double s2ladc[max];
   int trig;
-
+  bool rarm=true;
  //============= Set Branch Status ==================//
   T->SetBranchStatus("*",0);
   T->SetBranchStatus("RTDC.F1FirstHit",1);
@@ -256,6 +249,8 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //========== TSlicesY Get Correction Parameters ======================//
  //====================================================================//
 
+
+
     for(int i=0;i<chmax;i++){  
      if(i==ch){
  //------ FitSlicesY -----------------// 
@@ -294,36 +289,35 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
     
 
 
-
  //===============================================================//
  //=========== Fill w/ Time-Walk Correciton ======================//
  //===============================================================//
 
-    //itallation parameters //
-    int ital_a=10;
-    int ital_b=10;
+    //iterlation parameters //
+    int iter_a=10;
+    int iter_b=10;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
-    double sig_ital[chmax][ital_a][ital_b],sig_c[chmax];
+    double sig_iter[chmax][iter_a][iter_b],sig_c[chmax];
     for(int i=0;i<chmax;i++){ sig_c[i]=100.,wamin[i]=100.,wbmin[i]=100.;}
-    TH1F* htof_ital[chmax][ital_a][ital_b];
+    TH1F* htof_iter[chmax][iter_a][iter_b];
     TF1* ftof_c[chmax];
-    TH2F* htof_adc_italr[chmax][ital_a][ital_b];
-    TH2F* htof_adc_itall[chmax][ital_a][ital_b];
-    TH2F* hital[chmax];
+    TH2F* htof_adc_iterr[chmax][iter_a][iter_b];
+    TH2F* htof_adc_iterl[chmax][iter_a][iter_b];
+    TH2F* hiter[chmax];
 
     for(int i=0;i<chmax;i++){ 
      if(i==ch){
- //------------ TOF italtion  hist -------------//
-       hital[i]=new TH2F(Form("hital[%d]",i),Form("TOF Itallation hist ch %d",i),ital_a,0,ital_a,ital_b,0,ital_b);
+ //------------ TOF itertion  hist -------------//
+       hiter[i]=new TH2F(Form("hiter[%d]",i),Form("TOF Iterlation hist ch %d",i),iter_a,0,iter_a,iter_b,0,iter_b);
 ftof_c[i]=new TF1(Form("ftof_c[%d]",i),"gaus",min_tof_c[i],max_tof_c[i]);
-       for(int a=0;a<ital_a;a++){
-        for(int b=0;b<ital_b;b++){
+       for(int a=0;a<iter_a;a++){
+        for(int b=0;b<iter_b;b++){
 
- htof_ital[i][a][b]=new TH1F(Form("htof_ital[%d][%d][%d]",i,a,b),Form("TOF with Scinti CH %d, w/ correlation ",i),bin_tof_c[i],min_tof_c[i],max_tof_c[i]); 
+ htof_iter[i][a][b]=new TH1F(Form("htof_iter[%d][%d][%d]",i,a,b),Form("TOF with Scinti CH %d, w/ correlation ",i),bin_tof_c[i],min_tof_c[i],max_tof_c[i]); 
   //---- TOF vs ADC 2D Hist w/ Time-Walk Correction ---//
- htof_adc_italr[i][a][b]=new TH2F(Form("htof_adc_italr[%d][%d][%d]",i,a,b),Form("TOF vs Scinti CH %d,R-PMT adc w/ correlation ",i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
-htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("TOF vs Scinti CH %d,L-PMT adc w/ correlation ",i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
+ htof_adc_iterr[i][a][b]=new TH2F(Form("htof_adc_iterr[%d][%d][%d]",i,a,b),Form("TOF vs Scinti CH %d,R-PMT adc w/ correlation ",i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
+htof_adc_iterl[i][a][b]=new TH2F(Form("htof_adc_iterl[%d][%d][%d]",i,a,b),Form("TOF vs Scinti CH %d,L-PMT adc w/ correlation ",i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
 
 
          for(int k=0;k<evnt;k++){ // Fill Entr
@@ -361,8 +355,8 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   //---- Time-Walk Correction Parameters ---//
 
  if(rarm){
-    corr_s0r[i]=8.26e-8*1./S0a_a; //#94003 calb data from hrs_S0_f1twcorr 
-    corr_s0l[i]=8.7e-8*1./S0b_a;  //#94003 calb data from hrs_S0_f1twcorr
+  corr_s0r[i]=8.26e-8*1./S0a_a; //#94003 calb data from hrs_S0_f1twcorr 
+  corr_s0l[i]=8.7e-8*1./S0b_a;  //#94003 calb data from hrs_S0_f1twcorr
   }
  
   corr_r[i]=twp_r[i][0]*1./S2r_a[i];
@@ -373,29 +367,29 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i]-corr_s0r[i]-corr_s0l[i];
   //------- Fill Hist w/ Time-Walk Correction ------//
 
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_ital[i][a][b]->Fill(tof_c[i]);
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_italr[i][a][b]->Fill(S2r_a[i],tof_c[i]);
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_itall[i][a][b]->Fill(S2l_a[i],tof_c[i]);
+  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_iter[i][a][b]->Fill(tof_c[i]);
+  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_iterr[i][a][b]->Fill(S2r_a[i],tof_c[i]);
+  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_iterl[i][a][b]->Fill(S2l_a[i],tof_c[i]);
 
       } //END Fill
 
 
- htof_ital[i][a][b]->Fit(ftof_c[i]);
- sig_ital[i][a][b]=ftof_c[i]->GetParameter(2);
- if(sig_ital[i][a][b]>1.0e-10){
- if(sig_c[i]>sig_ital[i][a][b]){
- sig_c[i]=sig_ital[i][a][b]; 
+ htof_iter[i][a][b]->Fit(ftof_c[i]);
+ sig_iter[i][a][b]=ftof_c[i]->GetParameter(2);
+ if(sig_iter[i][a][b]>1.0e-10){
+ if(sig_c[i]>sig_iter[i][a][b]){
+ sig_c[i]=sig_iter[i][a][b]; 
  amin[i]=a; bmin[i]=b;
  wamin[i]=wa[i];wbmin[i]=wb[i];
- htof_c[i]=(TH1F*)htof_ital[i][a][b]->Clone(); 
+ htof_c[i]=(TH1F*)htof_iter[i][a][b]->Clone(); 
 }
  }
- cout<<"i "<<i<<": ital_a "<<a+1<<Form("/%d :ital_b ",ital_a)<<b+1<<Form("/%d",ital_b)<<endl;
- cout<<"sig_ital :"<<sig_ital[i][a][b]<<endl;
+ cout<<"i "<<i<<": iter_a "<<a+1<<Form("/%d :iter_b ",iter_a)<<b+1<<Form("/%d",iter_b)<<endl;
+ cout<<"sig_iter :"<<sig_iter[i][a][b]<<endl;
  cout<<"sig_c :"<<sig_c[i]<<endl;
  cout<<"amin "<<amin[i]<<" : bmin "<<bmin[i]<<endl;
  cout<<"wamin "<<wamin[i]<<" : wbmin "<<wbmin[i]<<endl;
- hital[i]->Fill(a,b,sig_ital[i][a][b]);
+ hiter[i]->Fill(a,b,sig_iter[i][a][b]);
 
 	}
        }
@@ -409,7 +403,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
     //=============< Draw Hist >===============================// 
     //=========================================================//
 
-    TCanvas* cital[chmax];
+    TCanvas* citer[chmax];
     bool draw=true;
     for(int i=0;i<chmax;i++){ 
      if(i==ch && draw){
@@ -435,17 +429,17 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
       cw[i]->Divide(1,2);
       cw[i]->cd(1);
       // htof_adc_rc[i]->Draw();
-      htof_adc_italr[i][amin[i]][bmin[i]]->Draw();
+      htof_adc_iterr[i][amin[i]][bmin[i]]->Draw();
       cw[i]->cd(2);
-       htof_adc_itall[i][amin[i]][bmin[i]]->Draw();
+       htof_adc_iterl[i][amin[i]][bmin[i]]->Draw();
       //htof_adc_rc[i]->Draw();
       ctof[i]->cd(2);
       // htof_c[i]->Draw();
-      htof_ital[i][amin[i]][bmin[i]]->Draw();
-    //========= TOF Itallation Hist =========//
-   cital[i]=new TCanvas(Form("cital[%d]",i),Form("cital[%d]",i));
-   cital[i]->cd(1);
-   hital[i]->Draw("colz");
+      htof_iter[i][amin[i]][bmin[i]]->Draw();
+    //========= TOF Iterlation Hist =========//
+   citer[i]=new TCanvas(Form("citer[%d]",i),Form("citer[%d]",i));
+   citer[i]->cd(1);
+   hiter[i]->Draw("colz");
      
 
     }
@@ -493,7 +487,7 @@ double range_para(int i,int j){
   double par[chmax][npara];
   double param;
  
-  //=== Inital parameters========//
+  //=== Initer parameters========//
   for(int k=0;k<chmax;k++){
    
    par[k][0]=-4e-9, par[k][1]=4e-9, par[k][2]=-0.1e-7, par[k][3]=0.1e-7;//TOF
