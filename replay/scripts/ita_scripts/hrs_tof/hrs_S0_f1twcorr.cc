@@ -112,6 +112,7 @@ int main(int argc, char** argv){
   TH1F* htof[chmax];
   TH2F* htof_adc_r[chmax];
   TH2F* htof_adc_l[chmax];
+  TF1* ftof[chmax];
   //--- Parameters ---//
   int evnt;
   double tof[chmax];
@@ -122,6 +123,7 @@ int main(int argc, char** argv){
   double S0a_t, S0b_t,S2l_t[chmax],S2r_t[chmax];
   double L1,L2;
   double S0a_a,S0b_a,S2l_a[chmax],S2r_a[chmax];
+  double sig[chmax];
   // Cut conditon //
   bool tdc_cut[chmax];
   bool adc_cut[chmax];
@@ -163,6 +165,8 @@ int main(int argc, char** argv){
       htof_adc_r[i]=new TH2F(Form("htof_adc_r[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d R-PMT ADC w/o Time-Walk Correction",i,i),bin_adc[i],min_adc[i],max_adc[i],bin_tof[i],min_tof[i],max_tof[i]);
       htof_adc_l[i]=new TH2F(Form("htof_adc_l[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d L-PMT ADC w/o Time-Walk Correction",i,i),bin_adc[i],min_adc[i],max_adc[i],bin_tof[i],min_tof[i],max_tof[i]);
 
+ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
+
       //------------ TSlicesY Parameters ----------------------//
       cslice[i]=new TCanvas(Form("cslice[%d]",i),Form("cslice[%d]",i));
       ftof_gaus[i]=new TF1(Form("ftof_gaus[%d]",i),"gaus",min_tof[i],max_tof[i]);
@@ -177,7 +181,6 @@ int main(int argc, char** argv){
     htof_c[i]=new TH1F(Form("htof_c[%d]",i),Form("S2ch%d -S0 TOF w/ Time-Walk Correction",i),bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
     htof_adc_rc[i]=new TH2F(Form("htof_adc_rc[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d R-PMT ADC w/ Time-Walk Correction",i,i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
       htof_adc_lc[i]=new TH2F(Form("htof_adc_lc[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d L-PMT ADC w/ Time-Walk Correction",i,i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
-
  cw[i]=new TCanvas(Form("cw[%d]",i),Form("cw[%d]",i)); 
      
     }
@@ -230,8 +233,10 @@ int main(int argc, char** argv){
   if(tdc_cut[i] && trig_cut&& tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_r[i]->Fill(S0a_a,tof[i]);
   if(tdc_cut[i] && trig_cut&& tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_l[i]->Fill(S0b_a,tof[i]);
 
+
       }
-    
+      htof[i]->Fit(Form("ftof[%d]",i));
+      sig[i]=ftof[i]->GetParameter(2);
     }
   }
 
@@ -288,8 +293,8 @@ int main(int argc, char** argv){
  //===============================================================//
 
     //itallation parameters //
-    int ital_a=10;
-    int ital_b=10;
+    int ital_a=3;
+    int ital_b=3;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     double sig_ital[chmax][ital_a][ital_b],sig_c[chmax];
@@ -348,8 +353,8 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   // corr_l[i]=twp_l[i][0]*1./S0b_a-twp_l[i][1];
   corr_r[i]=twp_r[i][0]*1./S0a_a;
   corr_l[i]=twp_l[i][0]*1./S0b_a;
-	wa[i]=0.0+0.1*a;
-	wb[i]=0.0+0.1*b;
+	wa[i]=0.66+0.01*a;
+	wb[i]=0.86+0.01*b;
 	tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
   tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i];
   //------- Fill Hist w/ Time-Walk Correction ------//
@@ -436,6 +441,25 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
     }
     
     cout<<"Draw is done "<<endl;
+
+
+
+//========= Comment Out ========================//
+    bool comment=true;
+    for(int i=0;i<chmax;i++){
+   if(comment&& i==ch){
+ cout<<"======== Comment Out =============="<<endl;
+ cout<<"TOF with S2 CH"<<ch<<" w/o Time-Walk sigma : "<<sig[i]<<endl;
+ cout<<"TOF with S2 CH"<<ch<<" w/ Time-Walk sigma : "<<sig_c[i]<<endl;
+ cout<<"twp_r[i][0] min: "<<twp_r[i][0]*wamin[i]<<endl;
+ cout<<"twp_l[i][0] min: "<<twp_l[i][0]*wbmin[i]<<endl;
+ cout<<"amin "<<amin[i]<<" : bmin "<<bmin[i]<<endl;
+ cout<<Form("sig_min_c [wa=%lf][wb=%lf] : ",wamin[i],wbmin[i])<<sig_c[i]<<endl;
+ // cout<<"htof_min_c[ch] Event number : "<<ital_ent<<endl;
+
+   }
+    }
+
 
  theApp->Run();
  return 0;
