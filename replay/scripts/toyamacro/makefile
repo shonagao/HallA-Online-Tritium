@@ -21,12 +21,15 @@ TARGET4=     mk_twc_tree
 OBJS4=       mk_twc_tree.o Tree.o ParamMan.o
 TARGET5=     draw_s2tof
 OBJS5=       draw_s2tof.o Tree.o ParamMan.o Setting.o
+TARGET6=     fbus_t0_rough
+OBJS6=       fbus_t0_rough.o Tree.o ParamMan.o Setting.o
 
 all: $(TARGET1) \
      $(TARGET2) \
      $(TARGET3) \
      $(TARGET4) \
      $(TARGET5) \
+     $(TARGET6) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -44,6 +47,9 @@ $(TARGET4): $(patsubst %,$(LIBDIR)/%,$(OBJS4))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET5): $(patsubst %,$(LIBDIR)/%,$(OBJS5))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET6): $(patsubst %,$(LIBDIR)/%,$(OBJS6))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 

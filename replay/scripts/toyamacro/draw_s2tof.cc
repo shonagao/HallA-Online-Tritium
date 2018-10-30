@@ -144,9 +144,9 @@ int main(int argc, char** argv){
     tr->tree->GetEntry(n);
 
     for(int s2seg=0;s2seg<16;s2seg++){
-      if(lr==0 && (int)tr->L_s0_t_pads[0]==0 && s2seg==(int)tr->L_s2_t_pads[0]){//Left HRL
-        s0time = s2ns*tr->R_s0_time[0];
-        s2time = s2ns*tr->R_s2_time[s2seg];
+      if(lr==0 && tr->L_s0_rt[0]>1. && tr->L_s0_lt[0]>1. && tr->L_s2_rt[s2seg]>1. && tr->L_s2_lt[s2seg]>1.){//Left HRL
+        s0time = s2ns*tr->L_s0_time[0];
+        s2time = s2ns*tr->L_s2_time[s2seg];
         tof    = s2time - s0time;
         s0at   = tr->L_s0_ra_p[0];
         s0ab   = tr->L_s0_la_p[0];
