@@ -12,6 +12,8 @@ replay/*.jpg
 replay/Time_check/*.pdf
 replay/scripts/FADC_decode/*
 replay/scripts/list/*.pdf
+repalay/scripts/ita_scripts/hrs_tof/pdf*
+repaly/t2root/*
 
 **/*~
 **/*.o
