@@ -5,8 +5,8 @@
  int chmax=17; // channel of S2 PMT 
 // int ch=8;// defolt ch 8;
  double tdc_time=56.25e-12;//TDC converse ch->sec [sec/ch]
-//int ch=8;
-bool s2=true;
+int ch=8;
+bool s0=true;
 
 //====== Define Function ===========//
 double range_para(int i,int j);
@@ -46,8 +46,6 @@ using namespace std;
 #include "TRandom.h"
 
 
-
-
 //=====================================================================//
 //============================= Main =================================//
 //===================================================================//
@@ -58,14 +56,11 @@ int main(int argc, char** argv){
 //-------- TTree data input ---------------//
   TChain*  T=new TChain("T");
 
-  int nrun,ch;
-  cout<<"run number :";
-  cin>>nrun;
-  cout<<"S2 Channel :";
-  cin>>ch;
-  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));
-bool rarm;
- if(nrun>90000){rarm=true;}else{rarm=false;}
+  //  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",93942));
+   //  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",93941));
+  //  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",93944));
+  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",94003));
+
  gStyle->SetOptFit(0001);
  //=================================================//
  //========== Get Tree Branch ======================//
@@ -78,7 +73,7 @@ bool rarm;
   double s2radc[max];
   double s2ladc[max];
   int trig;
-
+  bool rarm=true;
  //============= Set Branch Status ==================//
   T->SetBranchStatus("*",0);
   T->SetBranchStatus("RTDC.F1FirstHit",1);
@@ -128,13 +123,11 @@ bool rarm;
   double S0a_t, S0b_t,S2l_t[chmax],S2r_t[chmax];
   double L1,L2;
   double S0a_a,S0b_a,S2l_a[chmax],S2r_a[chmax];
+  double sig[chmax];
   // Cut conditon //
   bool tdc_cut[chmax];
   bool adc_cut[chmax];
   bool trig_cut;
-  bool tof_cut[chmax];
-  double tof_cut_start[chmax],tof_cut_end[chmax];
-  double sig[chmax];
   //======= TSlicesY Paramters =======//
   TCanvas* cslice[chmax];
   TH1F* hslice_tof_r[chmax];
@@ -152,17 +145,17 @@ bool rarm;
   TH2F *htof_adc_lc[chmax];
   double tof_c[chmax];
   double corr_r[chmax],corr_l[chmax];
-  double corr_s0r[chmax],corr_s0l[chmax];
+
 
   //=========== Definition Functions =============================//
 
   for(int i=0;i<chmax;i++){
     if(i==ch){
       //------------ w/o Time-Walk Correction Parameters ----------------------//
-      //     min_tof[i]=-2.5e-8;   max_tof[i]=-1.5e-8;//1.0e-6;
-        min_tof[i]=0.0;   max_tof[i]=3.0e-8;//1.0e-6;
+      // min_tof[i]=-2.5e-8;   max_tof[i]=-1.5e-8;//1.0e-6;
+       min_tof[i]=1.0e-8;   max_tof[i]=3.0e-8;//1.0e-6;
       bin_tof[i]=(max_tof[i]-min_tof[i])/tdc_time; bin_tof[i]=(int)bin_tof[i];
-      min_adc[i]=0.0;  max_adc[i]=500.;
+      min_adc[i]=500.0;  max_adc[i]=5000.;
       bin_adc[i]=(max_adc[i]-min_adc[i]);      bin_adc[i]=(int)bin_adc[i];
       ctof[i]=new TCanvas(Form("ctof[%d]",i),Form("ctof[%d]",i));
       ctof[i]->Divide(1,2);
@@ -173,6 +166,7 @@ bool rarm;
       htof_adc_l[i]=new TH2F(Form("htof_adc_l[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d L-PMT ADC w/o Time-Walk Correction",i,i),bin_adc[i],min_adc[i],max_adc[i],bin_tof[i],min_tof[i],max_tof[i]);
 
 ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
+
       //------------ TSlicesY Parameters ----------------------//
       cslice[i]=new TCanvas(Form("cslice[%d]",i),Form("cslice[%d]",i));
       ftof_gaus[i]=new TF1(Form("ftof_gaus[%d]",i),"gaus",min_tof[i],max_tof[i]);
@@ -180,14 +174,13 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
       ffit_l[i]=new TF1(Form("ffit_l[%d]",i),"[0]*1./sqrt(x)-[1]",min_adc[i],max_adc[i]);      
 
       //------------ w/ Time-Walk Correction Parameters ----------------------//
-      min_tof_c[i]=1.0e-8;   max_tof_c[i]=3.0e-8;//1.0e-6;
+      min_tof_c[i]=1.0e-8;   max_tof_c[i]=6.0e-8;//1.0e-6;
       bin_tof_c[i]=(max_tof_c[i]-min_tof_c[i])/tdc_time;  bin_tof_c[i]=(int)bin_tof_c[i];
-      min_adc_c[i]=100.0;   max_adc_c[i]=1000.;
+      min_adc_c[i]=500.0;   max_adc_c[i]=5000.;
       bin_adc_c[i]=max_adc_c[i]-min_adc_c[i];  bin_adc_c[i]=(int)bin_adc_c[i];
     htof_c[i]=new TH1F(Form("htof_c[%d]",i),Form("S2ch%d -S0 TOF w/ Time-Walk Correction",i),bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
     htof_adc_rc[i]=new TH2F(Form("htof_adc_rc[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d R-PMT ADC w/ Time-Walk Correction",i,i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
       htof_adc_lc[i]=new TH2F(Form("htof_adc_lc[%d]",i),Form("S2ch%d -S0 TOF vs S2 ch%d L-PMT ADC w/ Time-Walk Correction",i,i),bin_adc_c[i],min_adc_c[i],max_adc_c[i],bin_tof_c[i],min_tof_c[i],max_tof_c[i]);
-
  cw[i]=new TCanvas(Form("cw[%d]",i),Form("cw[%d]",i)); 
      
     }
@@ -212,7 +205,7 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
   tdc_cut[i]=false;
   adc_cut[i]=false;
   trig_cut=false;
-  tof_cut[i]=true;
+  
  if(rarm){
   S0a_t=(-F1[43]+F1[46])*tdc_time;
   S0b_t=(-F1[44]+F1[46])*tdc_time;
@@ -220,7 +213,6 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
   S2r_t[i]=(-F1[48+i]+F1[46])*tdc_time;
   if(F1[43]>0 && F1[44]>0 && F1[16+i]>0 && F1[48+i]>0)tdc_cut[i]=true;
   if(F1[4]>0)trig_cut=true; 
-  if(tof[i]>1.6e-8 && tof[i]<3.0e-8)tof_cut[i]=true;
  }else{
   S0a_t=(-F1[27]+F1[30])*tdc_time;
   S0b_t=(-F1[28]+F1[30])*tdc_time;
@@ -228,9 +220,8 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
   S2r_t[i]=(-F1[48+i]+F1[40])*tdc_time;
   if(F1[27]>0 && F1[28]>0 && F1[0+i]>0 && F1[48+i]>0)tdc_cut[i]=true;
   if(F1[33]>0)trig_cut=true; 
-  if(tof[i]>1.6e-8 && tof[i]<2.6e-8)tof_cut[i]=true;
   }
- 
+
   S0a_a=s0radc;
   S0b_a=s0ladc;
   S2r_a[i]=s2radc[i];
@@ -238,14 +229,14 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
   tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
  
   //--------- Fill Hist ---------------//  
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof[i]->Fill(tof[i]);
-  if(tdc_cut[i] && trig_cut&& tof_cut[i])htof_adc_r[i]->Fill(S2r_a[i],tof[i]);
-  if(tdc_cut[i] && trig_cut&& tof_cut[i])htof_adc_l[i]->Fill(S2l_a[i],tof[i]);
+  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof[i]->Fill(tof[i]);
+  if(tdc_cut[i] && trig_cut&& tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_r[i]->Fill(S0a_a,tof[i]);
+  if(tdc_cut[i] && trig_cut&& tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_l[i]->Fill(S0b_a,tof[i]);
+
 
       }
       htof[i]->Fit(Form("ftof[%d]",i));
-      sig[i]=ftof[i]->GetParameter(2);    
-
+      sig[i]=ftof[i]->GetParameter(2);
     }
   }
 
@@ -273,19 +264,20 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  if(rarm){
   ffit_r[i]->SetParameter(0,7.3e-8);   
   ffit_r[i]->SetParameter(1,-1.87e-8);   
-  ffit_l[i]->SetParameter(0,-2.0e-8);   
-  ffit_l[i]->SetParameter(1,-1.0-8);    
-  ffit_l[i]->SetParLimits(0,-1.0e-8,-4.0e-7);   
+  ffit_l[i]->SetParameter(0,1.0e-7);   
+  ffit_l[i]->SetParameter(1,1.0-8);    
+  ffit_l[i]->SetParLimits(0,1.0e-7,4.0e-7);   
  }else{
   ffit_r[i]->SetParameter(0,7.3e-8);   
   ffit_r[i]->SetParameter(1,-1.87e-8);   
   ffit_l[i]->SetParameter(0,1.0e-7);   
   ffit_l[i]->SetParameter(1,1.0-8);    
-  // ffit_l[i]->SetParLimits(0,1.0e-7,4.0e-7);   
+  ffit_l[i]->SetParLimits(0,1.0e-7,4.0e-7);   
 }
   //==============================//
  hslice_tof_r[i]->Fit(Form("ffit_r[%d]",i),"","");
  hslice_tof_l[i]->Fit(Form("ffit_l[%d]",i),"","");
+
 
       twp_r[i][0]=ffit_r[i]->GetParameter(0);
       twp_r[i][1]=ffit_r[i]->GetParameter(1);
@@ -296,18 +288,17 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
     
 
 
-
  //===============================================================//
  //=========== Fill w/ Time-Walk Correciton ======================//
  //===============================================================//
 
     //itallation parameters //
-    int ital_a=10;
-    int ital_b=10;
+    int ital_a=3;
+    int ital_b=3;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     double sig_ital[chmax][ital_a][ital_b],sig_c[chmax];
-    for(int i=0;i<chmax;i++){ sig_c[i]=100.,wamin[i]=100.,wbmin[i]=100.;}
+    for(int i=0;i<chmax;i++){ sig_c[i]=100.;}
     TH1F* htof_ital[chmax][ital_a][ital_b];
     TF1* ftof_c[chmax];
     TH2F* htof_adc_italr[chmax][ital_a][ital_b];
@@ -335,7 +326,6 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   tdc_cut[i]=false;
   adc_cut[i]=false;
   trig_cut=false;
-  tof_cut[i]=true;
  //----- F1TDC ------// 
  if(rarm){
   S0a_t=(-F1[43]+F1[46])*tdc_time;
@@ -344,7 +334,6 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   S2r_t[i]=(-F1[48+i]+F1[46])*tdc_time;
   if(F1[43]>0 && F1[44]>0 && F1[16+i]>0 && F1[48+i]>0)tdc_cut[i]=true;
   if(F1[4]>0)trig_cut=true; 
- if(tof[i]>1.6e-8 && tof[i]<2.6e-8)tof_cut[i]=true;
  }else{
   S0a_t=(-F1[27]+F1[30])*tdc_time;
   S0b_t=(-F1[28]+F1[30])*tdc_time;
@@ -352,7 +341,6 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   S2r_t[i]=(-F1[48+i]+F1[40])*tdc_time;
   if(F1[27]>0 && F1[28]>0 && F1[0+i]>0 && F1[48+i]>0)tdc_cut[i]=true;
   if(F1[33]>0)trig_cut=true; 
- if(tof[i]>1.6e-8 && tof[i]<2.6e-8)tof_cut[i]=true;
   }
 
  //------FBUS ADC ----//
@@ -361,24 +349,25 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   S2r_a[i]=s2radc[i];
   S2l_a[i]=s2ladc[i];
   //---- Time-Walk Correction Parameters ---//
-
- if(rarm){
-    corr_s0r[i]=8.26e-8*1./S0a_a; //#94003 calb data from hrs_S0_f1twcorr 
-    corr_s0l[i]=8.7e-8*1./S0b_a;  //#94003 calb data from hrs_S0_f1twcorr
-  }
- 
-  corr_r[i]=twp_r[i][0]*1./S2r_a[i];
-  corr_l[i]=twp_l[i][0]*1./S2l_a[i];
- 	wa[i]=0.4+0.01*a;
-	wb[i]=0.8+0.01*b;
+  //  corr_r[i]=twp_r[i][0]*1./S0a_a-twp_r[i][1];
+  // corr_l[i]=twp_l[i][0]*1./S0b_a-twp_l[i][1];
+  corr_r[i]=twp_r[i][0]*1./S0a_a;
+  corr_l[i]=twp_l[i][0]*1./S0b_a;
+	wa[i]=0.66+0.01*a;
+	wb[i]=0.86+0.01*b;
 	tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
-  tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i]-corr_s0r[i]-corr_s0l[i];
+  tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i];
   //------- Fill Hist w/ Time-Walk Correction ------//
 
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_ital[i][a][b]->Fill(tof_c[i]);
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_italr[i][a][b]->Fill(S2r_a[i],tof_c[i]);
-  if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_itall[i][a][b]->Fill(S2l_a[i],tof_c[i]);
+  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_ital[i][a][b]->Fill(tof_c[i]);
+  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_italr[i][a][b]->Fill(S2r_a[i],tof_c[i]);
+  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_itall[i][a][b]->Fill(S2l_a[i],tof_c[i]);
 
+  /*
+  if(tdc_cut[i] && trig_cut)htof_c[i]->Fill(tof_c[i]);
+  if(tdc_cut[i] && trig_cut)htof_adc_rc[i]->Fill(S0a_a,tof_c[i]);
+  if(tdc_cut[i] && trig_cut)htof_adc_lc[i]->Fill(S0b_a,tof_c[i]);
+  */
       } //END Fill
 
 
@@ -432,8 +421,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
       htof_adc_l[i]->Draw();
       hslice_tof_l[i]->Draw("same");
       ffit_l[i]->Draw("same");
-   
-    //---- w/ Time-Walk Correction Hist -----// 
+   //---- w/ Time-Walk Correction Hist -----// 
       cw[i]->Divide(1,2);
       cw[i]->cd(1);
       // htof_adc_rc[i]->Draw();
@@ -444,16 +432,16 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
       ctof[i]->cd(2);
       // htof_c[i]->Draw();
       htof_ital[i][amin[i]][bmin[i]]->Draw();
-    //========= TOF Itallation Hist =========//
+//========= TOF Itallation Hist =========//
    cital[i]=new TCanvas(Form("cital[%d]",i),Form("cital[%d]",i));
    cital[i]->cd(1);
    hital[i]->Draw("colz");
-     
 
     }
     }
     
     cout<<"Draw is done "<<endl;
+
 
 
 //========= Comment Out ========================//
@@ -467,11 +455,10 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
  cout<<"twp_l[i][0] min: "<<twp_l[i][0]*wbmin[i]<<endl;
  cout<<"amin "<<amin[i]<<" : bmin "<<bmin[i]<<endl;
  cout<<Form("sig_min_c [wa=%lf][wb=%lf] : ",wamin[i],wbmin[i])<<sig_c[i]<<endl;
+ // cout<<"htof_min_c[ch] Event number : "<<ital_ent<<endl;
 
    }
     }
-
-
 
 
  theApp->Run();
