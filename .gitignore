@@ -12,7 +12,8 @@ replay/*.jpg
 replay/Time_check/*.pdf
 replay/scripts/FADC_decode/*
 replay/scripts/list/*.pdf
-
+relay/scripts/toyamacro/Rootfiles*
+relay/scripts/toyamacro/pdf*
 **/*~
 **/*.o
 **/*.a

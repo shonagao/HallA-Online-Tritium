@@ -1,0 +1,7 @@
+# R-HRS S2-S0 TOF Time-Walk Correction paramters
+# run: 94003 
+
+R.s0.R.timewalk_params_F1 =
+R.s0.L.timewalk_params_F1 =
+R.s2.R.timewalk_params_F1 =
+R.s2.L.timewalk_params_f1 =

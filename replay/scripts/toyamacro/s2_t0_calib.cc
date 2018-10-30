@@ -416,9 +416,9 @@ bool s2_t0_calib::anaR_oneevent(){
 ////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv){
 
-  string ifname = "rootfiles/cosmic1020.root";
-  string ofname = "toyamacro/pdf/s2_t0_calib1020.pdf";
-  string paramname = "param/default.param";
+  string ifname = "Rootfiles/tritium_94003.root";
+  string ofname = "/pdf/test.pdf";
+  string paramname = "param/94003.param";
   int ch;
   int lr=0;
   int MaxNum = 0;

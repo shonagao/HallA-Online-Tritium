@@ -47,6 +47,7 @@ block EKRxe.*
 block Elb.*
 
 block ib.*
+block Rurb
 #BPM/Raster Variables
 FORMULA rbax 1000.*Rrb.BPMA.x
 FORMULA rbay 1000.*Rrb.BPMA.y
@@ -569,6 +570,8 @@ FORMULA rbbx 1000.*Lrb.BPMB.x
 FORMULA rbby 1000.*Lrb.BPMB.y
 FORMULA rbx 1000.*Lrb.x
 FORMULA rby 1000.*Lrb.y
+FORMULA urbx 1000.*Lurb.x
+FORMULA urby 1000.*Lurb.y
 FORMULA bpmaws Lrb.BPMA.rawcur.1+Lrb.BPMA.rawcur.2+Lrb.BPMA.rawcur.3+Lrb.BPMA.rawcur.4
 FORMULA bpmbws Lrb.BPMB.rawcur.1+Lrb.BPMB.rawcur.2+Lrb.BPMB.rawcur.3+Lrb.BPMB.rawcur.4
 FORMULA bpmawsFbus FbusLrb.BPMA.rawcur.1+FbusLrb.BPMA.rawcur.2+FbusLrb.BPMA.rawcur.3+FbusLrb.BPMA.rawcur.4
@@ -796,6 +799,7 @@ TH1F L_beam_rastery 'y at target (from Rasters) [mm]' rby 4000  -15. 15.
 TH2F L_bpma_xy 'BPMA y vs x'  rbax rbay 2000 -15. 15. 2000 -15. 15.
 TH2F L_bpmb_xy 'BPMB y vs x'  rbbx rbby 2000 -15. 15. 2000 -15. 15.
 TH2F L_beam_rasterxy 'Beam at target y vs x (from Rasters)'  rbx rby 800 -15. 15.  800 -15. 15.
+TH2F L_beam_unrasterxy 'Beam at target y vs x (unrastered)'  urbx urby 800 -8. 8.  800 -8. 8.
 
 #Note that rawcur1.y refers to the current for the magnetic field in the y-direction (but electron deflection in x-direction!!!)
 #This was changed back to the standard definitions by Barak in July 2015 (avoids off-diagonal terms in Raster current-to-position matrix)
