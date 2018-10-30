@@ -62,10 +62,11 @@ class s2_twc_calib
   void SetRoot(string ifname);
   void SetInputParam(string ifname);
   void SetLR(int lr){LR=lr;}
+  void SetS0(){s0flag=true;}
   int ENum;
   int s2seg;
   double tof,s0time,s2time,s0at,s0ab,s2at,s2ab;
-  double s2tt,s2tb;
+  double s0tt,s0tb,s2tt,s2tb;
   double par_T,par_B;
   double fact_T,fact_B;
   double fact_min,fact_max,dfact;
@@ -75,12 +76,14 @@ class s2_twc_calib
   private:
     int GetMaxEvent() { return ENumMax; }
     int ENumMax;
+    bool s0flag;
 
     TH2F *h2_tof_s0at, *h2_tof_s0ab, *h2_tof_s2at, *h2_tof_s2ab;
     TH2F *h2_tof_s0at_c, *h2_tof_s0ab_c, *h2_tof_s2at_c, *h2_tof_s2ab_c;
     TH2F *h2_factor;
     TH1F *h_tof_tmp, *h_tof;
     TH1D *h_s2at, *h_s2ab;
+    TH1D *h_s0at, *h_s0ab;
     TH2F *h_frame[4];
     int LR;//L = 0, R = 1
     Setting *set;
@@ -138,8 +141,9 @@ s2_twc_calib::s2_twc_calib()
   param = new ParamMan("param/default.param");
   fact_min=0.5;
   fact_max=1.5;
-  nfact = 20;
+  nfact = 10;
   dfact = (double)(fact_max - fact_min)/nfact;
+  s0flag = false;
 }
 ////////////////////////////////////////////////////////////////////////////
 s2_twc_calib::~s2_twc_calib(){
@@ -158,6 +162,8 @@ void s2_twc_calib::SetRoot(string ifname){
   tree->SetBranchAddress("s2ab"   ,&s2ab  );
   tree->SetBranchAddress("s2tt"   ,&s2tt  );
   tree->SetBranchAddress("s2tb"   ,&s2tb  );
+  tree->SetBranchAddress("s0tt"   ,&s0tt  );
+  tree->SetBranchAddress("s0tb"   ,&s0tb  );
   ENum = tree->GetEntries();
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -204,7 +210,7 @@ void s2_twc_calib::loop(){
     if(n%5000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
 
-    if(s0time>205){//to cut double peak(run94010) should be checked and removed if you can
+    if(s0time>95){//to cut double peak(run94010) should be checked and removed if you can
       h2_tof_s0at  ->Fill(s0at,tof);
       h2_tof_s0ab  ->Fill(s0ab,tof);
       h2_tof_s2at  ->Fill(s2at,tof);
@@ -218,14 +224,27 @@ void s2_twc_calib::loop(){
 void s2_twc_calib::fit(){
   f_T->SetParameter(1,0);
   f_B->SetParameter(1,0);
-  TF1 *f_ga = new TF1("f_ga","gaus",-20,20);    
-  h2_tof_s2at  ->FitSlicesY(f_ga,0,-1,0,"QRG2");
-  h_s2at = (TH1D*)gROOT->FindObject("h2_tof_s2at_1");
-  h_s2at ->Fit(f_T,"QR","",0,800);
 
-  h2_tof_s2ab  ->FitSlicesY(f_ga,0,-1,0,"QNRG2");
-  h_s2ab = (TH1D*)gROOT->FindObject("h2_tof_s2ab_1");
-  h_s2ab ->Fit(f_B,"QR","",0,800);
+  if(s0flag){
+    TF1 *f_ga = new TF1("f_ga","gaus",-20,20);    
+    h2_tof_s0at  ->FitSlicesY(f_ga,0,-1,0,"QRG2");
+    h_s0at = (TH1D*)gROOT->FindObject("h2_tof_s0at_1");
+    h_s0at ->Fit(f_T,"QR","",100,2000);
+
+    h2_tof_s0ab  ->FitSlicesY(f_ga,0,-1,0,"QNRG2");
+    h_s0ab = (TH1D*)gROOT->FindObject("h2_tof_s0ab_1");
+    h_s0ab ->Fit(f_B,"QR","",100,2500);
+  }
+  else{
+    TF1 *f_ga = new TF1("f_ga","gaus",-20,20);    
+    h2_tof_s2at  ->FitSlicesY(f_ga,0,-1,0,"QRG2");
+    h_s2at = (TH1D*)gROOT->FindObject("h2_tof_s2at_1");
+    h_s2at ->Fit(f_T,"QR","",0,800);
+
+    h2_tof_s2ab  ->FitSlicesY(f_ga,0,-1,0,"QNRG2");
+    h_s2ab = (TH1D*)gROOT->FindObject("h2_tof_s2ab_1");
+    h_s2ab ->Fit(f_B,"QR","",0,800);
+  }
 
   par_T = f_T->GetParameter(0);
   par_B = f_B->GetParameter(0);
@@ -252,10 +271,17 @@ void s2_twc_calib::search_best(){
       cout<<"."<<flush;
       for(int n=0;n<ENum;n++){
         tree->GetEntry(n);
-        s2tt -= param->TimewalkCorrection(fact_T*par_T,s2at);
-        s2tb -= param->TimewalkCorrection(fact_B*par_B,s2ab);
-        tof = 0.5*(s2tt+s2tb) - s0time;
-        if(s0time>205){//to cut double peak(run94010) should be checked and removed if you can
+        if(s0flag){
+          s0tt += param->TimewalkCorrection(fact_T*par_T,s0at);
+          s0tb += param->TimewalkCorrection(fact_B*par_B,s0ab);
+          tof = s2time - 0.5*(s0tt + s0tb);
+        }
+        else {
+          s2tt -= param->TimewalkCorrection(fact_T*par_T,s2at);
+          s2tb -= param->TimewalkCorrection(fact_B*par_B,s2ab);
+          tof = 0.5*(s2tt+s2tb) - s0time;
+        }
+        if(s0time>95){//to cut double peak(run94010) should be checked and removed if you can
           h_tof_tmp ->Fill(tof);
         }
       }
@@ -278,10 +304,17 @@ void s2_twc_calib::search_best(){
   for(int n=0;n<ENum;n++){
     //if(n%5000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
-    s2tt -= param->TimewalkCorrection(fact_T*par_T,s2at);
-    s2tb -= param->TimewalkCorrection(fact_B*par_B,s2ab);
-    tof = 0.5*(s2tt+s2tb) - s0time;
-    if(s0time>205){
+    if(s0flag){
+      s0tt += param->TimewalkCorrection(fact_T*par_T,s0at);
+      s0tb += param->TimewalkCorrection(fact_B*par_B,s0ab);
+      tof = s2time - 0.5*(s0tt + s0tb);
+    }
+    else {
+      s2tt -= param->TimewalkCorrection(fact_T*par_T,s2at);
+      s2tb -= param->TimewalkCorrection(fact_B*par_B,s2ab);
+      tof = 0.5*(s2tt+s2tb) - s0time;
+    }
+    if(s0time>95){
       h_tof  ->Fill(tof);
       h2_tof_s0at_c  ->Fill(s0at,tof);
       h2_tof_s0ab_c  ->Fill(s0ab,tof);
@@ -312,11 +345,20 @@ void s2_twc_calib::draw(){
   c[0]->cd(3);gPad->SetLogz(1);h2_tof_s2at->Draw("colz");
   c[0]->cd(4);gPad->SetLogz(1);h2_tof_s2ab->Draw("colz");
 
-  c[1]->Clear();c[1]->Divide(2,2);
-  c[1]->cd(1);gPad->SetLogz(1);h2_tof_s2at->Draw("colz");h_s2at->Draw("samePE");
-  c[1]->cd(2);gPad->SetLogz(1);h2_tof_s2ab->Draw("colz");h_s2ab->Draw("samePE");
-  c[1]->cd(3);gPad->SetLogz(1);h_s2at->Draw("PE");
-  c[1]->cd(4);gPad->SetLogz(1);h_s2ab->Draw("PE");
+  if(s0flag){
+    c[1]->Clear();c[1]->Divide(2,2);
+    c[1]->cd(1);gPad->SetLogz(1);h2_tof_s0at->Draw("colz");h_s0at->Draw("samePE");
+    c[1]->cd(2);gPad->SetLogz(1);h2_tof_s0ab->Draw("colz");h_s0ab->Draw("samePE");
+    c[1]->cd(3);gPad->SetLogz(1);h_s0at->Draw("PE");
+    c[1]->cd(4);gPad->SetLogz(1);h_s0ab->Draw("PE");
+  }
+  else{
+    c[1]->Clear();c[1]->Divide(2,2);
+    c[1]->cd(1);gPad->SetLogz(1);h2_tof_s2at->Draw("colz");h_s2at->Draw("samePE");
+    c[1]->cd(2);gPad->SetLogz(1);h2_tof_s2ab->Draw("colz");h_s2ab->Draw("samePE");
+    c[1]->cd(3);gPad->SetLogz(1);h_s2at->Draw("PE");
+    c[1]->cd(4);gPad->SetLogz(1);h_s2ab->Draw("PE");
+  }
 
   c[2]->Clear();c[2]->Divide(2,2);
   c[2]->cd(1);gPad->SetLogz(1);h2_tof_s0at_c ->Draw("colz");
@@ -397,6 +439,7 @@ int main(int argc, char** argv){
   calib->SetMaxEvent(MaxNum);
   calib->SetLR(lr);
   calib->SetRoot(ifname);
+  //calib->SetS0();
   calib->makehist();
   calib->loop();
   calib->fit();

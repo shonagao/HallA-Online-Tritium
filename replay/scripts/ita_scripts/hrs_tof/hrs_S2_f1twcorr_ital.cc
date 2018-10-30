@@ -81,10 +81,10 @@ bool rarm;
 
  //============= Set Branch Status ==================//
   T->SetBranchStatus("*",0);
+  
+  if(rarm){
   T->SetBranchStatus("RTDC.F1FirstHit",1);
   T->SetBranchAddress("RTDC.F1FirstHit",F1); 
- 
-  if(rarm){
   T->SetBranchStatus("R.s0.ra_c",1);        // Right arm S0 R-PMT  ADC
   T->SetBranchAddress("R.s0.ra_c",&s0radc); // Right arm S0 R-PMT  ADC
   T->SetBranchStatus("R.s0.la_c",1);        // Right arm S0 L-PMT  ADC
@@ -94,6 +94,8 @@ bool rarm;
   T->SetBranchStatus("R.s2.la_c",1);        // Right arm S2 L-PMT  ADC
   T->SetBranchAddress("R.s2.la_c",s2ladc);  // Right arm S2 L-PMT  ADC
   }else{
+  T->SetBranchStatus("LTDC.F1FirstHit",1);
+  T->SetBranchAddress("LTDC.F1FirstHit",F1); 
   T->SetBranchStatus("L.s0.ra_c",1);        // Left arm S0 R-PMT  ADC
   T->SetBranchAddress("L.s0.ra_c",&s0radc); // Left arm S0 R-PMT  ADC
   T->SetBranchStatus("L.s0.la_c",1);        // Left arm S0 L-PMT  ADC
@@ -160,7 +162,13 @@ bool rarm;
     if(i==ch){
       //------------ w/o Time-Walk Correction Parameters ----------------------//
       //     min_tof[i]=-2.5e-8;   max_tof[i]=-1.5e-8;//1.0e-6;
-        min_tof[i]=0.0;   max_tof[i]=3.0e-8;//1.0e-6;
+      // min_tof[i]=0.0;   max_tof[i]=3.0e-8;//1.0e-6;
+            if(rarm){
+      min_tof[i]=range_para(i,0);   max_tof[i]=range_para(i,1);//1.0e-6;
+      }else{
+      min_tof[i]=range_para(i,4);   max_tof[i]=range_para(i,5);//1.0e-6;
+      }
+
       bin_tof[i]=(max_tof[i]-min_tof[i])/tdc_time; bin_tof[i]=(int)bin_tof[i];
       min_adc[i]=0.0;  max_adc[i]=500.;
       bin_adc[i]=(max_adc[i]-min_adc[i]);      bin_adc[i]=(int)bin_adc[i];
@@ -180,7 +188,13 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
       ffit_l[i]=new TF1(Form("ffit_l[%d]",i),"[0]*1./sqrt(x)-[1]",min_adc[i],max_adc[i]);      
 
       //------------ w/ Time-Walk Correction Parameters ----------------------//
-      min_tof_c[i]=1.0e-8;   max_tof_c[i]=3.0e-8;//1.0e-6;
+      //min_tof_c[i]=1.0e-8;   max_tof_c[i]=3.0e-8;//1.0e-6;
+        if(rarm){
+      min_tof_c[i]=range_para(i,2);   max_tof_c[i]=range_para(i,3);//1.0e-6;
+      }else{
+      min_tof_c[i]=range_para(i,6);   max_tof_c[i]=range_para(i,7);//1.0e-6;
+      }
+
       bin_tof_c[i]=(max_tof_c[i]-min_tof_c[i])/tdc_time;  bin_tof_c[i]=(int)bin_tof_c[i];
       min_adc_c[i]=100.0;   max_adc_c[i]=1000.;
       bin_adc_c[i]=max_adc_c[i]-min_adc_c[i];  bin_adc_c[i]=(int)bin_adc_c[i];
@@ -255,8 +269,6 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //=====================================================================//
  //========== TSlicesY Get Correction Parameters ======================//
  //====================================================================//
-
-
 
     for(int i=0;i<chmax;i++){  
      if(i==ch){
@@ -487,30 +499,21 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
 //=================== Definiton Function ================================//
 //=======================================================================//
 
-
-
-double range_para(int i,int j){
-
-  int npara=6;// number of parameters
+ double range_para(int i,int j){
+  int npara=8;// number of parameters
   double par[chmax][npara];
   double param;
  
   //=== Inital parameters========//
   for(int k=0;k<chmax;k++){
-   
-   par[k][0]=-4e-9, par[k][1]=4e-9, par[k][2]=-0.1e-7, par[k][3]=0.1e-7;//TOF
-
-   if(k==16){//S0
-  par[k][4]=500.0, par[k][5]=5000.;//ADC
-    }else{ //S2
-      par[k][4]=100.0, par[k][5]=500.;//ADC
-    }
-   }
+  par[k][0]=-1.0e-8, par[k][1]=1.0e-6, par[k][2]=-1.0e-6, par[k][3]=1e-6;//TOF R-ARM
+  par[k][4]=-1.0e-8, par[k][5]=1.0e-6, par[k][6]=-1.0e-6, par[k][7]=1e-6;//TOF L-ARM
+  }
+    
 
   //===== Set Parameters ========//
-  //  par[8][0]=0.18e-6, par[8][1]=0.22e-6, par[8][2]=-0.18e-6,par[8][3]=0.18e-6;
-  //  par[16][0]=0.180e-6, par[16][1]=0.23e-6, par[16][2]=-0.18e-6, par[16][3]=0.25e-6;
-
+  par[8][0]=1.0e-8, par[8][1]=3.0e-8, par[8][2]=1.0e-8,par[8][3]=6.0e-8; //R-ARM
+ 
   //============================//
   for(int k=0;k<chmax;k++){
    for(int l=0;l<npara;l++){
@@ -518,15 +521,10 @@ double range_para(int i,int j){
       param=par[k][l];
      
     }
-
     }
   }
   return param;
 }
-
-
-
-
 
 
 long double fit_ini(int i,int j,int k){
