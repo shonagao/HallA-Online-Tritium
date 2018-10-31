@@ -98,8 +98,141 @@ block Lrb*
 	#LEFT ARM F1TDC
 	#      
 
-	TH1F Lf1tdc_fh 'Left arm F1TDC(F1FirstHit) Channel' LTDC.F1FirstHit 500 1500 2500 LTDC.F1FirstHit>0.
+#	TH1F Lf1tdc_fh 'Left arm F1TDC(F1FirstHit) Channel' LTDC.F1FirstHit 500 1500 2500 LTDC.F1FirstHit>0.
+        TH1F Lf1tdc_fh0  'L F1TDC Ch0  S2L-0 ' LTDC.F1FirstHit[0]  500 1 4001
+        TH1F Lf1tdc_fh1  'L F1TDC Ch1  S2L-1 ' LTDC.F1FirstHit[1]  500 1 4001
+        TH1F Lf1tdc_fh2  'L F1TDC Ch2  S2L-2 ' LTDC.F1FirstHit[2]  500 1 4001
+        TH1F Lf1tdc_fh3  'L F1TDC Ch3  S2L-3 ' LTDC.F1FirstHit[3]  500 1 4001
+        TH1F Lf1tdc_fh4  'L F1TDC Ch4  S2L-4 ' LTDC.F1FirstHit[4]  500 1 4001
+        TH1F Lf1tdc_fh5  'L F1TDC Ch5  S2L-5 ' LTDC.F1FirstHit[5]  500 1 4001
+        TH1F Lf1tdc_fh6  'L F1TDC Ch6  S2L-6 ' LTDC.F1FirstHit[6]  500 1 4001
+        TH1F Lf1tdc_fh7  'L F1TDC Ch7  S2L-7 ' LTDC.F1FirstHit[7]  500 1 4001
+        TH1F Lf1tdc_fh8  'L F1TDC Ch8  S2L-8 ' LTDC.F1FirstHit[8]  500 1 4001
+        TH1F Lf1tdc_fh9  'L F1TDC Ch9  S2L-9 ' LTDC.F1FirstHit[9]  500 1 4001
+        TH1F Lf1tdc_fh10 'L F1TDC Ch10 S2L-10' LTDC.F1FirstHit[10] 500 1 4001
+        TH1F Lf1tdc_fh11 'L F1TDC Ch11 S2L-11' LTDC.F1FirstHit[11] 500 1 4001
+        TH1F Lf1tdc_fh12 'L F1TDC Ch12 S2L-12' LTDC.F1FirstHit[12] 500 1 4001
+        TH1F Lf1tdc_fh13 'L F1TDC Ch13 S2L-13' LTDC.F1FirstHit[13] 500 1 4001
+        TH1F Lf1tdc_fh14 'L F1TDC Ch14 S2L-14' LTDC.F1FirstHit[14] 500 1 4001
+        TH1F Lf1tdc_fh15 'L F1TDC Ch15 S2L-15' LTDC.F1FirstHit[15] 500 1 4001
+        TH1F Lf1tdc_fh16 'L F1TDC Ch16'        LTDC.F1FirstHit[16] 500 1 4001
+        TH1F Lf1tdc_fh17 'L F1TDC Ch17'        LTDC.F1FirstHit[17] 500 1 4001
+        TH1F Lf1tdc_fh18 'L F1TDC Ch18'        LTDC.F1FirstHit[18] 500 1 4001
+        TH1F Lf1tdc_fh19 'L F1TDC Ch19'        LTDC.F1FirstHit[19] 500 1 4001
+        TH1F Lf1tdc_fh20 'L F1TDC Ch20'        LTDC.F1FirstHit[20] 500 1 4001
+        TH1F Lf1tdc_fh21 'L F1TDC Ch21'        LTDC.F1FirstHit[21] 500 1 4001
+        TH1F Lf1tdc_fh22 'L F1TDC Ch22'        LTDC.F1FirstHit[22] 500 1 4001
+        TH1F Lf1tdc_fh23 'L F1TDC Ch23'        LTDC.F1FirstHit[23] 500 1 4001
+        TH1F Lf1tdc_fh24 'L F1TDC Ch24'        LTDC.F1FirstHit[24] 500 1 4001
+        TH1F Lf1tdc_fh25 'L F1TDC Ch25'        LTDC.F1FirstHit[25] 500 1 4001
+        TH1F Lf1tdc_fh26 'L F1TDC Ch26'        LTDC.F1FirstHit[26] 500 1 4001
+        TH1F Lf1tdc_fh27 'L F1TDC Ch27 S0A'    LTDC.F1FirstHit[27] 500 1 4001
+        TH1F Lf1tdc_fh28 'L F1TDC Ch28 S0B'    LTDC.F1FirstHit[28] 500 1 4001
+        TH1F Lf1tdc_fh29 'L F1TDC Ch29'        LTDC.F1FirstHit[29] 500 1 4001
+        TH1F Lf1tdc_fh30 'L F1TDC Ch30 L1A'    LTDC.F1FirstHit[30] 500 1 4001
+        TH1F Lf1tdc_fh31 'L F1TDC Ch31'        LTDC.F1FirstHit[31] 500 1 4001
+        TH1F Lf1tdc_fh32 'L F1TDC Ch32'        LTDC.F1FirstHit[32] 500 1 4001
+        TH1F Lf1tdc_fh33 'L F1TDC Ch33'        LTDC.F1FirstHit[33] 500 1 4001
+        TH1F Lf1tdc_fh34 'L F1TDC Ch34'        LTDC.F1FirstHit[34] 500 1 4001
+        TH1F Lf1tdc_fh35 'L F1TDC Ch35'        LTDC.F1FirstHit[35] 500 1 4001
+        TH1F Lf1tdc_fh36 'L F1TDC Ch36'        LTDC.F1FirstHit[36] 500 1 4001
+        TH1F Lf1tdc_fh37 'L F1TDC Ch37'        LTDC.F1FirstHit[37] 500 1 4001
+        TH1F Lf1tdc_fh38 'L F1TDC Ch38'        LTDC.F1FirstHit[38] 500 1 4001
+        TH1F Lf1tdc_fh39 'L F1TDC Ch39'        LTDC.F1FirstHit[39] 500 1 4001
+        TH1F Lf1tdc_fh40 'L F1TDC Ch40 L1A'    LTDC.F1FirstHit[40] 500 1 4001
+        TH1F Lf1tdc_fh41 'L F1TDC Ch41'        LTDC.F1FirstHit[41] 500 1 4001
+        TH1F Lf1tdc_fh42 'L F1TDC Ch42'        LTDC.F1FirstHit[42] 500 1 4001
+        TH1F Lf1tdc_fh43 'L F1TDC Ch43'        LTDC.F1FirstHit[43] 500 1 4001
+        TH1F Lf1tdc_fh44 'L F1TDC Ch44'        LTDC.F1FirstHit[44] 500 1 4001
+        TH1F Lf1tdc_fh45 'L F1TDC Ch45'        LTDC.F1FirstHit[45] 500 1 4001
+        TH1F Lf1tdc_fh46 'L F1TDC Ch46'        LTDC.F1FirstHit[46] 500 1 4001
+        TH1F Lf1tdc_fh47 'L F1TDC Ch47 RFTime' LTDC.F1FirstHit[47] 500 1 4001
+        TH1F Lf1tdc_fh48 'L F1TDC Ch48 S2R-0 ' LTDC.F1FirstHit[48] 500 1 4001
+        TH1F Lf1tdc_fh49 'L F1TDC Ch49 S2R-1 ' LTDC.F1FirstHit[49] 500 1 4001
+        TH1F Lf1tdc_fh50 'L F1TDC Ch50 S2R-2 ' LTDC.F1FirstHit[50] 500 1 4001
+        TH1F Lf1tdc_fh51 'L F1TDC Ch51 S2R-3 ' LTDC.F1FirstHit[51] 500 1 4001
+        TH1F Lf1tdc_fh52 'L F1TDC Ch52 S2R-4 ' LTDC.F1FirstHit[52] 500 1 4001
+        TH1F Lf1tdc_fh53 'L F1TDC Ch53 S2R-5 ' LTDC.F1FirstHit[53] 500 1 4001
+        TH1F Lf1tdc_fh54 'L F1TDC Ch54 S2R-6 ' LTDC.F1FirstHit[54] 500 1 4001
+        TH1F Lf1tdc_fh55 'L F1TDC Ch55 S2R-7 ' LTDC.F1FirstHit[55] 500 1 4001
+        TH1F Lf1tdc_fh56 'L F1TDC Ch56 S2R-8 ' LTDC.F1FirstHit[56] 500 1 4001
+        TH1F Lf1tdc_fh57 'L F1TDC Ch57 S2R-9 ' LTDC.F1FirstHit[57] 500 1 4001
+        TH1F Lf1tdc_fh58 'L F1TDC Ch58 S2R-10' LTDC.F1FirstHit[58] 500 1 4001
+        TH1F Lf1tdc_fh59 'L F1TDC Ch59 S2R-11' LTDC.F1FirstHit[59] 500 1 4001
+        TH1F Lf1tdc_fh60 'L F1TDC Ch60 S2R-12' LTDC.F1FirstHit[60] 500 1 4001
+        TH1F Lf1tdc_fh61 'L F1TDC Ch61 S2R-13' LTDC.F1FirstHit[61] 500 1 4001
+        TH1F Lf1tdc_fh62 'L F1TDC Ch62 S2R-14' LTDC.F1FirstHit[62] 500 1 4001
+        TH1F Lf1tdc_fh63 'L F1TDC Ch63 S2R-15' LTDC.F1FirstHit[63] 500 1 4001
 
+	# ------------------------------------------------------------------
+	#LEFT ARM  F1TDC - L1A
+	#
+
+	FORMULA Lf1tdc_fhc0 LTDC.F1FirstHit[0] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc1 LTDC.F1FirstHit[1] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc2 LTDC.F1FirstHit[2] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc3 LTDC.F1FirstHit[3] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc4 LTDC.F1FirstHit[4] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc5 LTDC.F1FirstHit[5] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc6 LTDC.F1FirstHit[6] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc7 LTDC.F1FirstHit[7] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc8 LTDC.F1FirstHit[8] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc9 LTDC.F1FirstHit[9] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc10 LTDC.F1FirstHit[10] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc11 LTDC.F1FirstHit[11] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc12 LTDC.F1FirstHit[12] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc13 LTDC.F1FirstHit[13] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc14 LTDC.F1FirstHit[14] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc15 LTDC.F1FirstHit[15] - LTDC.F1FirstHit[30]
+	FORMULA Lf1tdc_fhc48 LTDC.F1FirstHit[48] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc49 LTDC.F1FirstHit[49] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc50 LTDC.F1FirstHit[50] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc51 LTDC.F1FirstHit[51] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc52 LTDC.F1FirstHit[52] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc53 LTDC.F1FirstHit[53] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc54 LTDC.F1FirstHit[54] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc55 LTDC.F1FirstHit[55] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc56 LTDC.F1FirstHit[56] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc57 LTDC.F1FirstHit[57] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc58 LTDC.F1FirstHit[58] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc59 LTDC.F1FirstHit[59] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc60 LTDC.F1FirstHit[60] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc61 LTDC.F1FirstHit[61] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc62 LTDC.F1FirstHit[62] - LTDC.F1FirstHit[40]
+	FORMULA Lf1tdc_fhc63 LTDC.F1FirstHit[63] - LTDC.F1FirstHit[40]
+
+	TH1F Lf1tdc_fhc0 'L F1TDC (Corrected) Ch0 S2L-0 ' Lf1tdc_fhc0 500 -12000 -4000
+	TH1F Lf1tdc_fhc1 'L F1TDC (Corrected) Ch1 S2L-1 ' Lf1tdc_fhc1 500 -12000 -4000
+	TH1F Lf1tdc_fhc2 'L F1TDC (Corrected) Ch2 S2L-2 ' Lf1tdc_fhc2 500 -12000 -4000
+	TH1F Lf1tdc_fhc3 'L F1TDC (Corrected) Ch3 S2L-3 ' Lf1tdc_fhc3 500 -12000 -4000
+	TH1F Lf1tdc_fhc4 'L F1TDC (Corrected) Ch4 S2L-4 ' Lf1tdc_fhc4 500 -12000 -4000
+	TH1F Lf1tdc_fhc5 'L F1TDC (Corrected) Ch5 S2L-5 ' Lf1tdc_fhc5 500 -12000 -4000
+	TH1F Lf1tdc_fhc6 'L F1TDC (Corrected) Ch6 S2L-6 ' Lf1tdc_fhc6 500 -12000 -4000
+	TH1F Lf1tdc_fhc7 'L F1TDC (Corrected) Ch7 S2L-7 ' Lf1tdc_fhc7 500 -12000 -4000
+	TH1F Lf1tdc_fhc8 'L F1TDC (Corrected) Ch8 S2L-8 ' Lf1tdc_fhc8 500 -12000 -4000
+	TH1F Lf1tdc_fhc9 'L F1TDC (Corrected) Ch9 S2L-9 ' Lf1tdc_fhc9 500 -12000 -4000
+	TH1F Lf1tdc_fhc10 'L F1TDC (Corrected) Ch10 S2L-10' Lf1tdc_fhc10 500 -12000 -4000
+	TH1F Lf1tdc_fhc11 'L F1TDC (Corrected) Ch11 S2L-11' Lf1tdc_fhc11 500 -12000 -4000
+	TH1F Lf1tdc_fhc12 'L F1TDC (Corrected) Ch12 S2L-12' Lf1tdc_fhc12 500 -12000 -4000
+	TH1F Lf1tdc_fhc13 'L F1TDC (Corrected) Ch13 S2L-13' Lf1tdc_fhc13 500 -12000 -4000
+	TH1F Lf1tdc_fhc14 'L F1TDC (Corrected) Ch14 S2L-14' Lf1tdc_fhc14 500 -12000 -4000
+	TH1F Lf1tdc_fhc15 'L F1TDC (Corrected) Ch15 S2L-15' Lf1tdc_fhc15 500 -12000 -4000
+	TH1F Lf1tdc_fhc48 'L F1TDC (Corrected) Ch48 S2L-0 ' Lf1tdc_fhc48 500 -12000 -4000
+	TH1F Lf1tdc_fhc49 'L F1TDC (Corrected) Ch49 S2R-1 ' Lf1tdc_fhc49 500 -12000 -4000
+	TH1F Lf1tdc_fhc50 'L F1TDC (Corrected) Ch50 S2R-2 ' Lf1tdc_fhc50 500 -12000 -4000
+	TH1F Lf1tdc_fhc51 'L F1TDC (Corrected) Ch51 S2R-3 ' Lf1tdc_fhc51 500 -12000 -4000
+	TH1F Lf1tdc_fhc52 'L F1TDC (Corrected) Ch52 S2R-4 ' Lf1tdc_fhc52 500 -12000 -4000
+	TH1F Lf1tdc_fhc53 'L F1TDC (Corrected) Ch53 S2R-5 ' Lf1tdc_fhc53 500 -12000 -4000
+	TH1F Lf1tdc_fhc54 'L F1TDC (Corrected) Ch54 S2R-6 ' Lf1tdc_fhc54 500 -12000 -4000
+	TH1F Lf1tdc_fhc55 'L F1TDC (Corrected) Ch55 S2R-7 ' Lf1tdc_fhc55 500 -12000 -4000
+	TH1F Lf1tdc_fhc56 'L F1TDC (Corrected) Ch56 S2R-8 ' Lf1tdc_fhc56 500 -12000 -4000
+	TH1F Lf1tdc_fhc57 'L F1TDC (Corrected) Ch57 S2R-9 ' Lf1tdc_fhc57 500 -12000 -4000
+	TH1F Lf1tdc_fhc58 'L F1TDC (Corrected) Ch58 S2R-10' Lf1tdc_fhc58 500 -12000 -4000
+	TH1F Lf1tdc_fhc59 'L F1TDC (Corrected) Ch59 S2R-11' Lf1tdc_fhc59 500 -12000 -4000
+	TH1F Lf1tdc_fhc60 'L F1TDC (Corrected) Ch60 S2R-12' Lf1tdc_fhc60 500 -12000 -4000
+	TH1F Lf1tdc_fhc61 'L F1TDC (Corrected) Ch61 S2R-13' Lf1tdc_fhc61 500 -12000 -4000
+	TH1F Lf1tdc_fhc62 'L F1TDC (Corrected) Ch62 S2R-14' Lf1tdc_fhc62 500 -12000 -4000
+	TH1F Lf1tdc_fhc63 'L F1TDC (Corrected) Ch63 S2R-15' Lf1tdc_fhc63 500 -12000 -4000
 
 	# ------------------------------------------------------------------
 	# LEFT ARM GAS CHERENKOV  ADC and TDC :

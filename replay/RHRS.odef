@@ -68,20 +68,20 @@ FORMULA m2 ( 1. / (R.tr.beta * R.tr.beta) -1. ) * R.tr.p * R.tr.p
 FORMULA Rep (R.ps.e+R.sh.e)/(R.gold.p*1000)
 # RIGHT ARM S0
 #
-TH1F Rs0lt 'Right arm S0-Top(B) TDC' R.s0.lt 500 1500 2500 R.s0.lt>0.
-TH1F Rs0rt 'Right arm S0-Bottom(A) TDC' R.s0.rt 500 1500 2500 R.s0.rt>0.
-TH1F Rs0ltT4_ 'S0-Top(B) TDC w/ T5,T6 ' R.s0.lt 500 1500 2500 R.s0.lt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
-TH1F Rs0ltT6_ 'S0-Top(B) w/ T6 only ' R.s0.lt 500 1500 2500 R.s0.lt>0.&&(DR.evtypebits==64)
-TH1F Rs0rtT4_ 'S0-Bottom(A) w/T5,T6' R.s0.rt 500 1500 2500 R.s0.rt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
-TH1F Rs0rtT6_ 'S0-Bottom(A) w/ T6 only' R.s0.rt 500 1500 2500 R.s0.rt>0.&&(DR.evtypebits==64)
+TH1F Rs0lt 'Right arm S0-Top(B) TDC' R.s0.lt 500 2000 3000 R.s0.lt>0.
+TH1F Rs0rt 'Right arm S0-Bottom(A) TDC' R.s0.rt 500 2000 3000 R.s0.rt>0.
+TH1F Rs0ltT4_ 'S0-Top(B) TDC w/ T5,T6 ' R.s0.lt 500 2000 3000 R.s0.lt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
+TH1F Rs0ltT6_ 'S0-Top(B) w/ T6 only ' R.s0.lt 500 2000 3000 R.s0.lt>0.&&(DR.evtypebits==64)
+TH1F Rs0rtT4_ 'S0-Bottom(A) w/T5,T6' R.s0.rt 500 2000 3000 R.s0.rt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
+TH1F Rs0rtT6_ 'S0-Bottom(A) w/ T6 only' R.s0.rt 500 2000 3000 R.s0.rt>0.&&(DR.evtypebits==64)
 
 TH1F Rs0la 'Right arm S0-Top(B) ADC' R.s0.la 12000 0 120000 R.s0.la>0.
 TH1F Rs0ra 'Right arm S0-Bottom(A) ADC' R.s0.ra 12000 0 120000 R.s0.ra>0.
 TH1F Rs0la_p 'S0-Top(B) ADC (PedSub)' R.s0.la_p 1000 -500 4500 R.s0.la_p>-600.
 TH1F Rs0ra_p 'S0-Bottom(A) ADC (PedSub)' R.s0.ra_p 1000 -500 4500 R.s0.ra_p>-600.
 
-TH1F Rs0lt_fadc 'Right arm S0-Top(B) FADC TDC' R.s0.lt_fadc 500 1500 2500 R.s0.lt_fadc>0.
-TH1F Rs0rt_fadc 'Right arm S0-Bottom(A) FADC TDC' R.s0.rt_fadc 500 1500 2500 R.s0.rt_fadc>0.
+TH1F Rs0lt_fadc 'Right arm S0-Top(B) FADC TDC' R.s0.lt_fadc 500 2500 4000 R.s0.lt_fadc>0.
+TH1F Rs0rt_fadc 'Right arm S0-Bottom(A) FADC TDC' R.s0.rt_fadc 500 2500 4000 R.s0.rt_fadc>0.
 TH1F Rs0ltc_fadc 'Right arm S0-Top(B) FADC TDC (corrected)' R.s0.ltc_fadc 500 1500 2500 R.s0.lt_fadc>0.
 TH1F Rs0rtc_fadc 'Right arm S0-Bottom(A) FADC TDC (corrected)' R.s0.rtc_fadc 500 1500 2500 R.s0.rt_fadc>0.
 
@@ -112,7 +112,141 @@ TH1F Rs2rtc_fadc 'S2 FADC TDC (corrected) R-PMT' R.s2.rtc_fadc 500 1500 2500 R.s
 #RIGHT ARM F1TDC
 #
 
-TH1F Rf1tdc_fh 'Right arm F1TDC(F1FirstHit) Channel' RTDC.F1FirstHit 500 1500 2500 RTDC.F1FirstHit>0.
+#TH1F Rf1tdc_fh 'Right arm F1TDC(F1FirstHit) Channel' RTDC.F1FirstHit 500 1500 2500 RTDC.F1FirstHit>0.
+TH1F Rf1tdc_fh0  'R F1TDC Ch0 '        RTDC.F1FirstHit[0]  500 1 4001
+TH1F Rf1tdc_fh1  'R F1TDC Ch1 '        RTDC.F1FirstHit[1]  500 1 4001
+TH1F Rf1tdc_fh2  'R F1TDC Ch2 '        RTDC.F1FirstHit[2]  500 1 4001
+TH1F Rf1tdc_fh3  'R F1TDC Ch3 '        RTDC.F1FirstHit[3]  500 1 4001
+TH1F Rf1tdc_fh4  'R F1TDC Ch4 '        RTDC.F1FirstHit[4]  500 1 4001
+TH1F Rf1tdc_fh5  'R F1TDC Ch5 '        RTDC.F1FirstHit[5]  500 1 4001
+TH1F Rf1tdc_fh6  'R F1TDC Ch6 '        RTDC.F1FirstHit[6]  500 1 4001
+TH1F Rf1tdc_fh7  'R F1TDC Ch7 '        RTDC.F1FirstHit[7]  500 1 4001
+TH1F Rf1tdc_fh8  'R F1TDC Ch8 L1A_R'   RTDC.F1FirstHit[8]  500 1 4001
+TH1F Rf1tdc_fh9  'R F1TDC Ch9 L1A'     RTDC.F1FirstHit[9]  500 1 4001
+TH1F Rf1tdc_fh10 'R F1TDC Ch10'        RTDC.F1FirstHit[10] 500 1 4001
+TH1F Rf1tdc_fh11 'R F1TDC Ch11'        RTDC.F1FirstHit[11] 500 1 4001
+TH1F Rf1tdc_fh12 'R F1TDC Ch12'        RTDC.F1FirstHit[12] 500 1 4001
+TH1F Rf1tdc_fh13 'R F1TDC Ch13'        RTDC.F1FirstHit[13] 500 1 4001
+TH1F Rf1tdc_fh14 'R F1TDC Ch14'        RTDC.F1FirstHit[14] 500 1 4001
+TH1F Rf1tdc_fh15 'R F1TDC Ch15 RFTime' RTDC.F1FirstHit[15] 500 1 4001
+TH1F Rf1tdc_fh16 'R F1TDC Ch16 S2L-0 ' RTDC.F1FirstHit[16] 500 1 4001
+TH1F Rf1tdc_fh17 'R F1TDC Ch17 S2L-1 ' RTDC.F1FirstHit[17] 500 1 4001
+TH1F Rf1tdc_fh18 'R F1TDC Ch18 S2L-2 ' RTDC.F1FirstHit[18] 500 1 4001
+TH1F Rf1tdc_fh19 'R F1TDC Ch19 S2L-3 ' RTDC.F1FirstHit[19] 500 1 4001
+TH1F Rf1tdc_fh20 'R F1TDC Ch20 S2L-4 ' RTDC.F1FirstHit[20] 500 1 4001
+TH1F Rf1tdc_fh21 'R F1TDC Ch21 S2L-5 ' RTDC.F1FirstHit[21] 500 1 4001
+TH1F Rf1tdc_fh22 'R F1TDC Ch22 S2L-6 ' RTDC.F1FirstHit[22] 500 1 4001
+TH1F Rf1tdc_fh23 'R F1TDC Ch23 S2L-7 ' RTDC.F1FirstHit[23] 500 1 4001
+TH1F Rf1tdc_fh24 'R F1TDC Ch24 S2L-8 ' RTDC.F1FirstHit[24] 500 1 4001
+TH1F Rf1tdc_fh25 'R F1TDC Ch25 S2L-9 ' RTDC.F1FirstHit[25] 500 1 4001
+TH1F Rf1tdc_fh26 'R F1TDC Ch26 S2L-10' RTDC.F1FirstHit[26] 500 1 4001
+TH1F Rf1tdc_fh27 'R F1TDC Ch27 S2L-11' RTDC.F1FirstHit[27] 500 1 4001
+TH1F Rf1tdc_fh28 'R F1TDC Ch28 S2L-12' RTDC.F1FirstHit[28] 500 1 4001
+TH1F Rf1tdc_fh29 'R F1TDC Ch29 S2L-13' RTDC.F1FirstHit[29] 500 1 4001
+TH1F Rf1tdc_fh30 'R F1TDC Ch30 S2L-14' RTDC.F1FirstHit[30] 500 1 4001
+TH1F Rf1tdc_fh31 'R F1TDC Ch31 S2L-15' RTDC.F1FirstHit[31] 500 1 4001
+TH1F Rf1tdc_fh32 'R F1TDC Ch32'        RTDC.F1FirstHit[32] 500 1 4001
+TH1F Rf1tdc_fh33 'R F1TDC Ch33'        RTDC.F1FirstHit[33] 500 1 4001
+TH1F Rf1tdc_fh34 'R F1TDC Ch34'        RTDC.F1FirstHit[34] 500 1 4001
+TH1F Rf1tdc_fh35 'R F1TDC Ch35'        RTDC.F1FirstHit[35] 500 1 4001
+TH1F Rf1tdc_fh36 'R F1TDC Ch36'        RTDC.F1FirstHit[36] 500 1 4001
+TH1F Rf1tdc_fh37 'R F1TDC Ch37'        RTDC.F1FirstHit[37] 500 1 4001
+TH1F Rf1tdc_fh38 'R F1TDC Ch38'        RTDC.F1FirstHit[38] 500 1 4001
+TH1F Rf1tdc_fh39 'R F1TDC Ch39'        RTDC.F1FirstHit[39] 500 1 4001
+TH1F Rf1tdc_fh40 'R F1TDC Ch40'        RTDC.F1FirstHit[40] 500 1 4001
+TH1F Rf1tdc_fh41 'R F1TDC Ch41'        RTDC.F1FirstHit[41] 500 1 4001
+TH1F Rf1tdc_fh42 'R F1TDC Ch42'        RTDC.F1FirstHit[42] 500 1 4001
+TH1F Rf1tdc_fh43 'R F1TDC Ch43 S0A'    RTDC.F1FirstHit[43] 500 1 4001
+TH1F Rf1tdc_fh44 'R F1TDC Ch44 S0B'    RTDC.F1FirstHit[44] 500 1 4001
+TH1F Rf1tdc_fh45 'R F1TDC Ch45'        RTDC.F1FirstHit[45] 500 1 4001
+TH1F Rf1tdc_fh46 'R F1TDC Ch46 L1A'    RTDC.F1FirstHit[46] 500 1 4001
+TH1F Rf1tdc_fh47 'R F1TDC Ch47'        RTDC.F1FirstHit[47] 500 1 4001
+TH1F Rf1tdc_fh48 'R F1TDC Ch48 S2R-0 ' RTDC.F1FirstHit[48] 500 1 4001
+TH1F Rf1tdc_fh49 'R F1TDC Ch49 S2R-1 ' RTDC.F1FirstHit[49] 500 1 4001
+TH1F Rf1tdc_fh50 'R F1TDC Ch50 S2R-2 ' RTDC.F1FirstHit[50] 500 1 4001
+TH1F Rf1tdc_fh51 'R F1TDC Ch51 S2R-3 ' RTDC.F1FirstHit[51] 500 1 4001
+TH1F Rf1tdc_fh52 'R F1TDC Ch52 S2R-4 ' RTDC.F1FirstHit[52] 500 1 4001
+TH1F Rf1tdc_fh53 'R F1TDC Ch53 S2R-5 ' RTDC.F1FirstHit[53] 500 1 4001
+TH1F Rf1tdc_fh54 'R F1TDC Ch54 S2R-6 ' RTDC.F1FirstHit[54] 500 1 4001
+TH1F Rf1tdc_fh55 'R F1TDC Ch55 S2R-7 ' RTDC.F1FirstHit[55] 500 1 4001
+TH1F Rf1tdc_fh56 'R F1TDC Ch56 S2R-8 ' RTDC.F1FirstHit[56] 500 1 4001
+TH1F Rf1tdc_fh57 'R F1TDC Ch57 S2R-9 ' RTDC.F1FirstHit[57] 500 1 4001
+TH1F Rf1tdc_fh58 'R F1TDC Ch58 S2R-10' RTDC.F1FirstHit[58] 500 1 4001
+TH1F Rf1tdc_fh59 'R F1TDC Ch59 S2R-11' RTDC.F1FirstHit[59] 500 1 4001
+TH1F Rf1tdc_fh60 'R F1TDC Ch60 S2R-12' RTDC.F1FirstHit[60] 500 1 4001
+TH1F Rf1tdc_fh61 'R F1TDC Ch61 S2R-13' RTDC.F1FirstHit[61] 500 1 4001
+TH1F Rf1tdc_fh62 'R F1TDC Ch62 S2R-14' RTDC.F1FirstHit[62] 500 1 4001
+TH1F Rf1tdc_fh63 'R F1TDC Ch63 S2R-15' RTDC.F1FirstHit[63] 500 1 4001
+
+# ------------------------------------------------------------------
+#RIGHT ARM  F1TDC - L1F
+#
+
+FORMULA Rf1tdc_fhc16 RTDC.F1FirstHit[16]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc17 RTDC.F1FirstHit[17]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc18 RTDC.F1FirstHit[18]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc19 RTDC.F1FirstHit[19]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc20 RTDC.F1FirstHit[20]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc21 RTDC.F1FirstHit[21]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc22 RTDC.F1FirstHit[22]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc23 RTDC.F1FirstHit[23]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc24 RTDC.F1FirstHit[24]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc25 RTDC.F1FirstHit[25]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc26 RTDC.F1FirstHit[26]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc27 RTDC.F1FirstHit[27]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc28 RTDC.F1FirstHit[28]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc29 RTDC.F1FirstHit[29]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc30 RTDC.F1FirstHit[30]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc31 RTDC.F1FirstHit[31]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc48 RTDC.F1FirstHit[48]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc49 RTDC.F1FirstHit[49]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc50 RTDC.F1FirstHit[50]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc51 RTDC.F1FirstHit[51]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc52 RTDC.F1FirstHit[52]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc53 RTDC.F1FirstHit[53]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc54 RTDC.F1FirstHit[54]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc55 RTDC.F1FirstHit[55]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc56 RTDC.F1FirstHit[56]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc57 RTDC.F1FirstHit[57]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc58 RTDC.F1FirstHit[58]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc59 RTDC.F1FirstHit[59]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc60 RTDC.F1FirstHit[60]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc61 RTDC.F1FirstHit[61]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc62 RTDC.F1FirstHit[62]-RTDC.F1FirstHit[46]
+FORMULA Rf1tdc_fhc63 RTDC.F1FirstHit[63]-RTDC.F1FirstHit[46]
+
+TH1F Rf1tdc_fhc16 'R F1TDC (Corrected) Ch16 S2L-0 ' Rf1tdc_fhc16 500 -6000 -20001
+TH1F Rf1tdc_fhc17 'R F1TDC (Corrected) Ch17 S2L-1 ' Rf1tdc_fhc17 500 -6000 -2000
+TH1F Rf1tdc_fhc18 'R F1TDC (Corrected) Ch18 S2L-2 ' Rf1tdc_fhc18 500 -6000 -2000
+TH1F Rf1tdc_fhc19 'R F1TDC (Corrected) Ch19 S2L-3 ' Rf1tdc_fhc19 500 -6000 -2000
+TH1F Rf1tdc_fhc20 'R F1TDC (Corrected) Ch20 S2L-4 ' Rf1tdc_fhc20 500 -6000 -2000
+TH1F Rf1tdc_fhc21 'R F1TDC (Corrected) Ch21 S2L-5 ' Rf1tdc_fhc21 500 -6000 -2000
+TH1F Rf1tdc_fhc22 'R F1TDC (Corrected) Ch22 S2L-6 ' Rf1tdc_fhc22 500 -6000 -2000
+TH1F Rf1tdc_fhc23 'R F1TDC (Corrected) Ch23 S2L-7 ' Rf1tdc_fhc23 500 -6000 -2000
+TH1F Rf1tdc_fhc24 'R F1TDC (Corrected) Ch24 S2L-8 ' Rf1tdc_fhc24 500 -6000 -2000
+TH1F Rf1tdc_fhc25 'R F1TDC (Corrected) Ch25 S2L-9 ' Rf1tdc_fhc25 500 -6000 -2000
+TH1F Rf1tdc_fhc26 'R F1TDC (Corrected) Ch26 S2L-10' Rf1tdc_fhc26 500 -6000 -2000
+TH1F Rf1tdc_fhc27 'R F1TDC (Corrected) Ch27 S2L-11' Rf1tdc_fhc27 500 -6000 -2000
+TH1F Rf1tdc_fhc28 'R F1TDC (Corrected) Ch28 S2L-12' Rf1tdc_fhc28 500 -6000 -2000
+TH1F Rf1tdc_fhc29 'R F1TDC (Corrected) Ch29 S2L-13' Rf1tdc_fhc29 500 -6000 -2000
+TH1F Rf1tdc_fhc30 'R F1TDC (Corrected) Ch30 S2L-14' Rf1tdc_fhc30 500 -6000 -2000
+TH1F Rf1tdc_fhc31 'R F1TDC (Corrected) Ch31 S2L-15' Rf1tdc_fhc31 500 -6000 -2000
+TH1F Rf1tdc_fhc48 'R F1TDC (Corrected) Ch48 S2R-0 ' Rf1tdc_fhc48 500 -6000 -2000
+TH1F Rf1tdc_fhc49 'R F1TDC (Corrected) Ch49 S2R-1 ' Rf1tdc_fhc49 500 -6000 -2000
+TH1F Rf1tdc_fhc50 'R F1TDC (Corrected) Ch50 S2R-2 ' Rf1tdc_fhc50 500 -6000 -2000
+TH1F Rf1tdc_fhc51 'R F1TDC (Corrected) Ch51 S2R-3 ' Rf1tdc_fhc51 500 -6000 -2000
+TH1F Rf1tdc_fhc52 'R F1TDC (Corrected) Ch52 S2R-4 ' Rf1tdc_fhc52 500 -6000 -2000
+TH1F Rf1tdc_fhc53 'R F1TDC (Corrected) Ch53 S2R-5 ' Rf1tdc_fhc53 500 -6000 -2000
+TH1F Rf1tdc_fhc54 'R F1TDC (Corrected) Ch54 S2R-6 ' Rf1tdc_fhc54 500 -6000 -2000
+TH1F Rf1tdc_fhc55 'R F1TDC (Corrected) Ch55 S2R-7 ' Rf1tdc_fhc55 500 -6000 -2000
+TH1F Rf1tdc_fhc56 'R F1TDC (Corrected) Ch56 S2R-8 ' Rf1tdc_fhc56 500 -6000 -2000
+TH1F Rf1tdc_fhc57 'R F1TDC (Corrected) Ch57 S2R-9 ' Rf1tdc_fhc57 500 -6000 -2000
+TH1F Rf1tdc_fhc58 'R F1TDC (Corrected) Ch58 S2R-10' Rf1tdc_fhc58 500 -6000 -2000
+TH1F Rf1tdc_fhc59 'R F1TDC (Corrected) Ch59 S2R-11' Rf1tdc_fhc59 500 -6000 -2000
+TH1F Rf1tdc_fhc60 'R F1TDC (Corrected) Ch60 S2R-12' Rf1tdc_fhc60 500 -6000 -2000
+TH1F Rf1tdc_fhc61 'R F1TDC (Corrected) Ch61 S2R-13' Rf1tdc_fhc61 500 -6000 -2000
+TH1F Rf1tdc_fhc62 'R F1TDC (Corrected) Ch62 S2R-14' Rf1tdc_fhc62 500 -6000 -2000
+TH1F Rf1tdc_fhc63 'R F1TDC (Corrected) Ch63 S2R-15' Rf1tdc_fhc63 500 -6000 -2000
 
 # ------------------------------------------------------------------
 # RIGHT ARM GAS CHERENKOV  ADC and TDC :
@@ -260,13 +394,13 @@ TH1F RClockInterval 'RHRS Clock Interval' RV1495.ClockInterval 1000 0 70000
 #-------------------------------------------------------------------------------
 # RIGHT Arm Physics Histograms:
 #
-TH1F EKRQ2  'R-arm Q2, 4-momentum transfer'  EKR.Q2 100 0 4
-TH1F EKRNU 'R-arm nu, energy transfer'   EKR.omega 100 0 4
-TH1F EKRW  'R-arm invariant mass W' sqrt(EKR.W2) 100 0 2
-TH1F EKR_TH_E 'R-arm scattering angle (deg)' EKR.angle*180./3.14159 180 10 50
-TH1F EKRXBJ 'R-arm Bjorken x' EKR.x_bj 100 0 3.5
+#TH1F EKRQ2  'R-arm Q2, 4-momentum transfer'  EKR.Q2 100 0 4
+#TH1F EKRNU 'R-arm nu, energy transfer'   EKR.omega 100 0 4
+#TH1F EKRW  'R-arm invariant mass W' sqrt(EKR.W2) 100 0 2
+#TH1F EKR_TH_E 'R-arm scattering angle (deg)' EKR.angle*180./3.14159 180 10 50
+#TH1F EKRXBJ 'R-arm Bjorken x' EKR.x_bj 100 0 3.5
 #TH1F EKRTH_Q 'R-arm Virtual photon angle (deg)' EKR.th_q*180./3.14159 60 0 60
-TH2F EKR_xQ2 'R-arm Q2 vs xbj'  EKR.x_bj EKR.Q2  100 0 3.5 200 0 4
+#TH2F EKR_xQ2 'R-arm Q2 vs xbj'  EKR.x_bj EKR.Q2  100 0 3.5 200 0 4
 
 #-------------------------------------------------------------------------------
 # RIGHT Arm Reaction Vertex Histograms  :

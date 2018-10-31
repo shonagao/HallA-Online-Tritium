@@ -167,7 +167,7 @@ void ana::Roop(){
           h_L_s2_beta_pad->Fill( s2pad, beta );
 
           double rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[40]) * TDCtoT;
-          double tgt = (rftime - L_s2_t[s2pad]) -  tr->L_tr_pathl[t]/betae/c;
+          double tgt = (L_s2_t[s2pad] - rftime) -  (tr->L_tr_pathl[t] + tr->L_s2_trpath[t])/betae/c;
           h_L_tgt      ->Fill( tgt );
           h_L_s2pad_tgt->Fill( tgt, s2pad );
           h_L_p_tgt    ->Fill( tgt, p );
@@ -286,7 +286,7 @@ void ana::Roop(){
           h_R_a2_sum_m2 ->Fill(              m2, tr->R_a2_asum_c );
 
           double rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9]) * TDCtoT;
-          double tgt = (rftime - R_s2_t[s2pad]) -  tr->R_tr_pathl[t]/betaK/c;
+          double tgt = (R_s2_t[s2pad] - rftime) -  (tr->R_tr_pathl[t] + tr->R_s2_trpath[t])/betaK/c;
           h_R_tgt      ->Fill( tgt );
           h_R_s2pad_tgt->Fill( tgt, s2pad );
           h_R_p_tgt    ->Fill( tgt, p );
@@ -335,8 +335,8 @@ void ana::Roop(){
 
             double L_rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[40]) * TDCtoT;
             double R_rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9] ) * TDCtoT;
-            double L_tgt    = (L_rftime - L_s2_t[L_s2pad]) - tr->L_tr_pathl[lt]/L_betae/c;
-            double R_tgt    = (R_rftime - R_s2_t[R_s2pad]) - tr->R_tr_pathl[rt]/R_betaK/c;
+            double L_tgt = (L_s2_t[L_s2pad] - L_rftime) -  (tr->L_tr_pathl[lt] + tr->L_s2_trpath[lt])/L_betae/c;
+            double R_tgt = (R_s2_t[R_s2pad] - R_rftime) -  (tr->R_tr_pathl[rt] + tr->R_s2_trpath[rt])/R_betaK/c;
             double ct = L_tgt - R_tgt;
             h_ct->Fill( ct );
             h_Ls2x_ct ->Fill( tr->L_s2_trx[lt], ct );

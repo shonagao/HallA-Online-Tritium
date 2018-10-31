@@ -31,7 +31,7 @@
 /*Used in faSetProcMode() */
 #define FADC_MODE          9 // 9 - Pulse Parameter (ped, sum, time);  10 - Debug Mode (9 + Raw Samples) 
 #define FADC_WINDOW_WIDTH  55//215 //was 88 // was 55
-#define FADC_LATENCY       215 // was 88// 
+#define FADC_LATENCY       220// was 215 // was 88// 
 #define FADC_LA_Sh         205 //was 200//was 73 //was 78 // was 62 
 #define FADC_WD_Sh         60 // was 60
 #define FADC_NSB           2  // # of samples *before* Threshold crossing (TC) to include in sum

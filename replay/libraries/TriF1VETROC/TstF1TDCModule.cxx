@@ -230,8 +230,8 @@ Int_t TstF1TDCModule::LoadSlot(THaSlotData *sldat, const UInt_t *evbuffer, const
 		}
 		*/
 		Bool_t okslot = 1;
-		if(f1slot==8 || f1slot==14) idxSlot = 0;
-		else if(f1slot==10 || f1slot==16) idxSlot = 1;
+		if(f1slot==8 || f1slot==16) idxSlot = 0;
+		else if(f1slot==10 || f1slot==18) idxSlot = 1;
 		else okslot = 0;
 
 //cout << "f1slot: " << f1slot << " ";//endl;
