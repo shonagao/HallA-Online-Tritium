@@ -22,15 +22,15 @@ TARGET2= hrs_S2_f1twcorr
 OBJS2=   hrs_S2_f1twcorr.o  
 TARGET3= hrs_S2_f1twcorr_ital
 OBJS3=   hrs_S2_f1twcorr_ital.o
-TARGET4= hrs_RF_corr
-OBJS4=   hrs_RF_corr.o
+#TARGET4= hrs_RF_corr
+#OBJS4=   hrs_RF_corr.o
 #Setting.o Tree.o
 
 .PHONY: all
 all: $(TARGET1)\
      $(TARGET2)\
-     $(TARGET3)\
-     $(TARGET4)
+     $(TARGET3)
+
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< -MMD $(CXXFLAGS)
 
@@ -40,8 +40,6 @@ $(TARGET1): $(patsubst %,$(LIBDIR)/%,$(OBJS1))
 $(TARGET2): $(patsubst %,$(LIBDIR)/%,$(OBJS2))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 $(TARGET3): $(patsubst %,$(LIBDIR)/%,$(OBJS3))
-	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
-$(TARGET4): $(patsubst %,$(LIBDIR)/%,$(OBJS4))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean

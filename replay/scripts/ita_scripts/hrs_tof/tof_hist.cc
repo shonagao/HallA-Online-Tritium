@@ -49,10 +49,10 @@ void tof_hist(){
 
   c1->cd(i+1);
   gPad->SetLogy();
-  h1[i]->SetXtitle(Form("S2ch%d-S0 Hist [ns]"),i);
+  //  h1[i]->SetXtitle(Form("S2ch%d-S0 Hist [ns]",i));
   h1[i]->Draw();
   cbeta->cd(i+1);
-  hbeta[i]->SetXtitle(Form("S2ch%d -S0 pathl beta Hist"),i);
+  // hbeta[i]->SetXtitle(Form("S2ch%d -S0 pathl beta Hist",i));
   hbeta[i]->Draw();
 
   }

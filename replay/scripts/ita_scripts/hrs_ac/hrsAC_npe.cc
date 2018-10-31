@@ -21,10 +21,7 @@ void hrsAC_npe(){
     hac1a[i]=new TH1F(Form("hac1a[%d]",i),Form("hac1a[%d]",i),abin,amin,amax);
     t1->Project(Form("hac1a[%d]",i),Form("Ra1a_c[%d]",i)); //AC1 Right PMT
 
-  //------Fit func. ----------//
-    // fac1a[i][0]=new TF1(Form("fac1a[%d]",i),gaus,Form("fac1min[&d][0]",i),Form("fac1max[%d][0]",i)); //pedestal
-    // fac1a[i][1]=new TF1(Form("fac1a[%d][1]",i),gaus,Form("fac1min[&d][1]",i),Form("fac1max[%d][1]",i));//1PE
-}
+
   //------ AC2 ----------------//
   for(int i=0;i<26;i++){
     hac2a[i]=new TH1F(Form("hac2a[%d]",i),Form("hac2a[%d]",i),abin,amin,amax);

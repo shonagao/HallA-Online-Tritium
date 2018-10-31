@@ -63,7 +63,13 @@ int main(int argc, char** argv){
   cin>>nrun;
   cout<<"S2 Channel :";
   cin>>ch;
-  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));
+  for(int i=111140;i<111145;i++){
+  //  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun)); // ifarm
+  T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun)); //a-onl 
+  T->Add(Form("/chafs1/work1/tritium/Rootfiles/tritium_%d.root",nrun)); //a-onl 
+
+  }
+
 bool rarm;
  if(nrun>90000){rarm=true;}else{rarm=false;}
  gStyle->SetOptFit(0001);
@@ -318,7 +324,7 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     double sig_ital[chmax][ital_a][ital_b],sig_c[chmax];
-    for(int i=0;i<chmax;i++){ sig_c[i]=100.,wamin[i]=100.,wbmin[i]=100.;}
+    for(int i=0;i<chmax;i++){ sig_c[i]=100.,wamin[i]=100.,wbmin[i]=100.,amin[i]=0,bmin[i]=0;}
     TH1F* htof_ital[chmax][ital_a][ital_b];
     TF1* ftof_c[chmax];
     TH2F* htof_adc_italr[chmax][ital_a][ital_b];
@@ -330,7 +336,9 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //------------ TOF italtion  hist -------------//
        hital[i]=new TH2F(Form("hital[%d]",i),Form("TOF Itallation hist ch %d",i),ital_a,0,ital_a,ital_b,0,ital_b);
 ftof_c[i]=new TF1(Form("ftof_c[%d]",i),"gaus",min_tof_c[i],max_tof_c[i]);
-       for(int a=0;a<ital_a;a++){
+      
+
+ for(int a=0;a<ital_a;a++){
         for(int b=0;b<ital_b;b++){
 
  htof_ital[i][a][b]=new TH1F(Form("htof_ital[%d][%d][%d]",i,a,b),Form("TOF with Scinti CH %d, w/ correlation ",i),bin_tof_c[i],min_tof_c[i],max_tof_c[i]); 
@@ -355,7 +363,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   S2r_t[i]=(-F1[48+i]+F1[46])*tdc_time;
   if(F1[43]>0 && F1[44]>0 && F1[16+i]>0 && F1[48+i]>0)tdc_cut[i]=true;
   if(F1[4]>0)trig_cut=true; 
- if(tof[i]>1.6e-8 && tof[i]<2.6e-8)tof_cut[i]=true;
+ if(tof[i]>1.6e-8 && tof[i]<2.2e-8)tof_cut[i]=true;
  }else{
   S0a_t=(-F1[27]+F1[30])*tdc_time;
   S0b_t=(-F1[28]+F1[30])*tdc_time;
@@ -376,12 +384,17 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
  if(rarm){
     corr_s0r[i]=8.26e-8*1./S0a_a; //#94003 calb data from hrs_S0_f1twcorr 
     corr_s0l[i]=8.7e-8*1./S0b_a;  //#94003 calb data from hrs_S0_f1twcorr
+  // #run 111148 S0 calibration
+    corr_s0r[i]=3.62e-8*1./S0a_a; //#94003 calb data from hrs_S0_f1twcorr 
+    corr_s0l[i]=7.11e-8*1./S0b_a;  //#94003 calb data from hrs_S0_f1twcorr
+
   }
  
   corr_r[i]=twp_r[i][0]*1./S2r_a[i];
   corr_l[i]=twp_l[i][0]*1./S2l_a[i];
- 	wa[i]=0.4+0.01*a;
-	wb[i]=0.8+0.01*b;
+
+ 	wa[i]=0.0+0.2*a;
+	wb[i]=0.0+0.2*b;
 	tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
   tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i]-corr_s0r[i]-corr_s0l[i];
   //------- Fill Hist w/ Time-Walk Correction ------//
@@ -390,7 +403,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_italr[i][a][b]->Fill(S2r_a[i],tof_c[i]);
   if(tdc_cut[i] && trig_cut && tof_cut[i])htof_adc_itall[i][a][b]->Fill(S2l_a[i],tof_c[i]);
 
-      } //END Fill
+	 } //END Fill
 
 
  htof_ital[i][a][b]->Fit(ftof_c[i]);
@@ -413,10 +426,8 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
 	}
        }
 
-
      }
-    }
-    
+    }    
 
     //=========================================================//
     //=============< Draw Hist >===============================// 
@@ -511,7 +522,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
     
 
   //===== Set Parameters ========//
-  par[8][0]=1.0e-8, par[8][1]=3.0e-8, par[8][2]=1.0e-8,par[8][3]=6.0e-8; //R-ARM
+  par[8][0]=1.0e-8, par[8][1]=2.0e-8, par[8][2]=1.0e-8,par[8][3]=6.0e-8; //R-ARM
  
   //============================//
   for(int k=0;k<chmax;k++){

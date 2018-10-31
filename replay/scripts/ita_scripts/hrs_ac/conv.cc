@@ -192,14 +192,13 @@ gain2[25]=368.;
 
 
 
- // (AC1)Aerogel Chrenkov Right ARM ADC //                                      
+ // (AC1)Aerogel Chrenkov Right ARM ADC //                                    
  t1->SetBranchAddress("R.a1.t",Ra1t);
  t1->SetBranchAddress("R.a1.a",Ra1a);
  t1->SetBranchAddress("R.a1.asum_c",&Ra1sum);
  t1->SetBranchAddress("R.a1.a_p",Ra1a_p);
  t1->SetBranchAddress("R.a1.a_c",Ra1a_c);
-
- // (AC2)Aerogel Chrenkov Right ARM ADC //                                      
+ // (AC2)Aerogel Chrenkov Right ARM ADC //                                    
  t1->SetBranchAddress("R.a2.t",Ra2t);
  t1->SetBranchAddress("R.a2.a",Ra2a);
  t1->SetBranchAddress("R.a2.asum_c",&Ra2sum);

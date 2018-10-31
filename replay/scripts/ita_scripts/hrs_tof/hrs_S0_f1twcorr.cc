@@ -58,8 +58,9 @@ int main(int argc, char** argv){
   cout<<"run number :";
   cin>>nrun;
   ch=8;
-  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));
-  bool rarm;
+  //    T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun)); //ifarm
+  T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));  //a-onl
+ bool rarm;
  if(nrun>90000){rarm=true;}else{rarm=false;}
  gStyle->SetOptFit(0001);
   
@@ -223,7 +224,7 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //---- Cut condition --//
   tdc_cut[i]=false;
   adc_cut[i]=false;
-  trig_cut=false;
+  trig_cut=true;
   
  if(rarm){
   S0a_t=(-F1[43]+F1[46])*tdc_time;
@@ -246,22 +247,23 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
   S2r_a[i]=s2radc[i];
   S2l_a[i]=s2ladc[i];
   tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
- 
   //--------- Fill Hist ---------------//  
-  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof[i]->Fill(tof[i]);
-  if(tdc_cut[i] && trig_cut&& tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_r[i]->Fill(S0a_a,tof[i]);
-  if(tdc_cut[i] && trig_cut&& tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_l[i]->Fill(S0b_a,tof[i]);
+  if(tdc_cut[i] && trig_cut)htof[i]->Fill(tof[i]);
+  if(tdc_cut[i] && trig_cut)htof_adc_r[i]->Fill(S0a_a,tof[i]);
+  if(tdc_cut[i] && trig_cut)htof_adc_l[i]->Fill(S0b_a,tof[i]);
+
 
 
       }
-      htof[i]->Fit(Form("ftof[%d]",i));
-      sig[i]=ftof[i]->GetParameter(2);
+
+      //      htof[i]->Fit(Form("ftof[%d]",i));
+      //  sig[i]=ftof[i]->GetParameter(2);
+      cout<<"Get hist parameters "<<endl;
     }
   }
 
-
-
-
+  cout<<"tof w/o twc fill hist "<<endl;
+  
  //=====================================================================//
  //========== TSlicesY Get Correction Parameters ======================//
  //====================================================================//
@@ -272,13 +274,22 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
      if(i==ch){
  //------ FitSlicesY -----------------// 
  TObjArray aSlices;     
- htof_adc_r[i]->FitSlicesY(ftof_gaus[i],0,-1,0,"QRG3");
+ htof_adc_r[i]->FitSlicesY(ftof_gaus[i],0,-1,0,"QRG2");
  hslice_tof_r[i]=(TH1F*)gROOT->FindObject(Form("htof_adc_r[%d]_1",i));
- htof_adc_l[i]->FitSlicesY(ftof_gaus[i],0,-1,0,"QRG3");
+ htof_adc_l[i]->FitSlicesY(ftof_gaus[i],0,-1,0,"QRG2");
  hslice_tof_l[i]=(TH1F*)gROOT->FindObject(Form("htof_adc_l[%d]_1",i));
 
      
  //===== S0 Set Paramters =======//
+ //#111148 run //
+   ffit_r[i]->SetParameter(0,1.3e-8);   
+  ffit_r[i]->SetParameter(1,1.87e-8);   
+  ffit_r[i]->SetParLimits(0,8.0e-8,1.0e-7);   
+  ffit_l[i]->SetParameter(0,1.0e-7);   
+  ffit_l[i]->SetParameter(1,1.0-8);    
+  ffit_l[i]->SetParLimits(0,8.0e-8,1.0e-7);   
+
+/*
  //#94003 run//
  if(rarm){
   ffit_r[i]->SetParameter(0,7.3e-8);   
@@ -293,6 +304,7 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
   ffit_l[i]->SetParameter(1,1.0-8);    
   ffit_l[i]->SetParLimits(0,1.0e-7,4.0e-7);   
 }
+ */
   //==============================//
  hslice_tof_r[i]->Fit(Form("ffit_r[%d]",i),"","");
  hslice_tof_l[i]->Fit(Form("ffit_l[%d]",i),"","");
@@ -306,14 +318,15 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
     }  
     
 
+  cout<<"FitSlicesY is done "<<endl;
 
  //===============================================================//
  //=========== Fill w/ Time-Walk Correciton ======================//
  //===============================================================//
 
     //itallation parameters //
-    int ital_a=3;
-    int ital_b=3;
+    int ital_a=10;
+    int ital_b=10;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     for(int i=0;i<chmax;i++){wamin[i]=0.0; wbmin[i]=0.0; amin[i]=0; bmin[i]=0;}
@@ -345,7 +358,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
  //---- Cut condition --//
   tdc_cut[i]=false;
   adc_cut[i]=false;
-  trig_cut=false;
+  trig_cut=true;
  //----- F1TDC ------// 
  if(rarm){
   S0a_t=(-F1[43]+F1[46])*tdc_time;
@@ -373,22 +386,18 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   // corr_l[i]=twp_l[i][0]*1./S0b_a-twp_l[i][1];
   corr_r[i]=twp_r[i][0]*1./S0a_a;
   corr_l[i]=twp_l[i][0]*1./S0b_a;
-	wa[i]=0.66+0.1*a;
-	wb[i]=0.86+0.1*b;
+  // run # 111148 S0 calibration //
+	wa[i]=0.36+0.001*a;
+	wb[i]=0.88+0.001*b;
 
 	tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
   tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i];
   //------- Fill Hist w/ Time-Walk Correction ------//
 
-  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_ital[i][a][b]->Fill(tof_c[i]);
-  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_italr[i][a][b]->Fill(S0a_a,tof_c[i]);
-  if(tdc_cut[i] && trig_cut && tof[i]>1.6e-8 && tof[i]<2.6e-8)htof_adc_itall[i][a][b]->Fill(S0b_a,tof_c[i]);
+  if(tdc_cut[i] && trig_cut)htof_ital[i][a][b]->Fill(tof_c[i]);
+  if(tdc_cut[i] && trig_cut)htof_adc_italr[i][a][b]->Fill(S0a_a,tof_c[i]);
+  if(tdc_cut[i] && trig_cut)htof_adc_itall[i][a][b]->Fill(S0b_a,tof_c[i]);
 
-  /*
-  if(tdc_cut[i] && trig_cut)htof_c[i]->Fill(tof_c[i]);
-  if(tdc_cut[i] && trig_cut)htof_adc_rc[i]->Fill(S0a_a,tof_c[i]);
-  if(tdc_cut[i] && trig_cut)htof_adc_lc[i]->Fill(S0b_a,tof_c[i]);
-  */
       } //END Fill
 
 
@@ -482,6 +491,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
     }
 
 
+
  theApp->Run();
  return 0;
 
@@ -516,10 +526,10 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   
 
   //===== Set Parameters ========//
-  par[8][0]=1.0e-8, par[8][1]=3.0e-8, par[8][2]=1.0e-8,par[8][3]=6.0e-8; //R-ARM
+   par[8][0]=1.0e-8, par[8][1]=3.0e-8, par[8][2]=1.0e-8,par[8][3]=3.0e-8; //R-ARM
   // par[8][4]=1.0e-8, par[8][5]=3.0e-8, par[8][6]=1.0e-8,par[8][7]=6.0e-8; //L-ARM
   //  par[16][0]=0.180e-6, par[16][1]=0.23e-6, par[16][2]=-0.18e-6, par[16][3]=0.25e-6;
-
+  // par[8][0]=-1.0e-4, par[8][1]=3.0e-4, par[8][2]=-1.0e-4,par[8][3]=6.0e-4; //R-ARM
   //============================//
   for(int k=0;k<chmax;k++){
    for(int l=0;l<npara;l++){
