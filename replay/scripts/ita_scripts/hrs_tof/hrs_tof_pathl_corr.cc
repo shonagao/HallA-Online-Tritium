@@ -13,7 +13,9 @@ void hrs_tof_pathl_corr()
     Double_t tdcTime = 56.23e-12; // this is the conversion per chanel ie 56.23 picosec
     TH2F *h1 = new TH2F("h1", "",300,-0.11,0.11,500,0.5e-6,0.52e-6); //For Two Dimensional Histogram
     TH2F *h2 = new TH2F("h2", "",300,-1,1,500,0.5e-6,0.52e-6); //For Two Dimensional Histogram
-    TH2F *htof_pathl = new TH2F("htof_pathl", "",100,0.5e-6,0.52e-6,50,22,23); //For Two Dimensional Histogram
+    // TH2F *htof_pathl = new TH2F("htof_pathl", "",100,0.5e-6,0.52e-6,50,22,23); //For Two Dimensional Histogram
+
+ TH2F *htof_pathl = new TH2F("htof_pathl", "",10000,-1.0e-5,1.0e-6,50,22,23); //For Two Dimensional Histogram
    //  TH2F *h1 = new TH2F("h1", "",500,0.3e-6,0.35e-6,14,0.5,15.5);// one dimensional Histogram 
    // TH1F *h1 = new TH1F("h1", "",1000,0.65e-6,0.7e-6);// one dimensional Histogram
     TProfile *p1 = new TProfile("p1", "",100,-0.11,0.11,0.5093e-6,0.5113e-6); //For Two Dimensional Histogram
@@ -126,7 +128,8 @@ int ch=8;
 	      T->GetEntry(j);    
 	    for( int i=2;i<16;i++){
               if(i==ch){
-                if( HRS_trig>1 && Rs2_nthit==1 && Rs2_pads[0]==i &&  R_trbeta>0.76 && R_trbeta<1.01  ){ // R.tr.beta>0.76 && R.tr.beta<80	
+       
+		//         if( HRS_trig>1 && Rs2_nthit==1 && Rs2_pads[0]==i &&  R_trbeta>0.76 && R_trbeta<1.01  ){ // R.tr.beta>0.76 && R.tr.beta<80	
                
 	   
 	     RF_s2_mean = (Rs2_tdchit[9] - Rs2_tdchit[15]) * tdcTime  - (((Rs2_tdchit[9]-Rs2_tdchit[i+16])*tdcTime + (Rs2_tdchit[46]-Rs2_tdchit[i+48])*tdcTime)/2.0 + corr_x[i-2]*R_trx[0] + corr_th[i-2]*R_trth[0] + corr_adc[i-2]*Rs2_lac[i] + alignment[i-2]); // late ST data
@@ -141,12 +144,12 @@ int ch=8;
 	  p2->Fill(R_trx[0], RF_s2_mean);// For opne  dimensional
 	  htof_pathl->Fill(RF_s2_mean,pathl);
 	 
-    }
+	  // }
       
   }
 	      }
 
-	    } // end entry loop ie irun=90854 loop
+	  } // end entry loop ie irun=90854 loop
 
 
   TF1 *f1 = new TF1("f1","pol1",-0.11,0.11);

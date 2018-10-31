@@ -80,8 +80,7 @@ bool rarm;
   int trig;
 
  //============= Set Branch Status ==================//
-  T->SetBranchStatus("*",0);
-  
+  T->SetBranchStatus("*",0);  
   if(rarm){
   T->SetBranchStatus("RTDC.F1FirstHit",1);
   T->SetBranchAddress("RTDC.F1FirstHit",F1); 

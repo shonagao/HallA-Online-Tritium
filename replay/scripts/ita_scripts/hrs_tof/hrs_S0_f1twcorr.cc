@@ -531,10 +531,7 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
     }
   }
   return param;
-}
-
-
-
+ }
 
 
 
@@ -580,5 +577,3 @@ fpar[16][0][0]= -1.08e-8, fpar[16][0][1]=8.17e13,  fpar[16][1][0]= -1.11e-8, fpa
   }
   return f_ini_param;
 }
-
-

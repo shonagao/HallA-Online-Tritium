@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <climits>
 using namespace std;
-
 #include "TApplication.h"
 #include "TH1F.h"
 #include "TH2F.h"
@@ -39,15 +38,13 @@ using namespace std;
 #include "TMath.h"
 #include "TGaxis.h"
 #include "TRandom.h"
-
 #include "Tree.h"
 #include "Setting.h"
 #include "ParamMan.h"
-
 #define Calibration
 
-const int NCanvas = 9;//num of canvas
 
+const int NCanvas = 9;//num of canvas
 class s2_t0_calib : public Tree
 {
  public:
