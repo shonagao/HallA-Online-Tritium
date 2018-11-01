@@ -110,8 +110,8 @@ TH1F Rs0ra 'Right arm S0-Bottom(A) ADC' R.s0.ra 12000 0 120000 R.s0.ra>0.
 TH1F Rs0la_p 'S0-Top(B) ADC (PedSub)' R.s0.la_p 1000 -500 4500 R.s0.la_p>-600.
 TH1F Rs0ra_p 'S0-Bottom(A) ADC (PedSub)' R.s0.ra_p 1000 -500 4500 R.s0.ra_p>-600.
 
-TH1F Rs0lt_fadc 'Right arm S0-Top(B) FADC TDC' R.s0.lt_fadc 500 2000 3000 R.s0.lt_fadc>0.
-TH1F Rs0rt_fadc 'Right arm S0-Bottom(A) FADC TDC' R.s0.rt_fadc 500 2000 3000 R.s0.rt_fadc>0.
+TH1F Rs0lt_fadc 'Right arm S0-Top(B) FADC TDC' R.s0.lt_fadc 500 2500 4000 R.s0.lt_fadc>0.
+TH1F Rs0rt_fadc 'Right arm S0-Bottom(A) FADC TDC' R.s0.rt_fadc 500 2500 4000 R.s0.rt_fadc>0.
 TH1F Rs0ltc_fadc 'Right arm S0-Top(B) FADC TDC (corrected)' R.s0.ltc_fadc 500 1500 2500 R.s0.lt_fadc>0.
 TH1F Rs0rtc_fadc 'Right arm S0-Bottom(A) FADC TDC (corrected)' R.s0.rtc_fadc 500 1500 2500 R.s0.rt_fadc>0.
 
@@ -120,22 +120,22 @@ TH2F Rs0Afadcvfbus 'S0-Bottom(A) Fastbus (PedSub) vs FADC ' R.s0.ra_p FbusR.s0.r
 #-------------------------------------------------------------------
 # RIGHT ARM S2
 #
-TH1F Rs2lt 'S2 TDC L-PMT' R.s2.lt 500 1500 2500 R.s2.lt>0.
-TH1F Rs2rt 'S2 TDC R-PMT' R.s2.rt 500 1500 2500 R.s2.rt>0.
-TH1F Rs2ltT4_ 'S2 TDC w/ T5,T6:  L-PMT ' R.s2.lt 500 1500 2500 R.s2.lt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
-TH1F Rs2ltT6_ 'S2 TDC w/ T6 only: L-PMT ' R.s2.lt 500 1500 2500 R.s2.lt>0.&&(DR.evtypebits==64)
-TH1F Rs2rtT4_ 'S2 TDC w/ T5,T6:  R-PMT ' R.s2.rt 500 1500 2500 R.s2.rt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
-TH1F Rs2rtT6_ 'S2 TDC w/ T6 only: R-PMT ' R.s2.rt 500 1500 2500 R.s2.rt>0.&&(DR.evtypebits==64)
+TH1F Rs2lt 'S2 TDC L-PMT' R.s2.lt 500 2000 3000 R.s2.lt>0.
+TH1F Rs2rt 'S2 TDC R-PMT' R.s2.rt 500 2000 3000 R.s2.rt>0.
+TH1F Rs2ltT4_ 'S2 TDC w/ T5,T6:  L-PMT ' R.s2.lt 500 2000 3000 R.s2.lt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
+TH1F Rs2ltT6_ 'S2 TDC w/ T6 only: L-PMT ' R.s2.lt 500 2000 3000 R.s2.lt>0.&&(DR.evtypebits==64)
+TH1F Rs2rtT4_ 'S2 TDC w/ T5,T6:  R-PMT ' R.s2.rt 500 2000 3000 R.s2.rt>0.&&((DR.evtypebits==112)||(DR.evtypebits==96))
+TH1F Rs2rtT6_ 'S2 TDC w/ T6 only: R-PMT ' R.s2.rt 500 2000 3000 R.s2.rt>0.&&(DR.evtypebits==64)
 
 TH1F Rs2la 'S2 ADC L-PMT' R.s2.la 4000 0 40000 R.s2.la>0.
 TH1F Rs2ra 'S2 ADC R-PMT' R.s2.ra 4000 0 40000 R.s2.ra>0.
 TH1F Rs2la_p 'S2 ADC(PedSub) L-PMT ' R.s2.la_p 2000 -200 1800 R.s2.la_p>-6000.
 TH1F Rs2ra_p 'S2 ADC(PedSub) R-PMT ' R.s2.ra_p 2000 -200 1800 R.s2.ra_p>-6000.
 
-TH1F Rs2lt_fadc 'S2 FADC TDC L-PMT' R.s2.lt_fadc 500 1500 2500 R.s2.lt_fadc>0.
-TH1F Rs2rt_fadc 'S2 FADC TDC R-PMT' R.s2.rt_fadc 500 1500 2500 R.s2.rt_fadc>0.
-TH1F Rs2ltc_fadc 'S2 FADC TDC (corrected) L-PMT' R.s2.ltc_fadc 500 1500 2500 R.s2.ltc_fadc>0.
-TH1F Rs2rtc_fadc 'S2 FADC TDC (corrected) R-PMT' R.s2.rtc_fadc 500 1500 2500 R.s2.rtc_fadc>0.
+TH1F Rs2lt_fadc 'S2 FADC TDC L-PMT' R.s2.lt_fadc 500 2000 4000 R.s2.lt_fadc>0.
+TH1F Rs2rt_fadc 'S2 FADC TDC R-PMT' R.s2.rt_fadc 500 2000 4000 R.s2.rt_fadc>0.
+TH1F Rs2ltc_fadc 'S2 FADC TDC (corrected) L-PMT' R.s2.ltc_fadc 500 2000 4000 R.s2.ltc_fadc>0.
+TH1F Rs2rtc_fadc 'S2 FADC TDC (corrected) R-PMT' R.s2.rtc_fadc 500 2000 4000 R.s2.rtc_fadc>0.
 
 # ------------------------------------------------------------------
 #RIGHT ARM F1TDC
@@ -225,6 +225,8 @@ FORMULA Rf1tdc_fhc28 RTDC.F1FirstHit[28]-RTDC.F1FirstHit[9]
 FORMULA Rf1tdc_fhc29 RTDC.F1FirstHit[29]-RTDC.F1FirstHit[9]
 FORMULA Rf1tdc_fhc30 RTDC.F1FirstHit[30]-RTDC.F1FirstHit[9]
 FORMULA Rf1tdc_fhc31 RTDC.F1FirstHit[31]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc43 RTDC.F1FirstHit[43]-RTDC.F1FirstHit[9]
+FORMULA Rf1tdc_fhc44 RTDC.F1FirstHit[44]-RTDC.F1FirstHit[9]
 FORMULA Rf1tdc_fhc48 RTDC.F1FirstHit[48]-RTDC.F1FirstHit[46]
 FORMULA Rf1tdc_fhc49 RTDC.F1FirstHit[49]-RTDC.F1FirstHit[46]
 FORMULA Rf1tdc_fhc50 RTDC.F1FirstHit[50]-RTDC.F1FirstHit[46]
@@ -258,6 +260,8 @@ TH1F Rf1tdc_fhc28 'R F1TDC (Corrected) Ch28 S2L-12' Rf1tdc_fhc28 500 -12000 -400
 TH1F Rf1tdc_fhc29 'R F1TDC (Corrected) Ch29 S2L-13' Rf1tdc_fhc29 500 -12000 -4000
 TH1F Rf1tdc_fhc30 'R F1TDC (Corrected) Ch30 S2L-14' Rf1tdc_fhc30 500 -12000 -4000
 TH1F Rf1tdc_fhc31 'R F1TDC (Corrected) Ch31 S2L-15' Rf1tdc_fhc31 500 -12000 -4000
+TH1F Rf1tdc_fhc43 'R F1TDC (Corrected) Ch43 S0A'    Rf1tdc_fhc43 500 -12000 -4000
+TH1F Rf1tdc_fhc44 'R F1TDC (Corrected) Ch44 S0B'    Rf1tdc_fhc44 500 -12000 -4000
 TH1F Rf1tdc_fhc48 'R F1TDC (Corrected) Ch48 S2R-0 ' Rf1tdc_fhc48 500 -12000 -4000
 TH1F Rf1tdc_fhc49 'R F1TDC (Corrected) Ch49 S2R-1 ' Rf1tdc_fhc49 500 -12000 -4000
 TH1F Rf1tdc_fhc50 'R F1TDC (Corrected) Ch50 S2R-2 ' Rf1tdc_fhc50 500 -12000 -4000
@@ -460,12 +464,13 @@ TH2F R_rastxy2 'Fast Raster 2 X vs Y (current)' Rrb.Raster2.rawcur.x Rrb.Raster2
 TH2F R_rastx1x2 'Fast Raster 1 X vs 2 X (current)' Rrb.Raster2.rawcur.x Rrb.Raster.rawcur.x 500 50000 100000 500 50000 100000
 TH2F R_rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Raster.rawcur.y 500 20000 120000 500 20000 120000
 TH2F R_rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Raster.rawcur.x 500 20000 120000 500 50000 100000
-TH2F R_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Rrb.Raster.rawcur.y Rrb.Raster2.rawcur.x 500 20000 120000 500 50000 100000
+TH2F R_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Rrb.Raster.rawcur.y Rrb.Raster2.rawcur.x 500 2000
+0 120000 500 50000 100000
 
-TH2F R_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Rrb.Raster.rawcur.x rbax 500 50000 100000 200 -5. 5.
-TH2F R_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Rrb.Raster.rawcur.y rbay 500 20000 120000 200 -5. 5.
-TH2F R_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Rrb.Raster.rawcur.x rbbx 500 50000 100000 200 -5. 5.
-TH2F R_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Rrb.Raster.rawcur.y rbby 500 20000 120000 200 -5. 5.
+TH2F R_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Rrb.Raster.rawcur.x rbax 500 71000 72000 200 -2. 2.
+TH2F R_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Rrb.Raster.rawcur.y rbay 500 72000 73000 200 -1. 4.
+TH2F R_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Rrb.Raster.rawcur.x rbbx 500 71000 72000 200 -2. 2.
+TH2F R_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Rrb.Raster.rawcur.y rbby 500 72000 73000 200 0. 5.
 
 TH2F R_urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Rrb.Raster.rawcur.y rbax 500 20000 120000 200 -5. 5.
 TH2F R_urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Rrb.Raster.rawcur.x rbay 500 50000 100000 200 -5. 5.
@@ -484,6 +489,7 @@ TH2F R_drastraw_x_bpmb_y 'Down Fast Raster Current X vs BPMB Y' Rrb.Raster2.rawc
 
 TH1F R_E_p 'E/p' Rep 300 -0.5 1.5 R.gold.p<1000000000&&R.gold.p>0
 TH1F R_E_p_cut 'E/p with cut' Rep 300 -0.5 1.5 R.cer.asum_c>2000&&R.gold.p<1000000000&&R.gold.p>0
+
 
 #-------------------------------------------------------------------------------
 #Event type 140 scaler
@@ -533,6 +539,7 @@ variable Rightd1
 variable Rightd1_r
 variable Rightd3
 variable Rightd3_r
+
 variable Rightd10
 variable Rightd10_r
 
@@ -567,6 +574,7 @@ variable evRightADC_gate_r
 variable evRightL1A
 variable evRightL1A_r
 variable evRightRF_Time
+
 variable evRightRF_Time_r
 
 variable evRightunew
@@ -609,6 +617,7 @@ begin epics
   hac_bcm_average
   hac_unser_read
   hac_unser_current
+
   hac_bcm_dvm1_current
   hac_bcm_dvm2_current
   IBC0L02Current 
@@ -742,12 +751,12 @@ block FbusLrb*
 formula Lep (L.prl1.e+L.prl2.e)/(L.gold.p*1000)
 # LEFT ARM S0
 
-TH1F Ls0lt 'S0-Bottom(B) TDC' L.s0.lt 300 2600 2900 L.s0.lt>0.
-TH1F Ls0rt 'S0-Top(A) TDC' L.s0.rt 300 2600 2900 L.s0.rt>0.
-TH1F Ls0ltTAll 'S0-Bottom(B) TDC w/T2,T3' L.s0.lt 400 2600 2900 L.s0.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
-TH1F Ls0ltT3   'S0-Bottom(B) TDC w/ T3 only' L.s0.lt 400 2600 2900 L.s0.lt>0.&&(DL.evtypebits==8)
-TH1F Ls0rtTAll 'S0-Top(A) TDC w/ T2,T3' L.s0.rt 500 2600 2900 L.s0.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
-TH1F Ls0rtT3   'S0-Top(A) TDC w/ T3 only' L.s0.rt 500 2600 2900 L.s0.rt>0.&&(DL.evtypebits==8)
+TH1F Ls0lt 'S0-Bottom(B) TDC' L.s0.lt 300 2000 3000 L.s0.lt>0.
+TH1F Ls0rt 'S0-Top(A) TDC' L.s0.rt 300 2000 3000 L.s0.rt>0.
+TH1F Ls0ltTAll 'S0-Bottom(B) TDC w/T2,T3' L.s0.lt 400 2000 3000 L.s0.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
+TH1F Ls0ltT3   'S0-Bottom(B) TDC w/ T3 only' L.s0.lt 400 2000 3000 L.s0.lt>0.&&(DL.evtypebits==8)
+TH1F Ls0rtTAll 'S0-Top(A) TDC w/ T2,T3' L.s0.rt 500 2000 3000 L.s0.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
+TH1F Ls0rtT3   'S0-Top(A) TDC w/ T3 only' L.s0.rt 500 2000 3000 L.s0.rt>0.&&(DL.evtypebits==8)
 
 TH1F Ls0la 'S0-Bottom(B) ADC' L.s0.la 12000 0 120000 L.s0.la>0.
 TH1F Ls0ra 'S0-Top(A) ADC' L.s0.ra 12000 0 120000 L.s0.ra>0.
@@ -757,31 +766,31 @@ TH1F Ls0ra_p 'S0-Top(A) ADC (PedSub)' L.s0.ra_p 100 -500 4500 L.s0.ra_p>-500.
 TH2F Ls0Afadcvfbus 'S0-Top(A) Fastbus(PedSub) vs FADC ' L.s0.la_p FbusL.s0.la_p 5000 0 10000 5000 0 10000 L.s0.la_p>0
 TH2F Ls0Bfadcvfbus 'S0-Bottom(B) Fastbus(PedSub) vs FADC' L.s0.ra_p FbusL.s0.ra_p 5000 0 10000 5000 0 10000 L.s0.ra_p>0
 
-TH1F Ls0lt_fadc 'S0-Bottom(B) FADC TDC' L.s0.lt_fadc 500 1300 2300 L.s0.lt_fadc>0.
-TH1F Ls0rt_fadc 'S0-Top(A) FADC TDC' L.s0.rt_fadc 500 1300 2300 L.s0.rt_fadc>0.
-TH1F Ls0ltc_fadc 'S0-Bottom(B) FADC TDC (corrected)' L.s0.ltc_fadc 500 1300 2300 L.s0.ltc_fadc>0.
-TH1F Ls0rtc_fadc 'S0-Top(A) FADC TDC (corrected)' L.s0.rtc_fadc 500 1300 2300 L.s0.rtc_fadc>0.
+TH1F Ls0lt_fadc 'S0-Bottom(B) FADC TDC' L.s0.lt_fadc 500 1000 3000 L.s0.lt_fadc>0.
+TH1F Ls0rt_fadc 'S0-Top(A) FADC TDC' L.s0.rt_fadc 500 1000 3000 L.s0.rt_fadc>0.
+TH1F Ls0ltc_fadc 'S0-Bottom(B) FADC TDC (corrected)' L.s0.ltc_fadc 500 1000 3000 L.s0.ltc_fadc>0.
+TH1F Ls0rtc_fadc 'S0-Top(A) FADC TDC (corrected)' L.s0.rtc_fadc 500 1000 3000 L.s0.rtc_fadc>0.
 
 #-------------------------------------------------------------------
 # LEFT ARM S2
 #
 
-TH1F Ls2lt 'S2 TDC L-PMT ' L.s2.lt 300 2600 2900 L.s2.lt>0.
-TH1F Ls2rt 'S2 TDC R-PMT ' L.s2.rt 300 2600 2900 L.s2.rt>0.
-TH1F Ls2ltTAll_ 'S2 TDC w/ T2,T3: L-PMT ' L.s2.lt 500 1300 2300 L.s2.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
-TH1F Ls2ltT3_ 'S2 TDC w/ T3 only: L-PMT' L.s2.lt 500 1300 2300 L.s2.lt>0.&&(DL.evtypebits==8)
-TH1F Ls2rtTAll_ 'S2 TDC w/ T2,T3: R-PMT' L.s2.rt 500 1300 2300 L.s2.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
-TH1F Ls2rtT3_ 'S2 TDC w/ T3 only: R-PMT' L.s2.rt 500 1300 2300 L.s2.rt>0.&&(DL.evtypebits==8)
+TH1F Ls2lt 'S2 TDC L-PMT ' L.s2.lt 300 2600 3000 L.s2.lt>0.
+TH1F Ls2rt 'S2 TDC R-PMT ' L.s2.rt 300 2600 3000 L.s2.rt>0.
+TH1F Ls2ltTAll_ 'S2 TDC w/ T2,T3: L-PMT ' L.s2.lt 500 2600 3000 L.s2.lt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
+TH1F Ls2ltT3_ 'S2 TDC w/ T3 only: L-PMT' L.s2.lt 500 2600 3000 L.s2.lt>0.&&(DL.evtypebits==8)
+TH1F Ls2rtTAll_ 'S2 TDC w/ T2,T3: R-PMT' L.s2.rt 500 2600 3000 L.s2.rt>0.&&((DL.evtypebits==12)||(DL.evtypebits==14))
+TH1F Ls2rtT3_ 'S2 TDC w/ T3 only: R-PMT' L.s2.rt 500 2600 3000 L.s2.rt>0.&&(DL.evtypebits==8)
 
 TH1F Ls2la 'S2 ADC L-PMT ' L.s2.la 4000 0 40000 L.s2.la>0.
 TH1F Ls2ra 'S2 ADC R-PMT ' L.s2.ra 4000 0 40000 L.s2.ra>0.
 TH1F Ls2la_p 'S2 ADC(PedSub) L-PMT ' L.s2.la_p 1000 -200 1800 L.s2.la_p>-6000.
 TH1F Ls2ra_p 'S2 ADC(PedSub) R-PMT ' L.s2.ra_p 1000 -200 1800 L.s2.ra_p>-6000.
 
-TH1F Ls2lt_fadc 'S2-Bottom(B) FADC TDC PMT ' L.s2.lt_fadc 500 1300 2300 L.s2.lt_fadc>0.
-TH1F Ls2rt_fadc 'S2-Top(A) FADC TDC PMT ' L.s2.rt_fadc 500 1300 2300 L.s2.rt_fadc>0.
-TH1F Ls2ltc_fadc 'S2-Bottom(B) FADC TDC (corrected) PMT ' L.s2.ltc_fadc 500 1300 2300 L.s2.ltc_fadc>0.
-TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 2300 L.s2.rtc_fadc>0.
+TH1F Ls2lt_fadc 'S2-Bottom(B) FADC TDC PMT ' L.s2.lt_fadc 500 1000 3000 L.s2.lt_fadc>0.
+TH1F Ls2rt_fadc 'S2-Top(A) FADC TDC PMT ' L.s2.rt_fadc 500 1000 3000 L.s2.rt_fadc>0.
+TH1F Ls2ltc_fadc 'S2-Bottom(B) FADC TDC (corrected) PMT ' L.s2.ltc_fadc 500 1000 3000 L.s2.ltc_fadc>0.
+TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1000 3000 L.s2.rtc_fadc>0.
 
 # ------------------------------------------------------------------
 #LEFT ARM F1TDC
@@ -823,7 +832,7 @@ TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 23
         TH1F Lf1tdc_fh34 'L F1TDC Ch34'        LTDC.F1FirstHit[34] 500 1 4001
         TH1F Lf1tdc_fh35 'L F1TDC Ch35'        LTDC.F1FirstHit[35] 500 1 4001
         TH1F Lf1tdc_fh36 'L F1TDC Ch36'        LTDC.F1FirstHit[36] 500 1 4001
-        TH1F Lf1tdc_fh37 'L F1TDC Ch37'        LTDC.F1FirstHit[37] 500 1 4001
+        TH1F Lf1tdc_fh37 'L F1TDC Ch37 L1A_remote'    LTDC.F1FirstHit[37] 500 1 4001
         TH1F Lf1tdc_fh38 'L F1TDC Ch38'        LTDC.F1FirstHit[38] 500 1 4001
         TH1F Lf1tdc_fh39 'L F1TDC Ch39'        LTDC.F1FirstHit[39] 500 1 4001
         TH1F Lf1tdc_fh40 'L F1TDC Ch40 L1A'    LTDC.F1FirstHit[40] 500 1 4001
@@ -855,71 +864,75 @@ TH1F Ls2rtc_fadc 'S2-Top(A) FADC TDC (corrected) PMT ' L.s2.rtc_fadc 500 1300 23
 #LEFT ARM  F1TDC - L1A
 #
 
-FORMULA Lf1tdc_fhc0 LTDC.F1FirstHit[0] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc1 LTDC.F1FirstHit[1] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc2 LTDC.F1FirstHit[2] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc3 LTDC.F1FirstHit[3] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc4 LTDC.F1FirstHit[4] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc5 LTDC.F1FirstHit[5] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc6 LTDC.F1FirstHit[6] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc7 LTDC.F1FirstHit[7] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc8 LTDC.F1FirstHit[8] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc9 LTDC.F1FirstHit[9] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc10 LTDC.F1FirstHit[10] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc11 LTDC.F1FirstHit[11] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc12 LTDC.F1FirstHit[12] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc13 LTDC.F1FirstHit[13] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc14 LTDC.F1FirstHit[14] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc15 LTDC.F1FirstHit[15] - LTDC.F1FirstHit[30]
-FORMULA Lf1tdc_fhc48 LTDC.F1FirstHit[48] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc49 LTDC.F1FirstHit[49] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc50 LTDC.F1FirstHit[50] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc51 LTDC.F1FirstHit[51] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc52 LTDC.F1FirstHit[52] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc53 LTDC.F1FirstHit[53] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc54 LTDC.F1FirstHit[54] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc55 LTDC.F1FirstHit[55] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc56 LTDC.F1FirstHit[56] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc57 LTDC.F1FirstHit[57] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc58 LTDC.F1FirstHit[58] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc59 LTDC.F1FirstHit[59] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc60 LTDC.F1FirstHit[60] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc61 LTDC.F1FirstHit[61] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc62 LTDC.F1FirstHit[62] - LTDC.F1FirstHit[40]
-FORMULA Lf1tdc_fhc63 LTDC.F1FirstHit[63] - LTDC.F1FirstHit[40]
+FORMULA Lf1tdc_fhc0 LTDC.F1FirstHit[0]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc1 LTDC.F1FirstHit[1]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc2 LTDC.F1FirstHit[2]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc3 LTDC.F1FirstHit[3]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc4 LTDC.F1FirstHit[4]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc5 LTDC.F1FirstHit[5]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc6 LTDC.F1FirstHit[6]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc7 LTDC.F1FirstHit[7]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc8 LTDC.F1FirstHit[8]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc9 LTDC.F1FirstHit[9]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc10 LTDC.F1FirstHit[10]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc11 LTDC.F1FirstHit[11]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc12 LTDC.F1FirstHit[12]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc13 LTDC.F1FirstHit[13]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc14 LTDC.F1FirstHit[14]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc15 LTDC.F1FirstHit[15]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc27 LTDC.F1FirstHit[27]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc28 LTDC.F1FirstHit[28]-LTDC.F1FirstHit[30]
+FORMULA Lf1tdc_fhc48 LTDC.F1FirstHit[48]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc49 LTDC.F1FirstHit[49]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc50 LTDC.F1FirstHit[50]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc51 LTDC.F1FirstHit[51]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc52 LTDC.F1FirstHit[52]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc53 LTDC.F1FirstHit[53]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc54 LTDC.F1FirstHit[54]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc55 LTDC.F1FirstHit[55]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc56 LTDC.F1FirstHit[56]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc57 LTDC.F1FirstHit[57]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc58 LTDC.F1FirstHit[58]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc59 LTDC.F1FirstHit[59]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc60 LTDC.F1FirstHit[60]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc61 LTDC.F1FirstHit[61]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc62 LTDC.F1FirstHit[62]-LTDC.F1FirstHit[37]
+FORMULA Lf1tdc_fhc63 LTDC.F1FirstHit[63]-LTDC.F1FirstHit[37]
 
-TH1F Lf1tdc_fhc0 'L F1TDC (Corrected) Ch0 S2L-0 ' Lf1tdc_fhc0 500 -12000 -4000
-TH1F Lf1tdc_fhc1 'L F1TDC (Corrected) Ch1 S2L-1 ' Lf1tdc_fhc1 500 -12000 -4000
-TH1F Lf1tdc_fhc2 'L F1TDC (Corrected) Ch2 S2L-2 ' Lf1tdc_fhc2 500 -12000 -4000
-TH1F Lf1tdc_fhc3 'L F1TDC (Corrected) Ch3 S2L-3 ' Lf1tdc_fhc3 500 -12000 -4000
-TH1F Lf1tdc_fhc4 'L F1TDC (Corrected) Ch4 S2L-4 ' Lf1tdc_fhc4 500 -12000 -4000
-TH1F Lf1tdc_fhc5 'L F1TDC (Corrected) Ch5 S2L-5 ' Lf1tdc_fhc5 500 -12000 -4000
-TH1F Lf1tdc_fhc6 'L F1TDC (Corrected) Ch6 S2L-6 ' Lf1tdc_fhc6 500 -12000 -4000
-TH1F Lf1tdc_fhc7 'L F1TDC (Corrected) Ch7 S2L-7 ' Lf1tdc_fhc7 500 -12000 -4000
-TH1F Lf1tdc_fhc8 'L F1TDC (Corrected) Ch8 S2L-8 ' Lf1tdc_fhc8 500 -12000 -4000
-TH1F Lf1tdc_fhc9 'L F1TDC (Corrected) Ch9 S2L-9 ' Lf1tdc_fhc9 500 -12000 -4000
-TH1F Lf1tdc_fhc10 'L F1TDC (Corrected) Ch10 S2L-10' Lf1tdc_fhc10 500 -12000 -4000
-TH1F Lf1tdc_fhc11 'L F1TDC (Corrected) Ch11 S2L-11' Lf1tdc_fhc11 500 -12000 -4000
-TH1F Lf1tdc_fhc12 'L F1TDC (Corrected) Ch12 S2L-12' Lf1tdc_fhc12 500 -12000 -4000
-TH1F Lf1tdc_fhc13 'L F1TDC (Corrected) Ch13 S2L-13' Lf1tdc_fhc13 500 -12000 -4000
-TH1F Lf1tdc_fhc14 'L F1TDC (Corrected) Ch14 S2L-14' Lf1tdc_fhc14 500 -12000 -4000
-TH1F Lf1tdc_fhc15 'L F1TDC (Corrected) Ch15 S2L-15' Lf1tdc_fhc15 500 -12000 -4000
-TH1F Lf1tdc_fhc48 'L F1TDC (Corrected) Ch48 S2L-0 ' Lf1tdc_fhc48 500 -12000 -4000
-TH1F Lf1tdc_fhc49 'L F1TDC (Corrected) Ch49 S2R-1 ' Lf1tdc_fhc49 500 -12000 -4000
-TH1F Lf1tdc_fhc50 'L F1TDC (Corrected) Ch50 S2R-2 ' Lf1tdc_fhc50 500 -12000 -4000
-TH1F Lf1tdc_fhc51 'L F1TDC (Corrected) Ch51 S2R-3 ' Lf1tdc_fhc51 500 -12000 -4000
-TH1F Lf1tdc_fhc52 'L F1TDC (Corrected) Ch52 S2R-4 ' Lf1tdc_fhc52 500 -12000 -4000
-TH1F Lf1tdc_fhc53 'L F1TDC (Corrected) Ch53 S2R-5 ' Lf1tdc_fhc53 500 -12000 -4000
-TH1F Lf1tdc_fhc54 'L F1TDC (Corrected) Ch54 S2R-6 ' Lf1tdc_fhc54 500 -12000 -4000
-TH1F Lf1tdc_fhc55 'L F1TDC (Corrected) Ch55 S2R-7 ' Lf1tdc_fhc55 500 -12000 -4000
-TH1F Lf1tdc_fhc56 'L F1TDC (Corrected) Ch56 S2R-8 ' Lf1tdc_fhc56 500 -12000 -4000
-TH1F Lf1tdc_fhc57 'L F1TDC (Corrected) Ch57 S2R-9 ' Lf1tdc_fhc57 500 -12000 -4000
-TH1F Lf1tdc_fhc58 'L F1TDC (Corrected) Ch58 S2R-10' Lf1tdc_fhc58 500 -12000 -4000
-TH1F Lf1tdc_fhc59 'L F1TDC (Corrected) Ch59 S2R-11' Lf1tdc_fhc59 500 -12000 -4000
-TH1F Lf1tdc_fhc60 'L F1TDC (Corrected) Ch60 S2R-12' Lf1tdc_fhc60 500 -12000 -4000
-TH1F Lf1tdc_fhc61 'L F1TDC (Corrected) Ch61 S2R-13' Lf1tdc_fhc61 500 -12000 -4000
-TH1F Lf1tdc_fhc62 'L F1TDC (Corrected) Ch62 S2R-14' Lf1tdc_fhc62 500 -12000 -4000
-TH1F Lf1tdc_fhc63 'L F1TDC (Corrected) Ch63 S2R-15' Lf1tdc_fhc63 500 -12000 -4000
+TH1F Lf1tdc_fhc0 'L F1TDC (Corrected) Ch0 S2L-0 ' Lf1tdc_fhc0 500 -18000 -10000
+TH1F Lf1tdc_fhc1 'L F1TDC (Corrected) Ch1 S2L-1 ' Lf1tdc_fhc1 500 -18000 -10000
+TH1F Lf1tdc_fhc2 'L F1TDC (Corrected) Ch2 S2L-2 ' Lf1tdc_fhc2 500 -18000 -10000
+TH1F Lf1tdc_fhc3 'L F1TDC (Corrected) Ch3 S2L-3 ' Lf1tdc_fhc3 500 -18000 -10000
+TH1F Lf1tdc_fhc4 'L F1TDC (Corrected) Ch4 S2L-4 ' Lf1tdc_fhc4 500 -18000 -10000
+TH1F Lf1tdc_fhc5 'L F1TDC (Corrected) Ch5 S2L-5 ' Lf1tdc_fhc5 500 -18000 -10000
+TH1F Lf1tdc_fhc6 'L F1TDC (Corrected) Ch6 S2L-6 ' Lf1tdc_fhc6 500 -18000 -10000
+TH1F Lf1tdc_fhc7 'L F1TDC (Corrected) Ch7 S2L-7 ' Lf1tdc_fhc7 500 -18000 -10000
+TH1F Lf1tdc_fhc8 'L F1TDC (Corrected) Ch8 S2L-8 ' Lf1tdc_fhc8 500 -18000 -10000
+TH1F Lf1tdc_fhc9 'L F1TDC (Corrected) Ch9 S2L-9 ' Lf1tdc_fhc9 500 -18000 -10000
+TH1F Lf1tdc_fhc10 'L F1TDC (Corrected) Ch10 S2L-10' Lf1tdc_fhc10 500 -18000 -10000
+TH1F Lf1tdc_fhc11 'L F1TDC (Corrected) Ch11 S2L-11' Lf1tdc_fhc11 500 -18000 -10000
+TH1F Lf1tdc_fhc12 'L F1TDC (Corrected) Ch12 S2L-12' Lf1tdc_fhc12 500 -18000 -10000
+TH1F Lf1tdc_fhc13 'L F1TDC (Corrected) Ch13 S2L-13' Lf1tdc_fhc13 500 -18000 -10000
+TH1F Lf1tdc_fhc14 'L F1TDC (Corrected) Ch14 S2L-14' Lf1tdc_fhc14 500 -18000 -10000
+TH1F Lf1tdc_fhc15 'L F1TDC (Corrected) Ch15 S2L-15' Lf1tdc_fhc15 500 -18000 -10000
+TH1F Lf1tdc_fhc27 'L F1TDC (Corrected) Ch13 S2L-13' Lf1tdc_fhc13 500 -18000 -10000
+TH1F Lf1tdc_fhc28 'L F1TDC (Corrected) Ch27 S0A   ' Lf1tdc_fhc14 500 -18000 -10000
+TH1F Lf1tdc_fhc48 'L F1TDC (Corrected) Ch28 S0B   ' Lf1tdc_fhc48 500 -18000 -10000
+TH1F Lf1tdc_fhc49 'L F1TDC (Corrected) Ch49 S2R-1 ' Lf1tdc_fhc49 500 -18000 -10000
+TH1F Lf1tdc_fhc50 'L F1TDC (Corrected) Ch50 S2R-2 ' Lf1tdc_fhc50 500 -18000 -10000
+TH1F Lf1tdc_fhc51 'L F1TDC (Corrected) Ch51 S2R-3 ' Lf1tdc_fhc51 500 -18000 -10000
+TH1F Lf1tdc_fhc52 'L F1TDC (Corrected) Ch52 S2R-4 ' Lf1tdc_fhc52 500 -18000 -10000
+TH1F Lf1tdc_fhc53 'L F1TDC (Corrected) Ch53 S2R-5 ' Lf1tdc_fhc53 500 -18000 -10000
+TH1F Lf1tdc_fhc54 'L F1TDC (Corrected) Ch54 S2R-6 ' Lf1tdc_fhc54 500 -18000 -10000
+TH1F Lf1tdc_fhc55 'L F1TDC (Corrected) Ch55 S2R-7 ' Lf1tdc_fhc55 500 -18000 -10000
+TH1F Lf1tdc_fhc56 'L F1TDC (Corrected) Ch56 S2R-8 ' Lf1tdc_fhc56 500 -18000 -10000
+TH1F Lf1tdc_fhc57 'L F1TDC (Corrected) Ch57 S2R-9 ' Lf1tdc_fhc57 500 -18000 -10000
+TH1F Lf1tdc_fhc58 'L F1TDC (Corrected) Ch58 S2R-10' Lf1tdc_fhc58 500 -18000 -10000
+TH1F Lf1tdc_fhc59 'L F1TDC (Corrected) Ch59 S2R-11' Lf1tdc_fhc59 500 -18000 -10000
+TH1F Lf1tdc_fhc60 'L F1TDC (Corrected) Ch60 S2R-12' Lf1tdc_fhc60 500 -18000 -10000
+TH1F Lf1tdc_fhc61 'L F1TDC (Corrected) Ch61 S2R-13' Lf1tdc_fhc61 500 -18000 -10000
+TH1F Lf1tdc_fhc62 'L F1TDC (Corrected) Ch62 S2R-14' Lf1tdc_fhc62 500 -18000 -10000
+TH1F Lf1tdc_fhc63 'L F1TDC (Corrected) Ch63 S2R-15' Lf1tdc_fhc63 500 -18000 -10000
 
 # ------------------------------------------------------------------
 # LEFT ARM GAS CHERENKOV  ADC and TDC :
@@ -936,8 +949,8 @@ TH2F Lcer_x  'Cerenkov FADC sum (corrected) vs. X' L.cer.trx L.cer.asum_c  60 -1
 TH2F Lcer_y  'Cerenkov FADC sum (corrected) vs. Y' L.cer.try L.cer.asum_c  60 -0.12 0.12 10100 -100 10000 L.tr.n>0&&L.cer.asum_c>-1000
 TH2F Lcerfadcvfbus_ 'Cerenkov Fastbus ADC(PedSub) vs FADC, PMT ' L.cer.a_p FbusL.cer.a_p 5000 0 10000 5000 0 10000 L.cer.a_p>0
 
-TH1F Lcert_fadc   'Cerenkov FADC TDC PMT ' L.cer.t_fadc 500 0 2500 L.cer.t>0
-TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 0 2500 L.cer.t>0
+TH1F Lcert_fadc   'Cerenkov FADC TDC PMT ' L.cer.t_fadc 500 1000 3000 L.cer.t>0
+TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 60 180 L.cer.t>0
 
 # ------------------------------------------------------------------
 
@@ -945,17 +958,17 @@ TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 0 2500
 #
 #TH1F Lpsa  'PionRejector1 ADC' L.prl1.a 200 10 2000 L.prl1.a>0.
 TH1F Lpsa   'PionRejector1 ADC' L.prl1.a 1000 0.5 1000.5 L.prl1.a>0.
-TH1F Lpsa_p 'PionRejector1 ADC(PedSub)' L.prl1.a_p 1050 -99.5 2000.5 L.prl1.a_p>=-50.
+TH1F Lpsa_p 'PionRejector1 ADC(PedSub)' L.prl1.a_p 1000 3000 44000 L.prl1.a_p>=-50.
 TH1F Lpssum 'PionRejector1 sum' L.prl1.asum_c 100 1 1000 
 TH1F Lsha   'PionRejector2 ADC' L.prl2.a 1000 0.5 1000.5 L.prl2.a>0.
-TH1F Lsha_p 'PionRejector2 ADC(PedS1ub)' L.prl2.a_p 1050 -99.5 2000.5 L.prl2.a_p>=-50.
+TH1F Lsha_p 'PionRejector2 ADC(PedS1ub)' L.prl2.a_p 1000 6000 44000 L.prl2.a_p>=-50.
 TH1F Lshsum 'PionRejector2 sum' L.prl2.asum_c 100 10 1000
 
 TH2F Lpr1_2 'Pion Rejector1 sum vs. 1PR_2 sum' L.prl2.asum_c L.prl1.asum_c 200 30 3000 200 30 3000
-TH2F Lp1sumx 'Pion Rejector1 sum vs. x' L.prl1.trx L.prl1.asum_c 200 -1.2 1.2 200 30 3000 L.tr.n>0
-TH2F Lp2sumx 'Pion Rejector2 sum vs. x' L.prl2.trx L.prl2.asum_c 200 -1.2 1.2 200 30 3000 L.tr.n>0
-TH2F Lp1sumy 'Pion Rejector1 sum vs. y' L.prl1.try L.prl1.asum_c 200 -0.2 0.2 200 30 3000 L.tr.n>0
-TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -0.2 0.2 200 30 3000 L.tr.n>0
+TH2F Lp1sumx 'Pion Rejector1 sum vs. x' L.prl1.trx L.prl1.asum_c 200 -2 2 200 38000 45000 L.tr.n>0
+TH2F Lp2sumx 'Pion Rejector2 sum vs. x' L.prl2.trx L.prl2.asum_c 200 -2 2 200 38000 45000 L.tr.n>0
+TH2F Lp1sumy 'Pion Rejector1 sum vs. y' L.prl1.try L.prl1.asum_c 200 -1 1 200 38000 45000 L.tr.n>0
+TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -1 1 200 38000 45000 L.tr.n>0
 
 
 # ------------------------------------------------------------------
@@ -967,10 +980,10 @@ TH1F Lvu2t 'L-arm VDC u2 time' L.vdc.u2.rawtime 500 1500 3500
 TH1F Lvv1t 'L-arm VDC v1 time' L.vdc.v1.rawtime 500 1500 3500
 TH1F Lvv2t 'L-arm VDC v2 time' L.vdc.v2.rawtime 500 1500 3500
 
-TH2F Lvu1tn 'L-arm VDC u1 rawtime : wire number' L.vdc.u1.wire L.vdc.u1.rawtime 400 0 400 300 0 3000
-TH2F Lvu2tn 'L-arm VDC u2 rawtime : wire number' L.vdc.u2.wire L.vdc.u2.rawtime 400 0 400 300 0 3000
-TH2F Lvv1tn 'L-arm VDC v1 rawtime : wire number' L.vdc.v1.wire L.vdc.v1.rawtime 400 0 400 300 0 3000
-TH2F Lvv2tn 'L-arm VDC v2 rawtime : wire number' L.vdc.v2.wire L.vdc.v2.rawtime 400 0 400 300 0 3000
+TH2F Lvu1tn 'L-arm VDC u1 rawtime : wire number' L.vdc.u1.wire L.vdc.u1.rawtime 400 0 400 300 0 4000
+TH2F Lvu2tn 'L-arm VDC u2 rawtime : wire number' L.vdc.u2.wire L.vdc.u2.rawtime 400 0 400 300 0 4000
+TH2F Lvv1tn 'L-arm VDC v1 rawtime : wire number' L.vdc.v1.wire L.vdc.v1.rawtime 400 0 400 300 0 4000
+TH2F Lvv2tn 'L-arm VDC v2 rawtime : wire number' L.vdc.v2.wire L.vdc.v2.rawtime 400 0 400 300 0 4000
 
 TH1F Lvu1w 'L-arm VDC u1 wires' L.vdc.u1.wire 400 0 400
 TH1F Lvu2w 'L-arm VDC u2 wires' L.vdc.u2.wire 400 0 400
@@ -1081,10 +1094,10 @@ TH2F L_rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Rast
 TH2F L_rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.x 2000 20000 120000 2000 50000 100000
 TH2F L_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Lrb.Raster.rawcur.y Lrb.Raster2.rawcur.x 2000 20000 120000 2000 45000 95000
 
-TH2F L_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.x rbax 5000 50000 100000 200 -5. 5.
-TH2F L_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.y rbay 5000 20000 120000 200 -5. 5.
-TH2F L_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.x rbbx 5000 50000 100000 200 -5. 5.
-TH2F L_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.y rbby 5000 20000 120000 200 -5. 5.
+TH2F L_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.x rbax 500 78000 79000 200 -1. 2.
+TH2F L_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.y rbay 500 79200 79800 200 0. 4.
+TH2F L_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.x rbbx 500 78000 79000 200 -2. 2.
+TH2F L_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.y rbby 500 79200 79800 200 0. 5.
 
 TH2F L_urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Lrb.Raster.rawcur.y rbax 500 0 5000 200 -5. 5.
 TH2F L_urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Lrb.Raster.rawcur.x rbay 500 0 5000 200 -5. 5.
@@ -1257,7 +1270,7 @@ variable evLeftd10_r
 #end scalers evleft
 
 # ===========================================================
-# Triggers - Added by Reynier Cruz Torres on April 2018
+# Triggers-Added by Reynier Cruz Torres on April 2018
 
 TH1F T1_R_rrawt1 'T1 on RHRS = rrawt1, no prescale' DR.rrawt1 60 1620 1680
 TH1F T2_R_rrawt2 'T2 on RHRS = rrawt2, no prescale' DR.rrawt2 60 1620 1680
@@ -1269,4 +1282,10 @@ TH1F C1_R_rrawt4 'C1 on RHRS = rrawt4, no prescale' DR.rrawt4 50 1580 1630
 TH1F C2_R_rrawt5 'C2 on RHRS = rrawt5, no prescale' DR.rrawt5 50 1580 1630
 TH1F C3_R_rrawt6 'C3 on RHRS = rrawt6, no prescale' DR.rrawt6 50 1580 1630
 
- 
+TH1F T_Flag 'Trigger Flag (DR.evtypebits)' DR.evtypebits 60 0 60
+# ===========================================================
+#Coincidence time Added by Keita Uehara on November 2018
+
+FORMULA C_time R.s2.time*1000000000-L.s2.time*1000000000
+
+TH1F C_time 'Coincidence time' C_time 500 250 0 R.s2.rt>0.&&R.s2.lt>0.&&L.s2.rt>0.&&L.s2.lt>0
