@@ -1,0 +1,10 @@
+
+# Cut definitions
+
+Block: RawDecode
+
+Block: Reconstruct
+
+Block: Physics
+
+FORMURA: (DR.evtypebits>>5)&1
