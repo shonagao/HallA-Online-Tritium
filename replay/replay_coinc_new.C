@@ -51,15 +51,17 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	HRSL->AddDetector( new THaVDC          ("vdc" , "Vertical Drift Chamber" ));
 	HRSL->AddDetector( new TriFadcCherenkov("cer" , "Gas Cherenkov counter"  ));
 	HRSL->AddDetector( new TriFadcScin     ("s2"  , "S2 Scintillator"        ));
-	HRSL->AddDetector( new THaShower       ("prl1", "Pre-shower pion rej."   ));
-	HRSL->AddDetector( new THaShower       ("prl2", "Show pion rej."         )); 
+	//	HRSL->AddDetector( new THaShower       ("prl1", "Pre-shower pion rej."   ));
+	//	HRSL->AddDetector( new THaShower       ("prl2", "Show pion rej."         )); 
+	HRSL->AddDetector( new TriFadcShower("prl1", "Pre-shower pion rej." ));
+	HRSL->AddDetector( new TriFadcShower("prl2", "Shower pion rej." )); 
 
-	THaHRS* FbusHRSL = new THaHRS("FbusL", "Fastbus LHRS Readout");
-	FbusHRSL->AutoStandardDetectors(kFALSE);
-	gHaApps->Add(FbusHRSL);
-	FbusHRSL->AddDetector( new THaCherenkov   ("cer", "Gas Cherenkov counter - Fastbus"  ));
-	FbusHRSL->AddDetector( new THaScintillator("s2" , "S2 Scintillator - Fastbus"        ));
-	FbusHRSL->AddDetector( new Tritium_Xscin  ("s0" , "S0 Scintillator - Fastbus", kFALSE));
+	// THaHRS* FbusHRSL = new THaHRS("FbusL", "Fastbus LHRS Readout");
+	// FbusHRSL->AutoStandardDetectors(kFALSE);
+	// gHaApps->Add(FbusHRSL);
+	// FbusHRSL->AddDetector( new THaCherenkov   ("cer", "Gas Cherenkov counter - Fastbus"  ));
+	// FbusHRSL->AddDetector( new THaScintillator("s2" , "S2 Scintillator - Fastbus"        ));
+	// FbusHRSL->AddDetector( new Tritium_Xscin  ("s0" , "S0 Scintillator - Fastbus", kFALSE));
 
 	//==================================
 	// RHRS Detectors
