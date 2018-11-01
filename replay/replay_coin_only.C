@@ -8,7 +8,7 @@
 #include "def_tritium.h"
 using namespace std;
 
-void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t QuietRun = kFALSE, Bool_t OnlineReplay =kFALSE, Bool_t bPlots = kFALSE, Bool_t autoreplay = kFALSE){
+void replay_coin_only(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t QuietRun = kFALSE, Bool_t OnlineReplay =kFALSE, Bool_t bPlots = kFALSE, Bool_t autoreplay = kFALSE){
 
 	char buf[300];
 	Int_t nrun=0;
