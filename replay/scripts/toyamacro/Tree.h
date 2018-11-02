@@ -211,8 +211,10 @@ public:
   double RS0_F1time[RS0], RS0T_F1time[RS0], RS0B_F1time[RS0];
   double RRF_F1time;
   double LTDC_F1FirstHit[LF1TDC];
+  double LS2T_F1TDC[LS2], LS2B_F1TDC[LS2];
   double LS2_F1time[LS2], LS2T_F1time[LS2], LS2B_F1time[LS2];
   double LS0_F1time[LS0], LS0T_F1time[LS0], LS0B_F1time[LS0];
+  double LS0T_F1TDC[LS0], LS0B_F1TDC[LS0];
   double LRF_F1time;
 
 public:

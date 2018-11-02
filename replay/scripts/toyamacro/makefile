@@ -23,6 +23,8 @@ TARGET5=     draw_s2tof
 OBJS5=       draw_s2tof.o Tree.o ParamMan.o Setting.o
 TARGET6=     fbus_t0_rough
 OBJS6=       fbus_t0_rough.o Tree.o ParamMan.o Setting.o
+TARGET7=     ana_cointime
+OBJS7=       ana_cointime.o Tree.o Setting.o ParamMan.o
 
 all: $(TARGET1) \
      $(TARGET2) \
@@ -30,6 +32,7 @@ all: $(TARGET1) \
      $(TARGET4) \
      $(TARGET5) \
      $(TARGET6) \
+     $(TARGET7) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -50,6 +53,9 @@ $(TARGET5): $(patsubst %,$(LIBDIR)/%,$(OBJS5))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET6): $(patsubst %,$(LIBDIR)/%,$(OBJS6))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET7): $(patsubst %,$(LIBDIR)/%,$(OBJS7))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 

@@ -174,17 +174,17 @@ void fbus_t0_rough::loop(){
     tree->GetEntry(n);
 
     //S0
-    if(R_s0_rt[0]>1.)h_Rs0t ->Fill(R_s0_rt[0]);
-    if(R_s0_lt[0]>1.)h_Rs0b ->Fill(R_s0_lt[0]);
-    if(L_s0_rt[0]>1.)h_Ls0t ->Fill(L_s0_rt[0]);
-    if(L_s0_lt[0]>1.)h_Ls0b ->Fill(L_s0_lt[0]);
+    if(R_s0_rt[0]>1. && DR_T5>1.)h_Rs0t ->Fill(R_s0_rt[0]);
+    if(R_s0_lt[0]>1. && DR_T5>1.)h_Rs0b ->Fill(R_s0_lt[0]);
+    if(L_s0_rt[0]>1. && DR_T5>1.)h_Ls0t ->Fill(L_s0_rt[0]);
+    if(L_s0_lt[0]>1. && DR_T5>1.)h_Ls0b ->Fill(L_s0_lt[0]);
 
     //S2
     for(int i=0;i<16;i++){
-      if(R_s2_rt[i]>1.)h_Rs2t[i] ->Fill(R_s2_rt[i]);
-      if(R_s2_lt[i]>1.)h_Rs2b[i] ->Fill(R_s2_lt[i]);
-      if(L_s2_rt[i]>1.)h_Ls2t[i] ->Fill(L_s2_rt[i]);
-      if(L_s2_lt[i]>1.)h_Ls2b[i] ->Fill(L_s2_lt[i]);
+      if(R_s2_rt[i]>1. && DR_T5>1.)h_Rs2t[i] ->Fill(R_s2_rt[i]);
+      if(R_s2_lt[i]>1. && DR_T5>1.)h_Rs2b[i] ->Fill(R_s2_lt[i]);
+      if(L_s2_rt[i]>1. && DR_T5>1.)h_Ls2t[i] ->Fill(L_s2_rt[i]);
+      if(L_s2_lt[i]>1. && DR_T5>1.)h_Ls2b[i] ->Fill(L_s2_lt[i]);
     }
   }
 
