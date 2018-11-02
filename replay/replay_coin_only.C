@@ -35,7 +35,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	// ---------------------------
 	const char* RNAME=rootname.Data();
 	TString ODEF = "coinc.odef";
-	TString CUTS = "coinc.cuts";
+	TString CUTS = "coinc_only.cuts";
 	if(autoreplay)  ODEF=Form(REPLAY_DIR_PREFIX,"coinc.odef");
 
 	//=====================================================================================================================
@@ -353,7 +353,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	ReplayCore(
 			runnumber,      // run #
 			numevents,      // -1=replay all;0=ask for a number
-			50000,          // default replay event num
+			500000,          // default replay event num
 			RNAME,          // output file format
 			ODEF.Data(),	// out define
 			CUTS.Data(),	// empty cut define

@@ -80,8 +80,8 @@ TH1F Rs0ra 'Right arm S0-Bottom(A) ADC' R.s0.ra 12000 0 120000 R.s0.ra>0.
 TH1F Rs0la_p 'S0-Top(B) ADC (PedSub)' R.s0.la_p 1000 -500 4500 R.s0.la_p>-600.
 TH1F Rs0ra_p 'S0-Bottom(A) ADC (PedSub)' R.s0.ra_p 1000 -500 4500 R.s0.ra_p>-600.
 
-TH1F Rs0lt_fadc 'Right arm S0-Top(B) FADC TDC' R.s0.lt_fadc 500 1500 2500 R.s0.lt_fadc>0.
-TH1F Rs0rt_fadc 'Right arm S0-Bottom(A) FADC TDC' R.s0.rt_fadc 500 1500 2500 R.s0.rt_fadc>0.
+TH1F Rs0lt_fadc 'Right arm S0-Top(B) FADC TDC' R.s0.lt_fadc 500 2500 4000 R.s0.lt_fadc>0.
+TH1F Rs0rt_fadc 'Right arm S0-Bottom(A) FADC TDC' R.s0.rt_fadc 500 2500 4000 R.s0.rt_fadc>0.
 TH1F Rs0ltc_fadc 'Right arm S0-Top(B) FADC TDC (corrected)' R.s0.ltc_fadc 500 1500 2500 R.s0.lt_fadc>0.
 TH1F Rs0rtc_fadc 'Right arm S0-Bottom(A) FADC TDC (corrected)' R.s0.rtc_fadc 500 1500 2500 R.s0.rt_fadc>0.
 
