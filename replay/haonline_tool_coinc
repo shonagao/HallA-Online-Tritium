@@ -124,10 +124,10 @@ elif [[ -n "${LOG_ALL_PLOTS}"  ]] && [[ -n "${YES_LOG}" ]] ; then
     --tag Autolog \
     --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf \
     --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf \
-#    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/coinc_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/coinc_latest.pdf \
     --caption "LHRS Plots" \
     --caption "RHRS Plots" \
-#    --caption "Coincidence Plots"
+    --caption "Coincidence Plots"
     
 elif [[ -n "${ONLINE_ONLY}"  ]] && [[ -n "${YES_LOG}" ]] ; then
 	/site/ace/certified/apps/bin/logentry \
@@ -148,10 +148,10 @@ elif [[ -n "${LOG_ALL_PLOTS}"  ]] ; then
     --tag Autolog \
     --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf \
     --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf \
-#    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/coinc_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/coinc_latest.pdf \
     --caption "LHRS Plots" \
     --caption "RHRS Plots" \
-#    --caption "Coincidence Plots" 
+    --caption "Coincidence Plots" 
 
 elif [[ -n "${ONLINE_ONLY}"  ]] ; then
   # /site/ace/certified/apps/bin/logentry 
