@@ -43,7 +43,7 @@ void hrs_mmass_F1(){
   T->SetBranchAddress("R.s2.ra_c",Rs2r_ac);  // Right arm S2 R-PMT  ADC
   T->SetBranchStatus("R.s2.la_c",1);        // Right arm S2 L-PMT  ADC
   T->SetBranchAddress("R.s2.la_c",Rs2l_ac);  // Right arm S2 L-PMT  ADC
-  
+
   T->SetBranchStatus("R.s0.rt_c",1);        // Right arm S0 R-PMT  ADC
   T->SetBranchAddress("R.s0.rt_c",&Rs0r_tc); // Right arm S0 R-PMT  ADC
   T->SetBranchStatus("R.s0.lt_c",1);        // Right arm S0 L-PMT  ADC
@@ -52,6 +52,7 @@ void hrs_mmass_F1(){
   T->SetBranchAddress("R.s2.rt_c",Rs2r_tc);  // Right arm S2 R-PMT  ADC
   T->SetBranchStatus("R.s2.lt_c",1);        // Right arm S2 L-PMT  ADC
   T->SetBranchAddress("R.s2.lt_c",Rs2l_tc);  // Right arm S2 L-PMT  ADC
+
  // (AC1)Aerogel Chrenkov Right ARM ADC //         
  T->SetBranchStatus("R.a1.t",1);
  T->SetBranchStatus("R.a1.a",1);
@@ -146,7 +147,6 @@ void hrs_mmass_F1(){
  coin_t=(Rs0r_tc+Rs0l_tc)/2.0-(Ls0r_tc+Ls0l_tc)/2.0;
 
  if((Rs0r_tc>0 && Rs0l_tc>0) && ( Ls0r_tc>0 && Ls0l_tc>0)) hcoin_t->Fill(coin_t);
-
  if((Rs0r_tc>0 && Rs0l_tc>0) && ( Ls0r_tc>0 && Ls0l_tc>0) && coin_t>-0.15e-6 && coin_t<-0.14e-6)hmm->Fill(mh);
 
 

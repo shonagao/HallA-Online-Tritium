@@ -182,7 +182,7 @@ TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
 
  double ac1_adc,ac2_adc;
  ac1_adc=100.;
- ac2_adc=2000.;
+ ac1_adc=2000.;
 
  TLine* lac1=new TLine(0,1.5,ac1_adc,ac1_adc);
  TLine* lac2=new TLine(0,1.5,ac2_adc,ac2_adc);

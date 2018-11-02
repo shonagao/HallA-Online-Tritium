@@ -296,7 +296,7 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  }else{
   ffit_r[i]->SetParameter(0,7.3e-8);   
   ffit_r[i]->SetParameter(1,-1.87e-8);   
-  ffit_l[i]->SetParameter(0,1.0e-7);   
+  ffit_l[i]->SetParameter(0,1.0e-8);   
   ffit_l[i]->SetParameter(1,1.0-8);    
   // ffit_l[i]->SetParLimits(0,1.0e-7,4.0e-7);   
 }
@@ -319,8 +319,8 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //===============================================================//
 
     //itallation parameters //
-    int ital_a=10;
-    int ital_b=10;
+    int ital_a=2;
+    int ital_b=2;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     double sig_ital[chmax][ital_a][ital_b],sig_c[chmax];
