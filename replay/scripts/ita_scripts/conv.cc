@@ -10,8 +10,22 @@ void conv(){
 
   int target;
   target=0;
+
+
   int run,evn,Nbeta;
   double E,M,me,mm,mk,mtr;
+int nrun_st=111160;
+ int nrun_end=111161;
+ cout<<"========================================="<<endl;
+ cout<<"======== Recreate new ROOTFiles ========="<<endl;
+ cout<<"========================================="<<endl;
+ cout<<"Start run : ";
+ cin>>nrun_st;
+ cout<<"End run : ";
+ cin>>nrun_end; 
+ cout<<"Target (H;0,3H;1,aother;-1) : ":
+   cin>>target;
+
   me=0.511e-3; //electron mass [GeV/c^2]
   mk=493.7e-3; //Kaon mass [GeV/c^2]
   mtr=938.27e-3;// target mass [GeV/c^2] 
@@ -24,13 +38,7 @@ void conv(){
 
 
  TChain* t1=new TChain("T");
- int nrun_st=111160;
- int nrun_end=111161;
- cout<<"=== Recreate new ROOTFiles ====="<<endl;
- cout<<"Start run : ";
- cin>>nrun_st;
- cout<<"End run : ";
- cin>>nrun_end; 
+ 
 
  for(int i=nrun_st;i<nrun_end+1;i++){
    t1->Add(Form("/adaqfs/home/a-onl/tritium/replay/t2root/itabashi/Rootfiles/tritium_%d.root",i)); 
@@ -39,8 +47,9 @@ void conv(){
 }
 
 }
- 
-  TTree* tnew = new TTree("T","recreate");
+ Char* tar;
+ if(target==0){tar="Hydrogen target run"}else if(target==1){tar="Tritium target run"}else{tar="Optics run "}
+  TTree* tnew = new TTree("T",Form("TChain %s: %d- %d ",tar,nrun_st,nrun_end));
   TFile* fnew;
   fnew =new TFile(Form("/adaqfs/home/a-onl/tritium/replay/t2root/itabashi/ita_rootfiles/tritium_ita%d_%d.root",nrun_st,nrun_end),"recreate");
 
