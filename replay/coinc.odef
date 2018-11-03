@@ -937,7 +937,7 @@ TH1F Lf1tdc_fhc63 'L F1TDC (Corrected) Ch63 S2R-15' Lf1tdc_fhc63 500 -18000 -100
 # ------------------------------------------------------------------
 # LEFT ARM GAS CHERENKOV  ADC and TDC :
 
-TH1F Lcert   'Cerenkov TDC PMT ' L.cer.t 300 2600 2900 L.cer.t>0
+TH1F Lcert   'Cerenkov TDC PMT ' L.cer.t 300 2500 3000 L.cer.t>0
 TH1F LcertTAll_    'Cerenkov TDC w/ T2,T3: PMT ' L.cer.t 500 0 2500 L.cer.t>0&&((DL.evtypebits==12)||(DL.evtypebits==14))
 TH1F LcertT3_      'Cerenkov TDC w/ T6 only: PMT ' L.cer.t 500 0 2500 L.cer.t>0&&(DL.evtypebits==8)
 
@@ -958,17 +958,17 @@ TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 60 180
 #
 #TH1F Lpsa  'PionRejector1 ADC' L.prl1.a 200 10 2000 L.prl1.a>0.
 TH1F Lpsa   'PionRejector1 ADC' L.prl1.a 1000 0.5 1000.5 L.prl1.a>0.
-TH1F Lpsa_p 'PionRejector1 ADC(PedSub)' L.prl1.a_p 1000 3000 44000 L.prl1.a_p>=-50.
+TH1F Lpsa_p 'PionRejector1 ADC(PedSub)' L.prl1.a_p 1000 -5000 30000 L.prl1.a_p>-50.
 TH1F Lpssum 'PionRejector1 sum' L.prl1.asum_c 100 1 1000 
 TH1F Lsha   'PionRejector2 ADC' L.prl2.a 1000 0.5 1000.5 L.prl2.a>0.
-TH1F Lsha_p 'PionRejector2 ADC(PedS1ub)' L.prl2.a_p 1000 6000 44000 L.prl2.a_p>=-50.
+TH1F Lsha_p 'PionRejector2 ADC(PedS1ub)' L.prl2.a_p 1000 -5000 20000 L.prl2.a_p>-50.
 TH1F Lshsum 'PionRejector2 sum' L.prl2.asum_c 100 10 1000
 
 TH2F Lpr1_2 'Pion Rejector1 sum vs. 1PR_2 sum' L.prl2.asum_c L.prl1.asum_c 200 30 3000 200 30 3000
-TH2F Lp1sumx 'Pion Rejector1 sum vs. x' L.prl1.trx L.prl1.asum_c 200 -2 2 200 38000 45000 L.tr.n>0
-TH2F Lp2sumx 'Pion Rejector2 sum vs. x' L.prl2.trx L.prl2.asum_c 200 -2 2 200 38000 45000 L.tr.n>0
-TH2F Lp1sumy 'Pion Rejector1 sum vs. y' L.prl1.try L.prl1.asum_c 200 -1 1 200 38000 45000 L.tr.n>0
-TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -1 1 200 38000 45000 L.tr.n>0
+TH2F Lp1sumx 'Pion Rejector1 sum vs. x' L.prl1.trx L.prl1.asum_c 200 -5 5 1000 -1000 3000 L.tr.n>0
+TH2F Lp2sumx 'Pion Rejector2 sum vs. x' L.prl2.trx L.prl2.asum_c 200 -5 5 1000 -1000 3000 L.tr.n>0
+TH2F Lp1sumy 'Pion Rejector1 sum vs. y' L.prl1.try L.prl1.asum_c 200 -2 2 1000 -1000 3000 L.tr.n>0
+TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -2 2 1000 -1000 3000 L.tr.n>0
 
 
 # ------------------------------------------------------------------
@@ -1283,9 +1283,3 @@ TH1F C2_R_rrawt5 'C2 on RHRS = rrawt5, no prescale' DR.rrawt5 50 1580 1630
 TH1F C3_R_rrawt6 'C3 on RHRS = rrawt6, no prescale' DR.rrawt6 50 1580 1630
 
 TH1F T_Flag 'Trigger Flag (DR.evtypebits)' DR.evtypebits 60 0 60
-# ===========================================================
-#Coincidence time Added by Keita Uehara on November 2018
-
-FORMULA C_time R.s2.time*1000000000-L.s2.time*1000000000
-
-TH1F C_time 'Coincidence time' C_time 500 250 0 R.s2.rt>0.&&R.s2.lt>0.&&L.s2.rt>0.&&L.s2.lt>0

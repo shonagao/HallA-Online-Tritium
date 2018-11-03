@@ -326,9 +326,7 @@ gain2[25]=368.;
        mm=sqrt(pow(E+M-(E-EKLNU)-EKRNU,2)-pow(sqrt(pow(E,2)-pow(me,2))-L_tr_beta[j]*(E-EKLNU)-R_tr_beta[j]*EKRNU,2));
        }  
 
-       for(int j=0;j<NRa1ac;j++){
-	 Ra1npe[j]=;      
- }
+  
  tnew->Fill();
 
   }

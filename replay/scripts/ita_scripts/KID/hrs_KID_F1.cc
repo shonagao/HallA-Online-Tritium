@@ -7,15 +7,54 @@ const double me=0.511e-3;// electron mass [GeV/c^2]
 const double ml=1115.7e-3;//Lambda mass [GeV/c^2]
 const double mn=939.6e-3; // neutron mass [GeV/c^2]
 const double mpi=139.6e-3;// pion mass [GeV/c^2]
-void hrs_mmass_Fbus(){
+const double tdc_time=56.23e-3;//[ns]
 
+#include <iostream>
+#include <fstream>
+#include <math.h>
+#include <string>
+#include <time.h>
+#include <stdio.h>
+#include <unistd.h>
+using namespace std;
+#include "TApplication.h"
+#include "TH1F.h"
+#include "TH2F.h"
+#include "TF1.h"
+#include "TFile.h"
+#include "TLeaf.h"
+#include "TTree.h"
+#include "TCut.h"
+#include "TChain.h"
+#include "TCanvas.h"
+#include "TVector3.h"
+#include "TGraph.h"
+#include "TLine.h"
+#include "TLatex.h"
+#include "TText.h"
+#include "TStyle.h"
+#include "TROOT.h"
+#include "TGraphErrors.h"
+#include "TProfile.h"
+#include "TSystem.h"
+#include "TColor.h"
+#include "TPaveText.h"
+#include "TRandom.h"
+
+
+
+
+//=====================================================================//
+//============================= Main =================================//
+//===================================================================//
+
+int main(int argc, char** argv){
+  TApplication *theApp =new TApplication("App",&argc,argv);
 
   TChain*  T=new TChain("T");
-  //  int nrun=111166;
-  //  T->Add("./ita_tritium.root");
-  // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111170_111205.root");
-
-  T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111160_111208.root");
+   T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111160_111208.root");
+  // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111168_111170.root");
+  // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_111180.root");
 
  //============= Set Branch Status ==================//
 
@@ -27,14 +66,16 @@ void hrs_mmass_Fbus(){
   double Rs2r_tc[max],Rs2l_tc[max],Ls2r_tc[max],Ls2l_tc[max];
   double Ra1t[max],Ra1a[max],Ra1a_p[max],Ra1a_c[max],Ra1sum;
   double Ra2t[max],Ra2a[max],Ra2a_p[max],Ra2a_c[max],Ra2sum;
+
   double La1t[max],La1a[max],La1a_p[max],La1a_c[max],La1sum;
   double La2t[max],La2a[max],La2a_p[max],La2a_c[max],La2sum;
   double Rp[max],Rpx[max],Rpy[max],Lp[max],Lpx[max],Lpy[max];
   double Rth[max],Rph[max],Lth[max],Lph[max];
   double Rbeta[max],Lbeta[max];
-  double rs2pathl[max],rs0pathl[max];
+  double rs2pathl[max],rs0pathl[max],rtrpathl[max];
   double trigger[100];
   double hallap;
+  double Rs2tpads[100],Ls2tpads[100];
 
   T->SetBranchStatus("*",0);  
   T->SetBranchStatus("HALLA_p",1);
@@ -61,11 +102,14 @@ void hrs_mmass_Fbus(){
   T->SetBranchAddress("R.s2.rt_c",Rs2r_tc);  // Right arm S2 R-PMT  ADC
   T->SetBranchStatus("R.s2.lt_c",1);        // Right arm S2 L-PMT  ADC
   T->SetBranchAddress("R.s2.lt_c",Rs2l_tc);  // Right arm S2 L-PMT  ADC
+  T->SetBranchStatus("R.s2.t_pads",1);
+  T->SetBranchAddress("R.s2.t_pads",Rs2tpads);
   // path length//
   T->SetBranchStatus("R.s2.trpath",rs2pathl); 
   T->SetBranchAddress("R.s2.trpath",rs2pathl); 
   T->SetBranchStatus("R.s0.trpath",rs0pathl); 
   T->SetBranchAddress("R.s0.trpath",rs0pathl); 
+  T->SetBranchAddress("R.tr.pathl",rtrpathl);
  // (AC1)Aerogel Chrenkov Right ARM ADC //   
  T->SetBranchStatus("R.a1.t",1);
  T->SetBranchStatus("R.a1.a",1);
@@ -123,7 +167,10 @@ void hrs_mmass_Fbus(){
   T->SetBranchAddress("L.s2.rt_c",Ls2r_tc);  // Left arm S2 R-PMT  ADC
   T->SetBranchStatus("L.s2.lt_c",1);        // Left arm S2 L-PMT  ADC
   T->SetBranchAddress("L.s2.lt_c",Ls2l_tc);  // Left arm S2 L-PMT  ADC
-  T->SetBranchStatus("L.tr.beta",1);    
+  T->SetBranchStatus("L.s2.t_pads",1);
+  T->SetBranchAddress("L.s2.t_pads",Ls2tpads);
+
+T->SetBranchStatus("L.tr.beta",1);    
   T->SetBranchAddress("L.tr.beta",Lbeta); 
 
  T->SetBranchStatus("L.tr.p",1);
@@ -138,10 +185,12 @@ void hrs_mmass_Fbus(){
  T->SetBranchAddress("L.tr.th",Lth);
 
  //==================================================//
+ // Time scale [ns] //
+ // Energy scale [GeV] //
 
- double min_coin=-0.17e-6;
- double max_coin=-0.14e-6;
- int bin_coin=5000;
+ double min_coin=-265;
+ double max_coin=-240;
+ int bin_coin=300;
  double min_beta=0.95;
  double max_beta=0.97;
  int bin_beta=6000;
@@ -154,19 +203,25 @@ void hrs_mmass_Fbus(){
  TH1F* hmm3=new TH1F("hmm3","Missing mass Hist",5000,-0.1,2.);
  TH1F* hmm_ac=new TH1F("hmm_ac","Missing mass Hist with AC cut",500,-0.1,2.);
  TCanvas* c0=new TCanvas("c0","c0");
- TH1F* hcoin_t=new TH1F("hcoin_t","Coincidence time S0R-S0L[sec] ",1000,-0.17e-6,-0.14e-6);
- TH1F* hcoin_t1=new TH1F("hcoin_t1","Coincidence time S0R-S0L[sec] ",1000,-0.17e-6,-0.14e-6);
- TH1F* hcoin_t2=new TH1F("hcoin_t2","Coincidence time S0R-S0L[sec] ",1000,-0.17e-6,-0.14e-6);
- TH1F* hcoin_t3=new TH1F("hcoin_t3","Coincidence time S0R-S0L[sec] ",1000,-0.17e-6,-0.14e-6);
-TH1F* hcoin_tbeta=new TH1F("hcoin_tbeta","Coincidence time S0R-S0L[sec] ",1000,-0.17e-6,-0.14e-6);
- TH1F* hcoin_div=new TH1F("hcoin_div","Divede bin hcoin1/hcoin",1000,-0.17e-6,-0.14e-6);
+ TH1F* hcoin_t=new TH1F("hcoin_t","Coincidence time S0R-S0L[sec] ",bin_coin,min_coin,max_coin);
+ TH1F* hcoin_t1=new TH1F("hcoin_t1","Coincidence time S0R-S0L[sec] ",bin_coin,min_coin,max_coin);
+ TH1F* hcoin_t2=new TH1F("hcoin_t2","Coincidence time S0R-S0L[sec] ",bin_coin,min_coin,max_coin);
+ TH1F* hcoin_t3=new TH1F("hcoin_t3","Coincidence time S0R-S0L[sec] ",bin_coin,min_coin,max_coin);
+ TH1F* hcoin_tbeta=new TH1F("hcoin_tbeta","Coincidence time S0R-S0L[sec] ",bin_coin,min_coin,max_coin);
+ TH1F* hcoin_div=new TH1F("hcoin_div","Divede bin hcoin1/hcoin",bin_coin,min_coin,max_coin);
  TCanvas* c1=new TCanvas("c1","c1");
  TH2F* ha1_mm=new TH2F("ha1_mm","beta vs ac1 ADC sum hist",bin_beta,min_beta,max_beta,bin_adc,min_adc,max_adc);
  TCanvas* c3=new TCanvas("c3","c3");
  TH2F* ha2_mm=new TH2F("ha2_mm","beta vs ac2 ADC sum hist",bin_beta,min_beta,max_beta,bin_adc,min_adc,max_adc);
+ TCanvas* cac=new TCanvas("cac","cac");
+ TH2F* ha1_a2=new TH2F("ha1_a2","ac1 vs ac2 ADC sum hist",bin_adc,min_adc,max_adc,bin_adc,min_adc,max_adc);
  TCanvas* c4=new TCanvas("c4","c4");
-TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
+ TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
  TCanvas* c5=new TCanvas("c5","c5");
+
+ double min_rpathl=0.0; double max_rpathl=30.; int bin_rpathl=10000;
+ TH2F* hcoin_rpathl=new TH2F("hcoin_rpathl","Coinc time vs R Path Length Hist ",bin_rpathl,min_rpathl,max_rpathl,bin_coin,min_coin,max_coin); 
+  
  int evnt=T->GetEntries();
  cout<<"Get Entries: "<<evnt<<endl;
  double mtr;
@@ -180,12 +235,14 @@ TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
  double rbeta,rbeta_k;
  int i=8;
  int counts=0;
+ int Ls2pads,Rs2pads;
  bool cut_ac1,cut_ac2,cut_trig,cut_beta;
  int nac1,nac2,n;
  double ac1_adc,ac2_adc;
+ double tof_r,tof_l;
  ac1_adc=100.;
- ac2_adc=2000.;
- 
+ ac2_adc=400.;
+ double rpathl;
  TLine* lac1=new TLine(0,1.5,ac1_adc,ac1_adc);
  TLine* lac2=new TLine(0,1.5,ac2_adc,ac2_adc);
 
@@ -198,7 +255,7 @@ TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
    cut_beta=false;
    if(Ra1sum<ac1_adc)cut_ac1=true;
    if(Ra2sum>ac2_adc)cut_ac2=true;
-   if(rbeta>min_beta && rbeta<max_beta)cut_beta=true;
+   if(rbeta>0.963 && rbeta<0.966)cut_beta=true;
    // if(trigger[0]==32)cut_trig=true;
 
  Lph[0]=Lph[0]+13.2*3.14/360;//rad
@@ -212,30 +269,30 @@ TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
  Epi=sqrt(pow(ppi,2)+pow(mpi,2));
  Ek=sqrt(pow(pk,2)+pow(mk,2));
  mh=sqrt(pow(Ee+mtr-Ee_-Ek,2)-pow(pe-pe_-pk,2));
- coin_t=(Rs0r_tc[0]+Rs0l_tc[0])/2.0-(Ls0r_tc[0]+Ls0l_tc[0])/2.0;
+ Ls2pads=Ls2tpads[0];
+ Rs2pads=Rs2tpads[0];
+ // tof_r=((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9])/2.0-(-RF1[15]+RF1[9]))*tdc_time;
+ // tof_l=((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37])/2.0-(-RF1[47]+RF1[37]))*tdc_time;
+ tof_r=((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9])/2.0)*tdc_time;
+ tof_l=((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37])/2.0)*tdc_time;
+ coin_t=tof_r-tof_l;
+
+ // coin_t= (-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9])/2.0-(-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37])/2.0; //S2 coincidence time
+ //coin_t= (RF1[43]-RF1[46]+RF1[44]-RF1[46])/2.0-(LF1[27]-LF1[30]-LF1[28]-LF1[30])/2.0; //S0 coincidence time
+ rpathl=rtrpathl[0]-rs0pathl[0];
 
 
  // rtof[i]=(Rs2r_tc[i]+Rs2l_tc[i])/2.0-(Rs0r_tc[0]+Rs0l_tc[0])/2.0;
  // rbeta=(rs2pathl[0]-rs0pathl[0])/c/rtof[i];
  rbeta=pk/Ek;
-
  m2=sqrt((1./pow(Rbeta[0],2)-1)*pk);
 
- /*
- if(Rs0r_tc[0]>0 && Rs0l_tc[0]>0){
-   cout<<"missing mass: "<<mh<<endl;
-   cout<<"coincidence time :"<<coin_t<<endl;
-   cout<<"pe :"<<pe<<endl;
-   cout<<"pe_ :"<<pe_<<endl;
-   cout<<"pk :"<<pk<<endl;
-   cout<<"Rs0r_tc: "<<Rs0r_tc[0]<<endl;
-   cout<<"Rs0l_tc: "<<Rs0l_tc[0]<<endl;
- }
- */
+ ha1_a2->Fill(Ra1sum,Ra2sum);// AC1 vs AC2
 
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0) && cut_trig){
 hcoin_t->Fill(coin_t);
 hmm->Fill(mh);
+ hcoin_rpathl->Fill(rpathl,coin_t);
  }
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0)&& cut_ac1 && cut_trig){
 hcoin_t1->Fill(coin_t);
@@ -257,6 +314,7 @@ hmm3->Fill(mh);
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0))ha2_mm->Fill(rbeta,Ra2sum);
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0))hm2->Fill(m2);
 
+
  }
 
  TCanvas* cdiv=new TCanvas("cdiv","cdiv");
@@ -277,10 +335,8 @@ hmm3->Fill(mh);
  hmm1->Draw("same");
  hmm2->SetLineColor(3);
  hmm2->Draw("same");
-
  hmm3->SetLineColor(1);
  hmm3->Draw("same");
-
  hmm_ac->SetLineColor(2);
  hmm_ac->Draw("same");
  c1->cd();
@@ -301,11 +357,25 @@ hmm3->Fill(mh);
  lac2->Draw("same");
  c5->cd();
  hm2->Draw();
+ cac->cd();
+ ha1_a2->Draw("colz");
  TCanvas* ck =new TCanvas("ck","ck");
  ck->Divide(1,2);
  ck->cd(1);
  hcoin_t->Draw();
  ck->cd(2);
  hcoin_t3->Draw();
+
+
+TCanvas *crpathl=new TCanvas("crpathl","crpathl");
+crpathl->cd();
+ hcoin_rpathl->Draw("colz");
+
+
+ theApp->Run();
+ return 0;
+
+
+
 }
 

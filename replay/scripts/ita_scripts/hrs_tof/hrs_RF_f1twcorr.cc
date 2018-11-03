@@ -1,5 +1,5 @@
 // 10/4/2018 Author Itabshi
-// time walk correction R-HRS S0 F1TDC
+// time walk correction R-HRS RF F1TDC
 
 // Grobal Function //
  int chmax=17; // channel of S2 PMT 
@@ -321,8 +321,8 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //===============================================================//
 
     //itallation parameters //
-    int ital_a=4;
-    int ital_b=4;
+    int ital_a=10;
+    int ital_b=10;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     double sig_ital[chmax][ital_a][ital_b],sig_c[chmax];
@@ -395,8 +395,8 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   corr_r[i]=twp_r[i][0]*1./S2r_a[i];
   corr_l[i]=twp_l[i][0]*1./S2l_a[i];
 
- 	wa[i]=0.0+0.1*a;
-	wb[i]=0.8+0.1*b;
+ 	wa[i]=0.0+0.2*a;
+	wb[i]=0.0+0.2*b;
 	tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
   tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i]-corr_s0r[i]-corr_s0l[i];
   //------- Fill Hist w/ Time-Walk Correction ------//

@@ -353,7 +353,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	ReplayCore(
 			runnumber,      // run #
 			numevents,      // -1=replay all;0=ask for a number
-			500000,          // default replay event num
+			50000,          // default replay event num
 			RNAME,          // output file format
 			ODEF.Data(),	// out define
 			CUTS.Data(),	// empty cut define
