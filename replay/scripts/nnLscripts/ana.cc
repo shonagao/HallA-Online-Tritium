@@ -322,8 +322,7 @@ void ana::Roop(){
           if( tr->R_tr_th[rt]<0.17*tr->R_tr_x[rt]+0.025
            && tr->R_tr_th[rt]>0.17*tr->R_tr_x[rt]-0.035
            && tr->R_tr_th[rt]<0.40*tr->R_tr_x[rt]+0.130 ) R_FP = true;
-//          if( tr->R_a1_asum_c<150 && tr->R_a2_asum_c>1400 ) Kaon = true;
-          Kaon = true;
+          if( tr->R_a1_asum_c<150 && tr->R_a2_asum_c>1400 ) Kaon = true;
         
           if( L_Tr && L_FP && R_Tr && R_FP ){
 
@@ -406,6 +405,7 @@ void ana::Roop(){
                 h_Ry_mm   ->Fill( mm, tr->R_tr_y[rt] );
                 h_Rth_mm  ->Fill( mm, tr->R_tr_th[rt] );
                 h_Rph_mm  ->Fill( mm, tr->R_tr_ph[rt] );
+                h_Rp_Lp   ->Fill( tr->L_tr_p[lt], tr->R_tr_p[rt] );
               }
             } // if Kaon
 
@@ -619,6 +619,7 @@ void ana::Draw(){
     c13->cd(3)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_Rs2x_ct ->Draw("colz");
     c13->cd(4)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_a1sum_ct->Draw("colz");
     c13->cd(5)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_a2sum_ct->Draw("colz");
+    c13->cd(6)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_Rp_Lp   ->Draw("colz");
   
     TCanvas *c14 = new TCanvas("c14","Missing Mass 1",1000,800);
     c14->Divide(1,3,1E-5,1E-5);
@@ -894,12 +895,12 @@ void ana::MakeHist(){
 /////////////////////
 //// Coincidence ////
 /////////////////////
-  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,1000, -50, 50); 
-  h_ct_wK    = new TH1D("h_ct_wK"   ,"h_ct_wK"   ,1000, -50, 50); 
-  h_Rs2x_ct  = new TH2D("h_Rs2x_ct" ,"h_Rs2x_ct" , 200, -50, 50,200,   -1,  1); 
-  h_Ls2x_ct  = new TH2D("h_Ls2x_ct" ,"h_Ls2x_ct" , 200, -50, 50,200,   -1,  1); 
-  h_a1sum_ct = new TH2D("h_a1sum_ct","h_a1sum_ct", 200, -50, 50,200,    0,6000); 
-  h_a2sum_ct = new TH2D("h_a2sum_ct","h_a2sum_ct", 200, -50, 50,200,    0,30000); 
+  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,1000, -20, 20); 
+  h_ct_wK    = new TH1D("h_ct_wK"   ,"h_ct_wK"   ,1000, -20, 20); 
+  h_Rs2x_ct  = new TH2D("h_Rs2x_ct" ,"h_Rs2x_ct" , 200, -20, 20,200,   -1,  1); 
+  h_Ls2x_ct  = new TH2D("h_Ls2x_ct" ,"h_Ls2x_ct" , 200, -20, 20,200,   -1,  1); 
+  h_a1sum_ct = new TH2D("h_a1sum_ct","h_a1sum_ct", 200, -20, 20,200,    0,6000); 
+  h_a2sum_ct = new TH2D("h_a2sum_ct","h_a2sum_ct", 200, -20, 20,200,    0,30000); 
   h_mm       = new TH1D("h_mm"      ,"h_mm"      , 400,-0.10,0.25); 
   h_mmall    = new TH1D("h_mmall"   ,"h_mmall"   , 400,-0.10,0.25); 
   h_mmfoil   = new TH1D("h_mmfoil"  ,"h_mmfoil"  , 400,-0.10,0.25); 
@@ -930,6 +931,7 @@ void ana::MakeHist(){
   h_Ry_mm    = new TH2D("h_Ry_mm"   ,"h_Ry_mm"   , 200,-0.10,0.25,200,  -0.1,  0.1); 
   h_Rth_mm   = new TH2D("h_Rth_mm"  ,"h_Rth_mm"  , 200,-0.10,0.25,200,  -0.2,  0.2); 
   h_Rph_mm   = new TH2D("h_Rph_mm"  ,"h_Rph_mm"  , 200,-0.10,0.25,200,  -0.1,  0.1); 
+  h_Rp_Lp    = new TH2D("h_Rp_Lp"   ,"h_Rp_Lp"   , 200,  1.9, 2.3,200,   1.7, 1.95); 
   set->SetTH1(h_ct      ,"Coincidence Time"                      ,"Cointime (ns)"           ,"Counts");
   h_ct->SetMinimum(0.8);
   set->SetTH1(h_ct_wK   ,"Coincidence Time (w/ K cut)"           ,"Cointime (ns)"           ,"Counts",1,3001,3);
@@ -967,6 +969,7 @@ void ana::MakeHist(){
   set->SetTH2(h_Ly_mm   ,"LHRS FP Y v.s B_{#Lambda}"             ,"-B_{#Lambda} (GeV/c^{2})","Y_{FP} (m)");
   set->SetTH2(h_Lth_mm  ,"LHRS FP #theta v.s B_{#Lambda}"        ,"-B_{#Lambda} (GeV/c^{2})","#theta_{FP} (rad)");
   set->SetTH2(h_Lph_mm  ,"LHRS FP #phi v.s B_{#Lambda}"          ,"-B_{#Lambda} (GeV/c^{2})","#phi_{FP} (rad)");
+  set->SetTH2(h_Rp_Lp   ,"RHRS momentum v.s LHRS momentum"       ,"Lp (GeV/c)"              ,"Rp (GeV/c)");
 
 } // makehist()
 

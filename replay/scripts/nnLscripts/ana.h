@@ -122,6 +122,7 @@ class ana
     TH2D *h_Rp_mm, *h_Rl_mm, *h_Rtgy_mm, *h_Rtgth_mm, *h_Rtgph_mm;
     TH2D *h_Rvx_mm, *h_Rvy_mm, *h_Rvz_mm;
     TH2D *h_Rx_mm, *h_Ry_mm, *h_Rth_mm, *h_Rph_mm;
+    TH2D *h_Rp_Lp;
 
   private:
     double L_s0l_toff    , L_s0r_toff;
