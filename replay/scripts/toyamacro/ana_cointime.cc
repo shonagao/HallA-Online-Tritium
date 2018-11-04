@@ -46,9 +46,14 @@ using namespace std;
 #include "define.h"
 
 #define Calibration
+#define ALL_TRACK
+#undef ALL_TRACK
 
 const int NCanvas = 6;//num of canvas
-double ccoffset = 146.71;
+double coffset  = 150.41;//Fbus
+double ccoffset = 146.71;//Fbus
+double f1offset  =  6.51057;//F1TDC
+double f1coffset =  3.37;//F1TDC
 
 class ana_cointime : public Tree
 {
@@ -62,6 +67,7 @@ class ana_cointime : public Tree
   void savecanvas(string ofname); 
   void SetMaxEvent( int N )  { ENumMax = N; }
   void SetRoot(string ifname);
+  void SetOutputRoot(string ofname){output_root = ofname;}
   void SetRunList(string ifname);
   void SetInputParam(string ifname);
   Setting *set;
@@ -72,18 +78,35 @@ class ana_cointime : public Tree
     int ENumMax;
 
     //General
-    TH1F *h_s2coin_f1, *h_s2coin_fb, *h_s0coin_f1, *h_s0coin_fb; 
-    TH1F *h_s2ccoin_f1, *h_s2ccoin_fb, *h_s0ccoin_f1, *h_s0ccoin_fb; 
+    //F1
+    TH1F *h_s2coin_f1,  *h_s0coin_f1; 
+    TH1F *h_s2ccoin_f1, *h_s0ccoin_f1;
+    TH1F *h_s2ccoin_f1ac;
+    TH1F *h_s2ccoin_f1acz;
+    TH1F *h_s2ccoin_f1ac_rebin;
+    TH2F *h2_s2coin_f1_lpath, *h2_s0coin_f1_lpath; 
+    TH2F *h2_s2coin_f1_rpath, *h2_s0coin_f1_rpath; 
+    TH2F *h2_s2ccoin_f1_a1, *h2_s2ccoin_f1_a2;
+    TH2F *h2_s2ccoin_f1_a1_wa2cut, *h2_s2ccoin_f1_a2_wa1cut;
+    TH2F *h2_s2ccoin_f1_lpath, *h2_s0ccoin_f1_lpath; 
+    TH2F *h2_s2ccoin_f1_rpath, *h2_s0ccoin_f1_rpath; 
+    //Fbus
+    TH1F *h_s2coin_fb, *h_s0coin_fb;
+    TH1F *h_s2ccoin_fb, *h_s0ccoin_fb; 
     TH1F *h_s2ccoin_fbac;
+    TH1F *h_s2ccoin_fbacz;
     TH1F *h_s2ccoin_fbac_rebin;
-    TH2F *h2_s2coin_f1_lpath, *h2_s2coin_fb_lpath, *h2_s0coin_f1_lpath, *h2_s0coin_fb_lpath; 
-    TH2F *h2_s2coin_f1_rpath, *h2_s2coin_fb_rpath, *h2_s0coin_f1_rpath, *h2_s0coin_fb_rpath; 
-    TH2F *h2_s2ccoin_f1_lpath, *h2_s2ccoin_fb_lpath, *h2_s0ccoin_f1_lpath, *h2_s0ccoin_fb_lpath; 
-    TH2F *h2_s2ccoin_f1_rpath, *h2_s2ccoin_fb_rpath, *h2_s0ccoin_f1_rpath, *h2_s0ccoin_fb_rpath; 
+    TH2F *h2_s2coin_fb_lpath, *h2_s0coin_fb_lpath;
+    TH2F *h2_s2coin_fb_rpath, *h2_s0coin_fb_rpath;
     TH2F *h2_s2ccoin_fb_a1, *h2_s2ccoin_fb_a2;
-     
+    TH2F *h2_s2ccoin_fb_lpath, *h2_s0ccoin_fb_lpath;
+    TH2F *h2_s2ccoin_fb_rpath, *h2_s0ccoin_fb_rpath;
+
     TH1F *h_tof, *h_beta, *h_msq, *h_mom, *h_path, *h_t_at_targ;
     TH2F *h2_tof_beta, *h2_beta, *h2_msq_beta, *h2_mom_beta, *h2_path_beta, *h2_rf_path, *h2_rf_s2p;
+
+    TH1F *h_Lz, *h_Rz;
+    TH2F *h2_LRz;
 
     //Each S2 paddle
     TH1F *h_s2r_tof[RS2], *h_s2r_beta[RS2], *h_s2r_msq[RS2];
@@ -94,6 +117,8 @@ class ana_cointime : public Tree
     int run_num;
     TCanvas *c[NCanvas];
 
+    TFile *ofp;
+    string output_root;
     TF1 *ga_beta[16];
     TF1 *ga_coin;
     TGraphErrors *tg_beta_pos, *tg_beta_wid;
@@ -164,6 +189,7 @@ void ana_cointime::SetRunList(string ifname){
     istringstream sbuf(buf);
     sbuf >> runname;
     add_tree(runname);
+    cout<<buf<<endl;
   }
 
   pack_tree();
@@ -178,44 +204,90 @@ void ana_cointime::SetInputParam(string ifname){
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 void ana_cointime::makehist(){
-  h_s2coin_f1    = new TH1F("h_s2coin_f1" ,"h_s2coin_f1" ,1000,  400, 600);
-  h_s2coin_fb    = new TH1F("h_s2coin_fb" ,"h_s2coin_fb" , 500,  140, 170);
-  h_s0coin_f1    = new TH1F("h_s0coin_f1" ,"h_s0coin_f1" ,1000,-1000,1000);
-  h_s0coin_fb    = new TH1F("h_s0coin_fb" ,"h_s0coin_fb" ,1000,-1000,1000);
-  h_s2ccoin_f1   = new TH1F("h_s2ccoin_f1","h_s2ccoin_f1",1000,-1000,1000);
-  h_s2ccoin_fb   = new TH1F("h_s2ccoin_fb","h_s2ccoin_fb",1000,  -15, 15);
-  h_s2ccoin_fbac = new TH1F("h_s2ccoin_fbac","h_s2ccoin_fbac",1000,  -15, 15);
-  h_s0ccoin_f1   = new TH1F("h_s0ccoin_f1","h_s0ccoin_f1",1000,-1000,1000);
-  h_s0ccoin_fb   = new TH1F("h_s0ccoin_fb","h_s0ccoin_fb",1000,-1000,1000);
-  h2_s2coin_f1_lpath  = new TH2F("h2_s2coin_f1_lpath" ,"h2_s2coin_f1_lpath" ,1000,  400, 600, 100,28.3,29.8);
-  h2_s2coin_fb_lpath  = new TH2F("h2_s2coin_fb_lpath" ,"h2_s2coin_fb_lpath" , 500,  140, 170, 100,28.3,29.8);
-  h2_s0coin_f1_lpath  = new TH2F("h2_s0coin_f1_lpath" ,"h2_s0coin_f1_lpath" ,1000,-1000,1000, 100,  25,26.5);
-  h2_s0coin_fb_lpath  = new TH2F("h2_s0coin_fb_lpath" ,"h2_s0coin_fb_lpath" ,1000,-1000,1000, 100,  25,26.5); 
-  h2_s2coin_f1_rpath  = new TH2F("h2_s2coin_f1_rpath" ,"h2_s2coin_f1_rpath" ,1000,-1000,1000, 100,28.5,29.8);
-  h2_s2coin_fb_rpath  = new TH2F("h2_s2coin_fb_rpath" ,"h2_s2coin_fb_rpath" , 500,  140, 170, 100,28.5,29.8);
-  h2_s0coin_f1_rpath  = new TH2F("h2_s0coin_f1_rpath" ,"h2_s0coin_f1_rpath" ,1000,-1000,1000, 100,  25,26.5);
-  h2_s0coin_fb_rpath  = new TH2F("h2_s0coin_fb_rpath" ,"h2_s0coin_fb_rpath" ,1000,-1000,1000, 100,  25,26.5);; 
-  h2_s2ccoin_f1_lpath = new TH2F("h2_s2ccoin_f1_lpath","h2_s2ccoin_f1_lpath",1000,  400, 600, 100,28.3,29.8);
-  h2_s2ccoin_fb_lpath = new TH2F("h2_s2ccoin_fb_lpath","h2_s2ccoin_fb_lpath",1000,  -15,  15, 100,28.3,29.8);
-  h2_s0ccoin_f1_lpath = new TH2F("h2_s0ccoin_f1_lpath","h2_s0ccoin_f1_lpath",1000,-1000,1000, 100,  25,26.5);
-  h2_s0ccoin_fb_lpath = new TH2F("h2_s0ccoin_fb_lpath","h2_s0ccoin_fb_lpath",1000,-1000,1000, 100,  25,26.5); 
-  h2_s2ccoin_f1_rpath = new TH2F("h2_s2ccoin_f1_rpath","h2_s2ccoin_f1_rpath",1000,-1000,1000, 100,28.3,29.8);
-  h2_s2ccoin_fb_rpath = new TH2F("h2_s2ccoin_fb_rpath","h2_s2ccoin_fb_rpath",1000,  -15,  15, 100,28.3,29.8);
-  h2_s0ccoin_f1_rpath = new TH2F("h2_s0ccoin_f1_rpath","h2_s0ccoin_f1_rpath",1000,-1000,1000, 100,  25,26.5);
-  h2_s0ccoin_fb_rpath = new TH2F("h2_s0ccoin_fb_rpath","h2_s0ccoin_fb_rpath",1000,-1000,1000, 100,  25,26.5);; 
-h_s2ccoin_fbac->SetLineColor(2);
-  h2_s2ccoin_fb_a1 = new TH2F("h2_s2ccoin_fb_a1","h2_s2ccoin_fb_a1",1000,  -15, 15, 100,-100.,4000.);
-  h2_s2ccoin_fb_a2 = new TH2F("h2_s2ccoin_fb_a2","h2_s2ccoin_fb_a2",1000,  -15, 15, 100,-100.,20000.);
-  h2_tof_beta    = new TH2F("h2_tof_beta"  ,"h2_tof_beta"  , 2000, -100,  100,  200,   -2,   2);
-  h2_msq_beta    = new TH2F("h2_msq_beta"  ,"h2_msq_beta"  , 2000,   -1,    1,  200,   -2,   2);
-  h2_mom_beta    = new TH2F("h2_mom_beta"  ,"h2_mom_beta"  , 2000, 0.5,  3.5,  200,   1.72, 1.93);
-  h2_path_beta   = new TH2F("h2_path_beta" ,"h2_path_beta" , 2000,  20,   30,  200,   -2,   2);
-  h2_rf_path       = new TH2F("h2_rf_path" ,"h2_rf_path"   , 2000, -10,   10,  200,   25,   26.5);
+  ofp = new TFile(output_root.c_str(),"recreate");
+  h_s2coin_f1    = new TH1F("h_s2coin_f1"    ,"h_s2coin_f1"    ,1000,  -15, 15);
+  h_s0coin_f1    = new TH1F("h_s0coin_f1"    ,"h_s0coin_f1"    ,1000,-1000,1000);
+  h_s2ccoin_f1   = new TH1F("h_s2ccoin_f1"   ,"h_s2ccoin_f1"   ,1000,  -15,  15);
+  h_s2ccoin_f1ac = new TH1F("h_s2ccoin_f1ac" ,"h_s2ccoin_f1ac" ,1000,  -15,  15);
+  h_s2ccoin_f1acz= new TH1F("h_s2ccoin_f1acz","h_s2ccoin_f1acz",1000,  -15,  15);
+  h_s0ccoin_f1   = new TH1F("h_s0ccoin_f1"   ,"h_s0ccoin_f1"   ,1000,-10,1000);
+  h_s2coin_fb    = new TH1F("h_s2coin_fb"    ,"h_s2coin_fb"    , 600,  -15,  15);
+  h_s0coin_fb    = new TH1F("h_s0coin_fb"    ,"h_s0coin_fb"    ,1000,-1000,1000);
+  h_s2ccoin_fb   = new TH1F("h_s2ccoin_fb"   ,"h_s2ccoin_fb"   , 600,  -15,  15);
+  h_s2ccoin_fbac = new TH1F("h_s2ccoin_fbac" ,"h_s2ccoin_fbac" , 600,  -15,  15);
+  h_s2ccoin_fbacz= new TH1F("h_s2ccoin_fbacz","h_s2ccoin_fbacz", 600,  -15,  15);
+  h_s0ccoin_fb   = new TH1F("h_s0ccoin_fb"   ,"h_s0ccoin_fb"   , 600,-10,1000);
+  h_Lz           = new TH1F("h_Lz"           ,"hLz"            , 200, -0.2, 0.2);
+  h_Rz           = new TH1F("h_Rz"           ,"hRz"            , 200, -0.2, 0.2);
+  set->SetTH1(h_s2coin_f1     ,"Coin time(S2 F1TDC)"                          ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s0coin_f1     ,"Coin time(S0 F1TDC)"                          ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s2ccoin_f1    ,"Coin time(S2 F1TDC w/ path cor.)"             ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s0ccoin_f1    ,"Coin time(S0 F1TDC w/ path cor.)"             ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s2ccoin_f1ac  ,"Coin time(S2 F1TDC w/ path cor. w/ AC cut)"   ,"coin time [ns]","counts", 2,3000,0);
+  set->SetTH1(h_s2ccoin_f1acz ,"Coin time(S2 F1TDC w/ path cor. w/ AC&Z cut))","coin time [ns]","counts", 4,3000,0);
+  set->SetTH1(h_s0ccoin_f1    ,"Coin time(S0 F1TDC w/ path cor.)"             ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s2coin_fb     ,"Coin time(S2 Fbus)"                          ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s0coin_fb     ,"Coin time(S0 Fbus w/ path cor.)"             ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s2ccoin_fb    ,"Coin time(S2 Fbus w/ path cor.)"             ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_s2ccoin_fbac  ,"Coin time(S2 Fbus w/ path cor. w/ AC cut)"   ,"coin time [ns]","counts", 2,3000,0);
+  set->SetTH1(h_s2ccoin_fbacz ,"Coin time(S2 Fbus w/ path cor. w/ AC&Z cut))","coin time [ns]","counts", 4,3000,0);
+  set->SetTH1(h_s0ccoin_fb    ,"Coin time(S0 Fbus w/ path cor.)"             ,"coin time [ns]","counts", 1,3000,0);
+  set->SetTH1(h_Lz            ,"Target Z pos (L-HRS)"                        ,"z[m]"          ,"counts", 4,3000,0);
+  set->SetTH1(h_Rz            ,"Target Z pos (R-HRS)"                        ,"z[m]"          ,"counts", 4,3000,0);
+
+
+  h2_s2coin_f1_lpath     = new TH2F("h2_s2coin_f1_lpath"        ,"h2_s2coin_f1_lpath"        , 1000,   -15,   15,  100, 28.3,  29.8);
+  h2_s0coin_f1_lpath     = new TH2F("h2_s0coin_f1_lpath"        ,"h2_s0coin_f1_lpath"        , 1000, -1000, 1000,  100,   25,  26.5);
+  h2_s2coin_f1_rpath     = new TH2F("h2_s2coin_f1_rpath"        ,"h2_s2coin_f1_rpath"        , 1000,   -15,   15,  100, 28.5,  29.8);
+  h2_s0coin_f1_rpath     = new TH2F("h2_s0coin_f1_rpath"        ,"h2_s0coin_f1_rpath"        , 1000, -1000, 1000,  100,   25,  26.5);
+  h2_s2ccoin_f1_lpath    = new TH2F("h2_s2ccoin_f1_lpath"       ,"h2_s2ccoin_f1_lpath"       , 1000,   -15,   15,  100, 28.3,  29.8);
+  h2_s0ccoin_f1_lpath    = new TH2F("h2_s0ccoin_f1_lpath"       ,"h2_s0ccoin_f1_lpath"       , 1000, -1000, 1000,  100,   25,  26.5);
+  h2_s2ccoin_f1_rpath    = new TH2F("h2_s2ccoin_f1_rpath"       ,"h2_s2ccoin_f1_rpath"       , 1000,   -15,   15,  100, 28.3,  29.8);
+  h2_s0ccoin_f1_rpath    = new TH2F("h2_s0ccoin_f1_rpath"       ,"h2_s0ccoin_f1_rpath"       , 1000, -1000, 1000,  100,   25,  26.5);
+  h2_s2ccoin_f1_a1       = new TH2F("h2_s2ccoin_f1_a1"          ,"h2_s2ccoin_f1_ a1"         , 1000,   -15,   15,  100,-100., 4000.);
+  h2_s2ccoin_f1_a2       = new TH2F("h2_s2ccoin_f1_a2"          ,"h2_s2ccoin_f1_a2"          , 1000,   -15,   15,  100,-100.,20000.);
+  h2_s2ccoin_f1_a1_wa2cut= new TH2F("h2_s2ccoin_f1_a1_wa2cut"   ,"h2_s2ccoin_f1_a1_wa2cut"   , 1000,   -15,   15,  100,-100., 4000.);
+  h2_s2ccoin_f1_a2_wa1cut= new TH2F("h2_s2ccoin_f1_a2_wa1cut"   ,"h2_s2ccoin_f1_a2_wa1cut"   , 1000,   -15,   15,  100,-100.,20000.);
+  h2_s2coin_fb_lpath     = new TH2F("h2_s2coin_fb_lpath"        ,"h2_s2coin_fb_lpath"        ,  600,   -15,   15,  100, 28.3,  29.8);
+  h2_s0coin_fb_lpath     = new TH2F("h2_s0coin_fb_lpath"        ,"h2_s0coin_fb_lpath"        , 1000, -1000, 1000,  100,   25,  26.5); 
+  h2_s2coin_fb_rpath     = new TH2F("h2_s2coin_fb_rpath"        ,"h2_s2coin_fb_rpath"        ,  600,   -15,   15,  100, 28.5,  29.8);
+  h2_s0coin_fb_rpath     = new TH2F("h2_s0coin_fb_rpath"        ,"h2_s0coin_fb_rpath"        , 1000, -1000, 1000,  100,   25,  26.5); 
+  h2_s2ccoin_fb_lpath    = new TH2F("h2_s2ccoin_fb_lpath"       ,"h2_s2ccoin_fb_lpath"       ,  600,   -15,   15,  100, 28.3,  29.8);
+  h2_s0ccoin_fb_lpath    = new TH2F("h2_s0ccoin_fb_lpath"       ,"h2_s0ccoin_fb_lpath"       , 1000, -1000, 1000,  100,   25,  26.5); 
+  h2_s2ccoin_fb_rpath    = new TH2F("h2_s2ccoin_fb_rpath"       ,"h2_s2ccoin_fb_rpath"       ,  600,   -15,   15,  100, 28.3,  29.8);
+  h2_s0ccoin_fb_rpath    = new TH2F("h2_s0ccoin_fb_rpath"       ,"h2_s0ccoin_fb_rpath"       , 1000, -1000, 1000,  100,   25,  26.5); 
+  h2_s2ccoin_fb_a1       = new TH2F("h2_s2ccoin_fb_a1"          ,"h2_s2ccoin_fb_ a1"         ,  600,   -15,   15,  100,-100., 4000.);
+  h2_s2ccoin_fb_a2       = new TH2F("h2_s2ccoin_fb_a2"          ,"h2_s2ccoin_fb_a2"          ,  600,   -15,   15,  100,-100.,20000.);
+  h2_tof_beta            = new TH2F("h2_tof_beta"               ,"h2_tof_beta"               , 2000,  -100,  100,  200,   -2,     2);
+  h2_msq_beta            = new TH2F("h2_msq_beta"               ,"h2_msq_beta"               , 2000,    -1,    1,  200,   -2,     2);
+  h2_mom_beta            = new TH2F("h2_mom_beta"               ,"h2_mom_beta"               , 2000,   0.5,  3.5,  200, 1.72,  1.93);
+  h2_path_beta           = new TH2F("h2_path_beta"              ,"h2_path_beta"              , 2000,    20,   30,  200,   -2,     2);
+  h2_rf_path             = new TH2F("h2_rf_path"                ,"h2_rf_path"                , 2000,   -10,   10,  200,   25,  26.5);
+  h2_LRz                 = new TH2F("h2_LRz"                    ,"h2_LRz"                    , 200,   -0.2,  0.2,  200, -0.2,   0.2);
+
+
+  set->SetTH2(h2_s2coin_fb_lpath  ,"coin time(Fb) vs Path(LHRS)"        ,"cointime[ns]"    ,"Path(L-HRS)[m]");
+  set->SetTH2(h2_s2coin_fb_rpath  ,"coin time(Fb) vs Path(RHRS)"        ,"cointime[ns]"    ,"Path(R-HRS)[m]");
+  set->SetTH2(h2_s2ccoin_fb_lpath ,"coin time(Fb) vs Path(LHRS) w/ cor" ,"cointime[ns]"    ,"Path(L-HRS)[m]");
+  set->SetTH2(h2_s2ccoin_fb_rpath ,"coin time(Fb) vs Path(RHRS) w/ cor" ,"cointime[ns]"    ,"Path(R-HRS)[m]");
+  set->SetTH2(h2_s2ccoin_fb_a1    ,"coin time(Fb) vs A1 ADC w/ cor"     ,"cointime[ns]"    ,"A1 ADCp[arb]");
+  set->SetTH2(h2_s2ccoin_fb_a2    ,"coin time(Fb) vs A1 ADC w/ cor"     ,"cointime[ns]"    ,"A2 ADCp[arb]");
+
+  set->SetTH2(h2_s2coin_f1_lpath  ,"coin time(F1) vs Path(LHRS)"        ,"cointime[ns]"    ,"Path(L-HRS)[m]");
+  set->SetTH2(h2_s2coin_f1_rpath  ,"coin time(F1) vs Path(RHRS)"        ,"cointime[ns]"    ,"Path(R-HRS)[m]");
+  set->SetTH2(h2_s2ccoin_f1_lpath ,"coin time(F1) vs Path(LHRS) w/ cor" ,"cointime[ns]"    ,"Path(L-HRS)[m]");
+  set->SetTH2(h2_s2ccoin_f1_rpath ,"coin time(F1) vs Path(RHRS) w/ cor" ,"cointime[ns]"    ,"Path(R-HRS)[m]");
+  set->SetTH2(h2_s2ccoin_f1_a1    ,"coin time(F1) vs A1 ADC w/ cor"     ,"cointime[ns]"    ,"A1 ADCp[arb]");
+  set->SetTH2(h2_s2ccoin_f1_a2    ,"coin time(F1) vs A2 ADC w/ cor"     ,"cointime[ns]"    ,"A2 ADCp[arb]");
+  set->SetTH2(h2_s2ccoin_f1_a1_wa2cut    ,"ccoin time(F1) vs A1 ADC w/ A2cut"     ,"cointime[ns]"    ,"A1 ADCp[arb]");
+  set->SetTH2(h2_s2ccoin_f1_a2_wa1cut    ,"ccoin time(F1) vs A2 ADC w/ A1cut"     ,"cointime[ns]"    ,"A2 ADCp[arb]");
+  
   set->SetTH2(h2_tof_beta ,"ToF vs beta" ,"ToF"    ,"#beta");
   set->SetTH2(h2_msq_beta ,"Msq vs beta" ,"m^{2}"  ,"#beta");
   set->SetTH2(h2_mom_beta ,"Mom vs beta" ,"1/#beta","mom"  );
   set->SetTH2(h2_path_beta,"Path vs beta","pathl"  ,"#beta");
   set->SetTH2(h2_rf_path  ,"RF-S2 vs Pathl","RF-S2 [ns]"  ,"path[m]");
+  set->SetTH2(h2_LRz      ,"L-HRS z vs R-HRS z"     ,"Lz[m]"    ,"Rz[m]");
 
   for(int i=0;i<RS2;i++){
     h_s2r_tof[i]  = new TH1F(Form("h_s2r_tof",i) , Form("h_s2r_tof",i+1)      ,2000,-100,100);
@@ -237,7 +309,8 @@ h_s2ccoin_fbac->SetLineColor(2);
 ////////////////////////////////////////////////////////////////////////////
 void ana_cointime::loop(){
 
-  bool Rtr_flag, Ltr_flag=false;
+  bool Rtr_flag, Ltr_flag;
+  bool RZ_flag, LZ_flag, Z_flag;
   if( GetMaxEvent()>0 && GetMaxEvent()<ENum) ENum = GetMaxEvent();
   for(int n=0;n<ENum;n++){
     if(n%10000==0)cout<<n <<" / "<<ENum<<endl;
@@ -249,11 +322,20 @@ void ana_cointime::loop(){
     int ritrack = 0, litrack = 0;
 
     if(DR_T5>0.){//coin trig.
-      Rtr_flag=Ltr_flag=false;
+
+#ifdef ALL_TRACK
+   for(ritrack=0;ritrack<R_tr_n;ritrack++){
+     for(litrack=0;litrack<L_tr_n;litrack++){
+#endif
+
+      Rtr_flag=Ltr_flag=RZ_flag=LZ_flag=false;
       ///R-HRS////
       Rm2[ritrack] = ( 1. / (R_tr_beta[ritrack] * R_tr_beta[ritrack]) -1. ) * R_tr_p[ritrack] * R_tr_p[ritrack];
       beta_k[ritrack] = R_tr_p[ritrack]/sqrt(R_tr_p[ritrack]*R_tr_p[ritrack] + MK*MK);
       Vk[ritrack] = beta_k[ritrack]*LightVelocity;
+
+
+      h_Rz -> Fill(R_tr_vz[ritrack]);
       h2_msq_beta   ->Fill(Rm2[ritrack]         , R_tr_beta[ritrack]);
       h2_mom_beta   ->Fill(1./R_tr_beta[ritrack], R_tr_p[ritrack]   );
       h2_path_beta  ->Fill(R_tr_pathl[ritrack]  , R_tr_beta[ritrack]);
@@ -274,42 +356,75 @@ void ana_cointime::loop(){
 
       ///L-HRS////
 
-
+      h_Lz -> Fill(L_tr_vz[litrack]);
+      h2_LRz -> Fill(L_tr_vz[litrack],R_tr_vz[ritrack]);
 
     if(R_tr_pathl[ritrack]+R_s2_trpath[ritrack]>28.7 && R_tr_pathl[ritrack]+R_s2_trpath[ritrack]<29.4)Rtr_flag=true;
     if(L_tr_pathl[litrack]+L_s2_trpath[litrack]>28.6 && L_tr_pathl[litrack]+L_s2_trpath[litrack]<29.2)Ltr_flag=true;
+    if(R_tr_vz[ritrack]>-0.1 && R_tr_vz[ritrack]< 0.1)RZ_flag=true;
+    if(L_tr_vz[litrack]>-0.1 && L_tr_vz[litrack]< 0.1)LZ_flag=true;
+
+    double f1s2coin  =  -1.*(LS2_F1time[(int)L_s2_trpad[litrack]] - RS2_F1time[(int)R_s2_trpad[ritrack]] );
+    double f1s2ccoin = -1.*((LS2_F1time[(int)L_s2_trpad[litrack]] - L_tr_pathl[litrack]/LightVelocity) - (RS2_F1time[(int)R_s2_trpad[ritrack]] - R_tr_pathl[ritrack]/Vk[ritrack]) );
+    f1s2coin  -= f1offset;
+    f1s2ccoin -= f1coffset;
 
     double fbs2coin  = s2ns*(L_s2_time[(int)L_s2_trpad[litrack]] - R_s2_time[(int)R_s2_trpad[ritrack]]);
     double fbs2ccoin = (s2ns*L_s2_time[(int)L_s2_trpad[litrack]] + (L_tr_pathl[litrack]+L_s2_trpath[litrack])/LightVelocity ) - (s2ns*R_s2_time[(int)R_s2_trpad[ritrack]] + (R_tr_pathl[ritrack]+R_s2_trpath[ritrack])/Vk[ritrack]);
+
+    fbs2coin  -= coffset;
     fbs2ccoin -= ccoffset;
     //double fbs2ccoin = (s2ns*L_s2_time[(int)L_s2_trpad[litrack]] + L_tr_pathl[litrack]/LightVelocity) - (s2ns*R_s2_time[(int)R_s2_trpad[ritrack]] - R_tr_pathl[ritrack]/Vk[ritrack]);
       ///cointime L-R///
     if(R_s2_rt[(int)R_s2_trpad[ritrack]]>1. && R_s2_lt[(int)R_s2_trpad[ritrack]]>1. && L_s2_rt[(int)L_s2_trpad[litrack]]>1.&& L_s2_lt[(int)L_s2_trpad[litrack]]>1.){
       if(Rtr_flag && Ltr_flag){
-        h_s2coin_fb  ->Fill(fbs2coin);
+        h_s2coin_fb          ->Fill(fbs2coin);
         h2_s2coin_fb_lpath   ->Fill(fbs2coin ,  L_tr_pathl[litrack]+L_s2_trpath[litrack]);
         h2_s2coin_fb_rpath   ->Fill(fbs2coin ,  R_tr_pathl[ritrack]+R_s2_trpath[ritrack]);
-        h_s2ccoin_fb ->Fill(fbs2ccoin);
+        h_s2ccoin_fb         ->Fill(fbs2ccoin);
         h2_s2ccoin_fb_lpath  ->Fill(fbs2ccoin,  L_tr_pathl[litrack]+L_s2_trpath[litrack]);
         h2_s2ccoin_fb_rpath  ->Fill(fbs2ccoin,  R_tr_pathl[ritrack]+R_s2_trpath[ritrack]);
-        h2_s2ccoin_fb_a1  ->Fill(fbs2ccoin,  R_a1_asum_p);
-        h2_s2ccoin_fb_a2  ->Fill(fbs2ccoin,  R_a2_asum_p);
-        if(R_a1_asum_p<200. && R_a2_asum_p>1000.)h_s2ccoin_fbac    ->Fill(fbs2ccoin);
+        h2_s2ccoin_fb_a1     ->Fill(fbs2ccoin,  R_a1_asum_p);
+        h2_s2ccoin_fb_a2     ->Fill(fbs2ccoin,  R_a2_asum_p);
+        if(R_a1_asum_p<150. && R_a2_asum_p>1400.)h_s2ccoin_fbac    ->Fill(fbs2ccoin);
+        if(R_a1_asum_p<150. && R_a2_asum_p>1400. && RZ_flag && LZ_flag)h_s2ccoin_fbacz   ->Fill(fbs2ccoin);
         //cout<<  R_a2_asum_p <<endl;
       }
     }
     if(RS2T_F1TDC[(int)R_s2_trpad[ritrack]]>1. && RS2B_F1TDC[(int)R_s2_trpad[ritrack]]>1. && LS2T_F1TDC[(int)L_s2_trpad[litrack]]>1.&& LS2B_F1TDC[(int)L_s2_trpad[litrack]]>1.){
-      h_s2coin_f1  ->Fill(LS2_F1time[(int)L_s2_trpad[litrack]] - RS2_F1time[(int)R_s2_trpad[ritrack]]);
-      h_s2ccoin_f1 ->Fill( (LS2_F1time[(int)L_s2_trpad[litrack]] - L_tr_pathl[litrack]/LightVelocity) - (RS2_F1time[(int)R_s2_trpad[ritrack]] - R_tr_pathl[ritrack]/Vk[ritrack]) );
+      if(Rtr_flag && Ltr_flag){
+        h_s2coin_f1  ->Fill(f1s2coin);
+        h_s2ccoin_f1 ->Fill(f1s2ccoin);
+        h2_s2coin_f1_lpath   ->Fill(f1s2coin ,  L_tr_pathl[litrack]+L_s2_trpath[litrack]);
+        h2_s2coin_f1_rpath   ->Fill(f1s2coin ,  R_tr_pathl[ritrack]+R_s2_trpath[ritrack]);
+        h_s2ccoin_f1         ->Fill(f1s2ccoin);
+        h2_s2ccoin_f1_lpath  ->Fill(f1s2ccoin,  L_tr_pathl[litrack]+L_s2_trpath[litrack]);
+        h2_s2ccoin_f1_rpath  ->Fill(f1s2ccoin,  R_tr_pathl[ritrack]+R_s2_trpath[ritrack]);
+        h2_s2ccoin_f1_a1     ->Fill(f1s2ccoin,  R_a1_asum_p);
+        h2_s2ccoin_f1_a2     ->Fill(f1s2ccoin,  R_a2_asum_p);
+        if(R_a1_asum_p<150. && R_a2_asum_p>1400.)h_s2ccoin_f1ac    ->Fill(f1s2ccoin);
+        if(R_a1_asum_p<150. && R_a2_asum_p>1400. && RZ_flag && LZ_flag)h_s2ccoin_f1acz   ->Fill(f1s2ccoin);
+        if(R_a2_asum_p>1400. && RZ_flag && LZ_flag)h2_s2ccoin_f1_a1_wa2cut   ->Fill(f1s2ccoin, R_a1_asum_p);
+        if(R_a1_asum_p<150.  && RZ_flag && LZ_flag)h2_s2ccoin_f1_a2_wa1cut   ->Fill(f1s2ccoin, R_a2_asum_p);
+      }
     }
 
-    if(R_s0_rt[0]>1. && R_s0_lt[0]>1. && L_s0_rt[0]>1.&& L_s0_lt[0]>1.){
-      h_s0coin_f1  ->Fill(LS0_F1time[0] - RS0_F1time[0]);
+    if(R_s0_rt[0]>1. && R_s0_lt[0]>1. && L_s0_rt[0]>1.&& L_s0_lt[0]>1. ){
+
+      if(LF1Ref[0]>1. && LF1Ref[1]>1. && RF1Ref[0]>1. && RF1Ref[1]>1.){
+        //cout<<"LF1Ref : "<<LF1Ref[0]<< " "<<LF1Ref[1]<<", RF1Ref : "<<RF1Ref[0]<<" "<<RF1Ref[1]<<endl;
+        h_s0coin_f1  ->Fill(LS0_F1time[0] - RS0_F1time[0]);
+        h_s0ccoin_f1 ->Fill(LS0_F1time[0] - RS0_F1time[0]);
+      }
+
       h_s0coin_fb  ->Fill(s2ns*(L_s2_time[0] - R_s2_time[0]));
-      h_s0ccoin_f1 ->Fill(LS0_F1time[0] - RS0_F1time[0]);
       h_s0ccoin_fb ->Fill(LS0_F1time[0] - RS0_F1time[0]);
+
     }
       
+#ifdef ALL_TRACK
+   }}
+#endif
     }//coin_trig
   }
 
@@ -347,53 +462,76 @@ void ana_cointime::fit(){
   ga_coin = new TF1("ga_coin","gaus",-100,500);
   set->SetTF1(ga_coin,2,1,1);
   double min=-40.0,max= 50.0;
-  set->FitGaus(h_s2ccoin_fb,min,max,1.5,5);
-  h_s2ccoin_fb->Fit(ga_coin,"QR","",min,max);
+  set->FitGaus(h_s2ccoin_f1,min,max,1.5,5);
+  h_s2ccoin_f1->Fit(ga_coin,"QR","",min,max);
 
   cout<<"cointime peak(pion)= "<<ga_coin->GetParameter(1)<<", width= "<<ga_coin->GetParameter(2)<<" (ns)"<<endl;
 }
 ////////////////////////////////////////////////////////////////////////////
 void ana_cointime::draw(){
 
+  //F1
   c[0]->Clear();c[0]->Divide(4,2);
-  //c[0]->cd(1);h_s2coin_f1  ->Draw();
-  c[0]->cd(1);h_s2coin_fb  ->Draw();
-  //c[0]->cd(3);h_s0coin_f1  ->Draw();
-  c[0]->cd(2);h_s2ccoin_fb ->Draw();
-  c[0]->cd(3);gPad->SetLogz(1);h2_s2ccoin_fb_a1  ->Draw("colz");
-  c[0]->cd(4);gPad->SetLogz(1);h2_s2ccoin_fb_a2  ->Draw("colz");
-  //c[0]->cd(3);h_s0coin_fb  ->Draw();
-  //c[0]->cd(5);h_s2ccoin_f1 ->Draw();
-  //c[0]->cd(7);h_s0ccoin_f1 ->Draw();
-  //c[0]->cd(8);h_s0ccoin_fb ->Draw();
-  c[0]->cd(5);h2_s2coin_fb_lpath   ->Draw("colz");
-  c[0]->cd(6);h2_s2coin_fb_rpath   ->Draw("colz");
-  c[0]->cd(7);h2_s2ccoin_fb_lpath  ->Draw("colz");
-  c[0]->cd(8);h2_s2ccoin_fb_rpath  ->Draw("colz");
+  c[0]->cd(1);h_s2coin_f1  ->Draw();
+  c[0]->cd(2);h_s2ccoin_f1 ->Draw();
+  c[0]->cd(3);gPad->SetLogz(1);h2_s2ccoin_f1_a1  ->Draw("colz");
+  c[0]->cd(4);gPad->SetLogz(1);h2_s2ccoin_f1_a2  ->Draw("colz");
+  c[0]->cd(5);h2_s2coin_f1_lpath   ->Draw("colz");
+  c[0]->cd(6);h2_s2coin_f1_rpath   ->Draw("colz");
+  c[0]->cd(7);h2_s2ccoin_f1_lpath  ->Draw("colz");
+  c[0]->cd(8);h2_s2ccoin_f1_rpath  ->Draw("colz");
+  //Fbus
+  c[1]->Clear();c[1]->Divide(4,2);
+  c[1]->cd(1);h_s2coin_fb  ->Draw();
+  c[1]->cd(2);h_s2ccoin_fb ->Draw();
+  c[1]->cd(3);gPad->SetLogz(1);h2_s2ccoin_fb_a1  ->Draw("colz");
+  c[1]->cd(4);gPad->SetLogz(1);h2_s2ccoin_fb_a2  ->Draw("colz");
+  c[1]->cd(5);h2_s2coin_fb_lpath   ->Draw("colz");
+  c[1]->cd(6);h2_s2coin_fb_rpath   ->Draw("colz");
+  c[1]->cd(7);h2_s2ccoin_fb_lpath  ->Draw("colz");
+  c[1]->cd(8);h2_s2ccoin_fb_rpath  ->Draw("colz");
 
-  c[1]->Clear();c[1]->Divide(1,1);
-  c[1]->cd(1);h_s2ccoin_fbac ->Draw();
-  h_s2ccoin_fbac_rebin = (TH1F*)h_s2ccoin_fbac ->Clone();
-  h_s2ccoin_fbac_rebin ->Rebin(4);
+  c[2]->Clear();c[2]->Divide(1,1);
+  c[2]->cd(1);h_s2ccoin_f1ac ->Draw();
+  h_s2ccoin_f1ac_rebin = (TH1F*)h_s2ccoin_f1ac ->Clone();
+  h_s2ccoin_f1ac_rebin ->Rebin(4);
+  //c[2]->cd(1);h_s2ccoin_fbac ->Draw();
+  //h_s2ccoin_fbac_rebin = (TH1F*)h_s2ccoin_fbac ->Clone();
+  //h_s2ccoin_fbac_rebin ->Rebin(4);
 
-  c[2]->Clear();c[2]->Divide(2,2);
-  c[2]->cd(1);h_s2ccoin_fb  ->Draw();h_s2ccoin_fbac ->Draw("same");
-  c[2]->cd(2);gPad->SetLogy(1);h_s2ccoin_fb  ->Draw();h_s2ccoin_fbac ->Draw("same");
-  c[2]->cd(3);gPad->SetLogy(1);h_s2ccoin_fb  ->Draw();h_s2ccoin_fbac_rebin ->Draw("same");
-  c[2]->cd(3);gPad->SetLogy(0);h_s2ccoin_fbac_rebin ->Draw("");
-  c[3]->Clear();c[3]->Divide(4,4);
-  for(int i=0;i<16;i++){
-    c[3]->cd(i+1);gPad->SetLogz(1);h2_s2r_tof_beta[i]  ->Draw("colz");
-  }
+  c[3]->Clear();c[3]->Divide(2,2);
+  c[3]->cd(1);h_s2ccoin_f1  ->Draw();h_s2ccoin_f1ac ->Draw("same");
+  c[3]->cd(2);gPad->SetLogy(1);h_s2ccoin_f1  ->Draw();h_s2ccoin_f1ac ->Draw("same");
+  c[3]->cd(3);gPad->SetLogy(1);h_s2ccoin_f1  ->Draw();h_s2ccoin_f1ac_rebin ->Draw("same");
+  c[3]->cd(4);gPad->SetLogy(0);h_s2ccoin_f1ac_rebin ->Draw("");
+  //c[3]->cd(1);h_s2ccoin_fb  ->Draw();h_s2ccoin_fbac ->Draw("same");
+  //c[3]->cd(2);gPad->SetLogy(1);h_s2ccoin_fb  ->Draw();h_s2ccoin_fbac ->Draw("same");
+  //c[3]->cd(3);gPad->SetLogy(1);h_s2ccoin_fb  ->Draw();h_s2ccoin_fbac_rebin ->Draw("same");
+  //c[3]->cd(4);gPad->SetLogy(0);h_s2ccoin_fbac_rebin ->Draw("");
 
-  c[4]->Clear();c[4]->Divide(2,2);
+
+
+  c[4]->Clear();c[4]->Divide(3,3);
   c[4]->cd(1);gPad->SetLogz(1);h2_msq_beta   ->Draw("colz");
   c[4]->cd(2);gPad->SetLogz(1);h2_mom_beta   ->Draw("colz");
-  c[4]->cd(3);gPad->SetLogz(1);h_frame[0]->Draw();tg_beta_pos ->Draw("sameP");//h2_path_beta  ->Draw("colz");
-  c[4]->cd(4);gPad->SetLogz(1);h_frame[1]->Draw();tg_beta_wid ->Draw("sameP");//h2_tof_beta   ->Draw("colz");
+  c[4]->cd(3);h_Lz   -> Draw("");
+  c[4]->cd(4);h_Rz   -> Draw("");
+  c[4]->cd(5);h2_LRz -> Draw("colz");
+  c[4]->cd(6);h_s2ccoin_fbacz ->Draw();
+  c[4]->cd(7);gPad->SetLogz(1);h2_s2ccoin_f1_a1_wa2cut  ->Draw("colz");
+  c[4]->cd(8);gPad->SetLogz(1);h2_s2ccoin_f1_a2_wa1cut  ->Draw("colz");
 
-  c[5]->Clear();//c[5]->Divide(2,2);
-  c[5]->cd(1);gPad->SetLogz(1);h2_rf_path->Draw("colz");
+  c[5]->Clear();c[5]->Divide(1,1);
+  c[5]->cd(1);h_s2ccoin_f1->Draw();
+  //c[4]->cd(3);gPad->SetLogz(1);h_frame[0]->Draw();tg_beta_pos ->Draw("sameP");//h2_path_beta  ->Draw("colz");
+  //c[4]->cd(4);gPad->SetLogz(1);h_frame[1]->Draw();tg_beta_wid ->Draw("sameP");//h2_tof_beta   ->Draw("colz");
+
+  //c[3]->Clear();c[3]->Divide(4,4);
+  //for(int i=0;i<16;i++){
+  //  c[3]->cd(i+1);gPad->SetLogz(1);h2_s2r_tof_beta[i]  ->Draw("colz");
+  //}
+  //c[5]->Clear();//c[5]->Divide(2,2);
+  //c[5]->cd(1);gPad->SetLogz(1);h2_rf_path->Draw("colz");
 }
 ////////////////////////////////////////////////////////////////////////////
 void ana_cointime::savecanvas(string ofname){
@@ -403,6 +541,8 @@ void ana_cointime::savecanvas(string ofname){
   }
   c[NCanvas-1]->Print(Form("%s]",ofname.c_str()) );
   cout<<ofname<<" saved"<<endl;
+  ofp->Write();
+  ofp->Close();
 }
 ////////////////////////////////////////////////////////////////////////////
 //////////////////////////// main //////////////////////////////////////////
@@ -411,7 +551,8 @@ int main(int argc, char** argv){
 
   string ifname = "rootfiles/cosmic1020.root";
   string runlistname = "runlist/test.txt";
-  string ofname = "toyamacro/pdf/ana_cointime1020.pdf";
+  string ofname = "tmp.root";
+  string ofname_pdf = "tmp.pdf";
   string paramname = "twlk_param/default.param";
   int ch;
   int MaxNum = 0;
@@ -454,7 +595,7 @@ int main(int argc, char** argv){
     case 'h':
       cout<<"-f : input runlist file"<<endl;
       cout<<"-s : input root file name(single run analysis)"<<endl;
-      cout<<"-w : output pdf filename"<<endl;
+      cout<<"-w : output root filename"<<endl;
       cout<<"-n : maximum number of analysed events"<<endl;
       cout<<"-p : input param file"<<endl;
       return 0;
@@ -472,15 +613,21 @@ int main(int argc, char** argv){
   TApplication *theApp = new TApplication("App", &argc, argv);
   ana_cointime *coin = new ana_cointime();
 
+
+  ofname_pdf = ofname;
+  ofname_pdf.erase(ofname_pdf.size()-5);
+  ofname_pdf.append(".pdf");
+
   coin->SetMaxEvent(MaxNum);
   coin->SetInputParam(paramname);
+  coin->SetOutputRoot(ofname);
   if(single_flag)coin->SetRoot(ifname);
   else coin-> SetRunList(runlistname);
   coin->makehist();
   coin->loop();
   coin->fit();
   coin->draw();
-  if(output_flag)coin->savecanvas(ofname);
+  if(output_flag)coin->savecanvas(ofname_pdf);
   delete coin;
 
   gSystem->Exit(1);
