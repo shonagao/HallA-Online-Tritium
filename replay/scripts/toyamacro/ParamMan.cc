@@ -148,13 +148,13 @@ void ParamMan::SetAParam( string &line, string &name, double *par, int &npar )
   if ( line.compare(0,name.size(),name) != 0 ) {
    return;
   }
-    cout<<line<<endl;
+    //cout<<line<<endl;
   istringstream sline(line);
   sline >> name;
   sline >> name;
   for ( int i=0; i<npar; i++ ) {
     sline >> par[i];
-    cout<<i<<" "<<par[i]<<endl;
+    //cout<<i<<" "<<par[i]<<endl;
   }
 }
 //____________________________________________________________________________________________

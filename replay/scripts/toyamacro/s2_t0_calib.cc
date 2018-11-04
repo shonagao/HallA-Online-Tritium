@@ -262,32 +262,14 @@ void s2_t0_calib::fit(){
   set->SetTH2(h_frame[2] , "TDiff peak pos each S2(F1TDC)","S2 paddle","TDiff peak[ns]" );
   set->SetTH2(h_frame[3] , "TDiff width each S2(F1TDC)"   ,"S2 paddle","TDiff width[ns]");
 
-  for(int i=0;i<16;i++){
-    ga_tdiffF1[i] = new TF1(Form("ga_tdiffF1%d",i+1),"gaus",-2,2);
-    set->SetTF1(ga_tdiffF1[i],2,1,1);
-    double min=-50,max=50;
-    min = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) -3.;
-    max = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) +3.;
-    set->FitGaus(h_s2s0_tof[i],min,max,1.5,5);
-    h_s2s0_tof[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
-    tdiffF1_pos[i]  = ga_tdiffF1[i]->GetParameter(1);
-    tdiffF1_wid[i]  = ga_tdiffF1[i]->GetParameter(2);
-    etdiffF1_pos[i] = ga_tdiffF1[i]->GetParError(1);
-    etdiffF1_wid[i] = ga_tdiffF1[i]->GetParError(2);;
-
-    tg_tdiffF1_pos ->SetPoint(i,i,tdiffF1_pos[i]); 
-    tg_tdiffF1_wid ->SetPoint(i,i,tdiffF1_wid[i]);
-    tg_tdiffF1_pos ->SetPointError(i,0,etdiffF1_pos[i]); 
-    tg_tdiffF1_wid ->SetPointError(i,0,etdiffF1_wid[i]);
-  }
   //for(int i=0;i<16;i++){
   //  ga_tdiffF1[i] = new TF1(Form("ga_tdiffF1%d",i+1),"gaus",-2,2);
   //  set->SetTF1(ga_tdiffF1[i],2,1,1);
   //  double min=-50,max=50;
-  //  min = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) -3.;
-  //  max = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) +3.;
-  //  set->FitGaus(h_s2s0_tdiff[i],min,max,1.5,5);
-  //  h_s2s0_tdiff[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
+  //  min = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) -3.;
+  //  max = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) +3.;
+  //  set->FitGaus(h_s2s0_tof[i],min,max,1.5,5);
+  //  h_s2s0_tof[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
   //  tdiffF1_pos[i]  = ga_tdiffF1[i]->GetParameter(1);
   //  tdiffF1_wid[i]  = ga_tdiffF1[i]->GetParameter(2);
   //  etdiffF1_pos[i] = ga_tdiffF1[i]->GetParError(1);
@@ -297,10 +279,28 @@ void s2_t0_calib::fit(){
   //  tg_tdiffF1_wid ->SetPoint(i,i,tdiffF1_wid[i]);
   //  tg_tdiffF1_pos ->SetPointError(i,0,etdiffF1_pos[i]); 
   //  tg_tdiffF1_wid ->SetPointError(i,0,etdiffF1_wid[i]);
-  //  
-  //  param->SetTimeTune(CID_F1S2,i,LR,0,tdiffF1_pos[i]);
-  //  param->SetTimeTune(CID_F1S2,i,LR,1,tdiffF1_pos[i]);
   //}
+  for(int i=0;i<16;i++){
+    ga_tdiffF1[i] = new TF1(Form("ga_tdiffF1%d",i+1),"gaus",-2,2);
+    set->SetTF1(ga_tdiffF1[i],2,1,1);
+    double min=-50,max=50;
+    min = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) -3.;
+    max = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) +3.;
+    set->FitGaus(h_s2s0_tdiff[i],min,max,1.5,5);
+    h_s2s0_tdiff[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
+    tdiffF1_pos[i]  = ga_tdiffF1[i]->GetParameter(1);
+    tdiffF1_wid[i]  = ga_tdiffF1[i]->GetParameter(2);
+    etdiffF1_pos[i] = ga_tdiffF1[i]->GetParError(1);
+    etdiffF1_wid[i] = ga_tdiffF1[i]->GetParError(2);;
+
+    tg_tdiffF1_pos ->SetPoint(i,i,tdiffF1_pos[i]); 
+    tg_tdiffF1_wid ->SetPoint(i,i,tdiffF1_wid[i]);
+    tg_tdiffF1_pos ->SetPointError(i,0,etdiffF1_pos[i]); 
+    tg_tdiffF1_wid ->SetPointError(i,0,etdiffF1_wid[i]);
+    
+    param->SetTimeTune(CID_F1S2,i,LR,0,tdiffF1_pos[i]);
+    param->SetTimeTune(CID_F1S2,i,LR,1,tdiffF1_pos[i]);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::draw(){
@@ -364,7 +364,7 @@ void s2_t0_calib::savecanvas(string ofname){
 }
 ////////////////////////////////////////////////////////////////////////////
 bool s2_t0_calib::anaL_oneevent(){
-  //convertF1TDCL(param);
+  convertF1TDCL(param);
 
   tr_n = (int)L_tr_n;
   //cout<<"tr_n" <<tr_n<<endl;
