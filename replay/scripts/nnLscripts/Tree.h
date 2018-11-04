@@ -43,6 +43,7 @@ public:
 ///////////////////
 //// Event Flag ////
   int L_T1, L_T2, L_T3, L_T4, L_T5, L_T6, L_T7, L_T8;
+  double L_evtype;
 
 //// S0 ////
   double L_s0_la[LS0], L_s0_la_c[LS0], L_s0_la_p[LS0];                 // Bottom ADC, decADC, ADC(ped-supp)
@@ -103,6 +104,7 @@ public:
 ///////////////////
 //// Event Flag ////
   int R_T1, R_T2, R_T3, R_T4, R_T5, R_T6, R_T7, R_T8;
+  double R_evtype;
 
 //// S0 ////
   double R_s0_la[RS0], R_s0_la_c[RS0], R_s0_la_p[RS0];                 // Bottom ADC, decADC, ADC(ped-supp)
@@ -170,12 +172,10 @@ public:
 
 //// Pre-shower ////
   double R_ps_a[RCR], R_ps_a_c[RCR], R_ps_a_p[RCR];                     // ADC, decADC, ADC(ped-supp)
-  double R_ps_t[RCR], R_ps_t_c[RCR];                                    // TDC, decTDC
   double R_ps_asum_p, R_ps_asum_c;                                      // sumADC(ped-supp), sum-decADC
 
 //// Shower ////
   double R_sh_a[RCR], R_sh_a_c[RCR], R_sh_a_p[RCR];                     // ADC, decADC, ADC(ped-supp)
-  double R_sh_t[RCR], R_sh_t_c[RCR];                                    // TDC, decTDC
   double R_sh_asum_p, R_sh_asum_c;                                      // sumADC(ped-supp), sum-decADC
 
 //// Tracking ////
