@@ -58,6 +58,10 @@ bool ana::GetEntry(int n){
 
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 void ana::Roop(){
+  time_t start, end;
+  start = time(NULL);
+  time(&start);
+
   ENum = tr->tree->GetEntries();
   if( GetMaxEvent()>0 && GetMaxEvent()<ENum) ENum = GetMaxEvent();
 
@@ -65,6 +69,7 @@ void ana::Roop(){
   bool L_FP = false; // LHRS FP plane cut
   bool R_Tr = false; // RHRS Tracking Chi2 cut
   bool R_FP = false; // RHRS FP plane cut
+  bool Kaon = false; // Kaon cut
 
   for(int n=0;n<ENum;n++){
     GetEntry(n);
@@ -77,9 +82,7 @@ void ana::Roop(){
 //////////////
     if(LHRS){
       int NLtr = (int)tr->L_tr_n;  if(NLtr>MAX) NLtr = MAX;
-      if(tr->L_T1>0){ h_L_trig->Fill(1); }
-      if(tr->L_T2>0){ h_L_trig->Fill(2); }
-      if(tr->L_T3>0){ h_L_trig->Fill(3); }
+      h_L_trig->Fill( tr->L_evtype);
 
 #ifdef F1TDC
       L_s0l_t = CalcF1TDC( tr->L_F1Fhit[27] - tr->L_F1Fhit[30], L_s0l_toff );
@@ -89,8 +92,8 @@ void ana::Roop(){
       } else{ L_s0_t = -99; }
 
       for(int i=0;i<16;i++){
-        L_s2l_t[i] = CalcF1TDC( tr->L_F1Fhit[i]    - tr->L_F1Fhit[30], L_s2l_toff[i] );
-        L_s2r_t[i] = CalcF1TDC( tr->L_F1Fhit[i+48] - tr->L_F1Fhit[40], L_s2r_toff[i] );
+        L_s2l_t[i] = CalcF1TDC( tr->L_F1Fhit[i]    - tr->L_F1Fhit[30] , L_s2l_toff[i] );
+        L_s2r_t[i] = CalcF1TDC( tr->L_F1Fhit[i+48] - tr->L_F1Fhit[37], L_s2r_toff[i] );
         if( tr->L_F1Fhit[i]>0 && tr->L_F1Fhit[i+48]>0 ){
           L_s2_t[i] = (L_s2l_t[i] + L_s2r_t[i]) / 2.;
         } else{ L_s2_t[i] = -9999; }
@@ -129,7 +132,7 @@ void ana::Roop(){
           beta = path / ( L_s2_t[s2pad] - L_s0_t ) / c;
           m2 = ( 1./beta/beta - 1. ) * p * p;
         }
-        double betae = p / sqrt(Me*Me + p*p);
+//        double betae = p / sqrt(Me*Me + p*p);
 
         h_L_tr_ch2   ->Fill( tr->L_tr_chi2[t] );
       
@@ -166,8 +169,8 @@ void ana::Roop(){
           h_L_s2_dedx_pad->Fill( s2pad, tr->L_s2_dedx[s2pad] );
           h_L_s2_beta_pad->Fill( s2pad, beta );
 
-          double rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[40]) * TDCtoT;
-          double tgt = (rftime - L_s2_t[s2pad]) -  tr->L_tr_pathl[t]/betae/c;
+          double rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[37]) * TDCtoT;
+          double tgt = (L_s2_t[s2pad] - rftime);// -  (tr->L_tr_pathl[t] + tr->L_s2_trpath[t])/betae/c;
           h_L_tgt      ->Fill( tgt );
           h_L_s2pad_tgt->Fill( tgt, s2pad );
           h_L_p_tgt    ->Fill( tgt, p );
@@ -186,23 +189,21 @@ void ana::Roop(){
 //////////////
     if(RHRS){
       int NRtr = (int)tr->R_tr_n;  if(NRtr>MAX) NRtr = MAX;
-      if(tr->R_T4>0){ h_R_trig->Fill(4); }
-      if(tr->R_T5>0){ h_R_trig->Fill(5); }
-      if(tr->R_T6>0){ h_R_trig->Fill(6); }
+      h_R_trig->Fill( tr->R_evtype);
 
 #ifdef F1TDC
-      R_s0l_t = CalcF1TDC( tr->R_F1Fhit[27] - tr->R_F1Fhit[30], R_s0l_toff );
-      R_s0r_t = CalcF1TDC( tr->R_F1Fhit[28] - tr->R_F1Fhit[30], R_s0r_toff );
+      R_s0l_t = CalcF1TDC( tr->R_F1Fhit[27] - tr->R_F1Fhit[9], R_s0l_toff );
+      R_s0r_t = CalcF1TDC( tr->R_F1Fhit[28] - tr->R_F1Fhit[9], R_s0r_toff );
       if( tr->R_F1Fhit[27]>0 && tr->R_F1Fhit[28]>0 ){
         R_s0_t = (R_s0l_t + R_s0r_t) / 2.;
-      } else{ R_s0_t = -99; }
+      } else{ R_s0_t = 99; }
 
       for(int i=0;i<16;i++){
-        R_s2l_t[i] = CalcF1TDC( tr->R_F1Fhit[i]    - tr->R_F1Fhit[30], R_s2l_toff[i] );
-        R_s2r_t[i] = CalcF1TDC( tr->R_F1Fhit[i+48] - tr->R_F1Fhit[40], R_s2r_toff[i] );
-        if( tr->R_F1Fhit[i]>0 && tr->R_F1Fhit[i+48]>0 ){
+        R_s2l_t[i] = CalcF1TDC( tr->R_F1Fhit[i+16] - tr->R_F1Fhit[9] , R_s2l_toff[i] );
+        R_s2r_t[i] = CalcF1TDC( tr->R_F1Fhit[i+48] - tr->R_F1Fhit[46], R_s2r_toff[i] );
+        if( tr->R_F1Fhit[i+16]>0 && tr->R_F1Fhit[i+48]>0 ){
           R_s2_t[i] = (R_s2l_t[i] + R_s2r_t[i]) / 2.;
-        } else{ R_s2_t[i] = -9999; }
+        } else{ R_s2_t[i] = 9999; }
       }
 #endif
 #ifdef FADC
@@ -239,7 +240,7 @@ void ana::Roop(){
           beta = path / ( R_s2_t[s2pad] - R_s0_t ) / c;
           m2 = ( 1./beta/beta - 1. ) * p * p;
         } 
-        double betaK = p / sqrt(MK*MK + p*p);
+//        double betaK = p / sqrt(MK*MK + p*p);
 
         h_R_tr_ch2   ->Fill( tr->R_tr_chi2[t] );
       
@@ -286,7 +287,7 @@ void ana::Roop(){
           h_R_a2_sum_m2 ->Fill(              m2, tr->R_a2_asum_c );
 
           double rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9]) * TDCtoT;
-          double tgt = (rftime - R_s2_t[s2pad]) -  tr->R_tr_pathl[t]/betaK/c;
+          double tgt = (R_s2_t[s2pad] - rftime);// - (tr->R_tr_pathl[t] + tr->R_s2_trpath[t])/betaK/c;
           h_R_tgt      ->Fill( tgt );
           h_R_s2pad_tgt->Fill( tgt, s2pad );
           h_R_p_tgt    ->Fill( tgt, p );
@@ -303,7 +304,7 @@ void ana::Roop(){
 /////////////////////
 //// Coincidence ////
 /////////////////////
-    if(LHRS && RHRS){
+    if(LHRS && RHRS && tr->R_evtype==5){
       int NLtr = (int)tr->L_tr_n;  if(NLtr>MAX) NLtr = MAX;
       int NRtr = (int)tr->R_tr_n;  if(NRtr>MAX) NRtr = MAX;
       
@@ -316,10 +317,13 @@ void ana::Roop(){
 
         for(int rt=0;rt<NRtr;rt++){
           R_Tr = R_FP = false;
+          Kaon = false;
           if( tr->R_tr_chi2[rt]<0.01 ) R_Tr = true;
           if( tr->R_tr_th[rt]<0.17*tr->R_tr_x[rt]+0.025
            && tr->R_tr_th[rt]>0.17*tr->R_tr_x[rt]-0.035
            && tr->R_tr_th[rt]<0.40*tr->R_tr_x[rt]+0.130 ) R_FP = true;
+//          if( tr->R_a1_asum_c<150 && tr->R_a2_asum_c>1400 ) Kaon = true;
+          Kaon = true;
         
           if( L_Tr && L_FP && R_Tr && R_FP ){
 
@@ -333,16 +337,17 @@ void ana::Roop(){
             double R_E     = sqrt( MK*MK + R_p*R_p );
             double R_betaK = R_p / sqrt(MK*MK + R_p*R_p);
 
-            double L_rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[40]) * TDCtoT;
-            double R_rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9] ) * TDCtoT;
-            double L_tgt    = (L_rftime - L_s2_t[L_s2pad]) - tr->L_tr_pathl[lt]/L_betae/c;
-            double R_tgt    = (R_rftime - R_s2_t[R_s2pad]) - tr->R_tr_pathl[rt]/R_betaK/c;
+//            double L_rftime = (tr->L_F1Fhit[47] - tr->L_F1Fhit[37]) * TDCtoT;
+//            double R_rftime = (tr->R_F1Fhit[15] - tr->R_F1Fhit[9] ) * TDCtoT;
+            double L_tgt = L_s2_t[L_s2pad] - (tr->L_tr_pathl[lt] + tr->L_s2_trpath[lt])/L_betae/c;
+            double R_tgt = R_s2_t[R_s2pad] - (tr->R_tr_pathl[rt] + tr->R_s2_trpath[rt])/R_betaK/c;
             double ct = L_tgt - R_tgt;
-            h_ct->Fill( ct );
-            h_Ls2x_ct ->Fill( tr->L_s2_trx[lt], ct );
-            h_Rs2x_ct ->Fill( tr->R_s2_trx[rt], ct );
-            h_a1sum_ct->Fill( tr->R_a1_asum_c, ct );
-            h_a2sum_ct->Fill( tr->R_a2_asum_c, ct );
+            h_ct   ->Fill( ct );
+            if( Kaon ) h_ct_wK->Fill( ct );
+            h_Ls2x_ct ->Fill( ct, tr->L_s2_trx[lt] );
+            h_Rs2x_ct ->Fill( ct, tr->R_s2_trx[rt] );
+            h_a1sum_ct->Fill( ct, tr->R_a1_asum_c );
+            h_a2sum_ct->Fill( ct, tr->R_a2_asum_c );
 
             TVector3 L_v, R_v, B_v;
             double Ee = 4.3185;
@@ -354,47 +359,70 @@ void ana::Roop(){
             double mass = sqrt( (Ee + Mp - L_E - R_E)*(Ee + Mp - L_E - R_E)
                               - (B_v - L_v - R_v)*(B_v - L_v - R_v) );
             double mm = mass - ML;
+            mm -= (-0.2390 * tr->L_tr_ph[lt]) + 0.0325474;
+            mm -= ( 0.0371 * tr->R_tr_y[rt]);
+            mm -= ( 0.0261 * tr->L_tr_p[lt] - 0.0567315);
 
-            h_mmall ->Fill( mm );
-            if( fabs( tr->L_tr_vz[lt] + 0.115 ) < 0.015 || fabs( tr->L_tr_vz[lt] - 0.135 ) < 0.015 ){ 
-              h_mmfoil->Fill( mm );
+            if( Kaon && (fabs(ct-30.)<10. || fabs(ct+30.)<10.) ){
+              h_mmallbg->Fill( mm );
+              if( fabs( tr->L_tr_vz[lt] + 0.115 ) < 0.015 || fabs( tr->L_tr_vz[lt] - 0.135 ) < 0.015 ){ 
+                h_mmfoilbg->Fill( mm );
+              }
+              if( fabs( tr->L_tr_vz[lt] - 0.01 ) < 0.1 ){ 
+                h_mmbg->Fill( mm );
+              }
             }
-            if( fabs( tr->L_tr_vz[lt] - 0.01 ) < 0.1 ){ 
-              h_mm      ->Fill( mm );
-              h_Lp_mm   ->Fill( mm, tr->L_tr_p[lt] );
-              h_Ll_mm   ->Fill( mm, tr->L_tr_pathl[lt] );
-              h_Ltgy_mm ->Fill( mm, tr->L_tr_tg_y[lt] );
-              h_Ltgth_mm->Fill( mm, tr->L_tr_tg_th[lt] );
-              h_Ltgph_mm->Fill( mm, tr->L_tr_tg_ph[lt] );
-              h_Lvx_mm  ->Fill( mm, tr->L_tr_vx[lt] );
-              h_Lvy_mm  ->Fill( mm, tr->L_tr_vy[lt] );
-              h_Lvz_mm  ->Fill( mm, tr->L_tr_vz[lt] );
-              h_Lx_mm   ->Fill( mm, tr->L_tr_x[lt] );
-              h_Ly_mm   ->Fill( mm, tr->L_tr_y[lt] );
-              h_Lth_mm  ->Fill( mm, tr->L_tr_th[lt] );
-              h_Lph_mm  ->Fill( mm, tr->L_tr_ph[lt] );
-            }
-            if( fabs( tr->R_tr_vz[rt] - 0.01 ) < 0.1 ){ 
-              h_Rp_mm   ->Fill( mm, tr->R_tr_p[rt] );
-              h_Rl_mm   ->Fill( mm, tr->R_tr_pathl[rt] );
-              h_Rtgy_mm ->Fill( mm, tr->R_tr_tg_y[rt] );
-              h_Rtgth_mm->Fill( mm, tr->R_tr_tg_th[rt] );
-              h_Rtgph_mm->Fill( mm, tr->R_tr_tg_ph[rt] );
-              h_Rvx_mm  ->Fill( mm, tr->R_tr_vx[rt] );
-              h_Rvy_mm  ->Fill( mm, tr->R_tr_vy[rt] );
-              h_Rvz_mm  ->Fill( mm, tr->R_tr_vz[rt] );
-              h_Rx_mm   ->Fill( mm, tr->R_tr_x[rt] );
-              h_Ry_mm   ->Fill( mm, tr->R_tr_y[rt] );
-              h_Rth_mm  ->Fill( mm, tr->R_tr_th[rt] );
-              h_Rph_mm  ->Fill( mm, tr->R_tr_ph[rt] );
-            }
+
+            if( Kaon && fabs(ct-0.4)<1.){
+              h_mmall ->Fill( mm );
+              if( fabs( tr->L_tr_vz[lt] + 0.115 ) < 0.015 || fabs( tr->L_tr_vz[lt] - 0.135 ) < 0.015 ){ 
+                h_mmfoil->Fill( mm );
+              }
+              if( fabs( tr->L_tr_vz[lt] - 0.01 ) < 0.1 ){ 
+                h_mm      ->Fill( mm );
+                h_Lp_mm   ->Fill( mm, tr->L_tr_p[lt] );
+                h_Ll_mm   ->Fill( mm, tr->L_tr_pathl[lt] );
+                h_Ltgy_mm ->Fill( mm, tr->L_tr_tg_y[lt] );
+                h_Ltgth_mm->Fill( mm, tr->L_tr_tg_th[lt] );
+                h_Ltgph_mm->Fill( mm, tr->L_tr_tg_ph[lt] );
+                h_Lvx_mm  ->Fill( mm, tr->L_tr_vx[lt] );
+                h_Lvy_mm  ->Fill( mm, tr->L_tr_vy[lt] );
+                h_Lvz_mm  ->Fill( mm, tr->L_tr_vz[lt] );
+                h_Lx_mm   ->Fill( mm, tr->L_tr_x[lt] );
+                h_Ly_mm   ->Fill( mm, tr->L_tr_y[lt] );
+                h_Lth_mm  ->Fill( mm, tr->L_tr_th[lt] );
+                h_Lph_mm  ->Fill( mm, tr->L_tr_ph[lt] );
+              }
+              if( fabs( tr->R_tr_vz[rt] - 0.01 ) < 0.1 ){ 
+                h_Rp_mm   ->Fill( mm, tr->R_tr_p[rt] );
+                h_Rl_mm   ->Fill( mm, tr->R_tr_pathl[rt] );
+                h_Rtgy_mm ->Fill( mm, tr->R_tr_tg_y[rt] );
+                h_Rtgth_mm->Fill( mm, tr->R_tr_tg_th[rt] );
+                h_Rtgph_mm->Fill( mm, tr->R_tr_tg_ph[rt] );
+                h_Rvx_mm  ->Fill( mm, tr->R_tr_vx[rt] );
+                h_Rvy_mm  ->Fill( mm, tr->R_tr_vy[rt] );
+                h_Rvz_mm  ->Fill( mm, tr->R_tr_vz[rt] );
+                h_Rx_mm   ->Fill( mm, tr->R_tr_x[rt] );
+                h_Ry_mm   ->Fill( mm, tr->R_tr_y[rt] );
+                h_Rth_mm  ->Fill( mm, tr->R_tr_th[rt] );
+                h_Rph_mm  ->Fill( mm, tr->R_tr_ph[rt] );
+              }
+            } // if Kaon
 
           } // if L_Tr && L_FP && R_Tr && R_FP
         } // for NRtr
       } // for NLtr
     } // if LHRS && RHRS
 
-    if(n % 10000 == 0){ cout<<n<<" / "<<ENum<<endl; }
+    if(n%100000==0){
+      end = time(NULL);
+      time(&end);
+      double diff = difftime(end,start);
+      double esttime = diff * ENum / (n+1) - diff;
+      cout<<n<<" / "<<ENum<<" : "<<Form("%.0lf sec passed,  %.0lf sec left",diff,esttime)<<endl;
+    }
+
+//    if(n % 100000 == 0){ cout<<n<<" / "<<ENum<<endl; }
   } // for ENum
 
   delete tr;
@@ -549,10 +577,10 @@ void ana::Draw(){
     c11->cd(1)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_R_a1_sum   ->Draw();
     c11->cd(2)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a1_sum_x ->Draw("colz");
     c11->cd(3)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a1_sum_p ->Draw("colz");
-    c11->cd(4)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_R_a1_sum_m2->Draw("colz");
-    c11->cd(5)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a2_sum   ->Draw();
+    c11->cd(4)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a1_sum_m2->Draw("colz");
+    c11->cd(5)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_R_a2_sum   ->Draw();
     c11->cd(6)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a2_sum_x ->Draw("colz");
-    c11->cd(7)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_R_a2_sum_p ->Draw("colz");
+    c11->cd(7)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a2_sum_p ->Draw("colz");
     c11->cd(8)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_R_a2_sum_m2->Draw("colz");
     
     TCanvas *c12 = new TCanvas("c12","RHRS Time at Target",1000,800);
@@ -586,16 +614,20 @@ void ana::Draw(){
     TCanvas *c13 = new TCanvas("c13","Cointime",1000,800);
     c13->Divide(3,2,1E-5,1E-5);
     c13->cd(1)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_ct      ->Draw();
+                                                                 h_ct_wK   ->Draw("same");
     c13->cd(2)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_Ls2x_ct ->Draw("colz");
     c13->cd(3)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_Rs2x_ct ->Draw("colz");
     c13->cd(4)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_a1sum_ct->Draw("colz");
     c13->cd(5)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogz(); h_a2sum_ct->Draw("colz");
   
     TCanvas *c14 = new TCanvas("c14","Missing Mass 1",1000,800);
-    c14->Divide(3,1,1E-5,1E-5);
-    c14->cd(1)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_mmall   ->Draw();
-    c14->cd(2)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_mmfoil  ->Draw();
-    c14->cd(3)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(); h_mm      ->Draw();
+    c14->Divide(1,3,1E-5,1E-5);
+    c14->cd(1)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(0); h_mmall   ->Draw();
+                                       h_mmallbg->Scale(1./20.);  h_mmallbg ->Draw("same");
+    c14->cd(2)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(0); h_mmfoil  ->Draw();
+                                      h_mmfoilbg->Scale(1./20.);  h_mmfoilbg->Draw("same");
+    c14->cd(3)->SetMargin(0.15,0.15,0.15,0.10); gPad->SetLogy(0); h_mm      ->Draw();
+                                          h_mmbg->Scale(1./20.);  h_mmbg ->Draw("same");
   
     TCanvas *c15 = new TCanvas("c15","Missing Mass ",1000,800);
     c15->Divide(4,3,1E-5,1E-5);
@@ -666,23 +698,23 @@ void ana::MakeHist(){
   h_L_trig = new TH1D("h_L_trig","h_L_trig",10,0,10);
   set->SetTH1(h_L_trig,"Trigger Flag","Trig No.","Counts");
 
-  h_L_tr_n      = new TH1D("h_L_tr_n"     ,"h_L_tr_n"     ,30 ,    0,  30);
-  h_L_tr_ch2    = new TH1D("h_L_tr_ch2"   ,"h_L_tr_ch2"   ,400,    0,0.05);
-  h_L_p         = new TH1D("h_L_p"        ,"h_L_p"        ,400,    1,   3);
-  h_L_pathl     = new TH1D("h_L_pathl"    ,"h_L_pathl"    ,400,   20,  30);
-  h_L_px        = new TH1D("h_L_px"       ,"h_L_px"       ,400,    0,   2);
-  h_L_py        = new TH1D("h_L_py"       ,"h_L_px"       ,400,   -1,   1);
-  h_L_pz        = new TH1D("h_L_pz"       ,"h_L_px"       ,400,    1,   3);
-  h_L_tgy       = new TH1D("h_L_tgy"      ,"h_L_tgy"      ,400, -0.5, 0.5);
-  h_L_tgth      = new TH1D("h_L_tgth"     ,"h_L_tgth"     ,400, -0.2, 0.2);
-  h_L_tgph      = new TH1D("h_L_tgph"     ,"h_L_tgph"     ,400, -0.2, 0.2);
-  h_L_vx        = new TH1D("h_L_vx"       ,"h_L_vx"       ,400,-0.01,0.01);
-  h_L_vy        = new TH1D("h_L_vy"       ,"h_L_vy"       ,400,-0.01,0.01);
-  h_L_vz        = new TH1D("h_L_vz"       ,"h_L_vz"       ,400, -0.5, 0.5);
-  h_L_y_x       = new TH2D("h_L_y_x"      ,"h_L_y_x"      ,200,   -1,  1 ,200,-0.2,0.2);
-  h_L_th_x      = new TH2D("h_L_th_x"     ,"h_L_th_x"     ,200,   -1,  1 ,200,-0.3,0.3);
-  h_L_ph_y      = new TH2D("h_L_ph_y"     ,"h_L_ph_y"     ,200, -0.2, 0.2,200,-0.2,0.2);
-  h_L_tgph_tgth = new TH2D("h_L_tgph_tgth","h_L_tgph_tgth",200, -0.2, 0.2,200,-0.2,0.2);
+  h_L_tr_n      = new TH1D("h_L_tr_n"     ,"h_L_tr_n"     ,15 ,    0,  15);
+  h_L_tr_ch2    = new TH1D("h_L_tr_ch2"   ,"h_L_tr_ch2"   ,400,    0,0.03);
+  h_L_p         = new TH1D("h_L_p"        ,"h_L_p"        ,400,  1.9, 2.3);
+  h_L_pathl     = new TH1D("h_L_pathl"    ,"h_L_pathl"    ,400, 25.2,26.3);
+  h_L_px        = new TH1D("h_L_px"       ,"h_L_px"       ,400, 0.35, 0.6);
+  h_L_py        = new TH1D("h_L_py"       ,"h_L_py"       ,400, -0.2, 0.2);
+  h_L_pz        = new TH1D("h_L_pz"       ,"h_L_pz"       ,400, 1.85,2.25);
+  h_L_tgy       = new TH1D("h_L_tgy"      ,"h_L_tgy"      ,400,-0.06,0.06);
+  h_L_tgth      = new TH1D("h_L_tgth"     ,"h_L_tgth"     ,400, -0.1, 0.1);
+  h_L_tgph      = new TH1D("h_L_tgph"     ,"h_L_tgph"     ,400,-0.06,0.06);
+  h_L_vx        = new TH1D("h_L_vx"       ,"h_L_vx"       ,400,-0.005,0.002);
+  h_L_vy        = new TH1D("h_L_vy"       ,"h_L_vy"       ,400,-0.004,0.003);
+  h_L_vz        = new TH1D("h_L_vz"       ,"h_L_vz"       ,400,-0.25,0.25);
+  h_L_y_x       = new TH2D("h_L_y_x"      ,"h_L_y_x"      ,200,   -1,  1 ,200,-0.1,0.1);
+  h_L_th_x      = new TH2D("h_L_th_x"     ,"h_L_th_x"     ,200,   -1,  1 ,200,-0.2,0.2);
+  h_L_ph_y      = new TH2D("h_L_ph_y"     ,"h_L_ph_y"     ,200, -0.1, 0.1,200,-0.1,0.1);
+  h_L_tgph_tgth = new TH2D("h_L_tgph_tgth","h_L_tgph_tgth",200, -0.1, 0.1,200,-0.06,0.06);
   set->SetTH1(h_L_tr_n     ,"No. of Tracks"           ,"No. of Tracks"   ,"Counts");
   set->SetTH1(h_L_tr_ch2   ,"Tracking #chi^{2}"       ,"#chi^{2}"        ,"Counts");
   set->SetTH1(h_L_p        ,"Track Momentum"          ,"p (GeV/#it{c})"  ,"Counts");
@@ -703,19 +735,19 @@ void ana::MakeHist(){
 
   h_L_beta        = new TH1D("h_L_beta"       ,"h_L_beta"       ,400,   0,  2); 
   h_L_m2          = new TH1D("h_L_m2"         ,"h_L_m2"         ,400,-0.5,2.5); 
-  h_L_beta_p      = new TH2D("h_L_beta_p"     ,"h_L_beta_p"     ,200,   1,  3,200,   0,  2); 
-  h_L_beta_m2     = new TH2D("h_L_beta_m2"    ,"h_L_beta_m2"    ,200,   1,  3,200,-0.5,2.5); 
-  h_L_dedx_p      = new TH2D("h_L_dedx_p"     ,"h_L_dedx_p"     ,200,   0, 10,200,   0,  2); 
-  h_L_dedx_m2     = new TH2D("h_L_dedx_m2"    ,"h_L_dedx_m2"    ,200,   0, 10,200,-0.5,2.5); 
+  h_L_beta_p      = new TH2D("h_L_beta_p"     ,"h_L_beta_p"     ,200, 1.9,2.3,200,   0,  2); 
+  h_L_beta_m2     = new TH2D("h_L_beta_m2"    ,"h_L_beta_m2"    ,200,-0.5,  2,200,   0,  2); 
+  h_L_dedx_p      = new TH2D("h_L_dedx_p"     ,"h_L_dedx_p"     ,200, 1.9,2.3,200,   0, 10); 
+  h_L_dedx_m2     = new TH2D("h_L_dedx_m2"    ,"h_L_dedx_m2"    ,200,-0.5,  2,200,   0, 10); 
   h_L_s0_dedx     = new TH1D("h_L_s0_dedx"    ,"h_L_s0_dedx"    ,400,   0, 10); 
-  h_L_s0_beta_x   = new TH2D("h_L_s0_beta_x"  ,"h_L_s0_beta_x"  ,200,  -1,  1,200,   0, 22); 
+  h_L_s0_beta_x   = new TH2D("h_L_s0_beta_x"  ,"h_L_s0_beta_x"  ,200,  -1,  1,200,   0,  2); 
   h_L_s0_dedx_x   = new TH2D("h_L_s0_dedx_x"  ,"h_L_s0_dedx_x"  ,200,  -1,  1,200,   0, 10); 
-  h_L_s2_pad      = new TH1D("h_L_s2_pad"     ,"h_L_s2_pad"     , 16,   0, 16); 
+  h_L_s2_pad      = new TH1D("h_L_s2_pad"     ,"h_L_s2_pad"     , 18,  -1, 17); 
   h_L_s2_dedx     = new TH1D("h_L_s2_dedx"    ,"h_L_s2_dedx"    ,400,   0, 10); 
   h_L_s2_beta_x   = new TH2D("h_L_s2_beta_x"  ,"h_L_s2_beta_x"  ,200,  -1,  1,200,   0,  2); 
-  h_L_s2_dedx_x   = new TH2D("h_L_s2_dedx_x"  ,"h_L_s2_dedx_x"  ,200,  -1,  1,200,   0,10 ); 
-  h_L_s2_beta_pad = new TH2D("h_L_s2_beta_pad","h_L_s2_beta_pad", 16,  0, 16,200,    0,10 ); 
-  h_L_s2_dedx_pad = new TH2D("h_L_s2_dedx_pad","h_L_s2_dedx_pad", 16,  0, 16,200,    0, 2 ); 
+  h_L_s2_dedx_x   = new TH2D("h_L_s2_dedx_x"  ,"h_L_s2_dedx_x"  ,200,  -1,  1,200,   0, 10); 
+  h_L_s2_beta_pad = new TH2D("h_L_s2_beta_pad","h_L_s2_beta_pad", 16,  0, 16,200,    0,  2); 
+  h_L_s2_dedx_pad = new TH2D("h_L_s2_dedx_pad","h_L_s2_dedx_pad", 16,  0, 16,200,    0, 10); 
   set->SetTH1(h_L_beta       ,"Track beta"                    ,"#beta"                ,"Counts");
   set->SetTH1(h_L_m2         ,"Mass Square"                   ,"M^{2} (GeV^{2}/c^{4})","Counts");
   set->SetTH2(h_L_beta_p     ,"#beta v.s Momentum"            ,"p (GeV/c)"            ,"#beta",0.0);
@@ -732,15 +764,15 @@ void ana::MakeHist(){
   set->SetTH2(h_L_s2_beta_pad,"#beta v.s Paddle (S2)"         ,"Paddle No."           ,"#beta");
   set->SetTH2(h_L_s2_dedx_pad,"Energy Deposit (S2) v.s Paddle","Paddle No."           ,"dE/dx ()");
 
-  h_L_tgt       = new TH1D("h_L_tgt"      ,"h_L_tgt"       ,400,0,1000);
-  h_L_s2pad_tgt = new TH2D("h_L_s2pad_tgt","h_L_s2pad_tgt" ,200,0,1000, 16,   0, 16);
-  h_L_p_tgt     = new TH2D("h_L_p_tgt"    ,"h_L_p_tgt"     ,200,0,1000,200,   1,  3);
-  h_L_pathl_tgt = new TH2D("h_L_pathl_tgt","h_L_pathl_tgt" ,200,0,1000,200,  20, 30);
-  h_L_tgy_tgt   = new TH2D("h_L_tgy_tgt"  ,"h_L_tgy_tgt"   ,200,0,1000,200,-0.5,0.5);
-  h_L_tgth_tgt  = new TH2D("h_L_tgth_tgt" ,"h_L_tgth_tgt"  ,200,0,1000,200,-0.2,0.2);
-  h_L_tgph_tgt  = new TH2D("h_L_tgph_tgt" ,"h_L_tgph_tgt"  ,200,0,1000,200,-0.2,0.2);
-  h_L_x_tgt     = new TH2D("h_L_x_tgt"    ,"h_L_x_tgt"     ,200,0,1000,200,  -1,  1);
-  h_L_y_tgt     = new TH2D("h_L_y_tgt"    ,"h_L_y_tgt"     ,200,0,1000,200,-0.2,0.2);
+  h_L_tgt       = new TH1D("h_L_tgt"      ,"h_L_tgt"       ,40000,-2000,2000);
+  h_L_s2pad_tgt = new TH2D("h_L_s2pad_tgt","h_L_s2pad_tgt" ,200,-1000,1000, 16,    0,  16);
+  h_L_p_tgt     = new TH2D("h_L_p_tgt"    ,"h_L_p_tgt"     ,200,-1000,1000,200,  1.9, 2.3);
+  h_L_pathl_tgt = new TH2D("h_L_pathl_tgt","h_L_pathl_tgt" ,200,-1000,1000,200, 25.2,26.3);
+  h_L_tgy_tgt   = new TH2D("h_L_tgy_tgt"  ,"h_L_tgy_tgt"   ,200,-1000,1000,200,-0.06,0.06);
+  h_L_tgth_tgt  = new TH2D("h_L_tgth_tgt" ,"h_L_tgth_tgt"  ,200,-1000,1000,200, -0.1, 0.1);
+  h_L_tgph_tgt  = new TH2D("h_L_tgph_tgt" ,"h_L_tgph_tgt"  ,200,-1000,1000,200,-0.06,0.06);
+  h_L_x_tgt     = new TH2D("h_L_x_tgt"    ,"h_L_x_tgt"     ,200,-1000,1000,200,   -1,   1);
+  h_L_y_tgt     = new TH2D("h_L_y_tgt"    ,"h_L_y_tgt"     ,200,-1000,1000,200, -0.1, 0.1);
   set->SetTH1(h_L_tgt      ,"Time at Target (S2-RF)","Time (ns)"         ,"Counts");
   set->SetTH2(h_L_s2pad_tgt,"S2 Paddle v.s Time at Target (S2-RF)"       ,"Time (ns)","Paddle No.");
   set->SetTH2(h_L_p_tgt    ,"Momentum v.s Time at Target (S2-RF)"        ,"Time (ns)","Momentum (GeV/c)");
@@ -757,23 +789,23 @@ void ana::MakeHist(){
   h_R_trig = new TH1D("h_R_trig","h_R_trig",10,0,10);
   set->SetTH1(h_R_trig,"Trigger Flag","Trig No.","Counts");
 
-  h_R_tr_n      = new TH1D("h_R_tr_n"     ,"h_R_tr_n"     , 30,    0,  30); 
-  h_R_tr_ch2    = new TH1D("h_R_tr_ch2"   ,"h_R_tr_ch2"   ,400,    0,0.05); 
-  h_R_p         = new TH1D("h_R_p"        ,"h_R_p"        ,400,    1,   3); 
-  h_R_pathl     = new TH1D("h_R_pathl"    ,"h_R_pathl"    ,400,   20,  30); 
-  h_R_px        = new TH1D("h_R_px"       ,"h_R_px"       ,400,    0,   2); 
-  h_R_py        = new TH1D("h_R_py"       ,"h_R_px"       ,400,   -1,   1); 
-  h_R_pz        = new TH1D("h_R_pz"       ,"h_R_px"       ,400,    1,   3); 
-  h_R_tgy       = new TH1D("h_R_tgy"      ,"h_R_tgy"      ,400, -0.5, 0.5); 
-  h_R_tgth      = new TH1D("h_R_tgth"     ,"h_R_tgth"     ,400, -0.2, 0.2); 
-  h_R_tgph      = new TH1D("h_R_tgph"     ,"h_R_tgph"     ,400, -0.2, 0.2); 
-  h_R_vx        = new TH1D("h_R_vx"       ,"h_R_vx"       ,400,-0.01,0.01); 
-  h_R_vy        = new TH1D("h_R_vy"       ,"h_R_vy"       ,400,-0.01,0.01); 
-  h_R_vz        = new TH1D("h_R_vz"       ,"h_R_vz"       ,400, 0.5, 0.5); 
-  h_R_y_x       = new TH2D("h_R_y_x"      ,"h_R_y_x"      ,200,   -1,  1,200,-0.2,0.2);
-  h_R_th_x      = new TH2D("h_R_th_x"     ,"h_R_th_x"     ,200,   -1,  1,200,-0.3,0.3);
-  h_R_ph_y      = new TH2D("h_R_ph_y"     ,"h_R_ph_y"     ,200,-0.2 ,0.2,200,-0.2,0.2);
-  h_R_tgph_tgth = new TH2D("h_R_tgph_tgth","h_R_tgph_tgth",200, -0.2, 0.2,200,-0.2,0.2);
+  h_R_tr_n      = new TH1D("h_R_tr_n"     ,"h_R_tr_n"     ,15 ,    0,  15);
+  h_R_tr_ch2    = new TH1D("h_R_tr_ch2"   ,"h_R_tr_ch2"   ,400,    0,0.03);
+  h_R_p         = new TH1D("h_R_p"        ,"h_R_p"        ,400,  1.7,1.95);
+  h_R_pathl     = new TH1D("h_R_pathl"    ,"h_R_pathl"    ,400, 25.2,26.3);
+  h_R_px        = new TH1D("h_R_px"       ,"h_R_px"       ,400, -0.5,-0.3);
+  h_R_py        = new TH1D("h_R_py"       ,"h_R_py"       ,400, -0.2, 0.2);
+  h_R_pz        = new TH1D("h_R_pz"       ,"h_R_pz"       ,400,  1.6,1.95);
+  h_R_tgy       = new TH1D("h_R_tgy"      ,"h_R_tgy"      ,400,-0.06,0.06);
+  h_R_tgth      = new TH1D("h_R_tgth"     ,"h_R_tgth"     ,400, -0.1, 0.1);
+  h_R_tgph      = new TH1D("h_R_tgph"     ,"h_R_tgph"     ,400,-0.06,0.06);
+  h_R_vx        = new TH1D("h_R_vx"       ,"h_R_vx"       ,400,-0.005,0.002);
+  h_R_vy        = new TH1D("h_R_vy"       ,"h_R_vy"       ,400,-0.004,0.003);
+  h_R_vz        = new TH1D("h_R_vz"       ,"h_R_vz"       ,400,-0.25,0.25);
+  h_R_y_x       = new TH2D("h_R_y_x"      ,"h_R_y_x"      ,200,   -1,  1 ,200,-0.1,0.1);
+  h_R_th_x      = new TH2D("h_R_th_x"     ,"h_R_th_x"     ,200,   -1,  1 ,200,-0.2,0.2);
+  h_R_ph_y      = new TH2D("h_R_ph_y"     ,"h_R_ph_y"     ,200, -0.1, 0.1,200,-0.1,0.1);
+  h_R_tgph_tgth = new TH2D("h_R_tgph_tgth","h_R_tgph_tgth",200, -0.1, 0.1,200,-0.06,0.06);
   set->SetTH1(h_R_tr_n  ,"No. of Tracks"           ,"No. of Tracks"   ,"Counts");
   set->SetTH1(h_R_tr_ch2,"Tracking #chi^{2}"       ,"#chi^{2}"        ,"Counts");
   set->SetTH1(h_R_p     ,"Track Momentum"          ,"p (GeV/#it{c})"  ,"Counts");
@@ -794,27 +826,27 @@ void ana::MakeHist(){
 
   h_R_beta      = new TH1D("h_R_beta"     ,"h_R_beta"     ,400,   0,  2); 
   h_R_m2        = new TH1D("h_R_m2"       ,"h_R_m2"       ,400,-0.5,2.5); 
-  h_R_beta_p    = new TH2D("h_R_beta_p"   ,"h_R_beta_p"   ,200,   1,   3,200,   0,   2); 
-  h_R_beta_m2   = new TH2D("h_R_beta_m2"  ,"h_R_beta_m2"  ,200,   1,   3,200,-0.5, 2.5); 
-  h_R_dedx_p    = new TH2D("h_R_dedx_p"   ,"h_R_dedx_p"   ,200,   0,  10,200,   0,   2); 
-  h_R_dedx_m2   = new TH2D("h_R_dedx_m2"  ,"h_R_dedx_m2"  ,200,   0,  10,200,-0.5, 2.5); 
+  h_R_beta_p    = new TH2D("h_R_beta_p"   ,"h_R_beta_p"   ,200, 1.7,1.95,200,   0,   2); 
+  h_R_beta_m2   = new TH2D("h_R_beta_m2"  ,"h_R_beta_m2"  ,200,-0.5,   2,200,   0,   2); 
+  h_R_dedx_p    = new TH2D("h_R_dedx_p"   ,"h_R_dedx_p"   ,200, 1.7,1.95,200,   0,  10); 
+  h_R_dedx_m2   = new TH2D("h_R_dedx_m2"  ,"h_R_dedx_m2"  ,200,-0.5,   2,200,   0,  10); 
   h_R_s0_dedx   = new TH1D("h_R_s0_dedx"  ,"h_R_s0_dedx"  ,400,   0,  10); 
-  h_R_s0_beta_x = new TH2D("h_R_s0_beta_x","h_R_s0_beta_x",200,  -1,   1,200,   0,   2); 
-  h_R_s0_dedx_x = new TH2D("h_R_s0_dedx_x","h_R_s0_dedx_x",200,  -1,   1,200,   0,  10); 
-  h_R_s2_pad      = new TH1D("h_R_s2_pad"     ,"h_R_s2_pad"     , 16,   0, 16); 
+  h_R_s0_beta_x = new TH2D("h_R_s0_beta_x","h_R_s0_beta_x",200,  -1,   1,200,   0,  10); 
+  h_R_s0_dedx_x = new TH2D("h_R_s0_dedx_x","h_R_s0_dedx_x",200,  -1,   1,200,   0,   2); 
+  h_R_s2_pad      = new TH1D("h_R_s2_pad"     ,"h_R_s2_pad"     , 18,  -1, 18); 
   h_R_s2_dedx     = new TH1D("h_R_s2_dedx"    ,"h_R_s2_dedx"    ,400,   0, 10); 
   h_R_s2_beta_x   = new TH2D("h_R_s2_beta_x"  ,"h_R_s2_beta_x"  ,200,  -1,  1,200,   0,  2); 
-  h_R_s2_dedx_x   = new TH2D("h_R_s2_dedx_x"  ,"h_R_s2_dedx_x"  ,200,  -1,  1,200,   0,10 ); 
-  h_R_s2_beta_pad = new TH2D("h_R_s2_beta_pad","h_R_s2_beta_pad", 16,  0, 16,200,   0,10 ); 
-  h_R_s2_dedx_pad = new TH2D("h_R_s2_dedx_pad","h_R_s2_dedx_pad", 16,  0, 16,200,   0, 2 ); 
-  h_R_a1_sum    = new TH1D("h_R_a1_sum"   ,"h_R_a1_sum"   ,400,   0,1000);
-  h_R_a1_sum_x  = new TH2D("h_R_a1_sum_x" ,"h_R_a1_sum_x" ,200,  -1,   1,200,   0,1000); 
-  h_R_a1_sum_p  = new TH2D("h_R_a1_sum_p" ,"h_R_a1_sum_p" ,200,   1,   3,200,   0,1000); 
-  h_R_a1_sum_m2 = new TH2D("h_R_a1_sum_m2","h_R_a1_sum_m2",200,-0.5, 2.5,200,   0,1000); 
-  h_R_a2_sum    = new TH1D("h_R_a2_sum"   ,"h_R_a2_sum"   ,400,   0,1000);
-  h_R_a2_sum_x  = new TH2D("h_R_a2_sum_x" ,"h_R_a2_sum_x" ,200,  -1,   1,200,   0,1000); 
-  h_R_a2_sum_p  = new TH2D("h_R_a2_sum_p" ,"h_R_a2_sum_p" ,200,   1,   3,200,   0,1000); 
-  h_R_a2_sum_m2 = new TH2D("h_R_a2_sum_m2","h_R_a2_sum_m2",200,-0.5, 2.5,200,   0,1000); 
+  h_R_s2_dedx_x   = new TH2D("h_R_s2_dedx_x"  ,"h_R_s2_dedx_x"  ,200,  -1,  1,200,   0, 10); 
+  h_R_s2_beta_pad = new TH2D("h_R_s2_beta_pad","h_R_s2_beta_pad", 16,  0, 16,200,   0,  2); 
+  h_R_s2_dedx_pad = new TH2D("h_R_s2_dedx_pad","h_R_s2_dedx_pad", 16,  0, 16,200,   0, 10); 
+  h_R_a1_sum    = new TH1D("h_R_a1_sum"   ,"h_R_a1_sum"   ,400,   0,6000);
+  h_R_a1_sum_x  = new TH2D("h_R_a1_sum_x" ,"h_R_a1_sum_x" ,200,  -1,   1,200,   0,6000); 
+  h_R_a1_sum_p  = new TH2D("h_R_a1_sum_p" ,"h_R_a1_sum_p" ,200, 1.7,1.95,200,   0,6000); 
+  h_R_a1_sum_m2 = new TH2D("h_R_a1_sum_m2","h_R_a1_sum_m2",200,-0.5, 2.5,200,   0,6000); 
+  h_R_a2_sum    = new TH1D("h_R_a2_sum"   ,"h_R_a2_sum"   ,400,   0,30000);
+  h_R_a2_sum_x  = new TH2D("h_R_a2_sum_x" ,"h_R_a2_sum_x" ,200,  -1,   1,200,   0,30000); 
+  h_R_a2_sum_p  = new TH2D("h_R_a2_sum_p" ,"h_R_a2_sum_p" ,200, 1.7,1.95,200,   0,30000); 
+  h_R_a2_sum_m2 = new TH2D("h_R_a2_sum_m2","h_R_a2_sum_m2",200,-0.5, 2.5,200,   0,30000); 
   set->SetTH1(h_R_beta       ,"Track beta"                        ,"#beta"               ,"Counts");
   set->SetTH1(h_R_m2         ,"Mass Square"                       ,"M^{2} (GeV^{2}/c^{4}","Counts");
   set->SetTH2(h_R_beta_p     ,"#beta v.s Momentum"                ,"p (GeV/c)"           ,"#beta");
@@ -839,15 +871,15 @@ void ana::MakeHist(){
   set->SetTH2(h_R_a2_sum_p   ,"Cherenkov SUM v.s Momentum (A2)"   ,"p (GeV/c)"           ,"");
   set->SetTH2(h_R_a2_sum_m2  ,"Cherenkov SUM v.s Mass Square (A2)","M^{2} (GeV^{2}/c^{4}","");
 
-  h_R_tgt       = new TH1D("h_R_tgt"      ,"h_R_tgt"       ,400,0,1000);
-  h_R_s2pad_tgt = new TH2D("h_R_s2pad_tgt","h_R_s2pad_tgt" ,200,0,1000, 16,   0, 16);
-  h_R_p_tgt     = new TH2D("h_R_p_tgt"    ,"h_R_p_tgt"     ,200,0,1000,200,   1,  3);
-  h_R_pathl_tgt = new TH2D("h_R_pathl_tgt","h_R_pathl_tgt" ,200,0,1000,200,  20, 30);
-  h_R_tgy_tgt   = new TH2D("h_R_tgy_tgt"  ,"h_R_tgy_tgt"   ,200,0,1000,200,-0.5,0.5);
-  h_R_tgth_tgt  = new TH2D("h_R_tgth_tgt" ,"h_R_tgth_tgt"  ,200,0,1000,200,-0.2,0.2);
-  h_R_tgph_tgt  = new TH2D("h_R_tgph_tgt" ,"h_R_tgph_tgt"  ,200,0,1000,200,-0.2,0.2);
-  h_R_x_tgt     = new TH2D("h_R_x_tgt"    ,"h_R_x_tgt"     ,200,0,1000,200,  -1,  1);
-  h_R_y_tgt     = new TH2D("h_R_y_tgt"    ,"h_R_y_tgt"     ,200,0,1000,200,-0.2,0.2);
+  h_R_tgt       = new TH1D("h_R_tgt"      ,"h_R_tgt"       ,40000,-2000,2000);
+  h_R_s2pad_tgt = new TH2D("h_R_s2pad_tgt","h_R_s2pad_tgt" ,200,-1000,1000, 16,    0,  16);
+  h_R_p_tgt     = new TH2D("h_R_p_tgt"    ,"h_R_p_tgt"     ,200,-1000,1000,200,  1.7,1.95);
+  h_R_pathl_tgt = new TH2D("h_R_pathl_tgt","h_R_pathl_tgt" ,200,-1000,1000,200, 25.2,26.3);
+  h_R_tgy_tgt   = new TH2D("h_R_tgy_tgt"  ,"h_R_tgy_tgt"   ,200,-1000,1000,200,-0.06,0.06);
+  h_R_tgth_tgt  = new TH2D("h_R_tgth_tgt" ,"h_R_tgth_tgt"  ,200,-1000,1000,200,-0.1,0.1);
+  h_R_tgph_tgt  = new TH2D("h_R_tgph_tgt" ,"h_R_tgph_tgt"  ,200,-1000,1000,200,-0.06,0.06);
+  h_R_x_tgt     = new TH2D("h_R_x_tgt"    ,"h_R_x_tgt"     ,200,-1000,1000,200,  -1,  1);
+  h_R_y_tgt     = new TH2D("h_R_y_tgt"    ,"h_R_y_tgt"     ,200,-1000,1000,200,-0.1,0.1);
   set->SetTH1(h_R_tgt      ,"Time at Target (S2-RF)","Time (ns)"         ,"Counts");
   set->SetTH2(h_R_s2pad_tgt,"S2 Paddle v.s Time at Target (S2-RF)"       ,"Time (ns)","Paddle No.");
   set->SetTH2(h_R_p_tgt    ,"Momentum v.s Time at Target (S2-RF)"        ,"Time (ns)","Momentum (GeV/c)");
@@ -862,46 +894,55 @@ void ana::MakeHist(){
 /////////////////////
 //// Coincidence ////
 /////////////////////
-  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,400, -100, 100); 
-  h_Rs2x_ct  = new TH2D("h_Rs2x_ct" ,"h_Rs2x_ct" ,200, -100, 100,200,   -1,  1); 
-  h_Ls2x_ct  = new TH2D("h_Ls2x_ct" ,"h_Ls2x_ct" ,200, -100, 100,200,   -1,  1); 
-  h_a1sum_ct = new TH2D("h_a1sum_ct","h_a1sum_ct",200, -100, 100,200,    0,1000); 
-  h_a2sum_ct = new TH2D("h_a2sum_ct","h_a2sum_ct",200, -100, 100,200,    0,1000); 
-  h_mm       = new TH1D("h_mm"      ,"h_mm"      ,400,-0.05,0.25); 
-  h_mmall    = new TH1D("h_mmall"   ,"h_mmall"   ,400,-0.05,0.25); 
-  h_mmfoil   = new TH1D("h_mmfoil"  ,"h_mmfoil"  ,400,-0.05,0.25); 
-  h_Rp_mm    = new TH2D("h_Rp_mm"   ,"h_Rp_mm"   ,200,-0.05,0.25,200,    1,   3); 
-  h_Rl_mm    = new TH2D("h_Rl_mm"   ,"h_Rl_mm"   ,200,-0.05,0.25,200,   20,  30); 
-  h_Rtgy_mm  = new TH2D("h_Rtgy_mm" ,"h_Rtgy_mm" ,200,-0.05,0.25,200,   20,  30); 
-  h_Rtgth_mm = new TH2D("h_Rtgth_mm","h_Rtgth_mm",200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Rtgph_mm = new TH2D("h_Rtgph_mm","h_Rtgph_mm",200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Rvx_mm   = new TH2D("h_Rvx_mm"  ,"h_Rvx_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
-  h_Rvy_mm   = new TH2D("h_Rvy_mm"  ,"h_Rvy_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
-  h_Rvz_mm   = new TH2D("h_Rvz_mm"  ,"h_Rvz_mm"  ,200,-0.05,0.25,200, -0.5, 0.5); 
-  h_Rx_mm    = new TH2D("h_Rx_mm"   ,"h_Rx_mm"   ,200,-0.05,0.25,200,   -1,   1); 
-  h_Ry_mm    = new TH2D("h_Ry_mm"   ,"h_Ry_mm"   ,200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Rth_mm   = new TH2D("h_Rth_mm"  ,"h_Rth_mm"  ,200,-0.05,0.25,200, -0.3, 0.3); 
-  h_Rph_mm   = new TH2D("h_Rph_mm"  ,"h_Rph_mm"  ,200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Lp_mm    = new TH2D("h_Lp_mm"   ,"h_Lp_mm"   ,200,-0.05,0.25,200,    1,   3); 
-  h_Ll_mm    = new TH2D("h_Ll_mm"   ,"h_Ll_mm"   ,200,-0.05,0.25,200,   20,  30); 
-  h_Ltgy_mm  = new TH2D("h_Ltgy_mm" ,"h_Ltgy_mm" ,200,-0.05,0.25,200,   20,  30); 
-  h_Ltgth_mm = new TH2D("h_Ltgth_mm","h_Ltgth_mm",200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Ltgph_mm = new TH2D("h_Ltgph_mm","h_Ltgph_mm",200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Lvx_mm   = new TH2D("h_Lvx_mm"  ,"h_Lvx_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
-  h_Lvy_mm   = new TH2D("h_Lvy_mm"  ,"h_Lvy_mm"  ,200,-0.05,0.25,200,-0.01,0.01); 
-  h_Lvz_mm   = new TH2D("h_Lvz_mm"  ,"h_Lvz_mm"  ,200,-0.05,0.25,200, -0.5, 0.5); 
-  h_Lx_mm    = new TH2D("h_Lx_mm"   ,"h_Lx_mm"   ,200,-0.05,0.25,200,   -1,   1); 
-  h_Ly_mm    = new TH2D("h_Ly_mm"   ,"h_Ly_mm"   ,200,-0.05,0.25,200, -0.2, 0.2); 
-  h_Lth_mm   = new TH2D("h_Lth_mm"  ,"h_Lth_mm"  ,200,-0.05,0.25,200, -0.3, 0.3); 
-  h_Lph_mm   = new TH2D("h_Lph_mm"  ,"h_Lph_mm"  ,200,-0.05,0.25,200, -0.2, 0.2); 
+  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,1000, -50, 50); 
+  h_ct_wK    = new TH1D("h_ct_wK"   ,"h_ct_wK"   ,1000, -50, 50); 
+  h_Rs2x_ct  = new TH2D("h_Rs2x_ct" ,"h_Rs2x_ct" , 200, -50, 50,200,   -1,  1); 
+  h_Ls2x_ct  = new TH2D("h_Ls2x_ct" ,"h_Ls2x_ct" , 200, -50, 50,200,   -1,  1); 
+  h_a1sum_ct = new TH2D("h_a1sum_ct","h_a1sum_ct", 200, -50, 50,200,    0,6000); 
+  h_a2sum_ct = new TH2D("h_a2sum_ct","h_a2sum_ct", 200, -50, 50,200,    0,30000); 
+  h_mm       = new TH1D("h_mm"      ,"h_mm"      , 400,-0.10,0.25); 
+  h_mmall    = new TH1D("h_mmall"   ,"h_mmall"   , 400,-0.10,0.25); 
+  h_mmfoil   = new TH1D("h_mmfoil"  ,"h_mmfoil"  , 400,-0.10,0.25); 
+  h_mmbg     = new TH1D("h_mmbg"    ,"h_mmbg"    , 400,-0.10,0.25); 
+  h_mmallbg  = new TH1D("h_mmallbg" ,"h_mmallbg" , 400,-0.10,0.25); 
+  h_mmfoilbg = new TH1D("h_mmfoilbg","h_mmfoilbg", 400,-0.10,0.25); 
+  h_Lp_mm    = new TH2D("h_Lp_mm"   ,"h_Lp_mm"   , 200,-0.10,0.25,200,   1.9,  2.3); 
+  h_Ll_mm    = new TH2D("h_Ll_mm"   ,"h_Ll_mm"   , 200,-0.10,0.25,200,  25.2, 26.3); 
+  h_Ltgy_mm  = new TH2D("h_Ltgy_mm" ,"h_Ltgy_mm" , 200,-0.10,0.25,200, -0.06, 0.06); 
+  h_Ltgth_mm = new TH2D("h_Ltgth_mm","h_Ltgth_mm", 200,-0.10,0.25,200,  -0.1,  0.1); 
+  h_Ltgph_mm = new TH2D("h_Ltgph_mm","h_Ltgph_mm", 200,-0.10,0.25,200, -0.06, 0.06); 
+  h_Lvx_mm   = new TH2D("h_Lvx_mm"  ,"h_Lvx_mm"  , 200,-0.10,0.25,200,-0.005,0.002); 
+  h_Lvy_mm   = new TH2D("h_Lvy_mm"  ,"h_Lvy_mm"  , 200,-0.10,0.25,200,-0.004,0.003); 
+  h_Lvz_mm   = new TH2D("h_Lvz_mm"  ,"h_Lvz_mm"  , 200,-0.10,0.25,200, -0.25, 0.25); 
+  h_Lx_mm    = new TH2D("h_Lx_mm"   ,"h_Lx_mm"   , 200,-0.10,0.25,200,    -1,   1); 
+  h_Ly_mm    = new TH2D("h_Ly_mm"   ,"h_Ly_mm"   , 200,-0.10,0.25,200,  -0.1, 0.1); 
+  h_Lth_mm   = new TH2D("h_Lth_mm"  ,"h_Lth_mm"  , 200,-0.10,0.25,200,  -0.2, 0.2); 
+  h_Lph_mm   = new TH2D("h_Lph_mm"  ,"h_Lph_mm"  , 200,-0.10,0.25,200,  -0.1, 0.1); 
+  h_Rp_mm    = new TH2D("h_Rp_mm"   ,"h_Rp_mm"   , 200,-0.10,0.25,200,   1.7, 1.95); 
+  h_Rl_mm    = new TH2D("h_Rl_mm"   ,"h_Rl_mm"   , 200,-0.10,0.25,200,  25.2, 26.3); 
+  h_Rtgy_mm  = new TH2D("h_Rtgy_mm" ,"h_Rtgy_mm" , 200,-0.10,0.25,200, -0.06, 0.06); 
+  h_Rtgth_mm = new TH2D("h_Rtgth_mm","h_Rtgth_mm", 200,-0.10,0.25,200,  -0.1,  0.1); 
+  h_Rtgph_mm = new TH2D("h_Rtgph_mm","h_Rtgph_mm", 200,-0.10,0.25,200, -0.06, 0.06); 
+  h_Rvx_mm   = new TH2D("h_Rvx_mm"  ,"h_Rvx_mm"  , 200,-0.10,0.25,200,-0.005,0.002); 
+  h_Rvy_mm   = new TH2D("h_Rvy_mm"  ,"h_Rvy_mm"  , 200,-0.10,0.25,200,-0.004,0.003); 
+  h_Rvz_mm   = new TH2D("h_Rvz_mm"  ,"h_Rvz_mm"  , 200,-0.10,0.25,200, -0.25, 0.25); 
+  h_Rx_mm    = new TH2D("h_Rx_mm"   ,"h_Rx_mm"   , 200,-0.10,0.25,200,    -1,    1); 
+  h_Ry_mm    = new TH2D("h_Ry_mm"   ,"h_Ry_mm"   , 200,-0.10,0.25,200,  -0.1,  0.1); 
+  h_Rth_mm   = new TH2D("h_Rth_mm"  ,"h_Rth_mm"  , 200,-0.10,0.25,200,  -0.2,  0.2); 
+  h_Rph_mm   = new TH2D("h_Rph_mm"  ,"h_Rph_mm"  , 200,-0.10,0.25,200,  -0.1,  0.1); 
   set->SetTH1(h_ct      ,"Coincidence Time"                      ,"Cointime (ns)"           ,"Counts");
+  h_ct->SetMinimum(0.8);
+  set->SetTH1(h_ct_wK   ,"Coincidence Time (w/ K cut)"           ,"Cointime (ns)"           ,"Counts",1,3001,3);
   set->SetTH2(h_Rs2x_ct ,"RHRS S2 X-pos v.s Cointime"            ,"Cointime (ns)"           ,"X (m)");
   set->SetTH2(h_Ls2x_ct ,"LHRS S2 X-pos v.s Cointime"            ,"Cointime (ns)"           ,"X (m)");
   set->SetTH2(h_a1sum_ct,"RHRS A1 SUM v.s Cointime"              ,"Cointime (ns)"           ,"");
-  set->SetTH2(h_a2sum_ct,"RHRS A1 SUM v.s Cointime"              ,"Cointime (ns)"           ,"");
+  set->SetTH2(h_a2sum_ct,"RHRS A2 SUM v.s Cointime"              ,"Cointime (ns)"           ,"");
   set->SetTH1(h_mm      ,"#Lambda Binding Energy (Gas)"          ,"-B_{#Lambda} (GeV/c^{2})","Counts");
   set->SetTH1(h_mmall   ,"#Lambda Binding Energy (w/o Z_{v} cut)","-B_{#Lambda} (GeV/c^{2})","Counts");
   set->SetTH1(h_mmfoil  ,"#Lambda Binding Energy (Al foil)"      ,"-B_{#Lambda} (GeV/c^{2})","Counts");
+  set->SetTH1(h_mmbg    ,"#Lambda Binding Energy (Gas)"          ,"-B_{#Lambda} (GeV/c^{2})","Counts",1,3001,4);
+  set->SetTH1(h_mmallbg ,"#Lambda Binding Energy (w/o Z_{v} cut)","-B_{#Lambda} (GeV/c^{2})","Counts",1,3001,4);
+  set->SetTH1(h_mmfoilbg,"#Lambda Binding Energy (Al foil)"      ,"-B_{#Lambda} (GeV/c^{2})","Counts",1,3001,4);
   set->SetTH2(h_Rp_mm   ,"RHRS Momentum v.s B_{#Lambda}"         ,"-B_{#Lambda} (GeV/c^{2})","Momentum (GeV/c)");
   set->SetTH2(h_Rl_mm   ,"RHRS Length v.s B_{#Lambda}"           ,"-B_{#Lambda} (GeV/c^{2})","Length (m)");
   set->SetTH2(h_Rtgy_mm ,"RHRS Target Y v.s B_{#Lambda}"         ,"-B_{#Lambda} (GeV/c^{2})","Y_{t} (m)");
@@ -963,12 +1004,44 @@ void ana::ReadParam(string name){
 
   L_s0l_toff = 10.;  L_s0r_toff = 0.;
   R_s0l_toff = 0.;  R_s0r_toff = 0.;
-  for(int i=0;i<16;i++){
-    L_s2l_toff[i] = 0.;
-    L_s2r_toff[i] = 0.;
-    R_s2l_toff[i] = 0.;
-    R_s2r_toff[i] = 0.;
-  }
+  L_s2l_toff[0]  =  2.46705e+00;  L_s2r_toff[0]  =  2.46705e+00;
+  L_s2l_toff[1]  =  8.30999e-01;  L_s2r_toff[1]  =  8.30999e-01;
+  L_s2l_toff[2]  =  1.34701e+00;  L_s2r_toff[2]  =  1.34701e+00;
+  L_s2l_toff[3]  =  6.61651e-01;  L_s2r_toff[3]  =  6.61651e-01;
+  L_s2l_toff[4]  =  8.32433e-01;  L_s2r_toff[4]  =  8.32433e-01;
+  L_s2l_toff[5]  =  9.35309e-01;  L_s2r_toff[5]  =  9.35309e-01;
+  L_s2l_toff[6]  = -5.96578e-02;  L_s2r_toff[6]  = -5.96578e-02;
+  L_s2l_toff[7]  = -2.60920e-01;  L_s2r_toff[7]  = -2.60920e-01;
+  L_s2l_toff[8]  =  0.00000e-00;  L_s2r_toff[8]  =  0.00000e-00;
+  L_s2l_toff[9]  = -2.64999e-01;  L_s2r_toff[9]  = -2.64999e-01;
+  L_s2l_toff[10] = -6.44524e-01;  L_s2r_toff[10] = -6.44524e-01;
+  L_s2l_toff[11] =  9.82337e-01;  L_s2r_toff[11] =  9.82337e-01;
+  L_s2l_toff[12] =  8.12796e-01;  L_s2r_toff[12] =  8.12796e-01;
+  L_s2l_toff[13] =  1.19254e-01;  L_s2r_toff[13] =  1.19254e-01;
+  L_s2l_toff[14] = -2.94112e-01;  L_s2r_toff[14] = -2.94112e-01;
+  L_s2l_toff[15] = -3.69843e-01;  L_s2r_toff[15] = -3.69843e-01;
+  R_s2l_toff[0]  =  2.47103e+02;  R_s2r_toff[0]  =  2.47103e+02;
+  R_s2l_toff[1]  =  2.46903e+02;  R_s2r_toff[1]  =  2.46903e+02;
+  R_s2l_toff[2]  =  2.45846e+02;  R_s2r_toff[2]  =  2.45846e+02;
+  R_s2l_toff[3]  =  2.45879e+02;  R_s2r_toff[3]  =  2.45879e+02;
+  R_s2l_toff[4]  =  2.46466e+02;  R_s2r_toff[4]  =  2.46466e+02;
+  R_s2l_toff[5]  =  2.46587e+02;  R_s2r_toff[5]  =  2.46587e+02;
+  R_s2l_toff[6]  =  2.45637e+02;  R_s2r_toff[6]  =  2.45637e+02;
+  R_s2l_toff[7]  =  2.46300e+02;  R_s2r_toff[7]  =  2.46300e+02;
+  R_s2l_toff[8]  =  2.45701e+02;  R_s2r_toff[8]  =  2.45701e+02;
+  R_s2l_toff[9]  =  2.46656e+02;  R_s2r_toff[9]  =  2.46656e+02;
+  R_s2l_toff[10] =  2.45699e+02;  R_s2r_toff[10] =  2.45699e+02;
+  R_s2l_toff[11] =  2.45841e+02;  R_s2r_toff[11] =  2.45841e+02;
+  R_s2l_toff[12] =  2.46873e+02;  R_s2r_toff[12] =  2.46873e+02;
+  R_s2l_toff[13] =  2.46921e+02;  R_s2r_toff[13] =  2.46921e+02;
+  R_s2l_toff[14] =  2.47049e+02;  R_s2r_toff[14] =  2.47049e+02;
+  R_s2l_toff[15] =  2.46604e+02;  R_s2r_toff[15] =  2.46604e+02;
+//  for(int i=0;i<16;i++){
+//    L_s2l_toff[i] = 0.;
+//    L_s2r_toff[i] = 0.;
+//    R_s2l_toff[i] = 0.;
+//    R_s2r_toff[i] = 0.;
+//  }
 
 }
 
@@ -1047,6 +1120,7 @@ int main(int argc, char** argv){
 
   Ana->ReadParam(Form("%s",pname.c_str()));
 
+  cout<<"Reading ROOT files"<<endl;
   string buf, runname;
   while(1){
     getline(ifp,buf);
@@ -1064,7 +1138,7 @@ int main(int argc, char** argv){
 
   if( root_out ){ Ana->Close(); }
   if( batch ){ gSystem->Exit(1); }
-//  gSystem->Exit(1);
+
   theApp.Run();
   return 0;
 

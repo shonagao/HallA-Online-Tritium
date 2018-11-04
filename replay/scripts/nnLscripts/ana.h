@@ -38,8 +38,8 @@ class ana
 
     bool GetEntry(int n);
 
-    double CalcF1TDC(double tdc, double toff)   { return (tdc-toff)*0.05623;  }
-    double CalcFADCTDC(double tdc, double toff) { return (tdc-toff);  }
+    double CalcF1TDC(double tdc, double toff)   { return tdc*0.05623 - toff;  }
+    double CalcFADCTDC(double tdc, double toff) { return tdc-toff;  }
 
     int LineID;
     int TextID;
@@ -110,10 +110,12 @@ class ana
 
 //// Coin ////
     TH1D *h_ct;
+    TH1D *h_ct_wK;
     TH2D *h_Ls2x_ct;
     TH2D *h_Rs2x_ct;
     TH2D *h_a1sum_ct, *h_a2sum_ct;
     TH1D *h_mm, *h_mmall, *h_mmfoil;
+    TH1D *h_mmbg, *h_mmallbg, *h_mmfoilbg;
     TH2D *h_Lp_mm, *h_Ll_mm, *h_Ltgy_mm, *h_Ltgth_mm, *h_Ltgph_mm;
     TH2D *h_Lvx_mm, *h_Lvy_mm, *h_Lvz_mm;
     TH2D *h_Lx_mm, *h_Ly_mm, *h_Lth_mm, *h_Lph_mm;
