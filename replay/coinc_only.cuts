@@ -2,9 +2,11 @@
 # Cut definitions
 
 Block: RawDecode
+Block: Decode
+evtyp5 (DR.evtypebits>>5)&1
+Decode_master evtyp5
 
 Block: Reconstruct
 
 Block: Physics
 
-FORMURA: (DR.evtypebits>>5)&1

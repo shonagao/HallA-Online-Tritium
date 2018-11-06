@@ -31,7 +31,7 @@ void replay_coin_only(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	// ---------------------------
 	TString rootname;
 	if(OnlineReplay) rootname = "%s/tritium_online_%d.root";
-	else             rootname = "%s/tritium_%d.root"       ;
+	else             rootname = "%s/tritium_T5_%d.root"       ;
 	// ---------------------------
 	const char* RNAME=rootname.Data();
 	TString ODEF = "coinc.odef";
