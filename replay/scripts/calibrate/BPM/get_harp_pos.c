@@ -1,24 +1,8 @@
-#include <sstream> 
-#include <string>
-#include <cmath>
-#include <fstream>
-#include <ctime>
-#include <iomanip>
-#include <TSystem.h> 
-#include <TGraph.h>
-#include <TString.h>
-#include <TCanvas.h>
-#include <TCut.h>
-#include <TFile.h>
-#include <TH1F.h>
-#include <TChain.h>
-#include <TTree.h>
-#include <TF1.h>
-#include <TChain.h>
-#include <TLine.h>
-#include <TMath.h>
-#include <TNtuple.h>
-#include <stdlib.h>     //for using the function sleep
+#include "../../headers/rootalias.h"
+#include "../../headers/SQLanalysis.h"
+#include "/adaqfs/home/a-onl/tritium_work/Bane/Tri_offline/headers/inc1.h"
+#include <sys/types.h>
+#include <dirent.h>
 
 using namespace std;
 
@@ -33,39 +17,100 @@ using namespace std;
 prev used
 {"15:22:28","15:29:59","15:55:20","16:35:33","17:11:23"}, //1H04A
 {"15:25:14","15:32:24","15:34:22","15:58:10","16:37:48"} };  //1H04B
+//05032018
+{"21:44:49","22:24:58","22:29:26","22:44:03","22:54:11"}, A
+{"21:48:03","22:17:50","22:31:29","22:37:58","22:57:05"}  B
+
+09272018
+	int run_number[6]  ={3436,3437,3438,3439,3440,3441};
+	int logbook_num[6] ={3461814,3461814,3461814,3461814,3461814,0};
+	char TimeStamp[2][6][256] = {{"00:45:46","00:57:17","01:19:59","01:28:09","01:44:51","01:58:39"},
+			             {"00:47:39","00:59:26","01:21:56","01:34:08","01:47:05","02:00:35"}
+					};			
+
+
+
 
 
 */
-void get_harp_pos(){
+void get_harp_pos(string arm="", string in_date="",int debug=0){
 
-TCanvas *C1[2][5];
+SetStyles();
 
+	if(arm=="")
+	{
+		cout << "Which arm are you looking at? (R/L)\n";
+		cin >> arm ;
+	}
+	if(in_date=="")
+	{
+		cout << "What is the date of the harpsans (mmddyyyy)\n";
+		cin >> in_date;
+	}
+	cout <<"\n";
+
+
+TCanvas *C1[2][6];
+  int numofruns=6;
   int harp;
   int run;
   int ct = 0;//Counter
 
+	TCanvas *D[2][2];
 
-  //Day of harp runs in hall A
-   char date[256] = {"05032018"};
+	D[0][0] = new TCanvas("D00","Harp Scan",0,0,1100,900);
+	D[0][0] ->Divide(1,3);
+	D[0][1] = new TCanvas("D01","Harp Scan",0,0,1100,900);
+	D[0][1] ->Divide(1,3);
+	D[1][0] = new TCanvas("D10","Harp Scan",0,0,1100,900);
+	D[1][0] ->Divide(1,3);
+	D[1][1] = new TCanvas("D11","Harp Scan",0,0,1100,900);
+	D[1][1] ->Divide(1,3);
+	
 
 //output array;
-	double results[5][10];
+	double results[6][10];
 //CODA run number for harp scans
-	int run_number[5]  ={3033,3034,3035,3036,3038};
-	int logbook_num[5] ={3461814,3461814,3461814,3461814,3461814};	
-
+	int run_number[6]  ={3538,3541,3542,3544,3545,3548};
+	int logbook_num[6] ={3461814,3461814,3461814,3461814,3461814,0};	
+	if(arm=="R"){}
 //output file named with date of harpscans
 	ofstream out_file;
 	char Hresults[256];
-	sprintf(Hresults,"harp_results_%s.txt",date);
+	sprintf(Hresults,"harp_results_%s.txt",in_date.c_str());
 	out_file.open(Hresults,ios::out);
 
   //Harp names for the Hall A beamline (in hall, not arc)
   char harp_name[2][256] = {"IHA1H04A","IHA1H04B"};
 
   //Time of each harp run {in order: (2,-2),(-2,-2),(-2,2),(2,2),(0,0)}
-	char TimeStamp[2][5][256] = {{"21:44:49","22:24:58","22:29:26","22:44:03","22:54:11"},{"21:48:03","22:17:50","22:31:29","22:37:58","22:57:05"}};			
+  char TimeStamp[2][6][256] = {
+		{"17:27:05","17:48:03","18:02:32","18:12:36","18:26:03","18:36:48"},
+		{"17:56:51","17:56:51","18:05:38","18:14:54","18:28:11","18:42:39"}
+				};			
+	vector <string> harpscans;
+	//Find the harp scans: 
+	string dir = string("HarpScans");
+    	vector<string> files = vector<string>();
+	DIR *dp;
+    	struct dirent *dirp;
+    	if((dp  = opendir(dir.c_str())) == NULL) {
+        	cout << "Error(" << errno << ") opening " << dir << endl;
+	        return ;
+    	}
 
+   	while ((dirp = readdir(dp)) != NULL) {
+        	files.push_back(string(dirp->d_name));
+	}
+   	closedir(dp);
+    	for (unsigned int i = 0;i < files.size();i++) {
+        	cout << files[i] << endl;
+	    }
+
+	return;
+
+
+	
   /////////////////////////////////////////////////////////
   //                                                     //
   //    Get data from run file and fit with gaussians    //
@@ -77,14 +122,14 @@ TCanvas *C1[2][5];
 
 
 //The second number might need to be adjusted depending on the number of harp scans
-	TF1 *fit_u[2][5];
-	TF1 *fit_x[2][5];
-	TF1 *fit_v[2][5];
+	TF1 *fit_u[2][6];
+	TF1 *fit_x[2][6];
+	TF1 *fit_v[2][6];
 
 	int r =0;
 //Loop through both harps, and all scan locations
 	for(harp=0; harp<2;harp++){
-		for(run=0;run<5;run++){r++;//C->cd(r);
+		for(run=0;run<6;run++){r++;//C->cd(r);
 
 		//run=1;harp=1;
 			ifstream myfile;
@@ -92,12 +137,13 @@ TCanvas *C1[2][5];
 			
 
   	//Open file name based on answers above
-	  		sprintf(file_name,"HarpScans/%s.%s_%s",harp_name[harp],date,TimeStamp[harp][run]);
+  		sprintf(file_name,"HarpScans/%s.%s_%s",harp_name[harp],in_date.c_str(),TimeStamp[harp][run]);
 	  		myfile.open(file_name,ios::in);
+
 	  		string line;
-			cout << endl;	
+	//		cout << endl;	
 			if(!myfile.good()){printf( "%s WIll not open \n",file_name);return;}
-			cout<<endl;
+	//		cout<<endl;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //Read in the input file from the harp scan
@@ -124,7 +170,7 @@ TCanvas *C1[2][5];
   			double pos1=0, pos2=0, pos3=0;
 	//Very basic ped. avg of first few signals				
 			double ped=tmp3[0];int pc=1;
-			for(int i =0;i<5;i++){if(tmp3[i+1] < ped*1.5/pc){ped+=tmp3[i+1];pc++;}}
+			for(int i =0;i<6;i++){if(tmp3[i+1] < ped*1.5/pc){ped+=tmp3[i+1];pc++;}}
 			ped=ped/pc;
 			//cout <<ped<<endl;
 
@@ -239,8 +285,18 @@ fit_x[harp][run] = new TF1(Form("fit_x%d%d",harp,run),"[0]+gaus(1)",X_wire[0],X_
   			TLine *l3  = new TLine(x,0.02,x,0.1);  l3->SetLineColor(6);  l3->Draw();
 
 
+			string label = "A";
+			if(harp==1)label="B";
 
-TCanvas *D = new TCanvas(Form("D%d%d",harp,run),"Harp Scan",0,0,1100,900);
+			int dcan = 0;
+			if(run >=3) dcan=1;
+			int dcan_d = 1;
+			if(run==1||run==4)dcan_d=2;	
+			if(run==2||run==5)dcan_d=3;	
+				
+
+			D[harp][dcan]->cd(dcan_d);
+
 			gr->Draw();
   			fit_u[harp][run]->Draw("same");
   			fit_v[harp][run]->Draw("same");
@@ -249,10 +305,10 @@ TCanvas *D = new TCanvas(Form("D%d%d",harp,run),"Harp Scan",0,0,1100,900);
 			l3->Draw();
 			l2->Draw();
 			l1->Draw();
-			gr->SetTitle(Form("Harp Scan run % d",run));
+			gr->SetTitle(Form("Harp Scan %s run %d",label.c_str(),run_number[run]));
 			gr->GetXaxis()->SetTitle("Harp encoder position");
 			gr->GetYaxis()->SetTitle("Signal Strength");
-			gr->GetYaxis()->SetTitleOffset(1.4);
+//			gr->GetYaxis()->SetTitleOffset(1.4);
 
 
   //Harp properties taken from CEBAF Element Database (CED) online
@@ -304,37 +360,47 @@ TCanvas *D = new TCanvas(Form("D%d%d",harp,run),"Harp Scan",0,0,1100,900);
 	//	if(harp==1){x_pos = x_pos*0.993559+1.47372;y_pos=y_pos*0.966529-0.707752;}
 			//y_pos = y_pos+2.0;
   //print out the results
-/*			cout <<"File " <<file_name << " of run number "<< run_number[run] <<endl;
+/*			cout<<"date "<<date  <<" File " <<file_name << " of run number "<< run_number[run] <<endl;
 			cout <<" is displayed on canvas C"<<harp<<run<<"  with positions!"<<endl; 
   			printf("Position X = %0.3f mm,  Sigma X = %0.3f mm \n", x_pos, x_sigma);
   			printf("Position Y = %0.3f mm,  Sigma Y = %0.3f mm \n", y_pos, y_sigma);	
-	*/
-	
+*/		
 					
-			if(harp==0){results[run][0]=run_number[run];
+			if(harp==0){		results[run][0]=run_number[run];
 						results[run][1]=logbook_num[run];
 						results[run][2]=x_pos;
 						results[run][3]=x_sigma;
 						results[run][4]=y_pos;
 						results[run][5]=y_sigma;}
-			if(harp==1){results[run][6]=x_pos;
+			if(harp==1){	
+						results[run][6]=x_pos;
 						results[run][7]=x_sigma;
 						results[run][8]=y_pos;
 						results[run][9]=y_sigma;}
 
 //If you would like to few the fits comment the command below!
-			delete C1[harp][run];
-	
+		if(debug<=0)delete C1[harp][run];
+		
 			} //run loop
 		}			//harp loop	
 
-	for(int i=0;i<5;i++){
+	for(int i=0;i<numofruns;i++){
 		for(int j=0;j<2;j++){out_file<<setw(10)<< setprecision(10)<<results[i][j]<<" ";}
 		for(int j=2;j<10;j++){
 		out_file<<setw(10)<< setprecision(4)<<results[i][j]<<" ";}out_file<<endl;}
 	
-		for(int i=0;i<5;i++){
+		for(int i=0;i<numofruns;i++){
 			cout<<run_number[i] <<" " << results[i][2]<<" " << results[i][4]<<" " << results[i][6] <<" " << results[i][8] <<endl;}
 	
 	out_file.close();
+
+	D[0][0]->Print(Form("/volatile/halla/triton/Bane/harpdata/HarpA1_%s.png",in_date.c_str()));
+	D[0][1]->Print(Form("/volatile/halla/triton/Bane/harpdata/HarpA2_%s.png",in_date.c_str()));
+	D[1][0]->Print(Form("/volatile/halla/triton/Bane/harpdata/HarpB1_%s.png",in_date.c_str()));
+	D[1][1]->Print(Form("/volatile/halla/triton/Bane/harpdata/HarpB2_%s.png",in_date.c_str()));
+	if(debug<1) {delete D[0][0]; delete D[0][1]; delete D[1][0]; delete D[1][1];}
+
+	
+
+
 } 
