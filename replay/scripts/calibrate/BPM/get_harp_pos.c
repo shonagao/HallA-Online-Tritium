@@ -1,8 +1,10 @@
-#include "../../headers/rootalias.h"
-#include "../../headers/SQLanalysis.h"
+#include "/adaqfs/home/a-onl/tritium_work/Bane/Tri_offline/headers/rootalias.h"
+//#include "../../headers/rootalias.h"
+#include "/adaqfs/home/a-onl/tritium_work/Bane/Tri_offline/headers/SQLanalysis.h"
+//#include "../../headers/SQLanalysis.h"
 #include "/adaqfs/home/a-onl/tritium_work/Bane/Tri_offline/headers/inc1.h"
-#include <sys/types.h>
-#include <dirent.h>
+//#include <sys/types.h>
+//#include <dirent.h>
 
 using namespace std;
 
@@ -15,11 +17,19 @@ using namespace std;
 /* In order update this code, you must change the date of the Harp scan and the time stamp of each position change, and the run numbers for the harp scans, including the acclerator run number . This is currently limited to running five runs for two harps.
 
 prev used
+09292018
+{3538,3541,3542,3544,3545,3548}
+{{"17:27:05","17:48:03","18:02:32","18:12:36","18:26:03","18:36:48"},
+{"17:56:51","17:56:51","18:05:38","18:14:54","18:28:11","18:42:39"}
+};			
+
 {"15:22:28","15:29:59","15:55:20","16:35:33","17:11:23"}, //1H04A
 {"15:25:14","15:32:24","15:34:22","15:58:10","16:37:48"} };  //1H04B
 //05032018
 {"21:44:49","22:24:58","22:29:26","22:44:03","22:54:11"}, A
 {"21:48:03","22:17:50","22:31:29","22:37:58","22:57:05"}  B
+
+
 
 09272018
 	int run_number[6]  ={3436,3437,3438,3439,3440,3441};
@@ -35,7 +45,7 @@ prev used
 */
 void get_harp_pos(string arm="", string in_date="",int debug=0){
 
-SetStyles();
+//SetStyles();
 
 	if(arm=="")
 	{
@@ -51,7 +61,7 @@ SetStyles();
 
 
 TCanvas *C1[2][6];
-  int numofruns=6;
+  int numofruns=8;
   int harp;
   int run;
   int ct = 0;//Counter
@@ -71,7 +81,7 @@ TCanvas *C1[2][6];
 //output array;
 	double results[6][10];
 //CODA run number for harp scans
-	int run_number[6]  ={3538,3541,3542,3544,3545,3548};
+	int run_number[6]  ={111123,111125,111126,111127,111128,111129};  ///22 and 24 junk
 	int logbook_num[6] ={3461814,3461814,3461814,3461814,3461814,0};	
 	if(arm=="R"){}
 //output file named with date of harpscans
@@ -85,14 +95,13 @@ TCanvas *C1[2][6];
 
   //Time of each harp run {in order: (2,-2),(-2,-2),(-2,2),(2,2),(0,0)}
   char TimeStamp[2][6][256] = {
-		{"17:27:05","17:48:03","18:02:32","18:12:36","18:26:03","18:36:48"},
-		{"17:56:51","17:56:51","18:05:38","18:14:54","18:28:11","18:42:39"}
-				};			
+	{"21:31:45","22:00:58","22:11:33","22:21:33","22:29:19","22:41:01"},
+	{"21:34:32","22:05:12","22:14:13","22:24:09","22:31:57","22:43:59"}};
 	vector <string> harpscans;
 	//Find the harp scans: 
 	string dir = string("HarpScans");
-    	vector<string> files = vector<string>();
-	DIR *dp;
+    	vector<string> files;
+/*	DIR *dp;
     	struct dirent *dirp;
     	if((dp  = opendir(dir.c_str())) == NULL) {
         	cout << "Error(" << errno << ") opening " << dir << endl;
@@ -102,12 +111,12 @@ TCanvas *C1[2][6];
    	while ((dirp = readdir(dp)) != NULL) {
         	files.push_back(string(dirp->d_name));
 	}
-   	closedir(dp);
-    	for (unsigned int i = 0;i < files.size();i++) {
-        	cout << files[i] << endl;
-	    }
+   	closedir(dp);*/
+//    	for (unsigned int i = 0;i < files.size();i++) {
+//        	cout << files[i] << endl;
+//	    }
 
-	return;
+//	return;
 
 
 	
@@ -212,9 +221,9 @@ TCanvas *C1[2][6];
 					V_wire[i]=tmp2[H];V_cur[i]=tmp3[H];i++;}i=0;
 			for(int H=location[3]-100;H<location[3]+100;H++){
 					X_wire[i]=tmp2[H];X_cur[i]=tmp3[H];i++;}
-			char* AB;
+			string AB;
 			if(harp==0){AB="A";}else{AB="B";}
-			C1[harp][run] = new TCanvas(Form("C%d%d",harp,run),Form("Run %d %s",run_number[run], AB),0,0,1000,900);
+			C1[harp][run] = new TCanvas(Form("C%d%d",harp,run),Form("Run %d %s",run_number[run], AB.c_str()),0,0,1000,900);
 			C1[harp][run]->Divide(1,4);
 						
   			TGraph *Uu = new TGraph(200,U_wire,U_cur);
