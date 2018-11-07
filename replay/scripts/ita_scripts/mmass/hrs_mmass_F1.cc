@@ -198,6 +198,7 @@ T->SetBranchStatus("L.tr.beta",1);
  double max_adc=20000.;
  int bin_adc=max_adc-min_adc;
  TH1F* hmm=new TH1F("hmm","Missing mass Hist",5000,-0.1,2.);
+ TH1F* hmm_c=new TH1F("hmm","Missing mass Hist",5000,-0.1,2.);
  TH1F* hmm1=new TH1F("hmm1","Missing mass Hist",5000,-0.1,2.);
  TH1F* hmm2=new TH1F("hmm2","Missing mass Hist",5000,-0.1,2.);
  TH1F* hmm3=new TH1F("hmm3","Missing mass Hist",5000,-0.1,2.);
@@ -226,7 +227,7 @@ T->SetBranchStatus("L.tr.beta",1);
  cout<<"Get Entries: "<<evnt<<endl;
  double mtr;
  mtr=938.27e-3;// proton mass [GeV/c^2]
- double mh;
+ double mh,mhc;
  double m2; 
  double Ee,Ee_,Ek,Epi;
  double pe,pe_,pk,ppi;
@@ -240,6 +241,7 @@ T->SetBranchStatus("L.tr.beta",1);
  int nac1,nac2,n;
  double ac1_adc,ac2_adc;
  double tof_r,tof_l;
+ double cos_ee_,cos_ek,cos_e_k,theta_r,theta_l,theta_rc,theta_lc;
  ac1_adc=100.;
  ac2_adc=2000.;
  double rpathl;
@@ -258,17 +260,41 @@ T->SetBranchStatus("L.tr.beta",1);
    if(rbeta>0.963 && rbeta<0.966)cut_beta=true;
    // if(trigger[0]==32)cut_trig=true;
 
- Lph[0]=Lph[0]+13.2*3.14/360;//rad
- Rph[0]=Rph[0]-13.2*3.14/360;//rad
- pe_=Lp[0]*sqrt(1-pow(Lth[0],2)+pow(Lph[0],2));
- pk=Rp[0]*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
- ppi=Rp[0]*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
+   //  Lph[0]=Lph[0]-13.2*3.14/360;//rad
+   // Rph[0]=Rph[0] +13.2*3.14/360;//rad
+   // theta_r=atan(Rph[0])+13.2*3.14/360;
+   // theta_l=atan(Lph[0])-13.2*3.14/360;
+   // if(theta_l/(2*3.14)*360>12.0 && theta_l/(2*3.14)*360<12.4 && theta_r/(2*3.14)*360>-12.4 && theta_r/(2*3.14)*360<-12.0){
+   /*  
+ if(k<100){
+     cout<<"theta_r w/o corr: "<<atan(Rph[0])/(2*3.14)*360.<<endl;
+     cout<<"theta_l w/o corr: "<<atan(Lph[0])/(2*3.14)*360.<<endl;
+     cout<<"theta_r w/ : "<<theta_r/(2*3.14)*360<<endl;
+     cout<<"theta_l w/ : "<<theta_l/(2*3.14)*360<<endl;
+     
+     }*/
+
+
+ pe_=Lp[0];//*sqrt(1+pow(Lth[0],2)+pow(Lph[0],2));
+ pk =Rp[0];//*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
+ ppi=Rp[0];//*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
+ 
+ theta_r=atan(Rph[0]);
+ theta_l=atan(Lph[0]);   
+ theta_rc=atan(Rph[0])-13.2*2*3.14/360;
+ theta_lc=atan(Lph[0])+13.2*2*3.14/360;   
+ cos_ee_=cos(theta_l);//1./sqrt(1+pow(Lph[0],2));
+ cos_ek=cos(theta_r);//1./sqrt(1+pow(Rph[0],2));
+ cos_e_k=cos(+theta_l-theta_r);//cos_ee_*cos_ek*(1-Lph[0]*Rph[0]);
+
+
  pe=hallap*1.0e-3;
  Ee=sqrt(pow(pe,2)+pow(me,2));
  Ee_=sqrt(pow(pe_,2)+pow(me,2));
  Epi=sqrt(pow(ppi,2)+pow(mpi,2));
  Ek=sqrt(pow(pk,2)+pow(mk,2));
- mh=sqrt(pow(Ee+mtr-Ee_-Ek,2)-pow(pe-pe_-pk,2));
+ mh=sqrt(pow(Ee+mtr-Ee_-Ek,2)-(pow(pe,2)+pow(pe_,2)+pow(pk,2)-2*pe*pe_*cos_ee_-2*pe*pk*cos_ek+2*pk*pe_*cos_e_k));
+ mhc=sqrt(pow(Ee+mtr-Ee_-Ek,2)-(pow(pe,2)+pow(pe_,2)+pow(pk,2)-2*pe*pe_*cos(theta_lc)-2*pe*pk*cos(theta_rc)+2*pk*pe_*cos(theta_lc-theta_rc)));
  Ls2pads=Ls2tpads[0];
  Rs2pads=Rs2tpads[0];
  // tof_r=((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9])/2.0-(-RF1[15]+RF1[9]))*tdc_time;
@@ -291,20 +317,21 @@ T->SetBranchStatus("L.tr.beta",1);
 
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0) && cut_trig){
 hcoin_t->Fill(coin_t);
-hmm->Fill(mh);
+ hmm->Fill(mh);
+ hmm_c->Fill(mhc);
  hcoin_rpathl->Fill(rpathl,coin_t);
  }
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0)&& cut_ac1 && cut_trig){
 hcoin_t1->Fill(coin_t);
-hmm1->Fill(mh);
+hmm1->Fill(mhc);
  }
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0)&& cut_ac2 && cut_trig){
 hcoin_t2->Fill(coin_t);
-hmm2->Fill(mh);
+hmm2->Fill(mhc);
  }
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0)&&cut_ac1 && cut_ac2 && cut_trig){
 hcoin_t3->Fill(coin_t);
-hmm3->Fill(mh);
+hmm3->Fill(mhc);
  }
 
  if((Rs0r_tc[0]>0 && Rs0l_tc[0]>0) && ( Ls0r_tc[0]>0 && Ls0l_tc[0]>0)&&cut_ac1 && cut_ac2 && cut_trig && cut_beta)hcoin_tbeta->Fill(coin_t);
@@ -319,6 +346,9 @@ hmm3->Fill(mh);
 
    c0->cd();
  hmm->Draw();
+ hmm_c->SetLineColor(1);
+ hmm_c->Draw("same");
+ /*
  hmm1->SetLineColor(2);
  hmm1->Draw("same");
  hmm2->SetLineColor(3);
@@ -327,6 +357,7 @@ hmm3->Fill(mh);
  hmm3->Draw("same");
  hmm_ac->SetLineColor(2);
  hmm_ac->Draw("same");
+ */
  c1->cd();
  hcoin_t->Draw();
  hcoin_t1->SetLineColor(2);
@@ -345,6 +376,5 @@ crpathl->cd();
 
  theApp->Run();
  return 0;
-
 }
 

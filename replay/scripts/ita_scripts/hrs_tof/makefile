@@ -18,10 +18,11 @@ CXXLIBS = $(ROOTLIBS)
 
 TARGET1= hrs_S0_f1twcorr
 OBJS1=   hrs_S0_f1twcorr.o  
-TARGET2= hrs_S2_f1twcorr
-OBJS2=   hrs_S2_f1twcorr.o  
+TARGET2= hrs_RF_f1twcorr
+OBJS2=   hrs_RF_f1twcorr.o  
 TARGET3= hrs_S2_f1twcorr_ital
 OBJS3=   hrs_S2_f1twcorr_ital.o
+
 #TARGET4= hrs_RF_corr
 #OBJS4=   hrs_RF_corr.o
 #Setting.o Tree.o

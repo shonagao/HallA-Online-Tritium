@@ -5,9 +5,41 @@ Auther K. Itabashi
 Convert tritium_rootfile to missing mass hist
 */
 
+#include <iostream>
+#include <fstream>
+#include <math.h>
+#include <string>
+#include <time.h>
+#include <stdio.h>
+#include <unistd.h>
+using namespace std;
+#include "TApplication.h"
+#include "TH1F.h"
+#include "TH2F.h"
+#include "TF1.h"
+#include "TFile.h"
+#include "TLeaf.h"
+#include "TTree.h"
+#include "TCut.h"
+#include "TChain.h"
+#include "TCanvas.h"
+#include "TVector3.h"
+#include "TGraph.h"
+#include "TLine.h"
+#include "TLatex.h"
+#include "TText.h"
+#include "TStyle.h"
+#include "TROOT.h"
+#include "TGraphErrors.h"
+#include "TProfile.h"
+#include "TSystem.h"
+#include "TColor.h"
+#include "TPaveText.h"
+#include "TRandom.h"
 
-void conv(){
 
+int main(int argc, char** argv){
+  TApplication *theApp =new TApplication("App",&argc,argv);
   int target;
   target=0;
 
@@ -23,8 +55,8 @@ int nrun_st=111160;
  cin>>nrun_st;
  cout<<"End run : ";
  cin>>nrun_end; 
- cout<<"Target (H;0,3H;1,aother;-1) : ":
-   cin>>target;
+ cout<<"Target (H;0,3H;1,aother;-1) : ";
+ cin>>target;
 
   me=0.511e-3; //electron mass [GeV/c^2]
   mk=493.7e-3; //Kaon mass [GeV/c^2]
@@ -47,16 +79,16 @@ int nrun_st=111160;
 }
 
 }
- Char* tar;
- if(target==0){tar="Hydrogen target run"}else if(target==1){tar="Tritium target run"}else{tar="Optics run "}
+ char* tar;
+ if(target==0){tar="Hydrogen target run";}else if(target==1){tar="Tritium target run";}else{tar="Optics run ";}
   TTree* tnew = new TTree("T",Form("TChain %s: %d- %d ",tar,nrun_st,nrun_end));
   TFile* fnew;
   fnew =new TFile(Form("/adaqfs/home/a-onl/tritium/replay/t2root/itabashi/ita_rootfiles/tritium_ita%d_%d.root",nrun_st,nrun_end),"recreate");
 
 
- double Rsha[100],Rpsa[100],Rs0ra[100],Rs0la[100],Rs0lt[100],Rs0rt[100],Rs0lt_c[100],Rs0rt_c[100],Rs0la_p[100],Rs0ra_p[100],Rs2ra[100],Rs2la[100],Rs2lt[100],Rs2rt[100],Rs2lt_c[100],Rs2rt_c[100],Rs2la_p[100],Rs2ra_p[100];
+  double Rsha[100],Rpsa[100],Rs0ra[100],Rs0la[100],Rs0lt[100],Rs0rt[100],Rs0lt_c[100],Rs0rt_c[100],Rs0la_p[100],Rs0ra_p[100],Rs2ra[100],Rs2la[100],Rs2lt[100],Rs2rt[100],Rs2lt_c[100],Rs2rt_c[100],Rs2la_p[100],Rs2ra_p[100];
  double Lsha[100],Lpsa[10000],Ls0ra[10000],Ls0la[10000],Ls0lt[10000],Ls0rt[10000],Ls0lt_c[10000],Ls0rt_c[10000],Ls0la_p[10000],Ls0ra_p[10000],Ls2ra[10000],Ls2la[10000],Ls2lt[10000],Ls2rt[10000],Ls2lt_c[10000],Ls2rt_c[10000],Ls2la_p[10000],Ls2ra_p[100];
- double Rs0ra_c[1000],Rs0la_c[10000],Rs2ra_c[1000],Rs2la_c[1000],Ls0ra_c[1000],Ls0la_c[10000],Ls2ra_c[1000],Ls2la_c[1000];
+ double Rs0ra_c[1000],Rs0la_c[10000],Rs2ra_c[1000],Rs2la_c[1000],Ls0ra_c[1000],Ls0la_c[100],Ls2ra_c[100],Ls2la_c[100];
  double Ls2pads[100],Rs2pads[100];
  double Ls2rnhits[100],Rs2rnhits[100];
  double Ls2lnhits[100],Rs2lnhits[100];
@@ -67,12 +99,12 @@ int nrun_st=111160;
  double RF1[100],LF1[100];
  double Beam_p;
  double trig;
- double Rp[100],Rpx[10000],Rpy[10000];
- double Lp[100],Lpx[10000],Lpy[10000];
- double Rph[10000],Rth[10000];
- double Lph[10000],Lth[10000];
- double Rtr_pathl[10000],Ltr_pathl[10000];
- double Rs2_pathl[10000],Rs0_pathl[10000],Ls2_pathl[10000],Ls0_pathl[10000]; 
+ double Rp[100],Rpx[100],Rpy[100],Rvz[100];
+ double Lp[100],Lpx[100],Lpy[100],Lvz[100];
+ double Rph[100],Rth[100],Rx[100];
+ double Lph[100],Lth[100],Lx[100];
+ double Rtr_pathl[100],Ltr_pathl[100];
+ double Rs2_pathl[100],Rs0_pathl[100],Ls2_pathl[100],Ls0_pathl[100]; 
  double coin_time[100][100];
  double DRT1[100],DRT2[100],DRT3[100],DRT4[100],DRT5[100],DRT6[100]; 
  double DLT1[100],DLT2[100],DLT3[100],DLT4[100],DLT5[100],DLT6[100]; 
@@ -173,8 +205,8 @@ int nrun_st=111160;
   t1->SetBranchAddress("LTDC.F1FirstHit",LF1);     
   // Path Lenght //
   t1->SetBranchAddress("R.tr.pathl",Rtr_pathl);                                
-  t1->SetBranchAddress("R.s0.trpath",Rs0_pathl);                                
-  t1->SetBranchAddress("R.s2.trpath",Rs2_pathl);                                
+  t1->SetBranchAddress("R.s0.trpath",Rs0_pathl);                               
+  t1->SetBranchAddress("R.s2.trpath",Rs2_pathl);                               
   t1->SetBranchAddress("L.tr.pathl",Ltr_pathl);   
   t1->SetBranchAddress("L.s0.trpath",Ls0_pathl);     
   t1->SetBranchAddress("L.s2.trpath",Ls2_pathl);
@@ -186,10 +218,13 @@ int nrun_st=111160;
   t1->SetBranchAddress("R.tr.p",Rp);                       
   t1->SetBranchAddress("R.tr.px",Rpx);                       
   t1->SetBranchAddress("R.tr.py",Rpy);                       
+  t1->SetBranchAddress("R.tr.vz",Rvz);                       
   t1->SetBranchAddress("L.tr.p",Lp);                       
   t1->SetBranchAddress("L.tr.px",Lpx);                       
   t1->SetBranchAddress("L.tr.py",Lpy);                       
- 
+  t1->SetBranchAddress("R.tr.x",Rx);                       
+  t1->SetBranchAddress("L.tr.x",Lx);          
+  t1->SetBranchAddress("L.tr.vz",Lvz);
  ///======= particle information =================//
   // Beam //
   tnew->Branch("HALLA_p",&Beam_p,"Beam_p/D"); // Electron beam momentom
@@ -220,11 +255,15 @@ int nrun_st=111160;
  // F1TDC //
   tnew->Branch("RTDC.F1FirstHit",RF1,"RF1[100]/D");                                       
   tnew->Branch("LTDC.F1FirstHit",LF1,"LF1[100]/D");  
-  // at Target angle //
+  // at Target angle and Z potion//
   tnew->Branch("R.tr.th",Rth,"Rth[5]/D");  
   tnew->Branch("R.tr.ph",Rph,"Rph[5]/D");
   tnew->Branch("L.tr.th",Lth,"Lth[5]/D");  
   tnew->Branch("L.tr.ph",Lph,"Lph[5]/D");
+  tnew->Branch("R.tr.x",Rx,"Rx[5]/D");  
+  tnew->Branch("L.tr.x",Lx,"Lx[5]/D");  
+  tnew->Branch("R.tr.vz",Rx,"Rvz[5]/D");  
+  tnew->Branch("L.tr.vz",Rx,"Lvz[5]/D");   
  // Right Arm A1 //    
   tnew->Branch("R.a1.a",Ra1a,"Ra1a[23]/D"); // Right arm AC1 ADC 
   tnew->Branch("R.a1.t",Ra1t,"Ra1t[23]/D"); // Right arm AC1 TDC  
@@ -323,4 +362,8 @@ tnew->Branch("R.s2.la_c",Rs2la_c,"Rs2la[54]/D"); // Right arm S2-Top(B) ADC
    tnew->Write();
    fnew->Close();
 
+ theApp->Run();
+ return 0;
+
 }
+

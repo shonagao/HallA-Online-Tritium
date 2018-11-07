@@ -64,7 +64,7 @@ int main(int argc, char** argv){
   //cin>>nrun;
   cout<<"S2 Channel : ";
   cin>>ch;
-  cout<<"HRS Arm(R->0,L->1): ";
+  cout<<"HRS Arm(R [0] or L [1]): ";
   cin>>arm;
   for(int i=111170;i<111171;i++){
   //  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun)); // ifarm
