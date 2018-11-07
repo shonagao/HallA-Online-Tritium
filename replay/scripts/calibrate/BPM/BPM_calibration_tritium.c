@@ -88,8 +88,8 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
 	double xp, xm, yp, ym;
 //BMP pedestals
 	//char side = 'L';
-	double pedestal[9] = {0,17693,  17654,  17142,  17333, 22495, 21997, 18731, 19852};//Right
-	double pedestalL[9] ={0,17671,  18596,  18139,  19015, 22608, 21631, 18331, 16982};//Left
+	double pedestal[9] = {0,21555,  21597,  17680,  17862, 18709, 18164, 18133, 19282};//Right
+	double pedestalL[9] ={0,40104,  41127,  37065,  38051, 37145, 36042, 35977, 34630};//Left
 	
 	if(side=='L'){for(int i=0;i<9;i++){pedestal[i]=pedestalL[i];}}
 	
@@ -110,7 +110,7 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
 	double calib = 0.01887;
 
   //Day of harp runs in hall A
-  	char date[256] = {"05032018"};
+  	char date[256] = {"10302018"};
 	ifstream fi;
 	char Hresults[256];
 	sprintf(Hresults,"harp_results_%s.txt",date);
@@ -127,7 +127,7 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
    		fi>>run_number>>epics_number>>dum3>>dum4>>dum5>>dum6>>dum7>>dum8>>dum9>>dum10;
 		if(!fi.good()){break;}
 		cout<<"Will look at run "<< run_number<<endl;
-
+		if(run_number <=0)continue;
 	//Resize the harp and BMP vectors- add one element to the vector length for each loop, or each harp scan.   	
 		hax.ResizeTo(numofscans+1); hbx.ResizeTo(numofscans+1); 
 		hay.ResizeTo(numofscans+1); hby.ResizeTo(numofscans+1);
@@ -137,7 +137,7 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
 	//Store the harp locations
 		hax(numofscans)=dum3*1e-3; hay(numofscans)=dum5*1e-3;
 		hbx(numofscans)=dum7*1e-3; hby(numofscans)=dum9*1e-3;
-	
+		
 		//Input file from harp scans
 		filein = TFile::Open(Form("%s/%s_%d.root",root_dir,exp,run_number));
 		T =(TTree*) filein->Get("T");
@@ -149,10 +149,11 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
 	////Setting up the branches and the histograms to be used!
 	T->SetBranchStatus("*",0);
 	//T->SetBranchStatus("right_clkcount",1);
-	T->SetBranchStatus("*RrbGmp*",1);
-	T->SetBranchStatus("*LrbGmp*",1);
+//	T->SetBranchStatus("*RrbGmp*",1);
+//	T->SetBranchStatus("*LrbGmp*",1);
 	T->SetBranchStatus("*Rrb*",1);
 	T->SetBranchStatus("*Lrb*",1);	
+	T->SetBranchStatus("ev*dnew*",1);
 	
 	T->SetBranchStatus("hac_bcm_average",1);
 	double BCM_avg;
@@ -170,7 +171,11 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
 	c1[numofscans]->cd(1);
 
 	//Event[numofscans]="right_clkcount>=%f&&right_clkcount<=%f",BCMcuts[numofscans][0],BCMcuts[numofscans][1];
-	TCut current = Form("hac_bcm_average>=%f",cur[numofscans]);
+	string ARM="";
+	if(side=='R')ARM="Right";
+	else ARM="Left";
+	if(run_number>=100000) ARM="Right";
+	TCut current = "1";//Form("ev%sdnew_r>=2.0",ARM.c_str());//Form("hac_bcm_average>=%f",cur[numofscans]);
 	
 
 		///// Calculate the BPM postion from the 4 differrent wire signals, xp,xm,yp,ym!	
@@ -200,7 +205,7 @@ void BPM_calibration_tritium (char side ='R', int quiet =1){
 	//Fit the raw BPM signal with a gausian to extract a value for the peak. 						
 	//
 			TString drawop ="Q";
-			if(quiet==0)drawop="";
+//			if(quiet==0)drawop="";
 			H[m]->Fit("gaus","Q","",peak[m]-600, peak[m]+600);
         	Sigma[m] = H[m]->GetFunction("gaus")->GetParameter(2);
 			H[m]->Fit("gaus",Form("%s",drawop.Data()),"",peak[m]-2.5*Sigma[m], peak[m]+2.5*Sigma[m]);
@@ -353,6 +358,22 @@ cout<<"Please change the " << side <<" BPMB constants to:"<<endl;
 
 cout<<solu3(0)<<" "<<solu3(1)<<" "<<solu4(0)<<" "<<solu4(1)<<" "<<solu3(2)<<" "<<solu4(2)<<endl;
  cout <<"\n\n\n\n";
+
+
+	for(int i =0; i<numofscans;i++){
+		 double nax = (bax(i)*solu1(0) +bay(i)*solu1(1)) + solu1(2); 
+		 double nay = (bax(i)*solu2(0) +bay(i)*solu2(1)) + solu2(2); 
+		 double nbx = (bbx(i)*solu3(0) +bby(i)*solu3(1)) + solu3(2); 
+		 double nby = (bbx(i)*solu4(0) +bby(i)*solu4(1)) + solu4(2);
+		nax*=1000; 
+		nay*=1000; 
+		nbx*=1000; 
+		nby*=1000; 
+
+		cout << "POS:: " <<i << "  "<< nax <<" "<< nay<<" " <<nbx<<" "<<nby<<endl;
+		cout << "diff  " <<  nax - hax(i)*1000 << " "<<nay - hay(i)*1000 << " "<<nbx - hbx(i)*1000 << " "<<nby - hby(i)*1000 << " "<<endl;
+}
+
 //////////////////////////////////////////////////////////////////
 /*
 //Calibration without offsets
