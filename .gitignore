@@ -14,14 +14,10 @@ replay/scripts/FADC_decode/*
 replay/scripts/list/*.pdf
 replay/scripts/ita_scripts/hrs_vdc/*.pdf
 replay/scripts/toyamacro/pdf/
-<<<<<<< HEAD
 relay/scripts/toyamacro/Rootfiles*
 relay/scripts/toyamacro/pdf*
-=======
 repalay/scripts/ita_scripts/hrs_tof/pdf*
 repaly/t2root/*
-
->>>>>>> fae6028a8660965e5b399f91135bb1223f6c4fe6
 **/*~
 **/*.o
 **/*.a

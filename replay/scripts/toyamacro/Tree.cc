@@ -183,6 +183,35 @@ void Tree::readtreeF1TDCL()
   tree->SetBranchStatus("LTDC.F1FirstHit"      ,1);  tree->SetBranchAddress("LTDC.F1FirstHit"      , LTDC_F1FirstHit);
 }
 //////////////////////////////////////////////////
+void Tree::convertF1TDCL(ParamMan *param)
+{
+
+  LF1Ref[0] = LTDC_F1FirstHit[30];
+  LF1Ref[1] = LTDC_F1FirstHit[37];
+  //S2
+  for(int i=0;i<LS2;i++){
+    LS2T_F1TDC[i]  =  LTDC_F1FirstHit[i];
+    LS2B_F1TDC[i]  =  LTDC_F1FirstHit[i+48];
+    LS2T_F1time[i] = param->time(1,i,0,0, LS2T_F1TDC[i] - LTDC_F1FirstHit[30]  );
+    LS2B_F1time[i] = param->time(1,i,0,1, LS2B_F1TDC[i] - LTDC_F1FirstHit[37] );
+    LS2_F1time[i]  = 0.5*(LS2T_F1time[i] + LS2B_F1time[i]);
+  }
+
+  //S0
+  for(int i=0;i<LS0;i++){
+    LS0T_F1TDC[i]  =  LTDC_F1FirstHit[i+27];
+    LS0B_F1TDC[i]  =  LTDC_F1FirstHit[i+28];
+    LS0T_F1time[i] = param->time(2,i,0,0, LS0T_F1TDC[i] - LTDC_F1FirstHit[37]  );
+    LS0B_F1time[i] = param->time(2,i,0,1, LS0B_F1TDC[i] - LTDC_F1FirstHit[37] );
+    LS0_F1time[i]  = 0.5*(LS0T_F1time[i] + LS0B_F1time[i]);
+  }
+
+  //RF
+  LRF_F1time = param->time(3,0,0,0, LTDC_F1FirstHit[37] - LTDC_F1FirstHit[37]  );
+
+}
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
 void Tree::readtreeS0R()
 {
   tree->SetBranchStatus("R.s0.la"              ,1);  tree->SetBranchAddress("R.s0.la"              , R_s0_la             );
@@ -222,7 +251,7 @@ void Tree::readtreeS0R()
 //////////////////////////////////////////////////
 void Tree::readtreeS2R()
 {
-  cout<<"Tree::readtreeS2R"<<endl;
+  //cout<<"Tree::readtreeS2R"<<endl;
   tree->SetBranchStatus("R.s2.la"              ,1);  tree->SetBranchAddress("R.s2.la"              , R_s2_la             );
   tree->SetBranchStatus("R.s2.la_c"            ,1);  tree->SetBranchAddress("R.s2.la_c"            , R_s2_la_c           );
   tree->SetBranchStatus("R.s2.la_p"            ,1);  tree->SetBranchAddress("R.s2.la_p"            , R_s2_la_p           );
@@ -256,6 +285,7 @@ void Tree::readtreeS2R()
   tree->SetBranchStatus("R.s2.rbadped"         ,1);  tree->SetBranchAddress("R.s2.rbadped"         , R_s2_rbadped        );
   tree->SetBranchStatus("R.s2.runderflow"      ,1);  tree->SetBranchAddress("R.s2.runderflow"      , R_s2_runderflow     );
   tree->SetBranchStatus("R.s2.roverflow"       ,1);  tree->SetBranchAddress("R.s2.roverflow"       , R_s2_roverflow      );
+  tree->SetBranchStatus("DR.rtRFtime"          ,1);  tree->SetBranchAddress("DR.rtRFtime"          , R_rtRFtime          );
 }                                 
 //////////////////////////////////////////////////
 void Tree::readtreeA1R(){
@@ -340,6 +370,9 @@ void Tree::readtreeF1TDCR()
 //////////////////////////////////////////////////
 void Tree::convertF1TDCR(ParamMan *param)
 {
+
+  RF1Ref[0]=RTDC_F1FirstHit[9] ;
+  RF1Ref[1]=RTDC_F1FirstHit[46];
   //S2
   for(int i=0;i<RS2;i++){
     RS2T_F1TDC[i]  =  RTDC_F1FirstHit[i+16];

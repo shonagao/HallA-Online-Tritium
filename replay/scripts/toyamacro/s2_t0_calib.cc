@@ -160,7 +160,7 @@ void s2_t0_calib::makehist(){
     h_s2s0_tdiff[i]    = new TH1F(Form("h_s2s0_tdiff%d",i)   , Form("h_s2s0_tdiff%d",i)    ,800,-100,100);
     h_s2s0_beta_FB[i]  = new TH1F(Form("h_s2s0_beta_FB%d",i) , Form("h_s2s0_beta_FB%d",i)  ,200,  -1,1.5);
     h_s2s0_tof_FB[i]   = new TH1F(Form("h_s2s0_tof_FB%d",i)  , Form("h_s2s0_tof_FB%d",i)   ,800,-100,100);
-    h_s2s0_tdiff_FB[i] = new TH1F(Form("h_s2s0_tdiff_FB%d",i), Form("h_s2s0_tdiff_FB%d",i) ,400, -10, 10);
+    h_s2s0_tdiff_FB[i] = new TH1F(Form("h_s2s0_tdiff_FB%d",i), Form("h_s2s0_tdiff_FB%d",i) ,50, -10, 10);
     set->SetTH1(h_s2s0_beta[i]      ,Form("#beta S2%s%d - S0(F1)"              ,LorR.c_str(),i),"#beta"    ,"counts");
     set->SetTH1(h_s2s0_tof[i]       ,Form("ToF S2%s%d - S0"                    ,LorR.c_str(),i),"ToF[ns]"  ,"counts");
     set->SetTH1(h_s2s0_tdiff[i]     ,Form("TDiff (S2%s%d - S0) - ToF calc"     ,LorR.c_str(),i),"Tdiff[ns]","counts");
@@ -198,6 +198,7 @@ void s2_t0_calib::loop(){
             h_s2s0_beta[i]  ->Fill(betaF1[j]);
           }
           if(FbusHits){
+            //cout<<"Fbus hit " <<S2_time[i] - S0_time[0]<<endl;
             h_s2s0_tdiff_FB[i] ->Fill(S2_time[i] - S0_time[0] + paths2s0[j]/LightVelocity);
             h_s2s0_tof_FB[i]   ->Fill(S2_time[i] - S0_time[0]);
             h_s2s0_beta_FB[i]  ->Fill(beta[j]);
@@ -261,32 +262,14 @@ void s2_t0_calib::fit(){
   set->SetTH2(h_frame[2] , "TDiff peak pos each S2(F1TDC)","S2 paddle","TDiff peak[ns]" );
   set->SetTH2(h_frame[3] , "TDiff width each S2(F1TDC)"   ,"S2 paddle","TDiff width[ns]");
 
-  for(int i=0;i<16;i++){
-    ga_tdiffF1[i] = new TF1(Form("ga_tdiffF1%d",i+1),"gaus",-2,2);
-    set->SetTF1(ga_tdiffF1[i],2,1,1);
-    double min=-50,max=50;
-    min = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) -3.;
-    max = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) +3.;
-    set->FitGaus(h_s2s0_tof[i],min,max,1.5,5);
-    h_s2s0_tof[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
-    tdiffF1_pos[i]  = ga_tdiffF1[i]->GetParameter(1);
-    tdiffF1_wid[i]  = ga_tdiffF1[i]->GetParameter(2);
-    etdiffF1_pos[i] = ga_tdiffF1[i]->GetParError(1);
-    etdiffF1_wid[i] = ga_tdiffF1[i]->GetParError(2);;
-
-    tg_tdiffF1_pos ->SetPoint(i,i,tdiffF1_pos[i]); 
-    tg_tdiffF1_wid ->SetPoint(i,i,tdiffF1_wid[i]);
-    tg_tdiffF1_pos ->SetPointError(i,0,etdiffF1_pos[i]); 
-    tg_tdiffF1_wid ->SetPointError(i,0,etdiffF1_wid[i]);
-  }
   //for(int i=0;i<16;i++){
   //  ga_tdiffF1[i] = new TF1(Form("ga_tdiffF1%d",i+1),"gaus",-2,2);
   //  set->SetTF1(ga_tdiffF1[i],2,1,1);
   //  double min=-50,max=50;
-  //  min = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) -3.;
-  //  max = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) +3.;
-  //  set->FitGaus(h_s2s0_tdiff[i],min,max,1.5,5);
-  //  h_s2s0_tdiff[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
+  //  min = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) -3.;
+  //  max = h_s2s0_tof[i]->GetXaxis()->GetBinCenter(h_s2s0_tof[i]->GetMaximumBin()) +3.;
+  //  set->FitGaus(h_s2s0_tof[i],min,max,1.5,5);
+  //  h_s2s0_tof[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
   //  tdiffF1_pos[i]  = ga_tdiffF1[i]->GetParameter(1);
   //  tdiffF1_wid[i]  = ga_tdiffF1[i]->GetParameter(2);
   //  etdiffF1_pos[i] = ga_tdiffF1[i]->GetParError(1);
@@ -296,10 +279,28 @@ void s2_t0_calib::fit(){
   //  tg_tdiffF1_wid ->SetPoint(i,i,tdiffF1_wid[i]);
   //  tg_tdiffF1_pos ->SetPointError(i,0,etdiffF1_pos[i]); 
   //  tg_tdiffF1_wid ->SetPointError(i,0,etdiffF1_wid[i]);
-  //  
-  //  param->SetTimeTune(CID_F1S2,i,LR,0,tdiffF1_pos[i]);
-  //  param->SetTimeTune(CID_F1S2,i,LR,1,tdiffF1_pos[i]);
   //}
+  for(int i=0;i<16;i++){
+    ga_tdiffF1[i] = new TF1(Form("ga_tdiffF1%d",i+1),"gaus",-2,2);
+    set->SetTF1(ga_tdiffF1[i],2,1,1);
+    double min=-50,max=50;
+    min = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) -3.;
+    max = h_s2s0_tdiff[i]->GetXaxis()->GetBinCenter(h_s2s0_tdiff[i]->GetMaximumBin()) +3.;
+    set->FitGaus(h_s2s0_tdiff[i],min,max,1.5,5);
+    h_s2s0_tdiff[i]->Fit(ga_tdiffF1[i],"QR","",min,max);
+    tdiffF1_pos[i]  = ga_tdiffF1[i]->GetParameter(1);
+    tdiffF1_wid[i]  = ga_tdiffF1[i]->GetParameter(2);
+    etdiffF1_pos[i] = ga_tdiffF1[i]->GetParError(1);
+    etdiffF1_wid[i] = ga_tdiffF1[i]->GetParError(2);;
+
+    tg_tdiffF1_pos ->SetPoint(i,i,tdiffF1_pos[i]); 
+    tg_tdiffF1_wid ->SetPoint(i,i,tdiffF1_wid[i]);
+    tg_tdiffF1_pos ->SetPointError(i,0,etdiffF1_pos[i]); 
+    tg_tdiffF1_wid ->SetPointError(i,0,etdiffF1_wid[i]);
+    
+    param->SetTimeTune(CID_F1S2,i,LR,0,tdiffF1_pos[i]);
+    param->SetTimeTune(CID_F1S2,i,LR,1,tdiffF1_pos[i]);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////
 void s2_t0_calib::draw(){
@@ -363,7 +364,44 @@ void s2_t0_calib::savecanvas(string ofname){
 }
 ////////////////////////////////////////////////////////////////////////////
 bool s2_t0_calib::anaL_oneevent(){
-return false;
+  convertF1TDCL(param);
+
+  tr_n = (int)L_tr_n;
+  //cout<<"tr_n" <<tr_n<<endl;
+  if(tr_n>MAX)tr_n=MAX;
+
+  for(int i=0;i<tr_n;i++){
+  //cout<<"s2_trpad : "<<R_s2_trpad[i]<<endl;
+    s2_trpad[i]=L_s2_trpad[i];
+    paths2s0[i]=L_s2_trpath[i] - L_s0_trpath[i];
+    beta[i]    =L_tr_beta[i];
+    //betaF1[i]  =GetBeta_S0S2wF1TDCL(i);
+  }
+
+  for(int i=0;i<LS2;i++){
+    //F1TDC
+    S2T_F1TDC[i] = LS2T_F1TDC[i];
+    S2B_F1TDC[i] = LS2B_F1TDC[i];
+    S2_F1time[i] = LS2_F1time[i];
+    //Fbus TDC
+    S2_time[i]   = 1.e+9*L_s2_time[i];
+    S2_lt[i]     = L_s2_lt[i];
+    S2_rt[i]     = L_s2_rt[i];
+  }
+  for(int i=0;i<LS0;i++){
+    //F1TDC
+    S0T_F1TDC[i] = LS0T_F1TDC[i];
+    S0B_F1TDC[i] = LS0B_F1TDC[i];
+    S0_F1time[i] = LS0_F1time[i];
+    //Fbus TDC
+    S0_time[i]   = 1.e+9*L_s0_time[i];
+    S0_lt[i]     = L_s0_lt[i];
+    S0_rt[i]     = L_s0_rt[i];
+  }
+
+
+  if(DR_T5>0. ) return true;
+  else return false;
 }
 ////////////////////////////////////////////////////////////////////////////
 bool s2_t0_calib::anaR_oneevent(){
@@ -405,7 +443,7 @@ bool s2_t0_calib::anaR_oneevent(){
   }
 
 
-  if(DR_T4>0. ) return true;
+  if(DR_T5>0. ) return true;
   else return false;
 }
 ////////////////////////////////////////////////////////////////////////////

@@ -23,6 +23,12 @@ TARGET5=     draw_s2tof
 OBJS5=       draw_s2tof.o Tree.o ParamMan.o Setting.o
 TARGET6=     fbus_t0_rough
 OBJS6=       fbus_t0_rough.o Tree.o ParamMan.o Setting.o
+TARGET7=     ana_cointime
+OBJS7=       ana_cointime.o Tree.o Setting.o ParamMan.o
+TARGET8=     calc_charge
+OBJS8=       calc_charge.o
+TARGET9=     f1_t0_rough
+OBJS9=       f1_t0_rough.o Tree.o ParamMan.o Setting.o
 
 all: $(TARGET1) \
      $(TARGET2) \
@@ -30,6 +36,9 @@ all: $(TARGET1) \
      $(TARGET4) \
      $(TARGET5) \
      $(TARGET6) \
+     $(TARGET7) \
+     $(TARGET8) \
+     $(TARGET9) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -52,6 +61,14 @@ $(TARGET5): $(patsubst %,$(LIBDIR)/%,$(OBJS5))
 $(TARGET6): $(patsubst %,$(LIBDIR)/%,$(OBJS6))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
+$(TARGET7): $(patsubst %,$(LIBDIR)/%,$(OBJS7))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET8): $(patsubst %,$(LIBDIR)/%,$(OBJS8))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET9): $(patsubst %,$(LIBDIR)/%,$(OBJS9))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean
 clean:

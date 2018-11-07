@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////
-//t0 calibration of S0&S2 Fbus(rough parameter as 1st step) //
-//                                    by Y. Toyama Oct. 2018//
+//t0 calibration of S0&S2 F1TDC(rough parameter as 1st step)//
+//                                    by Y. Toyama Nov. 2018//
 //////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -49,11 +49,11 @@ using namespace std;
 
 const int NCanvas = 5;//num of canvas
 
-class fbus_t0_rough : public Tree
+class f1tdc_t0_rough : public Tree
 {
  public:
-         fbus_t0_rough();
-        ~fbus_t0_rough();
+         f1tdc_t0_rough();
+        ~f1tdc_t0_rough();
   void makehist();
   void loop();
   void fit();
@@ -79,7 +79,7 @@ class fbus_t0_rough : public Tree
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-fbus_t0_rough::fbus_t0_rough()
+f1tdc_t0_rough::f1tdc_t0_rough()
 {
 
   gErrorIgnoreLevel = kError;
@@ -125,125 +125,127 @@ fbus_t0_rough::fbus_t0_rough()
   arrow ->SetLineWidth(1);
 }
 ////////////////////////////////////////////////////////////////////////////
-fbus_t0_rough::~fbus_t0_rough(){
+f1tdc_t0_rough::~f1tdc_t0_rough(){
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::SetRoot(string ifname){
+void f1tdc_t0_rough::SetRoot(string ifname){
   add_tree(ifname);
   pack_tree();
-  readtreeS0R();
-  readtreeS2R();
-  readtreeS0L();
-  readtreeS2L();
+  readtreeF1TDCL();
+  readtreeF1TDCR();
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::WriteParam(string ofname){
+void f1tdc_t0_rough::WriteParam(string ofname){
   param->WriteToFile(ofname.c_str());
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::makehist(){
+void f1tdc_t0_rough::makehist(){
 
   for(int i=0;i<16;i++){
-    h_Rs2t[i]     = new TH1F(Form("h_Rs2t%d",i)    , Form("h_Rs2t%d",i)     ,1000,   0,4000);
-    h_Rs2b[i]     = new TH1F(Form("h_Rs2b%d",i)    , Form("h_Rs2b%d",i)     ,1000,   0,4000);
-    h_Ls2t[i]     = new TH1F(Form("h_Ls2t%d",i)    , Form("h_Ls2t%d",i)     ,1000,   0,4000);
-    h_Ls2b[i]     = new TH1F(Form("h_Ls2b%d",i)    , Form("h_Ls2b%d",i)     ,1000,   0,4000);
-    set->SetTH1(h_Rs2t[i]      ,Form("TDC S2R%d top"              ,i),"TDC [ch]"    ,"counts");
-    set->SetTH1(h_Rs2b[i]      ,Form("TDC S2R%d bottom"           ,i),"TDC [ch]"    ,"counts");
-    set->SetTH1(h_Ls2t[i]      ,Form("TDC S2L%d top"              ,i),"TDC [ch]"    ,"counts");
-    set->SetTH1(h_Ls2b[i]      ,Form("TDC S2L%d bottom"           ,i),"TDC [ch]"    ,"counts");
+    h_Rs2t[i]     = new TH1F(Form("h_Rs2t%d",i)    , Form("h_Rs2t%d",i)     , 400,-15000,    0);
+    h_Rs2b[i]     = new TH1F(Form("h_Rs2b%d",i)    , Form("h_Rs2b%d",i)     , 400,-15000,    0);
+    h_Ls2t[i]     = new TH1F(Form("h_Ls2t%d",i)    , Form("h_Ls2t%d",i)     , 400,-20000,-5000);
+    h_Ls2b[i]     = new TH1F(Form("h_Ls2b%d",i)    , Form("h_Ls2b%d",i)     , 400,-20000,-5000);
+    set->SetTH1(h_Rs2t[i]      ,Form("F1TDC S2R%d top"              ,i),"TDC [ch]"    ,"counts");
+    set->SetTH1(h_Rs2b[i]      ,Form("F1TDC S2R%d bottom"           ,i),"TDC [ch]"    ,"counts");
+    set->SetTH1(h_Ls2t[i]      ,Form("F1TDC S2L%d top"              ,i),"TDC [ch]"    ,"counts");
+    set->SetTH1(h_Ls2b[i]      ,Form("F1TDC S2L%d bottom"           ,i),"TDC [ch]"    ,"counts");
   }
 
-  h_Rs0t     = new TH1F("h_Rs2t%d"    , "h_Rs2t%d"     ,1000,   0,4000);
-  h_Rs0b     = new TH1F("h_Rs2b%d"    , "h_Rs2b%d"     ,1000,   0,4000);
-  h_Ls0t     = new TH1F("h_Ls2t%d"    , "h_Ls2t%d"     ,1000,   0,4000);
-  h_Ls0b     = new TH1F("h_Ls2b%d"    , "h_Ls2b%d"     ,1000,   0,4000);
-  set->SetTH1(h_Rs0t      ,"TDC S0R top"     ,"TDC [ch]"    ,"counts");
-  set->SetTH1(h_Rs0b      ,"TDC S0R bottom"  ,"TDC [ch]"    ,"counts");
-  set->SetTH1(h_Ls0t      ,"TDC S0L top"     ,"TDC [ch]"    ,"counts");
-  set->SetTH1(h_Ls0b      ,"TDC S0L bottom"  ,"TDC [ch]"    ,"counts");
+  h_Rs0t     = new TH1F("h_Rs2t%d"    , "h_Rs2t%d"     , 400, -15000,    0);
+  h_Rs0b     = new TH1F("h_Rs2b%d"    , "h_Rs2b%d"     , 400, -15000,    0);
+  h_Ls0t     = new TH1F("h_Ls2t%d"    , "h_Ls2t%d"     , 400, -20000,-5000);
+  h_Ls0b     = new TH1F("h_Ls2b%d"    , "h_Ls2b%d"     , 400, -20000,-5000);
+  set->SetTH1(h_Rs0t      ,"F1TDC S0R top"     ,"TDC [ch]"    ,"counts");
+  set->SetTH1(h_Rs0b      ,"F1TDC S0R bottom"  ,"TDC [ch]"    ,"counts");
+  set->SetTH1(h_Ls0t      ,"F1TDC S0L top"     ,"TDC [ch]"    ,"counts");
+  set->SetTH1(h_Ls0b      ,"F1TDC S0L bottom"  ,"TDC [ch]"    ,"counts");
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::loop(){
+void f1tdc_t0_rough::loop(){
 
   if( GetMaxEvent()>0 && GetMaxEvent()<ENum) ENum = GetMaxEvent();
   for(int n=0;n<ENum;n++){
-    if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
+    if(n%10000==0)cout<<n <<" / "<<ENum<<endl;
+    convertF1TDCR(param);
+    convertF1TDCL(param);
     tree->GetEntry(n);
 
-    //S0
-    if(R_s0_rt[0]>1. && DR_T5>1.)h_Rs0t ->Fill(R_s0_rt[0]);
-    if(R_s0_lt[0]>1. && DR_T5>1.)h_Rs0b ->Fill(R_s0_lt[0]);
-    if(L_s0_rt[0]>1. && DR_T5>1.)h_Ls0t ->Fill(L_s0_rt[0]);
-    if(L_s0_lt[0]>1. && DR_T5>1.)h_Ls0b ->Fill(L_s0_lt[0]);
+    if(LF1Ref[0]>1.&&LF1Ref[1]>1.&&RF1Ref[0]>1.&&RF1Ref[1]>1.){
+      //S0
+      if(RS0T_F1TDC[0]>1. && DR_T5>1.)h_Rs0t ->Fill(RS0T_F1TDC[0]-RF1Ref[1]);
+      if(RS0B_F1TDC[0]>1. && DR_T5>1.)h_Rs0b ->Fill(RS0B_F1TDC[0]-RF1Ref[1]);
+      if(LS0T_F1TDC[0]>1. && DR_T5>1.)h_Ls0t ->Fill(LS0T_F1TDC[0]-LF1Ref[1]);
+      if(LS0B_F1TDC[0]>1. && DR_T5>1.)h_Ls0b ->Fill(LS0B_F1TDC[0]-LF1Ref[1]);
 
-    //S2
-    for(int i=0;i<16;i++){
-      if(R_s2_rt[i]>1. && DR_T5>1.)h_Rs2t[i] ->Fill(R_s2_rt[i]);
-      if(R_s2_lt[i]>1. && DR_T5>1.)h_Rs2b[i] ->Fill(R_s2_lt[i]);
-      if(L_s2_rt[i]>1. && DR_T5>1.)h_Ls2t[i] ->Fill(L_s2_rt[i]);
-      if(L_s2_lt[i]>1. && DR_T5>1.)h_Ls2b[i] ->Fill(L_s2_lt[i]);
+      //S2
+      for(int i=0;i<16;i++){
+        if(RS2T_F1TDC[i]>1. && DR_T5>1.)h_Rs2t[i] ->Fill(RS2T_F1TDC[i]-RF1Ref[0]);
+        if(RS2B_F1TDC[i]>1. && DR_T5>1.)h_Rs2b[i] ->Fill(RS2B_F1TDC[i]-RF1Ref[1]);
+        if(LS2T_F1TDC[i]>1. && DR_T5>1.)h_Ls2t[i] ->Fill(LS2T_F1TDC[i]-LF1Ref[0]);
+        if(LS2B_F1TDC[i]>1. && DR_T5>1.)h_Ls2b[i] ->Fill(LS2B_F1TDC[i]-LF1Ref[1]);
+      }
     }
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::fit(){
-  param->SetTdcOffset(CID_FbS0,0,1,0,h_Rs0t ->GetXaxis()->GetBinCenter(h_Rs0t ->GetMaximumBin()));
-  param->SetTdcOffset(CID_FbS0,0,1,1,h_Rs0b ->GetXaxis()->GetBinCenter(h_Rs0b ->GetMaximumBin()));
-  param->SetTdcOffset(CID_FbS0,0,0,0,h_Ls0t ->GetXaxis()->GetBinCenter(h_Ls0t ->GetMaximumBin()));
-  param->SetTdcOffset(CID_FbS0,0,0,1,h_Ls0b ->GetXaxis()->GetBinCenter(h_Ls0b ->GetMaximumBin()));
+void f1tdc_t0_rough::fit(){
+  param->SetTdcOffset(CID_F1S0,0,1,0,h_Rs0t ->GetXaxis()->GetBinCenter(h_Rs0t ->GetMaximumBin()));
+  param->SetTdcOffset(CID_F1S0,0,1,1,h_Rs0b ->GetXaxis()->GetBinCenter(h_Rs0b ->GetMaximumBin()));
+  param->SetTdcOffset(CID_F1S0,0,0,0,h_Ls0t ->GetXaxis()->GetBinCenter(h_Ls0t ->GetMaximumBin()));
+  param->SetTdcOffset(CID_F1S0,0,0,1,h_Ls0b ->GetXaxis()->GetBinCenter(h_Ls0b ->GetMaximumBin()));
 
   for(int i=0;i<16;i++){
-    param->SetTdcOffset(CID_FbS2,i,1,0,h_Rs2t[i] ->GetXaxis()->GetBinCenter(h_Rs2t[i] ->GetMaximumBin()));
-    param->SetTdcOffset(CID_FbS2,i,1,1,h_Rs2b[i] ->GetXaxis()->GetBinCenter(h_Rs2b[i] ->GetMaximumBin()));
-    param->SetTdcOffset(CID_FbS2,i,0,0,h_Ls2t[i] ->GetXaxis()->GetBinCenter(h_Ls2t[i] ->GetMaximumBin()));
-    param->SetTdcOffset(CID_FbS2,i,0,1,h_Ls2b[i] ->GetXaxis()->GetBinCenter(h_Ls2b[i] ->GetMaximumBin()));
+    param->SetTdcOffset(CID_F1S2,i,1,0,h_Rs2t[i] ->GetXaxis()->GetBinCenter(h_Rs2t[i] ->GetMaximumBin()));
+    param->SetTdcOffset(CID_F1S2,i,1,1,h_Rs2b[i] ->GetXaxis()->GetBinCenter(h_Rs2b[i] ->GetMaximumBin()));
+    param->SetTdcOffset(CID_F1S2,i,0,0,h_Ls2t[i] ->GetXaxis()->GetBinCenter(h_Ls2t[i] ->GetMaximumBin()));
+    param->SetTdcOffset(CID_F1S2,i,0,1,h_Ls2b[i] ->GetXaxis()->GetBinCenter(h_Ls2b[i] ->GetMaximumBin()));
   }
 
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::draw(){
+void f1tdc_t0_rough::draw(){
 
   c[0]->Clear();c[0]->Divide(2,2);
-  c[0]->cd(1);h_Rs0t ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_FbS0,0,1,0),1,param->GetTdcOffset(CID_FbS0,0,1,0),10,0.01,"<|");
-  c[0]->cd(2);h_Rs0b ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_FbS0,0,1,1),1,param->GetTdcOffset(CID_FbS0,0,1,1),10,0.01,"<|");
+  c[0]->cd(1);h_Rs0t ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_F1S0,0,1,0),1,param->GetTdcOffset(CID_F1S0,0,1,0),10,0.01,"<|");
+  c[0]->cd(2);h_Rs0b ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_F1S0,0,1,1),1,param->GetTdcOffset(CID_F1S0,0,1,1),10,0.01,"<|");
 
-  c[0]->cd(3);h_Ls0t ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_FbS0,0,0,0),1,param->GetTdcOffset(CID_FbS0,0,0,0),10,0.01,"<|");
+  c[0]->cd(3);h_Ls0t ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_F1S0,0,0,0),1,param->GetTdcOffset(CID_F1S0,0,0,0),10,0.01,"<|");
 
-  c[0]->cd(4);h_Ls0b ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_FbS0,0,0,1),1,param->GetTdcOffset(CID_FbS0,0,0,1),10,0.01,"<|");
+  c[0]->cd(4);h_Ls0b ->Draw();arrow ->DrawArrow(param->GetTdcOffset(CID_F1S0,0,0,1),1,param->GetTdcOffset(CID_F1S0,0,0,1),10,0.01,"<|");
 
 
   c[1]->Clear();c[1]->Divide(4,4);
   for(int i=0;i<16;i++){
     c[1]->cd(i+1);gPad->SetLogy(1);h_Rs2t[i]->Draw();
-    arrow ->DrawArrow(param->GetTdcOffset(CID_FbS2,i,1,0),1,param->GetTdcOffset(CID_FbS2,i,1,0),10,0.01,"<|");
+    arrow ->DrawArrow(param->GetTdcOffset(CID_F1S2,i,1,0),1,param->GetTdcOffset(CID_F1S2,i,1,0),10,0.01,"<|");
   }
 
   c[2]->Clear();c[2]->Divide(4,4);
   for(int i=0;i<16;i++){
     c[2]->cd(i+1);gPad->SetLogy(1);h_Rs2b[i]->Draw();
-    arrow ->DrawArrow(param->GetTdcOffset(CID_FbS2,i,1,1),1,param->GetTdcOffset(CID_FbS2,i,1,1),10,0.01,"<|");
+    arrow ->DrawArrow(param->GetTdcOffset(CID_F1S2,i,1,1),1,param->GetTdcOffset(CID_F1S2,i,1,1),10,0.01,"<|");
   }
 
   c[3]->Clear();c[3]->Divide(4,4);
   for(int i=0;i<16;i++){
     c[3]->cd(i+1);gPad->SetLogy(1);h_Ls2t[i]->Draw();
-    arrow ->DrawArrow(param->GetTdcOffset(CID_FbS2,i,0,0),1,param->GetTdcOffset(CID_FbS2,i,0,0),10,0.01,"<|");
+    arrow ->DrawArrow(param->GetTdcOffset(CID_F1S2,i,0,0),1,param->GetTdcOffset(CID_F1S2,i,0,0),10,0.01,"<|");
   }
 
   c[4]->Clear();c[4]->Divide(4,4);
   for(int i=0;i<16;i++){
     c[4]->cd(i+1);gPad->SetLogy(1);h_Ls2b[i]->Draw();
-    arrow ->DrawArrow(param->GetTdcOffset(CID_FbS2,i,0,1),1,param->GetTdcOffset(CID_FbS2,i,0,1),10,0.01,"<|");
+    arrow ->DrawArrow(param->GetTdcOffset(CID_F1S2,i,0,1),1,param->GetTdcOffset(CID_F1S2,i,0,1),10,0.01,"<|");
   }
 
   
 }
 ////////////////////////////////////////////////////////////////////////////
-void fbus_t0_rough::savecanvas(string ofname){
+void f1tdc_t0_rough::savecanvas(string ofname){
   c[0]->Print(Form("%s[",ofname.c_str()) );
   for(int i=0;i<NCanvas;i++){
     c[i]->Print(Form("%s" ,ofname.c_str()) );
@@ -257,18 +259,14 @@ void fbus_t0_rough::savecanvas(string ofname){
 int main(int argc, char** argv){
 
   string ifname = "rootfiles/cosmic1020.root";
-  string ofname = "toyamacro/pdf/fbus_t0_rough1020.pdf";
+  string ofname = "toyamacro/pdf/f1tdc_t0_rough1020.pdf";
   string paramname = "param/default.param";
   int ch;
-  int lr=0;
   int MaxNum = 0;
   bool output_flag = false;
-  bool output_tree_flag = false;
-  bool draw_flag = true;
-  bool coin_flag = false;
   string pngname;
   extern char *optarg;
-  while((ch=getopt(argc,argv,"hf:w:n:bcop:LR"))!=-1){
+  while((ch=getopt(argc,argv,"hf:w:n:bp:"))!=-1){
     switch(ch){
     case 'f':
       ifname = optarg;
@@ -276,30 +274,18 @@ int main(int argc, char** argv){
       break;
     case 'w':
       output_flag = true;
-      draw_flag = false;
       ofname = optarg;
       cout<<"output pdf filename : "<<ofname<<endl;
       break;
     case 'n':
       MaxNum = atoi(optarg);
       break;
-    case 'c':
-      coin_flag = true;
-      break;
     case 'b':
-      draw_flag = false;
       cout<<"BACH MODE!"<<endl;
       break;
     case 'p':
-      draw_flag = false;
       paramname = optarg;
       cout<<"input param name : "<<paramname<<endl;
-      break;
-    case 'L':
-      lr = 0;
-      break;
-    case 'R':
-      lr = 1;
       break;
     case 'h':
       cout<<"-f : input root filename"<<endl;
@@ -319,7 +305,7 @@ int main(int argc, char** argv){
   }
 
   TApplication *theApp = new TApplication("App", &argc, argv);
-  fbus_t0_rough *calib = new fbus_t0_rough();
+  f1tdc_t0_rough *calib = new f1tdc_t0_rough();
 
   calib->SetMaxEvent(MaxNum);
   calib->SetRoot(ifname);

@@ -143,6 +143,8 @@ int main(int argc, char** argv){
     tof=-99.;s0at=-999.;s0ab=-999.;s2at=-999.;s2ab=-999.;
     tr->tree->GetEntry(n);
 
+    if(tr->DR_T5<1.)continue;
+
     for(int s2seg=0;s2seg<16;s2seg++){
       if(lr==0 && tr->L_s0_rt[0]>1. && tr->L_s0_lt[0]>1. && tr->L_s2_rt[s2seg]>1. && tr->L_s2_lt[s2seg]>1.){//Left HRL
         s0time = s2ns*tr->L_s0_time[0];

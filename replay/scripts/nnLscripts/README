@@ -10,7 +10,7 @@ ana.cc is a large macrofile for offline analysis.
 1. Compile
 $ make
 
-2. Execute
+2. Example
 $ ./bin/ana -R -f runlist/run.list  # for Right HRS
 $ ./bin/ana -L -f runlist/run.list  # for Left HRS
 $ ./bin/ana -LR -f runlist/run.list # for Both Arm
@@ -18,6 +18,11 @@ $ ./bin/ana -LR -f runlist/run.list # for Both Arm
 3. See more options with "./bin/ana -h"
 
 Please write a runlist you want to analyze. The rootfiles in the runlist is merged in the macro file.
+
+#### copy.cc ####
+copy.cc makes small root files (choose coincidence events)
+1. Example
+$ ./bin/copy -f input.root -w output.root
 
 #### draw.cc ####
 draw.cc is a simple macrofile.
