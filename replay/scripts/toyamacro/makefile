@@ -31,6 +31,12 @@ TARGET9=     f1_t0_rough
 OBJS9=       f1_t0_rough.o Tree.o ParamMan.o Setting.o
 TARGET10=    ana_cointime_ac1study
 OBJS10=      ana_cointime_ac1study.o Tree.o ParamMan.o Setting.o
+TARGET11=     plot_charge
+OBJS11=       plot_charge.o Setting.o
+TARGET12=     ana_Lambda
+OBJS12=       ana_Lambda.o Tree.o Setting.o ParamMan.o
+TARGET13=     mk_f1twc_tree
+OBJS13=       mk_f1twc_tree.o Tree.o Setting.o ParamMan.o
 
 all: $(TARGET1) \
      $(TARGET2) \
@@ -42,6 +48,9 @@ all: $(TARGET1) \
      $(TARGET8) \
      $(TARGET9) \
      $(TARGET10) \
+     $(TARGET11) \
+     $(TARGET12) \
+     $(TARGET13) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -74,6 +83,15 @@ $(TARGET9): $(patsubst %,$(LIBDIR)/%,$(OBJS9))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET10): $(patsubst %,$(LIBDIR)/%,$(OBJS10))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET11): $(patsubst %,$(LIBDIR)/%,$(OBJS11))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET12): $(patsubst %,$(LIBDIR)/%,$(OBJS12))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET13): $(patsubst %,$(LIBDIR)/%,$(OBJS13))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean
