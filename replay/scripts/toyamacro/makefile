@@ -29,6 +29,8 @@ TARGET8=     calc_charge
 OBJS8=       calc_charge.o
 TARGET9=     f1_t0_rough
 OBJS9=       f1_t0_rough.o Tree.o ParamMan.o Setting.o
+TARGET10=    ana_cointime_ac1study
+OBJS10=      ana_cointime_ac1study.o Tree.o ParamMan.o Setting.o
 
 all: $(TARGET1) \
      $(TARGET2) \
@@ -39,6 +41,7 @@ all: $(TARGET1) \
      $(TARGET7) \
      $(TARGET8) \
      $(TARGET9) \
+     $(TARGET10) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -68,6 +71,9 @@ $(TARGET8): $(patsubst %,$(LIBDIR)/%,$(OBJS8))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET9): $(patsubst %,$(LIBDIR)/%,$(OBJS9))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET10): $(patsubst %,$(LIBDIR)/%,$(OBJS10))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean
