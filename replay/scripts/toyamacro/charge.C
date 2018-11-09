@@ -188,7 +188,7 @@ if(run==111193)exit(1);
   }
 
 
-  Double_t Charge_d3, Charge_d10, Charge_un, Charge_dn;
+  Double_t Charge_d3, Charge_d10, Charge_un, Charge_dn, Charge_av;
   Charge_d3 = Charge_d10 = Charge_un = Charge_dn = 0;
   Double_t x[evnentries];
 
@@ -213,8 +213,9 @@ if(run==111193)exit(1);
   //cout << "Total Charge d10:  " << Charge_d10 << endl;
   cout << "Total Charge unew: " << Charge_un  << endl;
   cout << "Total Charge dnew: " << Charge_dn  << endl;
+  Charge_av = 1.e-3*(Charge_d3 + Charge_un + Charge_dn)/3.;
  
   ofstream ofp("scaler_charge.txt",ios::app);
-  ofp<<Form("%d %.2lf %.2lf %.2lf",run,1.e-3*Charge_d3,1.e-3*Charge_un, 1.e-3*Charge_dn)<<endl;
+  ofp<<Form("%d %.2lf %.2lf %.2lf %.2lf",run,1.e-3*Charge_d3,1.e-3*Charge_un, 1.e-3*Charge_dn, Charge_av)<<endl;
 
 }
