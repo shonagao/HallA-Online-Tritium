@@ -23,15 +23,17 @@ void Tree::pack_tree()
   tree->SetBranchStatus("*" ,0);
   tree->SetBranchStatus("L.tr.n"               ,1);  tree->SetBranchAddress("L.tr.n"               ,&L_tr_n              );
   tree->SetBranchStatus("R.tr.n"               ,1);  tree->SetBranchAddress("R.tr.n"               ,&R_tr_n              );
-  tree->SetBranchStatus("DR.evtypebits"        ,1);  tree->SetBranchAddress("DR.evtypebits",&DR_evtypebits);
-  tree->SetBranchStatus("DR.T1"                ,1);  tree->SetBranchAddress("DR.T1",&DR_T1);
-  tree->SetBranchStatus("DR.T2"                ,1);  tree->SetBranchAddress("DR.T2",&DR_T2);
-  tree->SetBranchStatus("DR.T3"                ,1);  tree->SetBranchAddress("DR.T3",&DR_T3);
-  tree->SetBranchStatus("DR.T4"                ,1);  tree->SetBranchAddress("DR.T4",&DR_T4);
+  //tree->SetBranchStatus("DR.evtypebits"        ,1);  tree->SetBranchAddress("DR.evtypebits",&DR_evtypebits);
+  //tree->SetBranchStatus("DR.T1"                ,1);  tree->SetBranchAddress("DR.T1",&DR_T1);
+  //tree->SetBranchStatus("DR.T2"                ,1);  tree->SetBranchAddress("DR.T2",&DR_T2);
+  //tree->SetBranchStatus("DR.T3"                ,1);  tree->SetBranchAddress("DR.T3",&DR_T3);
+  //tree->SetBranchStatus("DR.T4"                ,1);  tree->SetBranchAddress("DR.T4",&DR_T4);
   tree->SetBranchStatus("DR.T5"                ,1);  tree->SetBranchAddress("DR.T5",&DR_T5);
-  tree->SetBranchStatus("DR.T6"                ,1);  tree->SetBranchAddress("DR.T6",&DR_T6);
-  tree->SetBranchStatus("DR.T7"                ,1);  tree->SetBranchAddress("DR.T7",&DR_T7);
-  tree->SetBranchStatus("DR.T8"                ,1);  tree->SetBranchAddress("DR.T8",&DR_T8);
+  //tree->SetBranchStatus("DR.T6"                ,1);  tree->SetBranchAddress("DR.T6",&DR_T6);
+  //tree->SetBranchStatus("DR.T7"                ,1);  tree->SetBranchAddress("DR.T7",&DR_T7);
+  //tree->SetBranchStatus("DR.T8"                ,1);  tree->SetBranchAddress("DR.T8",&DR_T8);
+  tree->SetBranchStatus("DL.evtype"            ,1);  tree->SetBranchAddress("DL.evtype"       ,&L_evtype        );
+  tree->SetBranchStatus("DR.evtype"            ,1);  tree->SetBranchAddress("DR.evtype"       ,&R_evtype        );
 }
 //////////////////////////////////////////////////
 void Tree::chain_tree(string ifname)
@@ -96,16 +98,16 @@ void Tree::readtreeS0L()
   tree->SetBranchStatus("L.s0.lpeak"           ,1);  tree->SetBranchAddress("L.s0.lpeak"           , L_s0_lpeak          );
   tree->SetBranchStatus("L.s0.lt_fadc"         ,1);  tree->SetBranchAddress("L.s0.lt_fadc"         , L_s0_lt_fadc        );
   tree->SetBranchStatus("L.s0.ltc_fadc"        ,1);  tree->SetBranchAddress("L.s0.ltc_fadc"        , L_s0_ltc_fadc       );
-  tree->SetBranchStatus("L.s0.lbadped"         ,1);  tree->SetBranchAddress("L.s0.lbadped"         , L_s0_lbadped        );
-  tree->SetBranchStatus("L.s0.lunderflow"      ,1);  tree->SetBranchAddress("L.s0.lunderflow"      , L_s0_lunderflow     );
-  tree->SetBranchStatus("L.s0.loverflow"       ,1);  tree->SetBranchAddress("L.s0.loverflow"       , L_s0_loverflow      );
+  //tree->SetBranchStatus("L.s0.lbadped"         ,1);  tree->SetBranchAddress("L.s0.lbadped"         , L_s0_lbadped        );
+  //tree->SetBranchStatus("L.s0.lunderflow"      ,1);  tree->SetBranchAddress("L.s0.lunderflow"      , L_s0_lunderflow     );
+  //tree->SetBranchStatus("L.s0.loverflow"       ,1);  tree->SetBranchAddress("L.s0.loverflow"       , L_s0_loverflow      );
   tree->SetBranchStatus("L.s0.rnhits"          ,1);  tree->SetBranchAddress("L.s0.rnhits"          , L_s0_rnhits         );
   tree->SetBranchStatus("L.s0.rpeak"           ,1);  tree->SetBranchAddress("L.s0.rpeak"           , L_s0_rpeak          );
   tree->SetBranchStatus("L.s0.rt_fadc"         ,1);  tree->SetBranchAddress("L.s0.rt_fadc"         , L_s0_rt_fadc        );
   tree->SetBranchStatus("L.s0.rtc_fadc"        ,1);  tree->SetBranchAddress("L.s0.rtc_fadc"        , L_s0_rtc_fadc       );
-  tree->SetBranchStatus("L.s0.rbadped"         ,1);  tree->SetBranchAddress("L.s0.rbadped"         , L_s0_rbadped        );
-  tree->SetBranchStatus("L.s0.runderflow"      ,1);  tree->SetBranchAddress("L.s0.runderflow"      , L_s0_runderflow     );
-  tree->SetBranchStatus("L.s0.roverflow"       ,1);  tree->SetBranchAddress("L.s0.roverflow"       , L_s0_roverflow      );
+  //tree->SetBranchStatus("L.s0.rbadped"         ,1);  tree->SetBranchAddress("L.s0.rbadped"         , L_s0_rbadped        );
+  //tree->SetBranchStatus("L.s0.runderflow"      ,1);  tree->SetBranchAddress("L.s0.runderflow"      , L_s0_runderflow     );
+  //tree->SetBranchStatus("L.s0.roverflow"       ,1);  tree->SetBranchAddress("L.s0.roverflow"       , L_s0_roverflow      );
 }
 //////////////////////////////////////////////////
 void Tree::readtreeS2L()
@@ -133,16 +135,16 @@ void Tree::readtreeS2L()
   tree->SetBranchStatus("L.s2.lpeak"           ,1);  tree->SetBranchAddress("L.s2.lpeak"           , L_s2_lpeak          );
   tree->SetBranchStatus("L.s2.lt_fadc"         ,1);  tree->SetBranchAddress("L.s2.lt_fadc"         , L_s2_lt_fadc        );
   tree->SetBranchStatus("L.s2.ltc_fadc"        ,1);  tree->SetBranchAddress("L.s2.ltc_fadc"        , L_s2_ltc_fadc       );
-  tree->SetBranchStatus("L.s2.lbadped"         ,1);  tree->SetBranchAddress("L.s2.lbadped"         , L_s2_lbadped        );
-  tree->SetBranchStatus("L.s2.lunderflow"      ,1);  tree->SetBranchAddress("L.s2.lunderflow"      , L_s2_lunderflow     );
-  tree->SetBranchStatus("L.s2.loverflow"       ,1);  tree->SetBranchAddress("L.s2.loverflow"       , L_s2_loverflow      );
+  //tree->SetBranchStatus("L.s2.lbadped"         ,1);  tree->SetBranchAddress("L.s2.lbadped"         , L_s2_lbadped        );
+  //tree->SetBranchStatus("L.s2.lunderflow"      ,1);  tree->SetBranchAddress("L.s2.lunderflow"      , L_s2_lunderflow     );
+  //tree->SetBranchStatus("L.s2.loverflow"       ,1);  tree->SetBranchAddress("L.s2.loverflow"       , L_s2_loverflow      );
   tree->SetBranchStatus("L.s2.rnhits"          ,1);  tree->SetBranchAddress("L.s2.rnhits"          , L_s2_rnhits         );
   tree->SetBranchStatus("L.s2.rpeak"           ,1);  tree->SetBranchAddress("L.s2.rpeak"           , L_s2_rpeak          );
   tree->SetBranchStatus("L.s2.rt_fadc"         ,1);  tree->SetBranchAddress("L.s2.rt_fadc"         , L_s2_rt_fadc        );
   tree->SetBranchStatus("L.s2.rtc_fadc"        ,1);  tree->SetBranchAddress("L.s2.rtc_fadc"        , L_s2_rtc_fadc       );
-  tree->SetBranchStatus("L.s2.rbadped"         ,1);  tree->SetBranchAddress("L.s2.rbadped"         , L_s2_rbadped        );
-  tree->SetBranchStatus("L.s2.runderflow"      ,1);  tree->SetBranchAddress("L.s2.runderflow"      , L_s2_runderflow     );
-  tree->SetBranchStatus("L.s2.roverflow"       ,1);  tree->SetBranchAddress("L.s2.roverflow"       , L_s2_roverflow      );
+  //tree->SetBranchStatus("L.s2.rbadped"         ,1);  tree->SetBranchAddress("L.s2.rbadped"         , L_s2_rbadped        );
+  //tree->SetBranchStatus("L.s2.runderflow"      ,1);  tree->SetBranchAddress("L.s2.runderflow"      , L_s2_runderflow     );
+  //tree->SetBranchStatus("L.s2.roverflow"       ,1);  tree->SetBranchAddress("L.s2.roverflow"       , L_s2_roverflow      );
 }                                 
 ///////////////////////////////////
 void Tree::readtreeTrackL(){
@@ -192,9 +194,16 @@ void Tree::convertF1TDCL(ParamMan *param)
   for(int i=0;i<LS2;i++){
     LS2T_F1TDC[i]  =  LTDC_F1FirstHit[i];
     LS2B_F1TDC[i]  =  LTDC_F1FirstHit[i+48];
-    LS2T_F1time[i] = param->time(1,i,0,0, LS2T_F1TDC[i] - LTDC_F1FirstHit[30]  );
-    LS2B_F1time[i] = param->time(1,i,0,1, LS2B_F1TDC[i] - LTDC_F1FirstHit[37] );
-    LS2_F1time[i]  = 0.5*(LS2T_F1time[i] + LS2B_F1time[i]);
+    if(LF1Ref[0]>1. && LF1Ref[1]>1. && LS2T_F1TDC[i]>1. && LS2B_F1TDC[i]>1.){
+      LS2T_F1time[i] = param->time(1,i,0,0, LS2T_F1TDC[i] - LTDC_F1FirstHit[30]  , L_s2_ra_p[i] );
+      LS2B_F1time[i] = param->time(1,i,0,1, LS2B_F1TDC[i] - LTDC_F1FirstHit[37]  , L_s2_la_p[i]);
+      LS2_F1time[i]  = 0.5*(LS2T_F1time[i] + LS2B_F1time[i]);
+    }
+    else {
+      LS2T_F1time[i] = -9999.;
+      LS2B_F1time[i] = -9999.;
+      LS2_F1time[i]  = -9999.;
+    }
   }
 
   //S0
@@ -237,16 +246,16 @@ void Tree::readtreeS0R()
   tree->SetBranchStatus("R.s0.lpeak"           ,1);  tree->SetBranchAddress("R.s0.lpeak"           , R_s0_lpeak          );
   tree->SetBranchStatus("R.s0.lt_fadc"         ,1);  tree->SetBranchAddress("R.s0.lt_fadc"         , R_s0_lt_fadc        );
   tree->SetBranchStatus("R.s0.ltc_fadc"        ,1);  tree->SetBranchAddress("R.s0.ltc_fadc"        , R_s0_ltc_fadc       );
-  tree->SetBranchStatus("R.s0.lbadped"         ,1);  tree->SetBranchAddress("R.s0.lbadped"         , R_s0_lbadped        );
-  tree->SetBranchStatus("R.s0.lunderflow"      ,1);  tree->SetBranchAddress("R.s0.lunderflow"      , R_s0_lunderflow     );
-  tree->SetBranchStatus("R.s0.loverflow"       ,1);  tree->SetBranchAddress("R.s0.loverflow"       , R_s0_loverflow      );
+  //tree->SetBranchStatus("R.s0.lbadped"         ,1);  tree->SetBranchAddress("R.s0.lbadped"         , R_s0_lbadped        );
+  //tree->SetBranchStatus("R.s0.lunderflow"      ,1);  tree->SetBranchAddress("R.s0.lunderflow"      , R_s0_lunderflow     );
+  //tree->SetBranchStatus("R.s0.loverflow"       ,1);  tree->SetBranchAddress("R.s0.loverflow"       , R_s0_loverflow      );
   tree->SetBranchStatus("R.s0.rnhits"          ,1);  tree->SetBranchAddress("R.s0.rnhits"          , R_s0_rnhits         );
   tree->SetBranchStatus("R.s0.rpeak"           ,1);  tree->SetBranchAddress("R.s0.rpeak"           , R_s0_rpeak          );
   tree->SetBranchStatus("R.s0.rt_fadc"         ,1);  tree->SetBranchAddress("R.s0.rt_fadc"         , R_s0_rt_fadc        );
   tree->SetBranchStatus("R.s0.rtc_fadc"        ,1);  tree->SetBranchAddress("R.s0.rtc_fadc"        , R_s0_rtc_fadc       );
-  tree->SetBranchStatus("R.s0.rbadped"         ,1);  tree->SetBranchAddress("R.s0.rbadped"         , R_s0_rbadped        );
-  tree->SetBranchStatus("R.s0.runderflow"      ,1);  tree->SetBranchAddress("R.s0.runderflow"      , R_s0_runderflow     );
-  tree->SetBranchStatus("R.s0.roverflow"       ,1);  tree->SetBranchAddress("R.s0.roverflow"       , R_s0_roverflow      );
+  //tree->SetBranchStatus("R.s0.rbadped"         ,1);  tree->SetBranchAddress("R.s0.rbadped"         , R_s0_rbadped        );
+  //tree->SetBranchStatus("R.s0.runderflow"      ,1);  tree->SetBranchAddress("R.s0.runderflow"      , R_s0_runderflow     );
+  //tree->SetBranchStatus("R.s0.roverflow"       ,1);  tree->SetBranchAddress("R.s0.roverflow"       , R_s0_roverflow      );
 }                                 
 //////////////////////////////////////////////////
 void Tree::readtreeS2R()
@@ -275,16 +284,16 @@ void Tree::readtreeS2R()
   tree->SetBranchStatus("R.s2.lpeak"           ,1);  tree->SetBranchAddress("R.s2.lpeak"           , R_s2_lpeak          );
   tree->SetBranchStatus("R.s2.lt_fadc"         ,1);  tree->SetBranchAddress("R.s2.lt_fadc"         , R_s2_lt_fadc        );
   tree->SetBranchStatus("R.s2.ltc_fadc"        ,1);  tree->SetBranchAddress("R.s2.ltc_fadc"        , R_s2_ltc_fadc       );
-  tree->SetBranchStatus("R.s2.lbadped"         ,1);  tree->SetBranchAddress("R.s2.lbadped"         , R_s2_lbadped        );
-  tree->SetBranchStatus("R.s2.lunderflow"      ,1);  tree->SetBranchAddress("R.s2.lunderflow"      , R_s2_lunderflow     );
-  tree->SetBranchStatus("R.s2.loverflow"       ,1);  tree->SetBranchAddress("R.s2.loverflow"       , R_s2_loverflow      );
+  //tree->SetBranchStatus("R.s2.lbadped"         ,1);  tree->SetBranchAddress("R.s2.lbadped"         , R_s2_lbadped        );
+  //tree->SetBranchStatus("R.s2.lunderflow"      ,1);  tree->SetBranchAddress("R.s2.lunderflow"      , R_s2_lunderflow     );
+  //tree->SetBranchStatus("R.s2.loverflow"       ,1);  tree->SetBranchAddress("R.s2.loverflow"       , R_s2_loverflow      );
   tree->SetBranchStatus("R.s2.rnhits"          ,1);  tree->SetBranchAddress("R.s2.rnhits"          , R_s2_rnhits         );
   tree->SetBranchStatus("R.s2.rpeak"           ,1);  tree->SetBranchAddress("R.s2.rpeak"           , R_s2_rpeak          );
   tree->SetBranchStatus("R.s2.rt_fadc"         ,1);  tree->SetBranchAddress("R.s2.rt_fadc"         , R_s2_rt_fadc        );
   tree->SetBranchStatus("R.s2.rtc_fadc"        ,1);  tree->SetBranchAddress("R.s2.rtc_fadc"        , R_s2_rtc_fadc       );
-  tree->SetBranchStatus("R.s2.rbadped"         ,1);  tree->SetBranchAddress("R.s2.rbadped"         , R_s2_rbadped        );
-  tree->SetBranchStatus("R.s2.runderflow"      ,1);  tree->SetBranchAddress("R.s2.runderflow"      , R_s2_runderflow     );
-  tree->SetBranchStatus("R.s2.roverflow"       ,1);  tree->SetBranchAddress("R.s2.roverflow"       , R_s2_roverflow      );
+  //tree->SetBranchStatus("R.s2.rbadped"         ,1);  tree->SetBranchAddress("R.s2.rbadped"         , R_s2_rbadped        );
+  //tree->SetBranchStatus("R.s2.runderflow"      ,1);  tree->SetBranchAddress("R.s2.runderflow"      , R_s2_runderflow     );
+  //tree->SetBranchStatus("R.s2.roverflow"       ,1);  tree->SetBranchAddress("R.s2.roverflow"       , R_s2_roverflow      );
   tree->SetBranchStatus("DR.rtRFtime"          ,1);  tree->SetBranchAddress("DR.rtRFtime"          , R_rtRFtime          );
 }                                 
 //////////////////////////////////////////////////
@@ -303,9 +312,9 @@ void Tree::readtreeA1R(){
   tree->SetBranchStatus("R.a1.peak"            ,1);  tree->SetBranchAddress("R.a1.peak"            , R_a1_peak           ); 
   tree->SetBranchStatus("R.a1.t_fadc"          ,1);  tree->SetBranchAddress("R.a1.t_fadc"          , R_a1_t_fadc         ); 
   tree->SetBranchStatus("R.a1.tc_fadc"         ,1);  tree->SetBranchAddress("R.a1.tc_fadc"         , R_a1_tc_fadc        ); 
-  tree->SetBranchStatus("R.a1.nbadped"         ,1);  tree->SetBranchAddress("R.a1.nbadped"         , R_a1_nbadped        ); 
-  tree->SetBranchStatus("R.a1.noverflow"       ,1);  tree->SetBranchAddress("R.a1.noverflow"       , R_a1_noverflow      ); 
-  tree->SetBranchStatus("R.a1.nunderflow"      ,1);  tree->SetBranchAddress("R.a1.nunderflow"      , R_a1_nunderflow     ); 
+  //tree->SetBranchStatus("R.a1.nbadped"         ,1);  tree->SetBranchAddress("R.a1.nbadped"         , R_a1_nbadped        ); 
+  //tree->SetBranchStatus("R.a1.noverflow"       ,1);  tree->SetBranchAddress("R.a1.noverflow"       , R_a1_noverflow      ); 
+  //tree->SetBranchStatus("R.a1.nunderflow"      ,1);  tree->SetBranchAddress("R.a1.nunderflow"      , R_a1_nunderflow     ); 
 
 }
 //////////////////////////////////////////////////
@@ -324,9 +333,9 @@ void Tree::readtreeA2R(){
   tree->SetBranchStatus("R.a2.peak"            ,1);  tree->SetBranchAddress("R.a2.peak"            , R_a2_peak           ); 
   tree->SetBranchStatus("R.a2.t_fadc"          ,1);  tree->SetBranchAddress("R.a2.t_fadc"          , R_a2_t_fadc         ); 
   tree->SetBranchStatus("R.a2.tc_fadc"         ,1);  tree->SetBranchAddress("R.a2.tc_fadc"         , R_a2_tc_fadc        ); 
-  tree->SetBranchStatus("R.a2.nbadped"         ,1);  tree->SetBranchAddress("R.a2.nbadped"         , R_a2_nbadped        ); 
-  tree->SetBranchStatus("R.a2.noverflow"       ,1);  tree->SetBranchAddress("R.a2.noverflow"       , R_a2_noverflow      ); 
-  tree->SetBranchStatus("R.a2.nunderflow"      ,1);  tree->SetBranchAddress("R.a2.nunderflow"      , R_a2_nunderflow     ); 
+  //tree->SetBranchStatus("R.a2.nbadped"         ,1);  tree->SetBranchAddress("R.a2.nbadped"         , R_a2_nbadped        ); 
+  //tree->SetBranchStatus("R.a2.noverflow"       ,1);  tree->SetBranchAddress("R.a2.noverflow"       , R_a2_noverflow      ); 
+  //tree->SetBranchStatus("R.a2.nunderflow"      ,1);  tree->SetBranchAddress("R.a2.nunderflow"      , R_a2_nunderflow     ); 
 
 }
 //////////////////////////////////////////////////
@@ -377,9 +386,18 @@ void Tree::convertF1TDCR(ParamMan *param)
   for(int i=0;i<RS2;i++){
     RS2T_F1TDC[i]  =  RTDC_F1FirstHit[i+16];
     RS2B_F1TDC[i]  =  RTDC_F1FirstHit[i+48];
-    RS2T_F1time[i] = param->time(1,i,1,0, RS2T_F1TDC[i] - RTDC_F1FirstHit[9]  );
-    RS2B_F1time[i] = param->time(1,i,1,1, RS2B_F1TDC[i] - RTDC_F1FirstHit[46] );
-    RS2_F1time[i]  = 0.5*(RS2T_F1time[i] + RS2B_F1time[i]);
+    if(RF1Ref[0]>1. && RF1Ref[1]>1. && RS2T_F1TDC[i]>1. && RS2B_F1TDC[i]>1.){
+      RS2T_F1time[i] = param->time(1,i,1,0, RS2T_F1TDC[i] - RTDC_F1FirstHit[9]  , R_s2_ra_p[i]);
+      RS2B_F1time[i] = param->time(1,i,1,1, RS2B_F1TDC[i] - RTDC_F1FirstHit[46] , R_s2_la_p[i]);
+      RS2_F1time[i]  = 0.5*(RS2T_F1time[i] + RS2B_F1time[i]);
+    }
+    else{
+      RS2T_F1TDC[i]  = -9999.;
+      RS2B_F1TDC[i]  = -9999.;
+      RS2T_F1time[i] = -9999.;
+      RS2B_F1time[i] = -9999.;
+      RS2_F1time[i]  = -9999.;
+    }
   }
 
   //S0

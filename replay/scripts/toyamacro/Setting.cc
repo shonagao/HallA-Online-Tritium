@@ -115,6 +115,13 @@ void Setting::SetTLatex(TLatex *latex, int TColor, double TSize,int Align){
  latex -> SetTextFont(42);
 } 
 //____________________________________________________________________________________________
+void Setting::SetTLine(TLine *line, int LColor,int LStyle, double LWidth){
+  line -> SetLineColor(LColor);
+  line -> SetLineStyle(LStyle);
+  line -> SetLineWidth(LWidth);
+
+}
+//____________________________________________________________________________________________
 void Setting::FitGaus(TH1F *h, double &gamin, double &gamax, double range, int itr){
   //gamin = h  ->GetBinCenter(h ->GetMaximumBin())-20.0;
   //gamax = h  ->GetBinCenter(h ->GetMaximumBin())+20.0;

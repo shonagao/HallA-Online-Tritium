@@ -22,8 +22,8 @@ ParamMan::ParamMan( const char* filename )
   L_F1S2T.tb=0;L_F1S2B.tb=1;
   R_F1S2T.tb=0;R_F1S2B.tb=1;
   for(int i=0; i<nS2; i++){
-    L_F1S2T.tdcOffset[i]=0.00; L_F1S2T.timeWalk[i]=0.00;   L_F1S2T.tdcGain[i]=0.05623;
-    L_F1S2B.tdcOffset[i]=0.00; L_F1S2B.timeWalk[i]=0.00;   L_F1S2B.tdcGain[i]=0.05623;
+    L_F1S2T.tdcOffset[i]=0.00; L_F1S2T.timeWalk[i]=0.00;   L_F1S2T.tdcGain[i]=0.05623;//L_F1S2T.tdcGain[i]=0.05623;
+    L_F1S2B.tdcOffset[i]=0.00; L_F1S2B.timeWalk[i]=0.00;   L_F1S2B.tdcGain[i]=0.05623;//L_F1S2B.tdcGain[i]=0.05623;
     R_F1S2T.tdcOffset[i]=0.00; R_F1S2T.timeWalk[i]=0.00;   R_F1S2T.tdcGain[i]=0.05623;
     R_F1S2B.tdcOffset[i]=0.00; R_F1S2B.timeWalk[i]=0.00;   R_F1S2B.tdcGain[i]=0.05623;
   }
@@ -76,6 +76,7 @@ ParamMan::ParamMan( const char* filename )
     R_FbS0B.tdcOffset[i]=0.00; R_FbS0B.timeWalk[i]=0.00;   R_FbS0B.tdcGain[i]=0.5;
   }
 
+  F1reso = 0.05623;
 }
 ////////////////////////////////
 //ParamMan::~ParamMan()
@@ -119,6 +120,8 @@ bool ParamMan::SetVal( void )
     name = "L.s0.L.off_F1 =" ;          npar=1;  SetAParam(line,name,L_F1S0B.tdcOffset,npar);//tmp
     name = "L.RF.off =" ;               npar=1;  SetAParam(line,name,L_RF.tdcOffset,npar);//tmp
     
+
+    name = "F1TDC.reso =";                          SetF1reso(line,name);
     //time walk correction parameters style is different from replay DB. Sorry.
     name = "R.s2.R.timewalk_params =" ;    npar=16; SetAParam(line,name,R_FbS2T.timeWalk ,npar);
     name = "R.s2.L.timewalk_params =" ;    npar=16; SetAParam(line,name,R_FbS2B.timeWalk ,npar);
@@ -140,6 +143,30 @@ bool ParamMan::SetVal( void )
   
 //   std::cout << "[" << funcname << "]: Initialization finished" << std::endl;
   return true;
+}
+///////////////////////////////////
+void ParamMan::SetF1reso( string &line, string &name)
+{
+  double reso;
+  if ( line.compare(0,name.size(),name) != 0 ) {
+   return;
+  }
+    //cout<<line<<endl;
+  istringstream sline(line);
+  sline >> name;
+  sline >> name;
+  sline >> reso;
+  cout<<"F1TDC resolution: "<<reso<<" ns/ch"<<endl;
+
+
+  F1reso = reso;
+  for(int i=0;i<nS2;i++){
+    L_F1S2T.tdcGain[i] = reso;
+    L_F1S2B.tdcGain[i] = reso;
+    R_F1S2T.tdcGain[i] = reso;
+    R_F1S2B.tdcGain[i] = reso;
+  }
+
 }
 
 ///////////////////////////////////
@@ -455,6 +482,37 @@ void ParamMan::WriteToFile(const char* OutputFileName)   //wrinting param file
   }
   fout<<endl;
 
+  fout<<"R.s2.R.timewalk_params_F1 = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<R_F1S2T.timeWalk[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"R.s2.L.timewalk_params_F1 = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<R_F1S2B.timeWalk[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s2.R.timewalk_params_F1 = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<L_F1S2T.timeWalk[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"L.s2.L.timewalk_params_F1 = "<<flush;
+  for(int i=0; i<nS2;i++){
+    fout << std::setprecision(2)
+         <<L_F1S2B.timeWalk[i]<<" "<<flush;
+  }
+  fout<<endl;
+
+  fout<<"F1TDC.reso = "<<flush;
+  fout<<F1reso<<flush;
+  fout<<endl;
 
   if(fout.is_open()) fout.close();
   cout << OutputFileName << " was written"<<endl;

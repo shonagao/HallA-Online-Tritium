@@ -53,6 +53,7 @@ public:
 ///////////////////
 //// Event Flag ////
   double DR_evtypebits;
+  double R_evtype;
   double DR_T1, DR_T2, DR_T3, DR_T4, DR_T5, DR_T6, DR_T7, DR_T8;
 
 //// S0 ////
@@ -147,6 +148,7 @@ public:
 ///////////////////
 // HRS Light Arm //
 ///////////////////
+  double L_evtype;
 //// S0 ////
   double L_s0_la[LS0], L_s0_la_c[LS0], L_s0_la_p[LS0];                 // Bottom ADC, decADC, ADC(ped-supp)
   double L_s0_lt[LS0], L_s0_lt_c[LS0];                                 // Bottom TDC, decTDC

@@ -47,6 +47,7 @@ public:
   void SetGrErr(TGraphErrors *gr, TString hname, TString xname, TString yname, int LColor, int MColor, int MStyle, double Yoffset=0, double min=0, double max=0);
   void SetTF1(TF1 *f, int LColor, int LStyle,double LWidth);
   void SetTLatex(TLatex *latex, int TColor, double TSize,int Align);
+  void SetTLine(TLine *line, int LColor=2,int LStyle=0, double LWidth=1);
 
   void FitGaus(TH1F *h, double &gamin, double &gamax, double range=3.0, int itr=10);
 

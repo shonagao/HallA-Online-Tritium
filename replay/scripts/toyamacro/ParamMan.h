@@ -53,6 +53,7 @@ private:
     double tdcGain[nRF];
   };
 
+  double F1reso;
 
   S2param L_F1S2T, L_F1S2B, R_F1S2T, R_F1S2B;
   S0param L_F1S0T, L_F1S0B, R_F1S0T, R_F1S0B;
@@ -68,6 +69,8 @@ public:
   void SetTdcGain(   int cid, int seg, int lr, int tb, double tdcGain   );
   void SetTimeTune(  int cid, int seg, int lr, int tb, double tdcGain   );
   void SetTimeTune(  int cid, int seg, int lr, double tdcGain   );
+  void SetF1reso( string &sline, string &name);
+  
   
   bool SetVal( void );
   double GetTdcOffset( int cid, int seg, int lr, int tb );
