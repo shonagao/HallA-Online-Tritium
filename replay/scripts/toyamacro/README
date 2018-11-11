@@ -1,0 +1,29 @@
+#########READ ME for Kosuke#############
+1)Setting enviroment (a-onl1 special)
+$mkdir bin
+$mkdir lib
+$ln -s /chafs1/work1/tritium/nnL_smallroot nnL_smallroot
+$ln -s /adaqfs/home/a-onl/tritium/replay/t2root/Rootfiles full_replay_root
+Please make your own directory in disk space(not home)
+$make
+
+###Lambda analysis###
+1)Phase1 (run111157--111220)
+$./bin/ana_Lambda -f runlist/Lambda_small.list -r output.root -p param/f1_tuned_Lambda_twc.param -LR -b
+then you will be able to see Lambda peak in h_mm
+
+2)Phase2 (run11485--)
+$./bin/ana_Lambda -f runlist/Lambda_phase2.list -r output.root -p param/f1_Lambda_phase2_tuned.param -LR -b
+
+###Time walk correction parameter###
+mk_f1twc_tree.cc makes small tree of cointime, ADC and pathl.
+s2f1_twc.cc makes twc param file(s2_twc_L.sh & s2_twc_R.sh will be helpful)
+
+###t0 calibration###
+draw_cointime.cc & s2_t0_tune_by_hand.C will be useful
+
+###Beam Charge calculation###
+./charge.sh [start run] [end run]
+
+##to plot graph of beam charge##
+./bin/plot_charge [txtfile]
