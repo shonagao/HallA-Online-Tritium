@@ -72,7 +72,8 @@ int main(int argc, char** argv){
     sbuf >> Charge_d3;
     sbuf >> Charge_un;
     sbuf >> Charge_dn;
-    Charge_av = (Charge_d3 + Charge_un + Charge_dn)/3.;
+    sbuf >> Charge_av;
+    //Charge_av = (Charge_d3 + Charge_un + Charge_dn)/3.;
     //cout<<buf<<endl;
 
     tg_charge -> SetPoint(n,runnum,Charge_av);

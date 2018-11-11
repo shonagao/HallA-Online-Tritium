@@ -21,7 +21,6 @@ const double s2ns = 1.e+9;          // conv. factor sec to nano sec
 const double ns2s = 1.e-9;          // conv. factor nano sec to sec
 const double bunch = 4.00;          // beam bunch structure [ns]
 
-//const double PI = 4.*atan(1.);
 //const double deg_to_rad = PI / 180.;
 //const double rad_to_deg = 180. / PI;
 //const double sigma_to_fwhm = 2.*sqrt(2.*log(2.));

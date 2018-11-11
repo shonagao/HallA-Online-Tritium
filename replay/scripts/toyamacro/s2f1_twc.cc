@@ -291,7 +291,7 @@ void s2f1_twc_calib::search_best(){
       ga_min=-5;ga_max=5;
       set->FitGaus(h_tof_tmp,ga_min,ga_max,1.0);
       reso = (ga_max-ga_min)/2.;
-      cout<<fact_T<<" "<<fact_B<<" "<<reso <<endl;
+      //cout<<fact_T<<" "<<fact_B<<" "<<reso <<endl;
       if(reso<best_reso){best_reso=reso;best_fT=fact_T;best_fB=fact_B;}
       h2_factor ->Fill(fact_T,fact_B,reso);
       fact_T += dfact;

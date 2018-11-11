@@ -200,7 +200,7 @@ int main(int argc, char** argv){
         s2rtb   = tr->RS2B_F1time[s2rseg];
 
         // cout<<ctime<<endl;
-        if(Rtr_flag && Ltr_flag && RZ_flag && LZ_flag && abs(ctime-3)<3.){ // 
+        if(Rtr_flag && Ltr_flag && RZ_flag && LZ_flag && abs(ctime-3)<5.){ // 
           tree_out->Fill();
           fill_ev++;
         }

@@ -5,11 +5,14 @@
 void draw_cointime(){
 
   //TFile *ifp = new TFile("pdf/f1twc_check.root");
-  TFile *ifp = new TFile("pdf/tmp.root");
+  TFile *ifp = new TFile("pdf/f1_test.root");
   TTree *tree = (TTree*)ifp->Get("tree");
   Setting *set = new Setting();
   //ParamMan *param = new ParamMan("param/tmp.param");
-  ParamMan *param = new ParamMan("param/f1_tuned_Lambda_twc.param");
+  //ParamMan *param = new ParamMan("param/f1_tuned_Lambda_twc.param");
+  //ParamMan *param = new ParamMan("param/f1_Lambda_phase2.param");
+  //ParamMan *param = new ParamMan("param/f1_Lambda_phase2_tuned1.param");
+  ParamMan *param = new ParamMan("param/f1_Lambda_phase2_tuned.param");
   param->SetVal();
   int ENum = tree->GetEntries();
 
@@ -18,13 +21,13 @@ void draw_cointime(){
 
   TF1 *ga_l[16], *ga_r[16];
 
-  h2_ctime_lseg = new TH2F("h2_ctime_lseg","h2_ctime_lseg",1000,-10,10,16,-0.5,15.5);
-  h2_ctime_rseg = new TH2F("h2_ctime_rseg","h2_ctime_rseg",1000,-10,10,16,-0.5,15.5);
-  h_ctime = new TH1F("h_ctime","h_ctime",1000,-10,10);
+  h2_ctime_lseg = new TH2F("h2_ctime_lseg","h2_ctime_lseg",1000, 0,10,16,-0.5,15.5);
+  h2_ctime_rseg = new TH2F("h2_ctime_rseg","h2_ctime_rseg",1000, 0,10,16,-0.5,15.5);
+  h_ctime = new TH1F("h_ctime","h_ctime",1000,0,10);
 
   for(int i=0;i<16;i++){
-    h_ctime_l[i] = new TH1F(Form("h_ctime_l%d",i),Form("h_ctime_l%d",i),1000,-10,10);
-    h_ctime_r[i] = new TH1F(Form("h_ctime_r%d",i),Form("h_ctime_r%d",i),1000,-10,10);
+    h_ctime_l[i] = new TH1F(Form("h_ctime_l%d",i),Form("h_ctime_l%d",i),1000,0,10);
+    h_ctime_r[i] = new TH1F(Form("h_ctime_r%d",i),Form("h_ctime_r%d",i),1000,0,10);
 
   }
 
@@ -69,29 +72,29 @@ void draw_cointime(){
 
  int LR;
  for(int i=0;i<16;i++){
-    //LR = 0;
-    //ga_l[i] = new TF1(Form("ga_l%d",i+1),"gaus",-10,10);
-    //set->SetTF1(ga_l[i],2,1,1);
-    //double min=-50,max=50;
-    //min = h_ctime_l[i]->GetXaxis()->GetBinCenter(h_ctime_l[i]->GetMaximumBin()) -3.;
-    //max = h_ctime_l[i]->GetXaxis()->GetBinCenter(h_ctime_l[i]->GetMaximumBin()) +3.;
-    //set->FitGaus(h_ctime_l[i],min,max,1.0,5);
-    //h_ctime_l[i]->Fit(ga_l[i],"QR","",min,max);
-
-    //param->SetTimeTune(CID_F1S2,i,LR,0,ga_l[i]->GetParameter(1) - 3.);
-    //param->SetTimeTune(CID_F1S2,i,LR,1,ga_l[i]->GetParameter(1) - 3.);
-
-    LR = 1;
-    ga_r[i] = new TF1(Form("ga_r%d",i+1),"gaus",-10,10);
-    set->SetTF1(ga_r[i],2,1,1);
+    LR = 0;
+    ga_l[i] = new TF1(Form("ga_l%d",i+1),"gaus",-10,10);
+    set->SetTF1(ga_l[i],2,1,1);
     double min=-50,max=50;
-    min = h_ctime_r[i]->GetXaxis()->GetBinCenter(h_ctime_r[i]->GetMaximumBin()) -3.;
-    max = h_ctime_r[i]->GetXaxis()->GetBinCenter(h_ctime_r[i]->GetMaximumBin()) +3.;
-    set->FitGaus(h_ctime_r[i],min,max,1.0,5);
-    h_ctime_r[i]->Fit(ga_r[i],"QR","",min,max);
+    min = h_ctime_l[i]->GetXaxis()->GetBinCenter(h_ctime_l[i]->GetMaximumBin()) -3.;
+    max = h_ctime_l[i]->GetXaxis()->GetBinCenter(h_ctime_l[i]->GetMaximumBin()) +3.;
+    set->FitGaus(h_ctime_l[i],min,max,1.0,5);
+    h_ctime_l[i]->Fit(ga_l[i],"QR","",min,max);
+    
+    param->SetTimeTune(CID_F1S2,i,LR,0,ga_l[i]->GetParameter(1) - 3.);
+    param->SetTimeTune(CID_F1S2,i,LR,1,ga_l[i]->GetParameter(1) - 3.);
 
-    param->SetTimeTune(CID_F1S2,i,LR,0,-1.*ga_r[i]->GetParameter(1) + 3.);
-    param->SetTimeTune(CID_F1S2,i,LR,1,-1.*ga_r[i]->GetParameter(1) + 3.);
+    //LR = 1;
+    //ga_r[i] = new TF1(Form("ga_r%d",i+1),"gaus",-10,10);
+    //set->SetTF1(ga_r[i],2,1,1);
+    //double min=-50,max=50;
+    //min = h_ctime_r[i]->GetXaxis()->GetBinCenter(h_ctime_r[i]->GetMaximumBin()) -3.;
+    //max = h_ctime_r[i]->GetXaxis()->GetBinCenter(h_ctime_r[i]->GetMaximumBin()) +3.;
+    //set->FitGaus(h_ctime_r[i],min,max,1.0,5);
+    //h_ctime_r[i]->Fit(ga_r[i],"QR","",min,max);
+      
+    //param->SetTimeTune(CID_F1S2,i,LR,0,-1.*ga_r[i]->GetParameter(1) + 3.);
+    //param->SetTimeTune(CID_F1S2,i,LR,1,-1.*ga_r[i]->GetParameter(1) + 3.);
   }
 
   TCanvas *ca[3];
@@ -113,7 +116,13 @@ void draw_cointime(){
   gPad->SetLogz(1);
   h2_ctime_rseg->Draw("colz");
 
- //param->WriteToFile("param/tmp.param");
+ string y_n;
+ cout<<"Do you want to save new parameters to param/tmp.param? (y/n)"<<endl;
+ cin>>y_n;
+ if(y_n == "y" || y_n == "Y" || y_n == "yes" || y_n == "Yes")
+   param->WriteToFile("param/tmp.param");
+ else cout<<"new parameter is not saved"<<endl;
+ 
 }
 /*
   Tree *tr = new Tree();

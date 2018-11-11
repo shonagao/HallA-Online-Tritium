@@ -511,7 +511,8 @@ void ParamMan::WriteToFile(const char* OutputFileName)   //wrinting param file
   fout<<endl;
 
   fout<<"F1TDC.reso = "<<flush;
-  fout<<F1reso<<flush;
+  fout << std::setprecision(6)
+       <<F1reso<<flush;
   fout<<endl;
 
   if(fout.is_open()) fout.close();

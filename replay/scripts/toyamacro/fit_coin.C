@@ -50,8 +50,11 @@ void fit_coin(){
 
 
 
-  TFile *ifp = new TFile("pdf/coin_all.root");
+  //TFile *ifp = new TFile("../nnLscripts/output.root");
+  //TH1F *h = (TH1F*)ifp->Get("h_ct_wK");
 
+  //TFile *ifp = new TFile("pdf/coin_all.root");
+  TFile *ifp = new TFile("pdf/Tritium1_coin.root");
   TH1F *h = (TH1F*)ifp->Get("h_s2ccoin_f1acz");
   h->Rebin(4);
   double binw = h->GetBinWidth(1);
@@ -64,18 +67,21 @@ void fit_coin(){
 
   //ga_pi -> SetParameter(0,100.);
   ga_pi -> SetParameter(1,0.);
+  //ga_pi -> SetParameter(1,3.);
   ga_pi -> SetParameter(2,0.4);
   ga_pi -> SetParameter(3,bg);
   //ga_pi -> FixParameter(3,bg);
 
   //ga_k  -> SetParameter(0,10.);
   ga_k  -> SetParameter(1,3.);
+  //ga_k  -> SetParameter(1,0.);
   ga_k  -> SetParameter(2,0.4);
   ga_k  -> SetParameter(3,bg);
   //ga_k  -> FixParameter(3,bg);
 
   //ga_p  -> SetParameter(0,10.);
   ga_p  -> SetParameter(1,10.);
+  //ga_p  -> SetParameter(1,-7.);
   ga_p  -> SetParameter(2,1.0);
   ga_p  -> SetParameter(3,bg);
   //ga_p  -> FixParameter(3,bg);
@@ -173,9 +179,9 @@ void fit_coin(){
   f_full ->Draw("same");
 
 
-  c[0]->Print("pdf/coin_fit.pdf[");
-  c[0]->Print("pdf/coin_fit.pdf");
-  c[1]->Print("pdf/coin_fit.pdf");
-  c[2]->Print("pdf/coin_fit.pdf");
-  c[2]->Print("pdf/coin_fit.pdf]");
+  //c[0]->Print("pdf/nnL_coin_fit.pdf[");
+  //c[0]->Print("pdf/nnL_coin_fit.pdf");
+  //c[1]->Print("pdf/nnL_coin_fit.pdf");
+  //c[2]->Print("pdf/nnL_coin_fit.pdf");
+  //c[2]->Print("pdf/nnL_coin_fit.pdf]");
 }

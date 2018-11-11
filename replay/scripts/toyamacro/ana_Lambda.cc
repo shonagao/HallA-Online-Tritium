@@ -329,7 +329,7 @@ void ana::Loop(){
               }
             }
 
-            if( Kaon && fabs(ct)<0.7){
+            if( Kaon && fabs(ct)<0.9){
               h_mmall ->Fill( mm );
               if( fabs( L_tr_vz[lt] + 0.115 ) < 0.015 || fabs( L_tr_vz[lt] - 0.135 ) < 0.015 ){ 
                 h_mmfoil->Fill( mm );

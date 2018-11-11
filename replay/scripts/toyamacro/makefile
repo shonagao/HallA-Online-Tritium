@@ -37,6 +37,8 @@ TARGET12=     ana_Lambda
 OBJS12=       ana_Lambda.o Tree.o Setting.o ParamMan.o
 TARGET13=     mk_f1twc_tree
 OBJS13=       mk_f1twc_tree.o Tree.o Setting.o ParamMan.o
+TARGET14=     s2f1_twc
+OBJS14=       s2f1_twc.o Tree.o Setting.o ParamMan.o
 
 all: $(TARGET1) \
      $(TARGET2) \
@@ -51,6 +53,7 @@ all: $(TARGET1) \
      $(TARGET11) \
      $(TARGET12) \
      $(TARGET13) \
+     $(TARGET14) \
 
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
@@ -92,6 +95,9 @@ $(TARGET12): $(patsubst %,$(LIBDIR)/%,$(OBJS12))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 $(TARGET13): $(patsubst %,$(LIBDIR)/%,$(OBJS13))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+
+$(TARGET14): $(patsubst %,$(LIBDIR)/%,$(OBJS14))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean

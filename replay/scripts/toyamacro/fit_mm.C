@@ -47,10 +47,13 @@ void fit_mm(){
 
 
 
-  TFile *ifp = new TFile("../nnLscripts/output.root");
+  TFile *ifp = new TFile("pdf/ana_Lambda_out.root");
+  //TFile *ifp = new TFile("Lambda_until111494.root");
+  //TFile *ifp = new TFile("../nnLscripts/output.root");
 
   TH1F *h_mm   = (TH1F*)ifp->Get("h_mm");
   TH1F *h_mmbg = (TH1F*)ifp->Get("h_mmbg");
+  h_mmbg->Scale(0.4);
   h_mm  ->Rebin(2);
   h_mmbg->Rebin(2);
   h_mm  ->GetXaxis()->SetRangeUser(-0.1,0.2);

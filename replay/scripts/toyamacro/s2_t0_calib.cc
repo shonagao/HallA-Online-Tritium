@@ -157,7 +157,7 @@ void s2_t0_calib::makehist(){
   for(int i=0;i<16;i++){
     h_s2s0_beta[i]     = new TH1F(Form("h_s2s0_beta%d",i)    , Form("h_s2s0_beta%d",i)     ,200,  -1,1.5);
     h_s2s0_tof[i]      = new TH1F(Form("h_s2s0_tof%d",i)     , Form("h_s2s0_tof%d",i)      ,800,-100,100);
-    h_s2s0_tdiff[i]    = new TH1F(Form("h_s2s0_tdiff%d",i)   , Form("h_s2s0_tdiff%d",i)    ,800,-100,100);
+    h_s2s0_tdiff[i]    = new TH1F(Form("h_s2s0_tdiff%d",i)   , Form("h_s2s0_tdiff%d",i)    , 80,-10,  10);
     h_s2s0_beta_FB[i]  = new TH1F(Form("h_s2s0_beta_FB%d",i) , Form("h_s2s0_beta_FB%d",i)  ,200,  -1,1.5);
     h_s2s0_tof_FB[i]   = new TH1F(Form("h_s2s0_tof_FB%d",i)  , Form("h_s2s0_tof_FB%d",i)   ,800,-100,100);
     h_s2s0_tdiff_FB[i] = new TH1F(Form("h_s2s0_tdiff_FB%d",i), Form("h_s2s0_tdiff_FB%d",i) ,50, -10, 10);
@@ -180,7 +180,7 @@ void s2_t0_calib::loop(){
 
   if( GetMaxEvent()>0 && GetMaxEvent()<ENum) ENum = GetMaxEvent();
   for(int n=0;n<ENum;n++){
-    if(n%1000==0)cout<<n <<" / "<<ENum<<endl;
+    if(n%10000==0)cout<<n <<" / "<<ENum<<endl;
     tree->GetEntry(n);
     if(LR==0 && anaL_oneevent());
     else if(LR==1&&anaR_oneevent());
@@ -501,6 +501,8 @@ int main(int argc, char** argv){
       cout<<"-w : output pdf filename"<<endl;
       cout<<"-n : maximum number of analysed events"<<endl;
       cout<<"-p : input param file"<<endl;
+      cout<<"-L : Left HRS"<<endl;
+      cout<<"-R : Right HRS"<<endl;
       return 0;
       break;
     case '?':

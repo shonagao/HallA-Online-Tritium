@@ -6,11 +6,13 @@
 //Then peak pos will move to positive side
 void s2_t0_tune_by_hand(){
 
-  ParamMan *param = new ParamMan("param/f1_tuned_Lambda_twc.param");
+  ParamMan *param = new ParamMan("param/f1_Lambda_phase2.param");
+  //ParamMan *param = new ParamMan("param/f1_tuned_Lambda_twc.param");
   //ParamMan *param = new ParamMan("param/f1_tuned_Lambda.param");
   param->SetVal();
 
-  double offsetL =-3.;
+  double offsetL =+26.61;
+  //double offsetL =-3.;
   int LR;
 
   for(int i= 0;i<16;i++){
