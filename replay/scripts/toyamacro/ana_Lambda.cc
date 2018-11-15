@@ -865,7 +865,7 @@ void ana::MakeHist(){
 /////////////////////
 //// Coincidence ////
 /////////////////////
-  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,10000, -300, 300);//to adjust offset 
+  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,1000, -20, 20);//to adjust offset 
   h_ct_wK    = new TH1D("h_ct_wK"   ,"h_ct_wK"   ,1000, -20, 20); 
   h_ct_wK_z  = new TH1D("h_ct_wK_z" ,"h_ct_wK_z" ,1000, -20, 20); 
   h_Rs2x_ct  = new TH2D("h_Rs2x_ct" ,"h_Rs2x_ct" , 200, -20, 20,200,   -1,  1); 
