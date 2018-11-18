@@ -13,6 +13,10 @@ replay/Time_check/*.pdf
 replay/scripts/FADC_decode/*
 replay/scripts/list/*.pdf
 replay/scripts/ita_scripts/hrs_vdc/*.pdf
+replay/scripts/ita_scripts/KID/pdf/*.pdf
+replay/scripts/ita_scripts/KID/pdf/
+replay/scripts/ita_scripts/hrs_tof/pdf/
+replay/scripts/ita_scripts/mmass/pdf/
 replay/scripts/toyamacro/pdf/
 relay/scripts/toyamacro/Rootfiles*
 relay/scripts/toyamacro/pdf*
