@@ -58,10 +58,10 @@ int main(int argc, char** argv){
   cout<<"run number :";
   cin>>nrun;
   ch=8;
-  //    T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun)); //ifarm
-  // T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));  //a-onl
+  //  T->Add(Form("/w/halla-scifs17exp/triton/itabashi/Tohoku_github/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun)); //ifarm
+  T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",nrun));  //a-onl
 
-   T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111160_111208.root");
+    //  T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111160_111208.root");
  bool rarm;
   cout<<"HRS Arm(R [0] or L [1]): ";
   cin>>x;
@@ -330,8 +330,8 @@ ftof[i]=new TF1(Form("ftof[%d]",i),"gaus",min_tof[i],max_tof[i]);
  //===============================================================//
 
     //itallation parameters //
-    int ital_a=10;
-    int ital_b=10;
+    int ital_a=1;
+    int ital_b=1;
     int amin[chmax],bmin[chmax];
     double wa[chmax],wb[chmax],wamin[chmax],wbmin[chmax];
     for(int i=0;i<chmax;i++){wamin[i]=0.0; wbmin[i]=0.0; amin[i]=0; bmin[i]=0;}
@@ -394,8 +394,8 @@ htof_adc_itall[i][a][b]=new TH2F(Form("htof_adc_itall[%d][%d][%d]",i,a,b),Form("
   // run # 111148 S0 calibration //
   //	wa[i]=0.36+0.001*a;
   //	wb[i]=0.88+0.001*b;
-	wa[i]=0.8+0.1*a;
-  	wb[i]=0.8+0.1*b;
+	wa[i]=0.4+0.1*a;
+  	wb[i]=0.4+0.1*b;
 
 	tof[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0;
   tof_c[i]=(S2l_t[i]+S2r_t[i])/2.0-(S0a_t+S0b_t)/2.0-wa[i]*corr_r[i]-wb[i]*corr_l[i];

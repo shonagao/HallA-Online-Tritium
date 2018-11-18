@@ -66,11 +66,11 @@ int main(int argc, char** argv){
   // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111168_111170.root");
   //  T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_111180.root");
 
-  for(int i=111200;i<111201;i++){
+  for(int i=111480;i<111485;i++){
     T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",i));
-    //  for(int j=0;j<5;j++){
-      //  T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d_%d.root",i,j));
-    //}
+      for(int j=0;j<5;j++){
+       T->Add(Form("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d_%d.root",i,j));
+    }
   }
 
 

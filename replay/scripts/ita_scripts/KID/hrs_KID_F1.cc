@@ -63,23 +63,22 @@ int main(int argc, char** argv){
 //============ Opiton =============//
 //--- Print ------//
  bool draw=true;
- bool print=true;
+ bool print=false;
 
  if(draw==0)gROOT->SetBatch(1);
 
-  TChain*  T=new TChain("T");
-  // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111160_111208.root");
-  // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111200_111210.root");
-  // T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/ita_Rootfiles/tritium_ita111168_111170.root");
-  //  T->Add("/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_111180.root");
 
-  for(int i=111160;i<111220;i++){
+ // TChain* T=new TChain("tree");
+ //T->Add("gogami_rootfiles/coin_H2_1.root");  
+
+TChain*  T=new TChain("T");
+
+  for(int i=111160;i<111180;i++){
     T->Add(Form("/adaqfs/home/a-onl/tritium/replay/t2root/nnL_smallroot/tritium_%d.root",i));
       for(int j=0;j<5;j++){
 	T->Add(Form("/adaqfs/home/a-onl/tritium/replay/t2root/nnL_smallroot/tritium_%d_%d.root",i,j));
     }
   }
-
 
  //============= Set Branch Status ==================//
 
@@ -99,143 +98,62 @@ int main(int argc, char** argv){
   double Rbeta[max],Lbeta[max];
   double rs2pathl[max],rs0pathl[max],rtrpathl[max];
   double ls2pathl[max],ls0pathl[max],ltrpathl[max];
-  double trigger[100];
+  double trigger[100],DRT5[10];
   double hallap;
   double Rs2tpads[100],Ls2tpads[100];
+  double Rs2trpad[100],Ls2trpad[100];
 
   T->SetBranchStatus("*",0);  
-  T->SetBranchStatus("HALLA_p",1);
-  T->SetBranchAddress("HALLA_p",&hallap); 
-  T->SetBranchStatus("DR.evtypebits",1);
-  T->SetBranchAddress("DR.evtypebits",trigger);  
  //------ Right Arm -------------//
+
   T->SetBranchStatus("RTDC.F1FirstHit",1);
   T->SetBranchAddress("RTDC.F1FirstHit",RF1); 
-  T->SetBranchStatus("R.s0.ra_c",1); // Right arm S0 R-PMT  ADC
-  T->SetBranchAddress("R.s0.ra_c",Rs0r_ac); // Right arm S0 R-PMT  ADC
-  T->SetBranchStatus("R.s0.la_c",1);        // Right arm S0 L-PMT  ADC
-  T->SetBranchAddress("R.s0.la_c",Rs0l_ac); // Right arm S0 L-PMT  ADC
-  T->SetBranchStatus("R.s2.ra_c",1);        // Right arm S2 R-PMT  ADC
-  T->SetBranchAddress("R.s2.ra_c",Rs2r_ac);  // Right arm S2 R-PMT  ADC
-  T->SetBranchStatus("R.s2.la_c",1);        // Right arm S2 L-PMT  ADC
-  T->SetBranchAddress("R.s2.la_c",Rs2l_ac);  // Right arm S2 L-PMT  ADC
-  
-  T->SetBranchStatus("R.s0.rt_c",1);        // Right arm S0 R-PMT  ADC
-  T->SetBranchAddress("R.s0.rt_c",Rs0r_tc); // Right arm S0 R-PMT  ADC
-  T->SetBranchStatus("R.s0.lt_c",1);        // Right arm S0 L-PMT  ADC
-  T->SetBranchAddress("R.s0.lt_c",Rs0l_tc); // Right arm S0 L-PMT  ADC
-  T->SetBranchStatus("R.s2.rt_c",1);        // Right arm S2 R-PMT  ADC
-  T->SetBranchAddress("R.s2.rt_c",Rs2r_tc);  // Right arm S2 R-PMT  ADC
-  T->SetBranchStatus("R.s2.lt_c",1);        // Right arm S2 L-PMT  ADC
-  T->SetBranchAddress("R.s2.lt_c",Rs2l_tc);  // Right arm S2 L-PMT  ADC
   T->SetBranchStatus("R.s2.t_pads",1);
   T->SetBranchAddress("R.s2.t_pads",Rs2tpads);
+  T->SetBranchStatus("R.s2.trpad",1);
+  T->SetBranchAddress("R.s2.trpad",Rs2trpad);
+ T->SetBranchStatus("R.a1.asum_c",1);
+ T->SetBranchAddress("R.a1.asum_c",&Ra1sum);
+ T->SetBranchStatus("R.a2.asum_c",1);
+ T->SetBranchAddress("R.a2.asum_c",&Ra2sum);
   // path length//
   T->SetBranchStatus("R.s2.trpath",1); 
   T->SetBranchAddress("R.s2.trpath",rs2pathl); 
-  T->SetBranchStatus("R.s0.trpath",1); 
-  T->SetBranchAddress("R.s0.trpath",rs0pathl);
   T->SetBranchStatus("R.tr.pathl",1);  
   T->SetBranchAddress("R.tr.pathl",rtrpathl);
- // (AC1)Aerogel Chrenkov Right ARM ADC //   
- T->SetBranchStatus("R.a1.t",1);
- T->SetBranchStatus("R.a1.a",1);
- T->SetBranchStatus("R.a1.asum_c",1);
- T->SetBranchStatus("R.a1.a_p",1);
- T->SetBranchStatus("R.a1.a_c",1);
- T->SetBranchAddress("R.a1.t",Ra1t);
- T->SetBranchAddress("R.a1.a",Ra1a);
- T->SetBranchAddress("R.a1.asum_c",&Ra1sum);
- T->SetBranchAddress("R.a1.a_p",Ra1a_p);
- T->SetBranchAddress("R.a1.a_c",Ra1a_c);
- // (AC2)Aerogel Chrenkov Right ARM ADC //                                   
- T->SetBranchStatus("R.a2.t",1);
- T->SetBranchStatus("R.a2.a",1);
- T->SetBranchStatus("R.a2.asum_c",1);
- T->SetBranchStatus("R.a2.a_p",1);
- T->SetBranchStatus("R.a2.a_c",1);
- T->SetBranchAddress("R.a2.t",Ra2t);
- T->SetBranchAddress("R.a2.a",Ra2a);
- T->SetBranchAddress("R.a2.asum_c",&Ra2sum);
- T->SetBranchAddress("R.a2.a_p",Ra2a_p);
- T->SetBranchAddress("R.a2.a_c",Ra2a_c);
-
  // Target positon information //
  T->SetBranchStatus("R.tr.p",1);
  T->SetBranchAddress("R.tr.p",Rp);
- T->SetBranchStatus("R.tr.px",1);
- T->SetBranchAddress("R.tr.px",Rpx);
- T->SetBranchStatus("R.tr.py",1);
- T->SetBranchAddress("R.tr.py",Rpy);
- T->SetBranchStatus("R.tr.ph",1);
- T->SetBranchAddress("R.tr.ph",Rph);
- T->SetBranchStatus("R.tr.th",1);
- T->SetBranchAddress("R.tr.th",Rth);
- T->SetBranchStatus("R.tr.x",1);
- T->SetBranchAddress("R.tr.x",Rx);
- T->SetBranchStatus("R.tr.beta",1);    
- T->SetBranchAddress("R.tr.beta",Rbeta); 
  T->SetBranchStatus("R.tr.vz",1);    
  T->SetBranchAddress("R.tr.vz",Rvz); 
 
  //------ Left Arm ---------------//
   T->SetBranchStatus("LTDC.F1FirstHit",1);
   T->SetBranchAddress("LTDC.F1FirstHit",LF1); 
-  T->SetBranchStatus("L.s0.ra_c",1);        // Left arm S0 R-PMT  ADC
-  T->SetBranchAddress("L.s0.ra_c",Ls0r_ac); // Left arm S0 R-PMT  ADC
-  T->SetBranchStatus("L.s0.la_c",1);        // Left arm S0 L-PMT  ADC
-  T->SetBranchAddress("L.s0.la_c",Ls0l_ac); // Left arm S0 L-PMT  ADC
-  T->SetBranchStatus("L.s2.ra_c",1);        // Left arm S2 R-PMT  ADC
-  T->SetBranchAddress("L.s2.ra_c",Ls2r_ac);  // Left arm S2 R-PMT  ADC
-  T->SetBranchStatus("L.s2.la_c",1);        // Left arm S2 L-PMT  ADC
-  T->SetBranchAddress("L.s2.la_c",Ls2l_ac);  // Left arm S2 L-PMT  ADC
-
-  T->SetBranchStatus("L.s0.rt_c",1);        // Left arm S0 R-PMT  ADC
-  T->SetBranchAddress("L.s0.rt_c",Ls0r_tc); // Left arm S0 R-PMT  ADC
-  T->SetBranchStatus("L.s0.lt_c",1);        // Left arm S0 L-PMT  ADC
-  T->SetBranchAddress("L.s0.lt_c",Ls0l_tc); // Left arm S0 L-PMT  ADC
-  T->SetBranchStatus("L.s2.rt_c",1);        // Left arm S2 R-PMT  ADC
-  T->SetBranchAddress("L.s2.rt_c",Ls2r_tc);  // Left arm S2 R-PMT  ADC
-  T->SetBranchStatus("L.s2.lt_c",1);        // Left arm S2 L-PMT  ADC
-  T->SetBranchAddress("L.s2.lt_c",Ls2l_tc);  // Left arm S2 L-PMT  ADC
   T->SetBranchStatus("L.s2.t_pads",1);
   T->SetBranchAddress("L.s2.t_pads",Ls2tpads);
+  T->SetBranchStatus("L.s2.trpad",1);
+  T->SetBranchAddress("L.s2.trpad",Ls2trpad);
   // path length//
-  T->SetBranchStatus("L.s2.trpath",1); 
-  T->SetBranchAddress("L.s2.trpath",ls2pathl); 
-  T->SetBranchStatus("L.s0.trpath",1); 
-  T->SetBranchAddress("L.s0.trpath",ls0pathl); 
-  T->SetBranchStatus("L.tr.pathl",1);   
-  T->SetBranchAddress("L.tr.pathl",ltrpathl);
-
-  T->SetBranchStatus("L.tr.beta",1);    
-  T->SetBranchAddress("L.tr.beta",Lbeta); 
-
+ T->SetBranchStatus("L.s2.trpath",1); 
+ T->SetBranchAddress("L.s2.trpath",ls2pathl); 
+ T->SetBranchStatus("L.tr.pathl",1);   
+ T->SetBranchAddress("L.tr.pathl",ltrpathl);
  T->SetBranchStatus("L.tr.p",1);
  T->SetBranchAddress("L.tr.p",Lp);  
- T->SetBranchStatus("L.tr.px",1);
- T->SetBranchAddress("L.tr.px",Lpx);
- T->SetBranchStatus("L.tr.py",1);
- T->SetBranchAddress("L.tr.py",Lpy);
- T->SetBranchStatus("L.tr.ph",1);
- T->SetBranchAddress("L.tr.ph",Lph);
- T->SetBranchStatus("L.tr.th",1);
- T->SetBranchAddress("L.tr.th",Lth);
- T->SetBranchStatus("L.tr.x",1);
- T->SetBranchAddress("L.tr.x",Lx);
  T->SetBranchStatus("L.tr.vz",1);    
  T->SetBranchAddress("L.tr.vz",Lvz);
  //==================================================//  
  // Time scale [ns] //
  // Energy scale [GeV] //
 
- double min_coin=-20;
- double max_coin=0.0;
+ double min_coin=-100;
+ double max_coin=100.0;
  double bin_coin=(max_coin-min_coin)/tdc_time;
         bin_coin=(int)bin_coin;
  
- double min_coin_c=-20;
- double max_coin_c=0.0;
+ double min_coin_c=-100;
+ double max_coin_c=100.0;
  double bin_coin_c=(max_coin_c-min_coin_c)/tdc_time;
         bin_coin_c=(int)bin_coin_c;
  
@@ -256,25 +174,12 @@ int main(int argc, char** argv){
  double max_ac2=20000.;
  int bin_ac2=max_ac2-min_ac2; 
 
- /*
- TH1F* hmm=new TH1F("hmm","Missing mass Hist",5000,-0.1,2.);
- TH1F* hmm1=new TH1F("hmm1","Missing mass Hist",5000,-0.1,2.);
- TH1F* hmm2=new TH1F("hmm2","Missing mass Hist",5000,-0.1,2.);
- TH1F* hmm3=new TH1F("hmm3","Missing mass Hist",5000,-0.1,2.);
- TH1F* hmm_ac=new TH1F("hmm_ac","Missing mass Hist with AC cut",500,-0.1,2.);
- */
 
  TH1F* hcoin_t=new TH1F("hcoin_t","Coincidence time S2R-S2L[ns] ",bin_coin,min_coin,max_coin);
  TH1F* hcoin_tc=new TH1F("hcoin_tc","Coincidence time w/ Path Length Correction  S2R-S2L[ns] ",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_t1=new TH1F("hcoin_t1","Coincidence time S2R-S2L[ns] ",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_t2=new TH1F("hcoin_t2","Coincidence time S2R-S2L[ns] ",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_t3=new TH1F("hcoin_t3","Coincidence time S2R-S2L[ns] ",bin_coin_c,min_coin_c,max_coin_c);
- // TH1F* hcoin_tbeta=new TH1F("hcoin_tbeta","Coincidence time S0R-S0L[ns] ",bin_coin,min_coin,max_coin);
- //TH1F* hcoin_div=new TH1F("hcoin_div","Divede bin hcoin1/hcoin",bin_coin,min_coin,max_coin);
-
- // TH2F* ha1_mm=new TH2F("ha1_mm","beta vs ac1 ADC sum hist",bin_beta,min_beta,max_beta,bin_adc,min_adc,max_adc);
- // TH2F* ha2_mm=new TH2F("ha2_mm","beta vs ac2 ADC sum hist",bin_beta,min_beta,max_beta,bin_adc,min_adc,max_adc);
- //TH1F* hm2=new TH1F("hm2","Right ARM Mass Hist",500,-1.0,2.);
 
  double min_rpathl=28.0; double max_rpathl=30.; int bin_rpathl=500;
  double min_lpathl=28.0; double max_lpathl=30.; int bin_lpathl=500; 
@@ -299,7 +204,7 @@ int main(int argc, char** argv){
  TH2F* hcoin_lpathl_cc=new TH2F("hcoin_lpathl_cc","Coinc time vs L Path Length Hist w/ correction",bin_lpathl,min_lpathl,max_lpathl,bin_coin_c,min_coin_c,max_coin_c);
   
  TH2F* hcoin_ac1=new TH2F("hcoin_ac1","Coinc time vs AC1 ADC Hist w/ correction",bin_coin_c,min_coin_c,max_coin_c,bin_ac1,min_ac1,max_ac1);
- TH2F* hcoin_ac2=new TH2F("hcoin_ac2","Coinc time vs AC1 ADC Hist w/ correction",bin_coin_c,min_coin_c,max_coin_c,bin_ac2,min_ac2,max_ac2);
+ TH2F* hcoin_ac2=new TH2F("hcoin_ac2","Coinc time vs AC2 ADC Hist w/ correction",bin_coin_c,min_coin_c,max_coin_c,bin_ac2,min_ac2,max_ac2);
  TH2F* ha1_a2=new TH2F("ha1_a2","ac1 vs ac2 ADC sum hist",bin_ac1,min_ac1,max_ac1,bin_ac2,min_ac2,max_ac2);
 
  int evnt=T->GetEntries();
@@ -319,11 +224,11 @@ int main(int argc, char** argv){
  int counts=0;
  int Ls2pads,Rs2pads;
  bool cut_ac1,cut_ac2,cut_beta;
- int nac1,nac2,n;
- double ac1_adc,ac2_adc;
+ int nac1,nac2,nac3,n;
+ double ac1_adc,ac2_adc,ac2_adc2;
  double tof_r,tof_l;
- ac1_adc=100.;
- ac2_adc=2000.;
+ ac1_adc=150.;
+ ac2_adc=5000.;
  double rpathl,lpathl;
  double corr_R,corr_L;
  double rpath_corr,lpath_corr,pathl_off;
@@ -331,10 +236,10 @@ int main(int argc, char** argv){
  //----- Cut Parameters ----------//
  double coin_cutmin=-248;
  double coin_cutmax=-244; 
- double rpathl_cutmin=22.2;
- double rpathl_cutmax=22.7;
- double lpathl_cutmin=22.3;
- double lpathl_cutmax=22.8;
+ double rpathl_cutmin=28.7;
+ double rpathl_cutmax=29.4;
+ double lpathl_cutmin=28.6;
+ double lpathl_cutmax=29.2;
  double rbeta_cutmin=0.0;
  double rbeta_cutmax=1.0;
  double lbeta_cutmin=0.9;
@@ -346,7 +251,7 @@ int main(int argc, char** argv){
  double Rx_cutmin= -0.4;
  double Rx_cutmax= 0.4;
  //-------------------------------//
-bool cut_Rs2,cut_Ls2,cut_rpathl,cut_lpathl,cut_coin,cut_rbeta,cut_lbeta,cut_vz,cut_Rx,cut_trig,coin_trig,right_trig;
+ bool cut_Rs2,cut_Ls2,cut_rpathl,cut_lpathl,cut_coin,cut_rbeta,cut_lbeta,cut_vz,cut_Rx,cut_trig,coin_trig,right_trig,cut_track,cut_s0;
 
 
 for(int k=0;k<evnt;k++){
@@ -354,9 +259,9 @@ for(int k=0;k<evnt;k++){
 
  
 
- pe_=Lp[0]*sqrt(1-pow(Lth[0],2)+pow(Lph[0],2));
- pk=Rp[0]*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
- ppi=Rp[0]*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
+ pe_=Lp[0];//*sqrt(1+pow(Lth[0],2)+pow(Lph[0],2));
+ pk=Rp[0];//*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
+ ppi=Rp[0];//*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
  pe=4.313; // GeV   //hallap*1.0e-3;
  Ee=sqrt(pow(pe,2)+pow(me,2));
  Ee_=sqrt(pow(pe_,2)+pow(me,2));
@@ -370,7 +275,7 @@ for(int k=0;k<evnt;k++){
  lpathl=ltrpathl[0]+ls2pathl[0]; // L-HRS path length S2 -RF
  rbeta=pk/Ek; 
  rpath_corr=rpathl/rbeta/c;
- lbeta=pe_/Ee_; 
+ lbeta=1.0;//pe_/Ee_; 
  lpath_corr=lpathl/lbeta/c;
  
  Rs2_off=s2f1_off(Rs2pads,"R");
@@ -380,42 +285,40 @@ for(int k=0;k<evnt;k++){
  coin_t=tof_r-tof_l; //coin time
  coin_tc=coin_t+rpath_corr-lpath_corr;//+pathl_off;
 
- m2=sqrt((1./pow(Rbeta[0],2)-1)*pk);
-
 //====== Cut condition ========================// 
    cut_ac1=false;
    cut_ac2=false;
-   cut_trig=true;
-   cut_beta=false;
+   // cut_trig=true;
+   // cut_beta=false;
    cut_rpathl=false;
    cut_lpathl=false;
-   cut_coin=false;
-   cut_rbeta=false;
-   cut_lbeta=false;
+   // cut_coin=false;
+   // cut_rbeta=false;
+   // cut_lbeta=false;
    cut_Rs2=false;
    cut_Ls2=false;
    cut_vz=false;
-   cut_Rx=false;
-   cut_trig=false;
-   coin_trig=true;
-   right_trig=false;
-
+   // cut_Rx=false;
+   // cut_trig=false;
+   // coin_trig=true;
+   // right_trig=false;
+   cut_track=false;
+   cut_s0=false;
+   if(-RF1[43]+RF1[46]>0 && -RF1[44]+RF1[46]>0 && -LF1[27]+LF1[30]>0 && -LF1[28]+LF1[30]>0)cut_s0=true;
    if(Ra1sum<ac1_adc)cut_ac1=true;
-   if(Ra2sum>ac2_adc)cut_ac2=true;
-   if(rbeta>0.963 && rbeta<0.966)cut_beta=true;
-   if(trigger[0]==32)coin_trig=true;
-   if(trigger[0]==16)right_trig=true;
+   if(Ra2sum<ac2_adc)cut_ac2=true;
+   //   if(rbeta>0.963 && rbeta<0.966)cut_beta=true;
    if(RF1[48+Rs2pads]>0 && RF1[16+Rs2pads]>0)cut_Rs2=true;
    if(LF1[Ls2pads]>0 && LF1[Ls2pads+48]>0)cut_Ls2=true;
-   if(coin_t<coin_cutmax && coin_t>coin_cutmin)cut_coin=true;
+   // if(coin_t<coin_cutmax && coin_t>coin_cutmin)cut_coin=true;
    if(rpathl_cutmin<rpathl && rpathl<rpathl_cutmax)cut_rpathl=true;
    if(lpathl_cutmin<lpathl && lpathl<lpathl_cutmax)cut_lpathl=true;
-   if(rbeta_cutmin<rbeta && rbeta_cutmax)cut_rbeta=true;
-   if(lbeta_cutmin<rbeta && lbeta_cutmax)cut_lbeta=true;
-   if(Rvz_cutmin<Rvz[0] && Rvz_cutmax<Rvz[0] && Lvz_cutmin<Lvz[0] && Lvz_cutmax<Lvz[0])cut_vz=true;
-   if(Rx_cutmin<Rx[0] && Rx[0]<Rx_cutmax)cut_Rx=true;
+   // if(rbeta_cutmin<rbeta && rbeta_cutmax)cut_rbeta=true;
+   // if(lbeta_cutmin<rbeta && lbeta_cutmax)cut_lbeta=true;
+   if(Rvz_cutmin<Rvz[0] && Rvz[0]<Rvz_cutmax && Lvz_cutmin<Lvz[0] && Lvz[0]<Lvz_cutmax)cut_vz=true;
+   // if(Rx_cutmin<Rx[0] && Rx[0]<Rx_cutmax)cut_Rx=true;
+   if(Rs2trpad[0]==Rs2pads && Ls2trpad[0]==Ls2pads)cut_track=true;
  //=======================================//
-
 
 
 
@@ -425,9 +328,8 @@ for(int k=0;k<evnt;k++){
 
 
 
- 
+ if(cut_Rs2 && cut_Ls2 && cut_vz && cut_lpathl && cut_rpathl && cut_track && cut_s0){
 
- if(cut_Rs2 && cut_Ls2 && cut_vz && coin_trig){
  hcoin_t->Fill(coin_t);
  hcoin_tc->Fill(coin_tc);
  // hmm->Fill(mh);
@@ -441,24 +343,19 @@ for(int k=0;k<evnt;k++){
  hcoin_ac2->Fill(coin_tc,Ra2sum);
  ha1_a2->Fill(Ra1sum,Ra2sum);// AC1 vs AC2
  }
- if(cut_Rs2 && cut_Ls2 && cut_ac1 && cut_vz){
+ if(cut_Rs2 && cut_Ls2 && cut_ac1 && cut_vz && cut_lpathl && cut_rpathl && cut_track && cut_s0){
    hcoin_t1->Fill(coin_tc); // AC1 cut
 
  }
- if(cut_Rs2 && cut_Ls2 && cut_ac2  && cut_vz){
+ if(cut_Rs2 && cut_Ls2 && cut_ac2  && cut_vz && cut_lpathl && cut_rpathl && cut_track && cut_s0){
    hcoin_t2->Fill(coin_tc); //AC2 cut
 
  }
- if(cut_Rs2 && cut_Ls2  && cut_ac1 && cut_ac2  && cut_vz ){
+ if(cut_Rs2 && cut_Ls2  && cut_ac1 && cut_ac2  && cut_vz && cut_lpathl && cut_rpathl && cut_track && cut_s0){
    hcoin_t3->Fill(coin_tc); //AC1 & AC2 cut
- }
- /*
- if(cut_Rs2 && cut_Ls2 && cut_ac2   && cut_vz && cut_rbeta && cut_rpathl && cut_Rx && cut_ac1 && cut_beta)hcoin_tbeta->Fill(coin_t);
- if(RF1[48+Rs2pads]>0 && RF1[16+Rs2pads]>0&& (cut_ac1 && cut_ac2))hmm_ac->Fill(mh);
- if(RF1[48+Rs2pads]>0 && RF1[16+Rs2pads]>0)ha1_mm->Fill(rbeta,Ra1sum);
- if(RF1[48+Rs2pads]>0 && RF1[16+Rs2pads]>0)ha2_mm->Fill(rbeta,Ra2sum);
- if(RF1[48+Rs2pads]>0 && RF1[16+Rs2pads]>0)hm2->Fill(m2);
- */
+ 
+  }
+ 
  }
 
 
@@ -467,36 +364,15 @@ for(int k=0;k<evnt;k++){
  n=hcoin_t->GetEntries();
  nac1=hcoin_t1->GetEntries();
  nac2=hcoin_t2->GetEntries();
- cout<<" Event w/o ac cut : "<<n<<endl;
- cout<<" Event w/ ac1 cut : "<<nac1<<endl;
- cout<<" Event w/ ac2 cut : "<<nac2<<endl;
-
-
-
-
- /*
- TCanvas* c0=new TCanvas("c0","c0");
-   c0->cd();
- hmm->Draw();
- hmm1->SetLineColor(2);
- hmm1->Draw("same");
- hmm2->SetLineColor(3);
- hmm2->Draw("same");
- hmm3->SetLineColor(1);
- hmm3->Draw("same");
- hmm_ac->SetLineColor(2);
- hmm_ac->Draw("same");
- */
- 
+ nac3=hcoin_t3->GetEntries();
+  
  TLine* lac=new TLine(min_coin_c,ac1_adc,max_coin_c,ac1_adc);
  lac->SetLineWidth(2);
  lac->SetLineColor(2);
  
-
  TCanvas* ccoin_ac=new TCanvas("ccoin_ac","ccoin_ac");
  ccoin_ac->Divide(1,2);
  ccoin_ac->cd(1);
-
  hcoin_ac1->Draw("colz");
  lac->DrawLine(min_coin_c,ac1_adc,max_coin_c,ac1_adc);
  ccoin_ac->cd(2);
@@ -504,28 +380,127 @@ for(int k=0;k<evnt;k++){
  lac->DrawLine(min_coin_c,ac2_adc,max_coin_c,ac2_adc); 
  TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  ccoin->cd();
+ hcoin_tc->SetLineColor(6);
  hcoin_tc->Draw();
- hcoin_t1->SetLineColor(1);
- hcoin_t2->SetLineColor(2);
- hcoin_t3->SetLineColor(3);
+ hcoin_t1->SetLineColor(2);
+ hcoin_t2->SetLineColor(3);
+ hcoin_t3->SetLineColor(1);
  hcoin_t1->Draw("same");
  hcoin_t2->Draw("same");
  hcoin_t3->Draw("same");
 
+ //============== Efficiency analysis =======================//
 
+ /*
+ int bin_ac1_adc=hcoin_ac1->GetXaxis()->FindBin(ac1_adc);
+ int bin_max_ac1=hcoin_ac1->GetXaxis()->FindBin(max_ac1);
+ TH1F* hcoin_ac1_p =hcoin_ac1->ProjectionX("hcoin_ac1_p",bin_ac1_adc,bin_max_adc);
+ int bin_ac2_adc=hcoin_ac2->GetXaxis()->FindBin(ac2_adc);
+ int bin_max_ac2=hcoin_ac2->GetXaxis()->FindBin(max_ac2);
+ TH1F* hcoin_ac2_p =hcoin_ac2->ProjectionX("hcoin_ac2_p",bin_ac2_adc,bin_max_adc);
+ */
+
+ TH1F* hcoin_tx=(TH1F*)hcoin_t2->Clone();
+ hcoin_tx->SetName("hcoin_tx");
+
+
+ TF1* facc=new TF1("facc","[0]",min_coin_c,max_coin_c);
+ hcoin_tx->Fit("facc","R","",min_coin_c,-18.);
+ double p0_acc=facc->GetParameter(0);
+ // double p1_acc=facc->GetParameter(1);
+ TF1* fp=new TF1("fp","gausn(0)+pol0(3)",min_coin_c,max_coin_c);
+ fp->FixParameter(3,p0_acc);
+ fp->SetParameter(1,-14);
+ fp->SetParameter(2,0.788);
+ hcoin_tx->Fit("fp","R","",-16.,-12.);
+ double n_p=fp->GetParameter(0);
+ double mean_p=fp->GetParameter(1);
+ double sig_p=fp->GetParameter(2);
+ TF1* fpi=new TF1("fpi","gausn(0)+pol0(3)",min_coin_c,max_coin_c);
+ fpi->SetParameter(3,p0_acc);
+ fpi->SetParameter(1,-2.59);
+ fpi->SetParameter(2,0.384);
+ hcoin_tx->Fit("fpi","R","",-4.,-1.);
+ double n_pi=fpi->GetParameter(0);
+ double mean_pi=fpi->GetParameter(1);
+ double sig_pi=fpi->GetParameter(2);
+ TF1* fk=new TF1("fk","gausn(0)+pol0(3)",min_coin_c,max_coin_c);
+ fk->SetParameter(3,p0_acc);
+ fk->SetParameter(1,-5.5);
+ fk->SetParameter(2,0.644);
+ fk->SetParLimits(2,0,0.65);
+ hcoin_tx->Fit("fk","R","",-7.,-4.5);
+ double n_k=fk->GetParameter(0);
+ double mean_k=fk->GetParameter(1);
+ double sig_k=fk->GetParameter(2);
+
+
+ TF1* fcoin=new TF1("fcoin","gausn(0)+gausn(3)+gausn(6)+pol0(9)");
+ fcoin->SetParameters(n_pi,mean_pi,sig_pi,n_k,mean_k,sig_k,n_p,mean_p,sig_p,p0_acc);
+ fcoin->SetParLimits(4,mean_k-0.5*sig_k,mean_k+0.5*sig_k);
+ fcoin->SetParLimits(5,0.8*sig_k,1.2*sig_k);
+ hcoin_tx->Fit("fcoin","","",min_coin_c,max_coin_c);
+
+n_pi=fcoin->GetParameter(0); mean_pi=fcoin->GetParameter(1);  sig_pi=fcoin->GetParameter(2);
+n_k=fcoin->GetParameter(3); mean_k=fcoin->GetParameter(4);  sig_k=fcoin->GetParameter(5);
+n_p=fcoin->GetParameter(6); mean_p=fcoin->GetParameter(7);  sig_p=fcoin->GetParameter(8);
+ p0_acc=fcoin->GetParameter(9);
+ // p1_acc=fcoin->GetParameter(10);
+
+
+ double sum_k=n_k/tdc_time; 
+ double sum_pi=n_pi/tdc_time;
+ double sum_p=n_p/tdc_time;
+
+ fk->SetParameters(n_k,mean_k,sig_k);
+ fp->SetParameters(n_p,mean_p,sig_p);
+ fpi->SetParameters(n_pi,mean_pi,sig_pi);
+
+ int bin_pi_min=hcoin_ac2->GetXaxis()->FindBin(mean_pi-3*sig_pi);
+ int bin_pi_max=hcoin_ac2->GetXaxis()->FindBin(mean_pi+3*sig_pi);
+ int bin_k_min=hcoin_ac2->GetXaxis()->FindBin(-5.55-3*0.644);
+ int bin_k_max=hcoin_ac2->GetXaxis()->FindBin(-5.55+3*0.644);
+ int bin_coint_min=hcoin_ac2->GetXaxis()->FindBin(min_coin_c);
+ int bin_coint_max=hcoin_ac2->GetXaxis()->FindBin(max_coin_c);
+ TH1D* hac2_pi=hcoin_ac2->ProjectionY("hac2_pi",bin_pi_min,bin_pi_max);
+ TH1D* hac2_k=hcoin_ac2->ProjectionY("hac2_k",bin_k_min,bin_k_max);
+ TH1D* hac2_all=hcoin_ac2->ProjectionY("hac2_all",bin_coint_min,bin_coint_max);
+
+
+ //======== Draw TCanvas ==============//
+
+ TCanvas* cAC2_test=new TCanvas("cAC2_test","cAC2_test");
+ cAC2_test->cd();
+ hac2_all->SetLineColor(1);
+ hac2_all->Draw();
+ hac2_pi->SetLineColor(46);
+ // hac2_pi->SetFillColor(46);
+ hac2_pi->Draw("same");
+ hac2_k->SetLineColor(4);
+ // hac2_k->SetFillColor(4);
+ hac2_k->Draw("same");
+ TCanvas* c0=new TCanvas("c0","c0");
+ c0->cd();
+ hcoin_tx->Draw();
+ fcoin->SetLineColor(kRed);
+ fk->SetLineColor(4);
+ fk->SetFillColor(4);
+ fk->SetFillStyle(3001);
+ fpi->SetFillStyle(3001);
+ fpi->SetLineColor(46);
+ fpi->SetFillColor(46);
+ fp->SetFillStyle(3001);
+ fp->SetLineColor(8);
+ fp->SetFillColor(8);
+ fcoin->Draw("same");
+ fk->Draw("same");
+ fp->Draw("same");
+ fpi->Draw("same");
  TCanvas* cAC=new TCanvas("cAC","cAC");
  cAC->cd();
  ha1_a2->Draw("colz");
  lac->DrawLine(min_ac1,ac2_adc,max_ac1,ac2_adc);
  lac->DrawLine(ac1_adc,min_ac2,ac1_adc,max_ac2);
- 
- /*
-  cAC->Divide(1,2);
- cAC->cd(1);
- ha1_mm->Draw("colz");
- cAC->cd(2);
- ha2_mm->Draw("colz");
- */
 
  TCanvas* c_pathc =new TCanvas("c_pathc","c_pathc");
  c_pathc->Divide(1,2);
@@ -538,24 +513,37 @@ for(int k=0;k<evnt;k++){
  crpathl->Divide(2,3);
  crpathl->cd(1);
  hcoin_rpathl->Draw("colz");
+ lac->DrawLine(rpathl_cutmin,min_coin_c,rpathl_cutmin,max_coin_c); 
+ lac->DrawLine(rpathl_cutmax,min_coin_c,rpathl_cutmax,max_coin_c);
  crpathl->cd(2);
  hcoin_lpathl->Draw("colz");
+ lac->DrawLine(lpathl_cutmin,min_coin_c,lpathl_cutmin,max_coin_c); 
+ lac->DrawLine(lpathl_cutmax,min_coin_c,lpathl_cutmax,max_coin_c); 
  crpathl->cd(3);
  hcoin_rpathl_c->Draw("colz");
+ lac->DrawLine(rpathl_cutmin,min_coin_c,rpathl_cutmin,max_coin_c); 
+ lac->DrawLine(rpathl_cutmax,min_coin_c,rpathl_cutmax,max_coin_c);
  crpathl->cd(4);
  hcoin_lpathl_c->Draw("colz");
+ lac->DrawLine(lpathl_cutmin,min_coin_c,lpathl_cutmin,max_coin_c); 
+ lac->DrawLine(lpathl_cutmax,min_coin_c,lpathl_cutmax,max_coin_c); 
  crpathl->cd(5);
  hcoin_rpathl_cc->Draw("colz");
+ lac->DrawLine(rpathl_cutmin,min_coin_c,rpathl_cutmin,max_coin_c); 
+ lac->DrawLine(rpathl_cutmax,min_coin_c,rpathl_cutmax,max_coin_c);
  crpathl->cd(6);
  hcoin_lpathl_cc ->Draw("colz");
-
+ lac->DrawLine(lpathl_cutmin,min_coin_c,lpathl_cutmin,max_coin_c); 
+ lac->DrawLine(lpathl_cutmax,min_coin_c,lpathl_cutmax,max_coin_c); 
 
  //================ Print Canvas =================================//
 TString name;
  if(print){
- name.Form("./pdf/hdrogen_run.pdf");
+   // name.Form("./pdf/hdrogen_run.pdf");
+ name.Form("./pdf/hdrogen_test.pdf");
  ccoin->Print(name+"[","pdf");
  ccoin->Print(name,"pdf");
+ c0->Print(name,"pdf");
  ccoin_ac->Print(name,"pdf");
  cAC->Print(name,"pdf");
  c_pathc->Print(name,"pdf");
@@ -564,11 +552,26 @@ TString name;
 }
 
 
+ //====== Comment Out =====================//
 
-
-
-
-
+ cout<<" Event w/o ac cut : "<<n<<endl;
+ cout<<" Event w/ ac1 cut : "<<nac1<<endl;
+ cout<<" Event w/ ac2 cut : "<<nac2<<endl;
+ cout<<" Event w/ ac1 & ac2 cut : "<<nac3<<endl;
+ cout<<"======= Get Fit Parameters ============"<<endl;
+ cout<<"Accidental BG p0: "<<p0_acc<<endl;
+ cout<<"Proton Fit parameters "<<endl;
+ cout<<"mean "<<mean_p<<endl;
+ cout<<"sigma "<<sig_p<<endl;
+ cout<<"Pion Fit Parameters "<<endl;
+ cout<<"mean "<<mean_pi<<endl;
+ cout<<"sigma "<<sig_pi<<endl;
+ cout<<"Kaon Fit Paramters "<<endl;
+ cout<<"mean "<<mean_k<<endl;
+ cout<<"sigma "<<sig_k<<endl;
+ cout<<"Sum of Kaon "<<sum_k<<endl;
+ cout<<"Sum of Pion "<<sum_pi<<endl;
+ cout<<"Sum of Proton "<<sum_p<<endl;
  theApp->Run();
  return 0;
 

@@ -18,18 +18,23 @@ CXXLIBS = $(ROOTLIBS)
 
 TARGET1= conv
 OBJS1=   conv.o  
-TARGET1= conv_TOF
-OBJS1=   conv_TOF.o  
+TARGET2= conv_TOF
+OBJS2=   conv_TOF.o  
+TARGET3= copy
+OBJS3=   copy.o  
 
 .PHONY: all
 all: $(TARGET1)\
-     $(TARGET2)
+     $(TARGET2)\
+     $(TARGET3)
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< -MMD $(CXXFLAGS)
 
 $(TARGET1): $(patsubst %,$(LIBDIR)/%,$(OBJS1))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 $(TARGET2): $(patsubst %,$(LIBDIR)/%,$(OBJS2))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+$(TARGET3): $(patsubst %,$(LIBDIR)/%,$(OBJS3))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean

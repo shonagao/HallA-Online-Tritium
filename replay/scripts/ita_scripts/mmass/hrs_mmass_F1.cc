@@ -90,6 +90,7 @@ int main(int argc, char** argv){
   T->SetBranchStatus("R.s0.la_c",1);        // Right arm S0 L-PMT  ADC
   T->SetBranchAddress("R.s0.la_c",Rs0l_ac); // Right arm S0 L-PMT  ADC
   T->SetBranchStatus("R.s2.ra_c",1);        // Right arm S2 R-PMT  ADC
+
   T->SetBranchAddress("R.s2.ra_c",Rs2r_ac);  // Right arm S2 R-PMT  ADC
   T->SetBranchStatus("R.s2.la_c",1);        // Right arm S2 L-PMT  ADC
   T->SetBranchAddress("R.s2.la_c",Rs2l_ac);  // Right arm S2 L-PMT  ADC
@@ -99,6 +100,7 @@ int main(int argc, char** argv){
   T->SetBranchStatus("R.s0.lt_c",1);        // Right arm S0 L-PMT  ADC
   T->SetBranchAddress("R.s0.lt_c",Rs0l_tc); // Right arm S0 L-PMT  ADC
   T->SetBranchStatus("R.s2.rt_c",1);        // Right arm S2 R-PMT  ADC
+
   T->SetBranchAddress("R.s2.rt_c",Rs2r_tc);  // Right arm S2 R-PMT  ADC
   T->SetBranchStatus("R.s2.lt_c",1);        // Right arm S2 L-PMT  ADC
   T->SetBranchAddress("R.s2.lt_c",Rs2l_tc);  // Right arm S2 L-PMT  ADC
@@ -123,6 +125,7 @@ int main(int argc, char** argv){
  T->SetBranchAddress("R.a1.a_c",Ra1a_c);
  // (AC2)Aerogel Chrenkov Right ARM ADC //                                   
  T->SetBranchStatus("R.a2.t",1);
+
  T->SetBranchStatus("R.a2.a",1);
  T->SetBranchStatus("R.a2.asum_c",1);
  T->SetBranchStatus("R.a2.a_p",1);
@@ -147,6 +150,7 @@ int main(int argc, char** argv){
  T->SetBranchStatus("R.tr.beta",1);    
  T->SetBranchAddress("R.tr.beta",Rbeta); 
 
+
  //------ Left Arm ---------------//
   T->SetBranchStatus("LTDC.F1FirstHit",1);
   T->SetBranchAddress("LTDC.F1FirstHit",LF1); 
@@ -161,6 +165,7 @@ int main(int argc, char** argv){
 
   T->SetBranchStatus("L.s0.rt_c",1);        // Left arm S0 R-PMT  ADC
   T->SetBranchAddress("L.s0.rt_c",Ls0r_tc); // Left arm S0 R-PMT  ADC
+
   T->SetBranchStatus("L.s0.lt_c",1);        // Left arm S0 L-PMT  ADC
   T->SetBranchAddress("L.s0.lt_c",Ls0l_tc); // Left arm S0 L-PMT  ADC
   T->SetBranchStatus("L.s2.rt_c",1);        // Left arm S2 R-PMT  ADC
@@ -170,7 +175,8 @@ int main(int argc, char** argv){
   T->SetBranchStatus("L.s2.t_pads",1);
   T->SetBranchAddress("L.s2.t_pads",Ls2tpads);
 
-T->SetBranchStatus("L.tr.beta",1);    
+T->SetBranchStatus("L.tr.
+beta",1);    
   T->SetBranchAddress("L.tr.beta",Lbeta); 
 
  T->SetBranchStatus("L.tr.p",1);
