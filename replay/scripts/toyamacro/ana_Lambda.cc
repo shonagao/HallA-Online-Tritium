@@ -14,6 +14,8 @@ string ofroot("output.root");
 #define F1TDC
 //#define FADC
 
+//#define Lambda
+#define nnL
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 ana::ana()
 {
@@ -311,9 +313,18 @@ void ana::Loop(){
             B_v.SetMagThetaPhi( sqrt(Ee*Ee-Me*Me), 0, 0 );
             L_v.RotateZ( -13.2 / 180. * PI );
             R_v.RotateZ(  13.2 / 180. * PI );
-            double mass = sqrt( (Ee + Mp - L_E - R_E)*(Ee + Mp - L_E - R_E)
+            double mass, mm;
+#ifdef Lambda
+            mass = sqrt( (Ee + Mp - L_E - R_E)*(Ee + Mp - L_E - R_E)
                               - (B_v - L_v - R_v)*(B_v - L_v - R_v) );
-            double mm = mass - ML;
+            mm = mass - ML;
+#endif
+#ifdef nnL
+            mass = sqrt( (Ee + MT - L_E - R_E)*(Ee + MT - L_E - R_E)
+                              - (B_v - L_v - R_v)*(B_v - L_v - R_v) );
+            mm = mass - (Mn + Mn + ML);
+
+#endif
             mm -= (-0.2390 * L_tr_ph[lt]) + 0.0325474;
             mm -= ( 0.0371 * R_tr_y[rt]);
             mm -= ( 0.0261 * L_tr_p[lt] - 0.0567315);//
@@ -854,7 +865,7 @@ void ana::MakeHist(){
 /////////////////////
 //// Coincidence ////
 /////////////////////
-  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,10000, -300, 300);//to adjust offset 
+  h_ct       = new TH1D("h_ct"      ,"h_ct"      ,1000, -20, 20);//to adjust offset 
   h_ct_wK    = new TH1D("h_ct_wK"   ,"h_ct_wK"   ,1000, -20, 20); 
   h_ct_wK_z  = new TH1D("h_ct_wK_z" ,"h_ct_wK_z" ,1000, -20, 20); 
   h_Rs2x_ct  = new TH2D("h_Rs2x_ct" ,"h_Rs2x_ct" , 200, -20, 20,200,   -1,  1); 
@@ -867,7 +878,12 @@ void ana::MakeHist(){
   h_mmbg     = new TH1D("h_mmbg"    ,"h_mmbg"    , 400,-0.10,0.25); 
   h_mmallbg  = new TH1D("h_mmallbg" ,"h_mmallbg" , 400,-0.10,0.25); 
   h_mmfoilbg = new TH1D("h_mmfoilbg","h_mmfoilbg", 400,-0.10,0.25); 
+#ifdef Lambda
   h_Lp_mm    = new TH2D("h_Lp_mm"   ,"h_Lp_mm"   , 200,-0.10,0.25,200,   1.9,  2.3); 
+#endif
+#ifdef nnL
+  h_Lp_mm    = new TH2D("h_Lp_mm"   ,"h_Lp_mm"   , 200,-0.10,0.25,200,   2.0,  2.4); 
+#endif
   h_Ll_mm    = new TH2D("h_Ll_mm"   ,"h_Ll_mm"   , 200,-0.10,0.25,200,  25.2, 26.3); 
   h_Ltgy_mm  = new TH2D("h_Ltgy_mm" ,"h_Ltgy_mm" , 200,-0.10,0.25,200, -0.06, 0.06); 
   h_Ltgth_mm = new TH2D("h_Ltgth_mm","h_Ltgth_mm", 200,-0.10,0.25,200,  -0.1,  0.1); 
@@ -891,7 +907,12 @@ void ana::MakeHist(){
   h_Ry_mm    = new TH2D("h_Ry_mm"   ,"h_Ry_mm"   , 200,-0.10,0.25,200,  -0.1,  0.1); 
   h_Rth_mm   = new TH2D("h_Rth_mm"  ,"h_Rth_mm"  , 200,-0.10,0.25,200,  -0.2,  0.2); 
   h_Rph_mm   = new TH2D("h_Rph_mm"  ,"h_Rph_mm"  , 200,-0.10,0.25,200,  -0.1,  0.1); 
+#ifdef Lambda
   h_Rp_Lp    = new TH2D("h_Rp_Lp"   ,"h_Rp_Lp"   , 200,  1.9, 2.3,200,   1.7, 1.95); 
+#endif
+#ifdef nnL
+  h_Rp_Lp    = new TH2D("h_Rp_Lp"   ,"h_Rp_Lp"   , 200,  2.0, 2.5,200,   1.7, 1.95); 
+#endif
   set->SetTH1(h_ct      ,"Coincidence Time"                      ,"Cointime (ns)"           ,"Counts");
   h_ct->SetMinimum(0.8);
   set->SetTH1(h_ct_wK   ,"Coincidence Time (w/ K cut)"           ,"Cointime (ns)"           ,"Counts",1,3001,3);

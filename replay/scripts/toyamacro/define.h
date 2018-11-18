@@ -46,4 +46,5 @@ const double ML = 1.115683;            // Lambda       mass (GeV/c2)
 const double MS0 = 1.192642;           // Sigma Zero   mass (GeV/c2)
 const double MSm = 1.197449;           // Sigma Minus  mass (GeV/c2)
 const double MSp = 1.18937;            // Sigma Plus   mass (GeV/c2)
+const double MT  = 2.808921112;        // Triton       mass (GeV/c2)
 #endif
