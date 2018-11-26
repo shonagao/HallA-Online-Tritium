@@ -27,7 +27,6 @@ ClassImp(TriFadcRasteredBeam)
 TriFadcRasteredBeam::TriFadcRasteredBeam( const char* name, const char* description ) :
     THaBeam( name, description ) 
 {
-  
   AddDetector( new TriFadcRaster("Raster2","downstream raster") );
   AddDetector( new TriFadcRaster("Raster","upstream raster") );
   AddDetector( new TriFadcBPM("BPMA","1st BPM") );
