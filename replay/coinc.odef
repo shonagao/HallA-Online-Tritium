@@ -467,10 +467,10 @@ TH2F R_rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Rrb.Raster2.rawcur.y Rrb.Rast
 TH2F R_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Rrb.Raster.rawcur.y Rrb.Raster2.rawcur.x 500 2000
 0 120000 500 50000 100000
 
-TH2F R_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Rrb.Raster.rawcur.x rbax 500 50000 100000 200 -5. 5.
-TH2F R_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Rrb.Raster.rawcur.y rbay 500 20000 120000 200 -5. 5.
-TH2F R_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Rrb.Raster.rawcur.x rbbx 500 50000 100000 200 -5. 5.
-TH2F R_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Rrb.Raster.rawcur.y rbby 500 20000 120000 200 -5. 5.
+TH2F R_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Rrb.Raster.rawcur.x rbax 500 71000 72000 200 -2. 2.
+TH2F R_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Rrb.Raster.rawcur.y rbay 500 72000 73000 200 -1. 4.
+TH2F R_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Rrb.Raster.rawcur.x rbbx 500 71000 72000 200 -2. 2.
+TH2F R_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Rrb.Raster.rawcur.y rbby 500 72000 73000 200 0. 5.
 
 TH2F R_urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Rrb.Raster.rawcur.y rbax 500 20000 120000 200 -5. 5.
 TH2F R_urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Rrb.Raster.rawcur.x rbay 500 50000 100000 200 -5. 5.
@@ -937,7 +937,7 @@ TH1F Lf1tdc_fhc63 'L F1TDC (Corrected) Ch63 S2R-15' Lf1tdc_fhc63 500 -18000 -100
 # ------------------------------------------------------------------
 # LEFT ARM GAS CHERENKOV  ADC and TDC :
 
-TH1F Lcert   'Cerenkov TDC PMT ' L.cer.t 300 2600 2900 L.cer.t>0
+TH1F Lcert   'Cerenkov TDC PMT ' L.cer.t 300 2500 3000 L.cer.t>0
 TH1F LcertTAll_    'Cerenkov TDC w/ T2,T3: PMT ' L.cer.t 500 0 2500 L.cer.t>0&&((DL.evtypebits==12)||(DL.evtypebits==14))
 TH1F LcertT3_      'Cerenkov TDC w/ T6 only: PMT ' L.cer.t 500 0 2500 L.cer.t>0&&(DL.evtypebits==8)
 
@@ -958,17 +958,17 @@ TH1F Lcertc_fadc   'Cerenkov FADC TDC (corrected) PMT ' L.cer.tc_fadc 500 60 180
 #
 #TH1F Lpsa  'PionRejector1 ADC' L.prl1.a 200 10 2000 L.prl1.a>0.
 TH1F Lpsa   'PionRejector1 ADC' L.prl1.a 1000 0.5 1000.5 L.prl1.a>0.
-TH1F Lpsa_p 'PionRejector1 ADC(PedSub)' L.prl1.a_p 1000 3000 44000 L.prl1.a_p>=-50.
+TH1F Lpsa_p 'PionRejector1 ADC(PedSub)' L.prl1.a_p 1000 -5000 30000 L.prl1.a_p>-50.
 TH1F Lpssum 'PionRejector1 sum' L.prl1.asum_c 100 1 1000 
 TH1F Lsha   'PionRejector2 ADC' L.prl2.a 1000 0.5 1000.5 L.prl2.a>0.
-TH1F Lsha_p 'PionRejector2 ADC(PedS1ub)' L.prl2.a_p 1000 6000 44000 L.prl2.a_p>=-50.
+TH1F Lsha_p 'PionRejector2 ADC(PedS1ub)' L.prl2.a_p 1000 -5000 20000 L.prl2.a_p>-50.
 TH1F Lshsum 'PionRejector2 sum' L.prl2.asum_c 100 10 1000
 
 TH2F Lpr1_2 'Pion Rejector1 sum vs. 1PR_2 sum' L.prl2.asum_c L.prl1.asum_c 200 30 3000 200 30 3000
-TH2F Lp1sumx 'Pion Rejector1 sum vs. x' L.prl1.trx L.prl1.asum_c 200 -2 2 200 38000 45000 L.tr.n>0
-TH2F Lp2sumx 'Pion Rejector2 sum vs. x' L.prl2.trx L.prl2.asum_c 200 -2 2 200 38000 45000 L.tr.n>0
-TH2F Lp1sumy 'Pion Rejector1 sum vs. y' L.prl1.try L.prl1.asum_c 200 -1 1 200 38000 45000 L.tr.n>0
-TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -1 1 200 38000 45000 L.tr.n>0
+TH2F Lp1sumx 'Pion Rejector1 sum vs. x' L.prl1.trx L.prl1.asum_c 200 -5 5 1000 -1000 3000 L.tr.n>0
+TH2F Lp2sumx 'Pion Rejector2 sum vs. x' L.prl2.trx L.prl2.asum_c 200 -5 5 1000 -1000 3000 L.tr.n>0
+TH2F Lp1sumy 'Pion Rejector1 sum vs. y' L.prl1.try L.prl1.asum_c 200 -2 2 1000 -1000 3000 L.tr.n>0
+TH2F Lp2sumy 'Pion Rejector2 sum vs. y' L.prl2.try L.prl2.asum_c 200 -2 2 1000 -1000 3000 L.tr.n>0
 
 
 # ------------------------------------------------------------------
@@ -980,10 +980,10 @@ TH1F Lvu2t 'L-arm VDC u2 time' L.vdc.u2.rawtime 500 1500 3500
 TH1F Lvv1t 'L-arm VDC v1 time' L.vdc.v1.rawtime 500 1500 3500
 TH1F Lvv2t 'L-arm VDC v2 time' L.vdc.v2.rawtime 500 1500 3500
 
-TH2F Lvu1tn 'L-arm VDC u1 rawtime : wire number' L.vdc.u1.wire L.vdc.u1.rawtime 400 0 400 300 0 3000
-TH2F Lvu2tn 'L-arm VDC u2 rawtime : wire number' L.vdc.u2.wire L.vdc.u2.rawtime 400 0 400 300 0 3000
-TH2F Lvv1tn 'L-arm VDC v1 rawtime : wire number' L.vdc.v1.wire L.vdc.v1.rawtime 400 0 400 300 0 3000
-TH2F Lvv2tn 'L-arm VDC v2 rawtime : wire number' L.vdc.v2.wire L.vdc.v2.rawtime 400 0 400 300 0 3000
+TH2F Lvu1tn 'L-arm VDC u1 rawtime : wire number' L.vdc.u1.wire L.vdc.u1.rawtime 400 0 400 300 0 4000
+TH2F Lvu2tn 'L-arm VDC u2 rawtime : wire number' L.vdc.u2.wire L.vdc.u2.rawtime 400 0 400 300 0 4000
+TH2F Lvv1tn 'L-arm VDC v1 rawtime : wire number' L.vdc.v1.wire L.vdc.v1.rawtime 400 0 400 300 0 4000
+TH2F Lvv2tn 'L-arm VDC v2 rawtime : wire number' L.vdc.v2.wire L.vdc.v2.rawtime 400 0 400 300 0 4000
 
 TH1F Lvu1w 'L-arm VDC u1 wires' L.vdc.u1.wire 400 0 400
 TH1F Lvu2w 'L-arm VDC u2 wires' L.vdc.u2.wire 400 0 400
@@ -1094,10 +1094,10 @@ TH2F L_rasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Rast
 TH2F L_rastx1y2 'Fast Raster 1 X vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.x 2000 20000 120000 2000 50000 100000
 TH2F L_rastx2y1 'Fast Raster 2 X vs 1 Y (current)' Lrb.Raster.rawcur.y Lrb.Raster2.rawcur.x 2000 20000 120000 2000 45000 95000
 
-TH2F L_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.x rbax 5000 50000 100000 200 -5. 5.
-TH2F L_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.y rbay 5000 20000 120000 200 -5. 5.
-TH2F L_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.x rbbx 5000 50000 100000 200 -5. 5.
-TH2F L_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.y rbby 5000 20000 120000 200 -5. 5.
+TH2F L_urastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.x rbax 500 78000 79000 200 -1. 2.
+TH2F L_urastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.y rbay 500 79200 79800 200 0. 4.
+TH2F L_urastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.x rbbx 500 78000 79000 200 -2. 2.
+TH2F L_urastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.y rbby 500 79200 79800 200 0. 5.
 
 TH2F L_urastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Lrb.Raster.rawcur.y rbax 500 0 5000 200 -5. 5.
 TH2F L_urastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Lrb.Raster.rawcur.x rbay 500 0 5000 200 -5. 5.
@@ -1282,4 +1282,4 @@ TH1F C1_R_rrawt4 'C1 on RHRS = rrawt4, no prescale' DR.rrawt4 50 1580 1630
 TH1F C2_R_rrawt5 'C2 on RHRS = rrawt5, no prescale' DR.rrawt5 50 1580 1630
 TH1F C3_R_rrawt6 'C3 on RHRS = rrawt6, no prescale' DR.rrawt6 50 1580 1630
 
- 
+TH1F T_Flag 'Trigger Flag (DR.evtypebits)' DR.evtypebits 60 0 60
