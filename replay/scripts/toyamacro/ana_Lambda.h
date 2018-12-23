@@ -8,6 +8,13 @@ using namespace std;
 #include "ParamMan.h"
 #include "define.h"
 
+struct TreeBranch{
+    double missing_mass, coin_time;
+    double momR, momL;
+    double zR, zL;
+    double AC1_sum, AC2_sum;
+};
+    static TreeBranch tr;
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 class ana : public Tree
 {
@@ -46,6 +53,8 @@ class ana : public Tree
 
     TH2D *h_rbay_rbax, *h_rbby_rbbx;
     TH2D *h_rby_rbx;
+
+    TTree *tree_out;
 
 //// LHRS ////
     TH1D *h_L_trig;
