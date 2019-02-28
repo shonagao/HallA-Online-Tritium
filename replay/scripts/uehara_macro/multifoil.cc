@@ -32,10 +32,17 @@ void multifoil(){
     }
   }
 
+<<<<<<< HEAD
 
   TFile *fp[nf];
   for(int i=0;i<nf;i++){
     fp[i] = new TFile(Form(" /adaqfs/home/a-onl/tritium_work/uehara/tohoku_analysis/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_online_%d.root",runnum[i]));
+=======
+  TFile *fp[nf];
+  for(int i=0;i<nf;i++){
+    // fp[i] = new TFile(Form(" /adaqfs/home/a-onl/tritium_work/uehara/tohoku_analysis/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_%d.root",runnum[i]));
+    fp[i] = new TFile(Form("/chafs1/work1/tritium/Rootfiles/tritium_%d.root",runnum[i]));
+>>>>>>> upstream/nnL
   }
 
   const int np=10; //the number of peaks
@@ -65,6 +72,7 @@ void multifoil(){
       peak_range_end[i][j]=-2000;
     }
     peak_range_start[i][0]=-20;   //fit range
+<<<<<<< HEAD
     peak_range_start[i][1]=-13;
     peak_range_start[i][2]=-10.5;
     peak_range_start[i][3]=-8;
@@ -87,6 +95,30 @@ void multifoil(){
     peak_range_end[i][8]=6.4;
     peak_range_end[i][9]=11.6;
     peak_range_end[i][10]=14;
+=======
+    peak_range_start[i][1]=-10.4;
+    peak_range_start[i][2]=-8.1;
+    peak_range_start[i][3]=-6.2;
+    peak_range_start[i][4]=-4.4;
+    peak_range_start[i][5]=-2.4;
+    peak_range_start[i][6]=-0.7;
+    peak_range_start[i][7]=1.4;
+    peak_range_start[i][8]=3.2;
+    peak_range_start[i][9]=7;
+    peak_range_start[i][10]=9;
+
+    peak_range_end[i][0]=20;
+    peak_range_end[i][1]=-9.1;
+    peak_range_end[i][2]=-7;
+    peak_range_end[i][3]=-5;
+    peak_range_end[i][4]=-3.3;
+    peak_range_end[i][5]=-1.2;
+    peak_range_end[i][6]=0.8;
+    peak_range_end[i][7]=2.4;
+    peak_range_end[i][8]=4.8;
+    peak_range_end[i][9]=8.4;
+    peak_range_end[i][10]=10.6;
+>>>>>>> upstream/nnL
 
   }
 
