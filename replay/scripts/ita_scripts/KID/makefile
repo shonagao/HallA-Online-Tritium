@@ -16,10 +16,10 @@ CXXLIBS = $(ROOTLIBS)
 #TARGET1= hrs_tof_twcorr
 #OBJS1=   hrs_tof_twcorr.o 
 
-TARGET1= hrs_KID_F1_eff
-OBJS1=   hrs_KID_F1_eff.o  
-TARGET2= hrs_KID_F1
-OBJS2=   hrs_KID_F1.o  
+TARGET1= hrs_KID_F1_coin_run
+OBJS1=   hrs_KID_F1_coin_run.o  
+TARGET2= hrs_KID_F1_NOK
+OBJS2=   hrs_KID_F1_NOK.o  
 TARGET3= hrs_path_corr
 OBJS3=   hrs_path_corr.o  
 TARGET4= hrs_KID_F1_eff2
@@ -28,14 +28,16 @@ TARGET5= hrs_KID_F1_check
 OBJS5=   hrs_KID_F1_check.o  
 TARGET6= hrs_MM_F1
 OBJS6=   hrs_MM_F1.o  
-
+TARGET7= hrs_KID_F1_acc
+OBJS7=   hrs_KID_F1_acc.o  
 .PHONY: all
 all: $(TARGET1)\
      $(TARGET2)\
      $(TARGET3)\
      $(TARGET4)\
      $(TARGET5)\
-     $(TARGET6)
+     $(TARGET6)\
+     $(TARGET7)
 $(LIBDIR)/%.o : %.cc
 	$(CXX) $(CFLAGS) -c -o $@ $< -MMD $(CXXFLAGS)
 
@@ -50,6 +52,8 @@ $(TARGET4): $(patsubst %,$(LIBDIR)/%,$(OBJS4))
 $(TARGET5): $(patsubst %,$(LIBDIR)/%,$(OBJS5))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 $(TARGET6): $(patsubst %,$(LIBDIR)/%,$(OBJS6))
+	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
+$(TARGET7): $(patsubst %,$(LIBDIR)/%,$(OBJS6))
 	$(CXX) $(CFLAGS) -o $(BINDIR)/$@ $^ $(CXXLIBS) $(CXXFLAGS)
 
 .PHONY: clean

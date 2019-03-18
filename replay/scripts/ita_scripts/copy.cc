@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sstream>
 using namespace std;
 #include "TApplication.h"
 #include "TH1F.h"
@@ -74,11 +75,12 @@ int main(int argc, char** argv){
     getline(ifp,buf);
     if( buf[0]=='#' ){ continue; }
     if( ifp.eof() ) break;
-    istringstream sbuf(buf);
+    stringstream sbuf(buf);
     sbuf >> runname;
   TChain *oldtree = new TChain("T");
  //oldtree->Add(Form("%s",ifname.c_str()));
-  oldtree->Add(Form("/adaqfs/home/a-onl/tritium/replay/t2root/Rootfiles/%s",runname.c_str()));
+  //  oldtree->Add(Form("/adaqfs/home/a-onl/tritium/replay/t2root/Rootfiles/%s",runname.c_str()));
+  oldtree->Add(Form("/data/7b/E12-17-003/replay/Rootfiles/nnL/%s",runname.c_str()));
   cout<<buf<<endl;
 
 
@@ -338,8 +340,9 @@ int main(int argc, char** argv){
 
 
   // TFile *ofp = new TFile(Form("%s",ofname.c_str()),"recreate");
- TFile *ofp = new TFile(Form("/adaqfs/home/a-onl/tritium/replay/t2root/nnL_smallroot/%s",runname.c_str()),"recreate");
+ TFile *ofp = new TFile(Form("data/7b/E12-17-003/nnL_smallroot/%s",runname.c_str()),"recreate");
  TTree *newtree = oldtree->CloneTree(0);
+
 
 
 

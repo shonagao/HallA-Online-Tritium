@@ -22,6 +22,7 @@ const double mp=938.27e-3; //proton mass [GeV/c^2]
 #include <fstream>
 #include <math.h>
 #include <string>
+#include <sstream>
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -143,7 +144,7 @@ TChain*  T=new TChain("T");
     getline(ifp,buf);
     if( buf[0]=='#' ){ continue; }
     if( ifp.eof() ) break;
-    istringstream sbuf(buf);
+    stringstream sbuf(buf);
     sbuf >> runname;
     T->Add(runname.c_str());
     // cout<<buf<<endl;

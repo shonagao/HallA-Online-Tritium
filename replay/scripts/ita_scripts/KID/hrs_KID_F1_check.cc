@@ -9,7 +9,7 @@ double corr_L_adc(int i);
 double corr_L_x(int i);
 double corr_L_th(int i);
 double corr_L_alig(int i);
-double s2f1_off(int i,char* ARM,int j);
+double s2f1_off(int i,char* ARM,int j,char* MODE,int KINE);
 const double c=299792458e-9;// [m/ns]
 const double mk=493.7e-3;// Kaon mass [GeV/c^2]
 const double me=0.511e-3;// electron mass [GeV/c^2] 
@@ -24,6 +24,7 @@ const double mpi=139.6e-3;// pion mass [GeV/c^2]
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sstream>
 using namespace std;
 #include "TApplication.h"
 #include "TH1F.h"
@@ -58,16 +59,21 @@ using namespace std;
 
 int main(int argc, char** argv){
 
- int ch; char* mode="H";
+  //------ Initial Parameters Setting ---------------//
+  int ch; char* mode="H";
+  int kine=1;// 1: hydrogen kinematics 2:tritium kinematics
+  double tdc_time=58.0e-3;//[ns]
   string ifname = "/adaqfs/home/a-onl/tritium_work/itabashi/nnL/HallA-Online-Tritium/replay/scripts/ita_scripts/run_list/Lambda_test.list";
   string ofname = "/pdf/hydro1_AC_eff_test.pdf";
+
+
   bool output_flag = false;
   bool output_tree_flag = false;
   bool draw_flag = true;
   bool coin_flag = false;
   string pngname;
   extern char *optarg;
-  while((ch=getopt(argc,argv,"h:f:w:n:bcop:GHT"))!=-1){
+  while((ch=getopt(argc,argv,"h:f:w:n:bcop:GHT12"))!=-1){
     switch(ch){
     case 'f':
       ifname = optarg;
@@ -90,6 +96,16 @@ int main(int argc, char** argv){
   
   case 'H':
     mode="H";
+      break;
+
+  case '1':
+    tdc_time=56.23e-3;//[ns]
+    kine=1;
+      break;
+
+  case '2':
+    tdc_time=58e-3;//[ns]
+    kine=2;
       break;
     
   case 'T':
@@ -116,7 +132,7 @@ int main(int argc, char** argv){
 
 
  if(draw_flag==0)gROOT->SetBatch(1);
- gStyle->SetOptStat(000000000);
+ // gStyle->SetOptStat(000000000);
   //=============== ROOT File Mode ================//
 
 
@@ -125,7 +141,6 @@ int main(int argc, char** argv){
   if(mode=="G"){T=new TChain("tree"); }
   else {T=new TChain("T");}
 
-
   ifstream ifp(Form("%s",ifname.c_str()),ios::in);
   if(!ifp){ cout<<"no input file "<<ifname<<endl; exit(1); }
   string buf, runname;
@@ -133,20 +148,18 @@ int main(int argc, char** argv){
     getline(ifp,buf);
     if( buf[0]=='#' ){ continue; }
     if( ifp.eof() ) break;
-    istringstream sbuf(buf);
+    stringstream sbuf(buf);
     sbuf >> runname;
     T->Add(runname.c_str());
     //     cout<<buf<<endl;
   }
 
-
-  //const double tdc_time=56.23e-3;//[ns]
- double tdc_time=58.0e-3;//[ns]
-int evnt=T->GetEntries();
-
+ 
+ int evnt=T->GetEntries();
  cout<<"mode :"<<mode<<endl;
  cout<<"tdc_time : "<<tdc_time<<endl;
  cout<<"Get Entries: "<<evnt<<endl;
+
 
 
  //============= Set Branch Status ==================//
@@ -195,7 +208,10 @@ int evnt=T->GetEntries();
  T->SetBranchAddress("R.tr.p",Rp);
  T->SetBranchStatus("R.tr.vz",1);    
  T->SetBranchAddress("R.tr.vz",Rvz); 
-
+ T->SetBranchStatus("R.tr.th",1);    
+ T->SetBranchAddress("R.tr.th",Rth);
+ T->SetBranchStatus("R.tr.ph",1);    
+ T->SetBranchAddress("R.tr.ph",Rph);
  //------ Left Arm ---------------//
   T->SetBranchStatus("LTDC.F1FirstHit",1);
   T->SetBranchAddress("LTDC.F1FirstHit",LF1); 
@@ -232,12 +248,17 @@ int evnt=T->GetEntries();
  double min_ac1,max_ac1,min_ac2,max_ac2,min_adc,max_adc;
 
  if(mode=="H"){
+   
+
+   //  min_coin=-100.0; //test
+   //  max_coin=100.0;//test
+   //  min_coin_c=-50; //test
+   //  max_coin_c=100.0;//test
+
  min_coin=-10.0;
  max_coin=20.0;
- //min_coin_c=-100; //test
- //max_coin_c=100.0;//test
-  min_coin_c=-10;
-  max_coin_c=20.0;
+ min_coin_c=-10;
+ max_coin_c=20.0;
  min_ac1=0.0;
  max_ac1=5000.;
  min_ac2=0.0;
@@ -245,10 +266,9 @@ int evnt=T->GetEntries();
  min_adc=-500.0;
  max_adc=20000.;
 //=== AC Threshold variable ===//
-;
+
  ac1_adc=150.;
  ac2_adc=5000.;
-
 
  }else if(mode=="G"){
  min_coin=-20;
@@ -273,14 +293,12 @@ int evnt=T->GetEntries();
  double bin_coin_c=(max_coin_c-min_coin_c)/tdc_time;
         bin_coin_c=(int)bin_coin_c;
  
-
  int bin_beta=6000;
  int bin_adc=max_adc-min_adc;
  int bin_ac1=max_ac1-min_ac1; 
  int bin_ac2=max_ac2-min_ac2; 
 
 
- 
  //=========== Coincidence Hist =================================//
  //-------- No correction -----------------//
  TH1F* hcoin=new TH1F("hcoin","Coincidence time S2R-S2L[ns] no  Parameter correction ",bin_coin,min_coin,max_coin);
@@ -296,7 +314,6 @@ int evnt=T->GetEntries();
  hcoin_t->SetTitleSize(0.1,"y");
  hcoin_t->SetLabelSize(0.05,"x");
  hcoin_t->SetLabelSize(0.05,"y");
-
  //----------- Offset correction ------------------------//
  TH1F* hcoin_off=new TH1F("hcoin_off","Coincidence time S2R-S2L[ns] w/ S2 Offset Parameter correction "//,4000,-500.,0.);
 			  ,bin_coin,min_coin,max_coin);
@@ -305,28 +322,20 @@ int evnt=T->GetEntries();
  hcoin_off->SetTitleSize(0.1,"y");
  hcoin_off->SetLabelSize(0.05,"x");
  hcoin_off->SetLabelSize(0.05,"y");
-
  //--------- after Correction -----------------------------//
  TH1F* hcoin_tc=new TH1F("hcoin_tc","Coincidence time w/ Path Length && offset Correction  S2R-S2L[ns] ",bin_coin_c,min_coin_c,max_coin_c);
 
  //======================================================================//
 
 
-
-
  TH1F* hcoin_t1=new TH1F("hcoin_t1","Coincidence time S2R-S2L[ns] w/ AC1 cut",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_t2=new TH1F("hcoin_t2","Coincidence time S2R-S2L[ns] w/ AC2 cut",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_t3=new TH1F("hcoin_t3","Coincidence time S2R-S2L[ns] w/ AC1 && AC2 cut",bin_coin_c,min_coin_c,max_coin_c);
-
  TH1F* hcoin_tk=new TH1F("hcoin_tk","Coincidence time S2R-S2L[ns] Kaoin cut",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_tp=new TH1F("hcoin_tp","Coincidence time S2R-S2L[ns] Proton cut",bin_coin_c,min_coin_c,max_coin_c);
  TH1F* hcoin_tpi=new TH1F("hcoin_pi","Coincidence time S2R-S2L[ns] Pion cut",bin_coin_c,min_coin_c,max_coin_c);
-
-
-
  double min_rpathl=28.5; double max_rpathl=29.5; int bin_rpathl=500;
  double min_lpathl=28.5; double max_lpathl=29.5; int bin_lpathl=500; 
-  
  double min_coin_rc=80;
  double max_coin_rc=100;
  double bin_coin_rc=(max_coin_rc-min_coin_rc)/tdc_time;
@@ -336,9 +345,15 @@ int evnt=T->GetEntries();
  double max_coin_lc=-100;
  double bin_coin_lc=(max_coin_lc-min_coin_lc)/tdc_time;
         bin_coin_lc=(int)bin_coin_lc;
- 
+        
  TH2F* hcoin_rpathl=new TH2F("hcoin_rpathl","Coinc time vs R Path Length Hist ",bin_rpathl,min_rpathl,max_rpathl,bin_coin,min_coin,max_coin); 
  TH2F* hcoin_lpathl=new TH2F("hcoin_lpathl","Coinc time vs L Path Length Hist ",bin_lpathl,min_lpathl,max_lpathl,bin_coin,min_coin,max_coin); 
+
+ /*
+ TH2F* hcoin_rpathl=new TH2F("hcoin_rpathl","Coinc time vs R Path Length Hist ",bin_rpathl,min_rpathl,max_rpathl,500,-100,100); 
+ TH2F* hcoin_lpathl=new TH2F("hcoin_lpathl","Coinc time vs L Path Length Hist ",bin_lpathl,min_lpathl,max_lpathl,500,-100,100); 
+ */
+
 
  TH2F* hcoin_rpathl_c=new TH2F("hcoin_rpathl_c","Coinc time vs R Path Length Hist w/ correction",bin_rpathl,min_rpathl,max_rpathl,bin_coin_rc,min_coin_rc,max_coin_rc); 
  TH2F* hcoin_lpathl_c=new TH2F("hcoin_lpathl_c","Coinc time vs L Path Length Hist w/ correction",bin_lpathl,min_lpathl,max_lpathl,bin_coin_lc,min_coin_lc,max_coin_lc);
@@ -354,10 +369,8 @@ int evnt=T->GetEntries();
  int bin_seg=16;
  double min_seg=0.0; double max_seg=15.;
  TH2F*hcoin_rseg=new TH2F("hcoin_rseg","Coinc Time vs R-S2seg Hist",bin_seg,min_seg,max_seg,bin_coin_c,min_coin_c,max_coin_c);
-
  TH2F*hcoin_lseg=new TH2F("hcoin_lseg","Coinc Time vs L-S2seg Hist",bin_seg,min_seg,max_seg,bin_coin_c,min_coin_c,max_coin_c);
-
-
+ 
  TH1F* hcoin_rs2[16]; 
  TH1F* hcoin_ls2[16];
  TH1F* hcoin_rs2_def[16]; 
@@ -372,6 +385,8 @@ int evnt=T->GetEntries();
 
 
 } 
+
+ TH2F*hrth_ph=new TH2F("hrth_ph"," R-HRS Angle th:ph Hist",1000,-0.1,0.1,1000,-0.15,0.15);
 
 
 
@@ -399,7 +414,7 @@ int evnt=T->GetEntries();
  double coin_off;
  double coin_path_offset;
  double coin_pc;
- //if(phase=="H_p2")coin_offset=20.85;
+
  //----- Cut Parameters ----------//
  double coin_cutmin=-248;
  double coin_cutmax=-244; 
@@ -419,8 +434,21 @@ int evnt=T->GetEntries();
  double Rx_cutmax= 0.4;
 
  //--- Coin Offset -----//
- double pathl_off;
- if(mode=="H"){pathl_off=23.74-11-0.335;}else{pathl_off=0.0;}
+ double pathl_off,s2_offset;
+ pathl_off=0.0;
+ if(mode=="H"&&kine==2){
+ coin_offset=498.;
+ s2_offset=-489.0;
+ pathl_off=-485.5; 
+
+ 
+
+ }else if(mode=="H" && kine==1){
+ pathl_off=-498.+30.-3.0+0.5;
+ s2_offset=-500.0+25.;
+ coin_offset=-41.35+498.;
+}
+
  //-------------------------------//
  bool cut_Rs2,cut_Ls2,cut_rpathl,cut_lpathl,cut_coin,cut_rbeta,cut_lbeta,cut_vz,cut_Rx,cut_trig,coin_trig,right_trig,cut_track,cut_s0;
 
@@ -429,7 +457,6 @@ for(int k=0;k<evnt;k++){
    T->GetEntry(k);
 
  
-
  pe_=Lp[0];//*sqrt(1+pow(Lth[0],2)+pow(Lph[0],2));
  pk=Rp[0];//*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
  ppi=Rp[0];//*sqrt(1+pow(Rth[0],2)+pow(Rph[0],2));
@@ -441,17 +468,18 @@ for(int k=0;k<evnt;k++){
  Ls2pads=Ls2tpads[0];
  Rs2pads=Rs2tpads[0];
  
-
  rpathl=rtrpathl[0]+rs2pathl[0]; // R-HRS path length S2 -RF
  lpathl=ltrpathl[0]+ls2pathl[0]; // L-HRS path length S2 -RF
  rbeta=pk/Ek; 
+ //rbeta=ppi/Epi; 
+
  rpath_corr=rpathl/rbeta/c;
  lbeta=1.0;//pe_/Ee_; 
  lpath_corr=lpathl/lbeta/c;
- Rs2_off=s2f1_off(Rs2pads,"R",0);
- Ls2_off=s2f1_off(Ls2pads,"L",0);
- Rs2_off2=s2f1_off(Rs2pads,"R",1);
- Ls2_off2=s2f1_off(Ls2pads,"L",1);
+ Rs2_off=s2f1_off(Rs2pads,"R",0,mode,kine);
+ Ls2_off=s2f1_off(Ls2pads,"L",0,mode,kine);
+ Rs2_off2=s2f1_off(Rs2pads,"R",1,mode,kine);
+ Ls2_off2=s2f1_off(Ls2pads,"L",1,mode,kine);
  tof_r=(((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9]+Rs2_off)/2.0))*tdc_time;
  tof_l=((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37]+Ls2_off)/2.0)*tdc_time;
  tof_r2=(((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9]+Rs2_off2)/2.0))*tdc_time;
@@ -463,18 +491,22 @@ for(int k=0;k<evnt;k++){
    coin_t=ctime[0];
    coin_tc=ctime[0];
  }else{
+   /*
    tof_r=(((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9]+Rs2_off)/2.0))*tdc_time;
    tof_l=((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37]+Ls2_off)/2.0)*tdc_time;
    tof_r2=(((-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9]+Rs2_off2)/2.0))*tdc_time;
    tof_l2=((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37]+Ls2_off2)/2.0)*tdc_time;
-   coin=(-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9])/2.0*tdc_time-((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37]+Ls2_off)/2.0)*tdc_time-498; //coin no correct
-   coin_pc=coin+rpath_corr-lpath_corr-pathl_off; // coin path correct
-   coin_t=tof_r-tof_l; // coin s2 off correct1
-   coin_off=tof_r2-tof_l2; // coin s2 off correct2
-   coin_tc=coin_t+rpath_corr-lpath_corr-pathl_off; //  coin correct1
-   coin_tc2=tof_r2-tof_l2+rpath_corr-lpath_corr-pathl_off; //coin  correct2
+   */
+   coin=(-RF1[48+Rs2pads]+RF1[46]-RF1[16+Rs2pads]+RF1[9])/2.0*tdc_time-((-LF1[Ls2pads]+LF1[30]-LF1[Ls2pads+48]+LF1[37]+Ls2_off)/2.0)*tdc_time-coin_offset; //coin no correct
+   coin_pc=coin+rpath_corr-lpath_corr-pathl_off; // coin Path correct
+   coin_t=tof_r-tof_l-coin_offset-s2_offset; // coin S2-Offset Correction
+   coin_off=tof_r2-tof_l2-coin_offset; // coin s2 Offset Correct2
+   coin_tc =tof_r -tof_l +rpath_corr-lpath_corr-pathl_off-coin_offset; //  coin Path & Offset  correction
+   coin_tc2=tof_r2-tof_l2+rpath_corr-lpath_corr-pathl_off-coin_offset; //coin Path & Offset2 Correction
    
   // coin_off=tof_r2-tof_l2+239.;//no offset version
+
+
   
 }
 
@@ -530,15 +562,13 @@ for(int k=0;k<evnt;k++){
    //========= Fill Hist =====================//
    //========================================//
 
-
+  //--- Theta vs Phi hist --------//
+  hrth_ph->Fill(Rth[0],Rph[0]);
 
  if(coin_trig && cut_vz && cut_track){
- coin_path_offset=-10.;
- hcoin_rpathl->Fill(rpathl,coin_t+coin_path_offset);
- // hcoin_rpathl_c->Fill(rpathl,coin_t+rpath_corr);
+ hcoin_rpathl->Fill(rpathl,coin_t);
  hcoin_rpathl_cc->Fill(rpathl,coin_tc);
- hcoin_lpathl->Fill(lpathl,coin_t+coin_path_offset);
- // hcoin_lpathl_c->Fill(lpathl,coin_t-lpath_corr);
+ hcoin_lpathl->Fill(lpathl,coin_t);
  hcoin_lpathl_cc->Fill(lpathl,coin_tc);
  }
   
@@ -558,9 +588,12 @@ for(int k=0;k<evnt;k++){
  hcoin_tpi->Fill(coin_tc); 
  hcoin_rs2[Rs2pads]->Fill(coin_tc); 
  hcoin_ls2[Ls2pads]->Fill(coin_tc);
- hcoin_rs2_def[Rs2pads]->Fill(coin_off); 
- hcoin_ls2_def[Ls2pads]->Fill(coin_off);
-
+ // hcoin_rs2_def[Rs2pads]->Fill(coin_off); //defolt
+ // hcoin_ls2_def[Ls2pads]->Fill(coin_off); //defolt
+ //hcoin_rs2_def[Rs2pads]->Fill(coin); //defolt
+ // hcoin_ls2_def[Ls2pads]->Fill(coin); //defolt
+ hcoin_rs2_def[Rs2pads]->Fill(coin_tc2); //Offset2
+ hcoin_ls2_def[Ls2pads]->Fill(coin_tc2); //Offset2
 
 
  }
@@ -652,17 +685,22 @@ ffit_l_def[7] =new TF1(Form("ffit_l_def[%d]",7),"gaus",min_coin_c,max_coin_c);
  //=======================================================//
 
 
-
    double rs2_off[16],ls2_off[16];
    double rs2_off_def[16],ls2_off_def[16];
-   for(int i=1;i<15;i++){
-   
+
+
+
+
+   for(int i=0;i<16;i++){   
    // for(int j=0;j<2;j++){
    ffit_r[i] =new TF1(Form("ffit_r[%d]",i),"gaus",min_coin_c,max_coin_c);
+   ffit_r[i]->SetNpx(2000);
    ffit_l[i] =new TF1(Form("ffit_l[%d]",i),"gaus",min_coin_c,max_coin_c);
+   ffit_l[i]->SetNpx(2000);
    ffit_r_def[i] =new TF1(Form("ffit_r_def[%d]",i),"gaus",min_coin_c,max_coin_c);
+   ffit_r_def[i]->SetNpx(2000);
    ffit_l_def[i] =new TF1(Form("ffit_l_def[%d]",i),"gaus",min_coin_c,max_coin_c);
-
+   ffit_l_def[i]->SetNpx(2000);
 
    //----------- l-hrs -------------------------//
 
@@ -690,8 +728,6 @@ ffit_l_def[7] =new TF1(Form("ffit_l_def[%d]",7),"gaus",min_coin_c,max_coin_c);
    ffit_r_def[i]->SetParLimits(1,r_pmax_def[i]-1.0,r_pmax_def[i]+1.0);
    ffit_r_def[i]->SetParLimits(2,0.5,4.0);
     
-
-
    hcoin_rs2[i]->Fit(Form("ffit_r[%d]",i),"Rb","",min_pi,max_pi);
    rmean_pi[i]=ffit_r[i]->GetParameter(1);
    rmean_pi_err[i]=ffit_r[i]->GetParError(1);
@@ -706,7 +742,6 @@ ffit_l_def[7] =new TF1(Form("ffit_l_def[%d]",7),"gaus",min_coin_c,max_coin_c);
    rmean_pi_err_def[i]=ffit_r_def[i]->GetParError(1);
    nr_pmax_def[i]=ffit_r_def[i]->GetParameter(0);
    rsig_pi_def[i]=ffit_r_def[i]->GetParameter(2);
-
 
    //----------- l-hrs -------------------------//
 
@@ -754,26 +789,38 @@ ffit_l_def[7] =new TF1(Form("ffit_l_def[%d]",7),"gaus",min_coin_c,max_coin_c);
    // lmean_pi_err[i]=ffit_l[i]->Getparerror(1);
 
 
+ if(0<i){
  gs2r_mean->SetPoint(i,i,(rmean_pi[i]-rmean_pi[7]));
+ gs2r_mean->SetPointError(i,0.0,rmean_pi_err[i]);
  gs2r_mean_def->SetPoint(i,i,(rmean_pi_def[i]-rmean_pi_def[7]));
+ }else{
+ gs2r_mean->SetPoint(i,i,0.0);
+ gs2r_mean->SetPointError(i,0.0,0.0);
+ gs2r_mean_def->SetPoint(i,i,0.0);
+}
 // gs2r_mean->setpointerror(i,0,rmean_pi_err[i]);
 
+ 
+ if(i<15){
  gs2l_mean->SetPoint(i,i,lmean_pi[i]-lmean_pi[7]);
+ gs2l_mean->SetPointError(i,0.0,lmean_pi_err[i]);
  gs2l_mean_def->SetPoint(i,i,lmean_pi_def[i]-lmean_pi_def[7]);
+
+ }else{
+   gs2l_mean->SetPoint(i,i,0.0);
+   gs2l_mean_def->SetPoint(i,i,0.0);
+}
+
  // gs2l_mean->setpointerror(i,0,lmean_pi_err[i]);
 
- diff_r[i]=-(rmean_pi[i]-rmean_pi[7])/tdc_time*2;
- diff_l[i]=-(lmean_pi[i]-lmean_pi[7])/tdc_time*2;
-
- rs2_off[i]=-(rmean_pi[i]-rmean_pi[7])/tdc_time*2+s2f1_off(i,"R",1);
- ls2_off[i]=(lmean_pi[i]-lmean_pi[7])/tdc_time*2+s2f1_off(i,"L",1);
-
-
- diff_r_def[i]=-(rmean_pi_def[i]-rmean_pi_def[7])/tdc_time*2;
- diff_l_def[i]=-(lmean_pi_def[i]-lmean_pi_def[7])/tdc_time*2;
-
- rs2_off_def[i]=-(rmean_pi_def[i]-rmean_pi_def[7])/tdc_time*2+s2f1_off(i,"R",0);
- ls2_off_def[i]=(lmean_pi_def[i]-lmean_pi_def[7])/tdc_time*2+s2f1_off(i,"L",0);
+ diff_r[i]=-(rmean_pi[i]-rmean_pi[7])/tdc_time;
+ diff_l[i]=-(lmean_pi[i]-lmean_pi[7])/tdc_time;
+ rs2_off[i]=-(rmean_pi[i]-rmean_pi[7])/tdc_time*2+s2f1_off(i,"R",0,mode,kine);
+ ls2_off[i]=(lmean_pi[i]-lmean_pi[7])/tdc_time*2+s2f1_off(i,"L",0,mode,kine);
+ diff_r_def[i]=-(rmean_pi_def[i]-rmean_pi_def[7])/tdc_time;
+ diff_l_def[i]=-(lmean_pi_def[i]-lmean_pi_def[7])/tdc_time;
+ rs2_off_def[i]=-(rmean_pi_def[i]-rmean_pi_def[7])/tdc_time*2+s2f1_off(i,"R",1,mode,kine);
+ ls2_off_def[i]=(lmean_pi_def[i]-lmean_pi_def[7])/tdc_time*2+s2f1_off(i,"L",1,mode,kine);
 
 
 }
@@ -800,9 +847,11 @@ ffit_l_def[7] =new TF1(Form("ffit_l_def[%d]",7),"gaus",min_coin_c,max_coin_c);
  ccoin_ac->Divide(1,2);
  ccoin_ac->cd(1);
  hcoin_ac1->Draw("colz");
+ // hcoin_ac1->Draw();
  lac->DrawLine(min_coin_c,ac1_adc,max_coin_c,ac1_adc);
  ccoin_ac->cd(2);
  hcoin_ac2->Draw("colz");
+ // hcoin_ac2->Draw();
  lac->DrawLine(min_coin_c,ac2_adc,max_coin_c,ac2_adc); 
  
 TCanvas* ccoin=new TCanvas("ccoin","ccoin");
@@ -816,31 +865,36 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  hcoin_t2->Draw("same");
  hcoin_t3->Draw("same");
 
-
-
+ TCanvas* cang=new TCanvas("cang","cang");
+ cang->cd();
+ hrth_ph->Draw("colz");
 
  TCanvas* cs2seg=new TCanvas("cs2seg","s2 seg vs coincidence time graph rhrs[1] && lhrs[2] blue is w/o offSet black is w/ offSet ");
  cs2seg->Divide(2,1);
  cs2seg->cd(1);
+ gs2r_mean->SetMinimum(-0.05);
+ gs2r_mean->SetMaximum(0.05);
  gs2r_mean->SetMarkerStyle(21);
- gs2r_mean->SetMarkerColor(kBlue);
+ gs2r_mean->SetMarkerColor(2);
  gs2r_mean->SetMarkerSize(1.0);
- gs2r_mean->Draw("ap");
+ gs2r_mean->Draw("AP");
  cs2seg->cd(2);
+ gs2l_mean->SetMinimum(-0.05);
+ gs2l_mean->SetMaximum(0.05);
  gs2l_mean->SetMarkerStyle(21);
- gs2l_mean->SetMarkerColor(kBlue);
+ gs2l_mean->SetMarkerColor(2);
  gs2l_mean->SetMarkerSize(1.0); 
- gs2l_mean->Draw("ap");
+ gs2l_mean->Draw("AP");
  cs2seg->cd(1);
  gs2r_mean_def->SetMarkerStyle(21);
  gs2r_mean_def->SetMarkerColor(1);
  gs2r_mean_def->SetMarkerSize(1.0);
- gs2r_mean_def->Draw("p");
+ gs2r_mean_def->Draw("P");
  cs2seg->cd(2);
  gs2l_mean_def->SetMarkerStyle(21);
  gs2l_mean_def->SetMarkerColor(1);
  gs2l_mean_def->SetMarkerSize(1.0); 
- gs2l_mean_def->Draw("p");
+ gs2l_mean_def->Draw("P");
 
  
 
@@ -877,6 +931,7 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  hcoin_lseg->Draw("colz");
 
 
+ 
  /*
  TCanvas* cseg2=new TCanvas("cseg2","cseg2");
  cseg2->Divide(1,2);
@@ -897,7 +952,7 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  hcoin_ls2[i]->Draw("same");
 }
  }
-
+ 
  
  TCanvas* c0=new TCanvas("c0","c0");
  c0->Divide(2,2);
@@ -913,6 +968,7 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  fk2->SetFillColor(4);
  fk2->SetFillStyle(3001);
  fk2->Draw("same");
+
 
  TCanvas *cnum=new TCanvas("cnum","cnum");
  cnum->cd();
@@ -932,11 +988,12 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  fp->Draw("same");
  fpi->Draw("same");
  
- */
-
+*/
+ 
  TCanvas* cac=new TCanvas("cac","cac");
  cac->cd();
  ha1_a2->Draw("colz");
+ //  ha1_a2->Draw();
  lac->DrawLine(min_ac1,ac2_adc,max_ac1,ac2_adc);
  lac->DrawLine(ac1_adc,min_ac2,ac1_adc,max_ac2);
 
@@ -989,7 +1046,7 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
 
  TCanvas* ccoin_corr=new TCanvas("ccoin_corr","coincidence time correction hist");
  ccoin_corr->Divide(2,2);
- hcoin_tc->Draw();
+ //hcoin_tc->Draw();
  //---- no correction -----// 
  ccoin_corr->cd(1);
  hcoin->SetFillStyle(3001);
@@ -1015,7 +1072,7 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  hcoin_tc->SetLineColor(4);
  hcoin_tc->SetFillColor(4);
  hcoin_tc->SetFillStyle(3001);
- 
+ hcoin_tc->Draw();
  
  //================ print canvas =================================//
  
@@ -1023,13 +1080,16 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  TString name;
  if(output_flag){
  name.Form(ofname.c_str());
-  ccoin_ac->Print(name+"[","pdf");
+ ccoin_ac->Print(name+"[","pdf");
  ccoin_ac->Print(name,"pdf");
  ccoin0->Print(name,"pdf");
  ccoin_corr->Print(name,"pdf");
  cac->Print(name,"pdf");
+ cang->Print(name,"pdf");
  cseg->Print(name,"pdf");
- //cseg2->Print(name,"pdf");
+ // cseg2->Print(name,"pdf");
+ //c0->Print(name,"pdf");
+ // cnum->Print(name,"pdf");
  cs2seg->Print(name,"pdf");
  crs2_pi_def->Print(name,"pdf");
  crs2_pi->Print(name,"pdf"); 
@@ -1083,18 +1143,35 @@ TCanvas* ccoin=new TCanvas("ccoin","ccoin");
  }
 
  cout<<"====== parameters set ================="<<endl;
-  cout<<"===== Rs2_off ======"<<endl;
+  cout<<"===== Rs2_off [1]======"<<endl;
  for(int i=0;i<16;i++){
   
    cout<<rs2_off[i]<<",";
 }
  cout<<endl;
-  cout<<"===== Ls2_off ======"<<endl;
+  cout<<"===== Ls2_off [1] ======"<<endl;
 for(int i=0;i<16;i++){
   
    cout<<ls2_off[i]<<",";
 }
  cout<<endl; 
+
+  cout<<"===== Rs2_off defolt======"<<endl;
+ for(int i=0;i<16;i++){
+  
+   cout<<rs2_off_def[i]<<",";
+}
+ cout<<endl;
+  cout<<"===== Ls2_off defolt ======"<<endl;
+for(int i=0;i<16;i++){
+  
+   cout<<ls2_off_def[i]<<",";
+}
+ cout<<endl; 
+
+
+
+
 
  if(draw_flag==0)gSystem->Exit(1);
  theApp->Run();
@@ -1108,35 +1185,70 @@ for(int i=0;i<16;i++){
 //==============================================//
 //========== defined function ==================//
 //=============================================//
-double s2f1_off(int i,char* ARM,int j){
 
-
+ double s2f1_off(int i,char* ARM,int j,char* MODE,int KINE){
 
   double Ls2_off[16]; 
   double Rs2_off[16];
  
 
 
-  if(j==0){
-
+//  Offset Parameteres Setting //
+  if(j==0){ //Red Prots
+    if(MODE=="H" && KINE==1){
   
- double  RS2_off_b[16]={-16911.4,-16861.7,-16900.5,-16899,-16875.6,-16870.3,-16901.2,-16876.8,-16896.5,-16862,-16894.3,-16886.1,-16847.9,-16846.9,-16840.3,-16882.6};
- double  LS2_off_b[16]={-25336.9,-25391,-25375.9,-25397.9,-25392.1,-25387.9,-25422.3,-25428.9,-25422.5,-25431.8,-25444.2,-25385.8,-25381.4,-25409.1,-25426.6,-26082.1};
+      //=== Kaon Path Length Correction ========//
+      //double  RS2_off_H1[16]={-16911.4,-16864.9,-16900,-16897.6,-16874.8,-16869.3,-16901.1,-16876.8,-16895.6,-16860.3,-16892.6,-16885,-16847.3,-16843.3,-16838.4,-16848.6};
+      //double  LS2_off_H1[16]={-25331.8,-25385.7,-25367,-25392.2,-25391,-25386.3,-25422,-25428.9,-25415.2,-25425,-25438,-25381,-25378,-25417.5,-25432.8-26082.1};
+
+
+      double  RS2_off_H1[16]={-16925.4,-16864.3,-16900.4,-16898,-16874.6,-16869.4,-16901.4,-16876.8,-16894.5,-16860.2,-16892.5,-16885.3,-16847.2,-25415.4,-16838.9,-16848.7};
+      double  LS2_off_H1[16]={-25332.1,-25386.8,-25367.7,-25393.4,-25391.4,-25387,-25423.1,-25428.9,-25416,-25425.5,-25438.4,-25381.2,-25390,-25417.2,-25430.8,-28883.2};
   
-  Ls2_off[i]=LS2_off_b[i];
-  Rs2_off[i]=RS2_off_b[i];
-
-  }else if(j==1){
-
- double  RS2_off_a[16]={-16911.4,-16861.7,-16900.5,-16899,-16875.6,-16870.3,-16901.2,-16876.8,-16896.5,-16862,-16894.3,-16886.1,-16847.9,-16846.9,-16840.3,-16882.6};
- double  LS2_off_a[16]={-25336.9,-25391,-25375.9,-25397.9,-25392.1,-25387.9,-25422.3,-25428.9,-25422.5,-25431.8,-25444.2,-25385.8,-25381.4,-25409.1,-25426.6,-26082.1};
+      //  double  LS2_off_H1[16]={-25419.4,-25386.2,-25366.4,-25392.4,-25391.6,-25387,-25423.1,-25428.9,-25413.5,-25422.4,-25434.2,-25380.4,-25383.8,-25409.8,-25419.3,-28740.1};
   
-  Ls2_off[i]=LS2_off_a[i];
-  Rs2_off[i]=RS2_off_a[i];
+      /*
+       double  RS2_off_H1_def[16]={-16791.1,-16855.8,-16893.1,-16892,-16870.1,-16866.3,-16899.8,-16876.8,16897.6,-16861.6,-16895,-16890.6,-16854.6,-16852.9,-16850.5,-16861.9};
+      double  LS2_off_H1_def[16]={-25419.4,-25386.2,-25366.4,-25392.4,-25391.6,-25387,-25423.1,-25428.9,-25413.5,-25422.4,-25434.2,-25380.4,-25383.8,-25409.8,-25419.3,-28740.1};
+      */
+
+      //---------------- Pion Offset ------------------//
+      /*
+ double  RS2_off_H1[16]={-16911.4,-16853.7,-16893.9,-16893.7,-16871.5,-16868,-16900.5,-16876.8,-16897.9,-16865.4,-16898.9,-16892.5,-16855.7,-16856.5,-16851.7,-16882.6};
+ double  LS2_off_H1[16]={-25336.9,-25391.4,-25375.8,-25397.7,-25391.7,-25387.3,-25422,-25428.9,-25423,-25431.9,-25445,-25386.3,-25381.2,-25413,-25426.5,-26082.1};
+      */
+     //-----------------------------------------------//
+  Ls2_off[i]=LS2_off_H1[i];
+  Rs2_off[i]=RS2_off_H1[i];
+    }
 
 
-}
+ else  if(MODE=="H" && KINE==2){
+   double  RS2_off_H2[16]={-16828.7,-16863,-16894,-16893.3,-16870.9,-16867.2,-16900.3,-16876.8,17554.1,-16861.6,-16895,-16890.7,-16854.6,-16852.9,-16850.5,-16861.9};
+   double  LS2_off_H2[16]={-25335,-25385.6,-25367,-25392.1,-25391.7,-25386.4,-25422.1,-25428.9,-25414.9,-25424.7,-25436.9, -25381.2,-25390,-25413.4,-25428.7,-26640.8};
+ 
+  Ls2_off[i]=LS2_off_H2[i];
+  Rs2_off[i]=RS2_off_H2[i];
+ }
+  }
 
+
+
+  //===== Defolt S2 Offset Parameters ===========//
+   if(j==1){
+    if(MODE=="H" && KINE==1){
+
+      double  RS2_off_H1_def[16]={-16925.4,-16864.3,-16900.4,-16898,-16874.6,-16869.4,-16901.4,-16876.8,-16894.5,-16860.2,-16892.5,-16885.3,-16847.2,-25415.4,-16838.9,-16848.7};
+      //  double  LS2_off_H1_corr[16]={-25334.4,-25387.6,-25367.4,-25393.1,-25391.3,-25386.8,-25423,-25428.9,-25415.6,-25425.2,-25438.4,-25381.8,-25390.9,-25415.7,-25430.8,-28883.2};
+      double  LS2_off_H1_def[16]={-25332.1,-25386.8,-25367.7,-25393.4,-25391.4,-25387,-25423.1,-25428.9,-25416,-25425.5,-25438.4,-25381.2,-25390,-25417.2,-25430.8,-28883.2};
+    
+
+  Ls2_off[i]=LS2_off_H1_def[i];
+  Rs2_off[i]=RS2_off_H1_def[i];
+    }
+
+   }
+  
 
 
  
@@ -1148,7 +1260,7 @@ double s2f1_off(int i,char* ARM,int j){
   else  if(ARM=="L")s2f1_offset=Ls2_off[i];
   else {cout<<"false read out !!"<<endl;}
   return s2f1_offset;
-}
+ }
 
 
 

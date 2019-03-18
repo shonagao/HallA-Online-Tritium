@@ -1,0 +1,79 @@
+#nnL Missing Mass RootFiles #
+#Author K. Itabashi #
+
+#### Analysis macro ####
+/home/itabashi/jlab_nnL/toyamacro/ana_Lambda.cc
+
+##### Histgrams Information ######
+h_mm_nnL : nnL Missing Mass Hist
+h_acc_nnL : nnL Missing Mass ACC. B.G.
+h_mm_L : Lambda Missing Mass Hist
+h_acc_L : Lambda Missing Mass ACC. B.G.
+h_mm_Al : Aluminium Missng Mass 
+h_ct_wK_z : Coin-time (Kaon region)
+h_ct_wK_z_acc : Coin-time (ACC region)
+
+	################################
+	#### Hydrogen Run Rootfiles ####
+	################################
+
+
+#Lambda_small_mm1_new.root#
+Pe'=2.2 GeV/c Hydrogen Kinematics run (2 MeV bin)
+#Run List 
+/home/itabashi/jlab_nnL/toyamacro/runlist/Lambda_small.list
+#Parameters
+/home/itabashi/jlab_nnL/toyamacro/param/f1_tune_Lambda_twc.param
+
+
+#Lambda_small_mm2_new.root# 
+Pe'=2.1 GeV/c Tritium Kinematics run (2 MeV bin)
+#Run List 
+/home/itabashi/jlab_nnL/toyamacro/runlist/Lambda_phase2.list
+#Parameters
+/home/itabashi/jlab_nnL/toyamacro/param/f1_Lambda_phase2_tuned.param
+
+	############################
+	#### nnL Run Rootfiles #####
+	############################
+
+########## bin 2 MeV Rootfiles #########
+
+#nnL_small_mm1_new.root#
+#F1tdc Resolution 56.23 ps, 2 Mev bin
+#Run List
+/home/itabashi/jlab_nnL/toyamacro/runlist/nnL_small_1.list
+#Parameters
+/home/itabashi/jlab_nnL/toyamacro/runlist/Lambda_small.list
+
+#nnL_small_mm2_new.root#
+#F1tdc Resolution 58 ps, 2 Mev bin
+#Run List 
+/home/itabashi/jlab_nnL/toyamacro/runlist/nnL_small_2.list
+#Parameters
+/home/itabashi/jlab_nnL/toyamacro/param/f1_Lambda_phase2_tuned.param
+
+
+#nnL_small_mm_new.root
+hadd nnL_small_mm1_new.root nnL_small_mm2_new.root
+
+
+########## bin 4  MeV Rootfiles #########
+
+
+#nnL_small_mm1_bin4.root#
+#F1tdc Resolution 56.23 ps, 4 Mev bin
+#Run List
+/home/itabashi/jlab_nnL/toyamacro/runlist/nnL_small_1.list
+#Parameters
+/home/itabashi/jlab_nnL/toyamacro/runlist/Lambda_small.list
+
+#nnL_small_mm2_bin4.root#
+#F1tdc Resolution 58 ps, 4 Mev bin
+#Run List 
+/home/itabashi/jlab_nnL/toyamacro/runlist/nnL_small_2.list
+#Parameters
+/home/itabashi/jlab_nnL/toyamacro/param/f1_Lambda_phase2_tuned.param
+
+#nnL_small_mm_bin4.root
+hadd nnL_small_mm1_bin4.root nnL_small_mm2_bin4.root

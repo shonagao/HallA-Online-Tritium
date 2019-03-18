@@ -104,6 +104,7 @@ class ana : public Tree
 //// Coin ////
     TH1D *h_ct;
     TH1D *h_ct_wK, *h_ct_wK_z;
+    TH1D *h_ct_wK_acc, *h_ct_wK_z_acc;
     TH2D *h_Ls2x_ct;
     TH2D *h_Rs2x_ct;
     TH2D *h_a1sum_ct, *h_a2sum_ct;
@@ -116,6 +117,13 @@ class ana : public Tree
     TH2D *h_Rvx_mm, *h_Rvy_mm, *h_Rvz_mm;
     TH2D *h_Rx_mm, *h_Ry_mm, *h_Rth_mm, *h_Rph_mm;
     TH2D *h_Rp_Lp;
+    TH1D *h_mm_L;
+    TH1D *h_mm_nnL;
+    TH1D *h_acc_L;
+    TH1D *h_acc_nnL;
+    TH1D *h_mm_Al;
+    TH1D *h_peak_L;
+    TH1D *h_peak_nnL;
 
   private:
     double L_s0l_toff    , L_s0r_toff;
