@@ -18,14 +18,28 @@ void cointime(){
   T->SetBranchAddress("L.s2.rt",Ls2rt);
 
   Double_t bin,b1,b2;
+<<<<<<< HEAD
   bin=400;
   b1=-0.25/1000000;
   b2=0;
   TH1F *cointime = new TH1F("cointime","Coincidence time(Rs2time-Ls2time)",bin,b1,b2);
+=======
+  // bin=400;
+  // b1=-0.25/1000000;
+  // b2=0;
+  bin=200;
+  b1=-25;
+  b2=15;
+  TH1F *cointime = new TH1F("cointime","Coincidence time [ns] (Rs2time-Ls2time)",bin,b1,b2);
+>>>>>>> upstream/nnL
 
   //----------------Get Entry---------------------------
 
   Int_t nentries = T->GetEntries();
+<<<<<<< HEAD
+=======
+  Double_t data;
+>>>>>>> upstream/nnL
   cout<<"Total Number of Events = "<<nentries<<endl;
   for(Int_t i=0;i<nentries;i++){
 
@@ -35,7 +49,12 @@ void cointime(){
     for(Int_t k=0;k<16;k++){
       for(Int_t j=0;j<16;j++){
 	if(Rs2lt[k]>0 && Rs2rt[k]>0 && Ls2lt[j]>0 && Ls2rt[j]>0){
+<<<<<<< HEAD
 	  cointime->Fill(Rs2time[k] -Ls2time[j]);
+=======
+	  data = (Rs2time[k]-Ls2time[j])*1000000000+150.7;
+	  cointime->Fill(data);
+>>>>>>> upstream/nnL
 	}
       }
     }

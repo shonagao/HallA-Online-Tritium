@@ -89,39 +89,48 @@ echo DEFAULT           = "${DEFAULT}"
 #    tail -1 "$1"
 #fi
 
-HRS_side=
-HRS_name=
-if [[ "$RUNNUM" -le "90000" ]] ; then
-  # Left HRS
-  HRS_side=left
-  HRS_name="Left HRS"
-#  echo "Replaying LEFT HRS run ${RUNNUM}"
-#  analyzer 'replay_tritium.C('$RUNNUM',0,0,kTRUE,kTRUE,kTRUE)'
-#  sleep 1
-#  echo "Online plots for LEFT HRS run ${RUNNUM}"
-#  onlineGUI64/online -f onlineGUI64/LHRS_online.cfg -r $RUNNUM
-
-else 
-  # Right HRS
-  HRS_side=right
-  HRS_name="Right HRS"
-#  echo "Replaying RIGHT HRS run ${RUNNUM}"
-#  analyzer 'replay_tritium.C('$RUNNUM',0,0,kTRUE,kTRUE,kTRUE)'
-#  sleep 1
-#  echo "Online plots for RIGHT HRS run ${RUNNUM}"
-#  onlineGUI64/online -f onlineGUI64/RHRS_online.cfg -r $RUNNUM
-
-fi
+#HRS_side=
+#HRS_name=
+#if [[ "$RUNNUM" -le "90000" ]] ; then
+#  # Left HRS
+#  HRS_side=left
+#  HRS_name="Left HRS"
+##  echo "Replaying LEFT HRS run ${RUNNUM}"
+##  analyzer 'replay_tritium.C('$RUNNUM',0,0,kTRUE,kTRUE,kTRUE)'
+##  sleep 1
+##  echo "Online plots for LEFT HRS run ${RUNNUM}"
+##  onlineGUI64/online -f onlineGUI64/LHRS_online.cfg -r $RUNNUM
+#
+#else 
+#  # Right HRS
+#  HRS_side=right
+#  HRS_name="Right HRS"
+##  echo "Replaying RIGHT HRS run ${RUNNUM}"
+##  analyzer 'replay_tritium.C('$RUNNUM',0,0,kTRUE,kTRUE,kTRUE)'
+##  sleep 1
+##  echo "Online plots for RIGHT HRS run ${RUNNUM}"
+##  onlineGUI64/online -f onlineGUI64/RHRS_online.cfg -r $RUNNUM
+#
+#fi
 
 echo "Running online replay for ${HRS_name} run: ${RUNNUM}"
 
-./onlineReplay $RUNNUM
+./onlineReplay_coinc $RUNNUM
 sleep 1
-./onlinePlots $RUNNUM
+./onlinePlots_coinc $RUNNUM
 
-HRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_online_latest.pdf
-HRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_detectors_latest.pdf 
-HRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_physics_latest.pdf
+LHRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf
+LHRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/left_detectors_latest.pdf 
+LHRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/left_physics_latest.pdf
+
+RHRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf
+RHRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/right_detectors_latest.pdf 
+RHRS_online_file=/adaqfs/home/a-onl/tritium/replay/summaryfiles/right_physics_latest.pdf
+
+
+
+
+
 
 if [[ -n "${NO_LOG}" ]] ; then
 	echo "Will not uplaod these plots to HALOG"
@@ -132,9 +141,15 @@ elif [[ -n "${LOG_ALL_PLOTS}"  ]] && [[ -n "${YES_LOG}" ]] ; then
     --title "Run ${RUNNUM} Online plots for ${HRS_name}" \
     --tag Analysis \
     --tag Autolog \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_online_latest.pdf \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_detectors_latest.pdf \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_physics_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_detectors_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_physics_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_detectors_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_physics_latest.pdf \
+    --caption "Online plots" \
+    --caption "Detector plots" \
+    --caption "Physics plots" \
     --caption "Online plots" \
     --caption "Detector plots" \
     --caption "Physics plots" 
@@ -145,7 +160,9 @@ elif [[ -n "${ONLINE_ONLY}"  ]] && [[ -n "${YES_LOG}" ]] ; then
     --title "Run ${RUNNUM} Online plots for ${HRS_name}" \
     --tag Analysis \
     --tag Autolog \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_online_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf \
+    --caption "Online plots" \
     --caption "Online plots" 
 	
 elif [[ -n "${LOG_ALL_PLOTS}"  ]] ; then
@@ -156,9 +173,15 @@ elif [[ -n "${LOG_ALL_PLOTS}"  ]] ; then
     --title "Run ${RUNNUM} Online plots for ${HRS_name}" \
     --tag Analysis \
     --tag Autolog \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_online_latest.pdf \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_detectors_latest.pdf \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_physics_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_detectors_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_physics_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_detectors_latest.pdf \
+    # --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_physics_latest.pdf \
+    --caption "Online plots" \
+    --caption "Detector plots" \
+    --caption "Physics plots" \
     --caption "Online plots" \
     --caption "Detector plots" \
     --caption "Physics plots" 
@@ -171,7 +194,9 @@ elif [[ -n "${ONLINE_ONLY}"  ]] ; then
     --title "Run ${RUNNUM} Online plots for ${HRS_name}" \
     --tag Analysis \
     --tag Autolog \
-    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/${HRS_side}_online_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/left_online_latest.pdf \
+    --attach /adaqfs/home/a-onl/tritium/replay/summaryfiles/right_online_latest.pdf \
+    --caption "Online plots" \
     --caption "Online plots" 
 fi
 

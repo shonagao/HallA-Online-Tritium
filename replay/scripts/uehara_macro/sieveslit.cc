@@ -8,7 +8,12 @@ void sieveslit(int runnum=0){
     cin>>runnum;
   }
   
+<<<<<<< HEAD
   TFile *fp = new TFile(Form("/adaqfs/home/a-onl/tritium_work/uehara/tohoku_analysis/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_online_%d.root",runnum));
+=======
+  // TFile *fp = new TFile(Form("/adaqfs/home/a-onl/tritium_work/uehara/tohoku_analysis/HallA-Online-Tritium/replay/t2root/Rootfiles/tritium_online_%d.root",runnum));
+  TFile *fp = new TFile(Form("/chafs1/work1/tritium/Rootfiles/tritium_online_%d.root",runnum));
+>>>>>>> upstream/nnL
   TTree *tree = (TTree*)fp->Get("T");
   
   int h_z_bin=400;

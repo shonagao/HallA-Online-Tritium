@@ -414,6 +414,7 @@ void ana::Loop(){
                 h_ct_wK_z->Fill( ct );
 
               }
+<<<<<<< HEAD
 	      if(((-0.15<(L_tr_vz[lt]-0.01) && (L_tr_vz[lt]-0.01)<-0.1) || ( 0.1<(L_tr_vz[lt]-0.01) && (L_tr_vz[lt]-0.01)<0.15)) 
 		 && ((-0.15<(R_tr_vz[rt]-0.01) && (R_tr_vz[rt]-0.01)<-0.1) ||( 0.1<(R_tr_vz[rt]-0.01) && (R_tr_vz[rt]-0.01)<0.15)))h_mm_Al->Fill(mm_Al);
 
@@ -424,6 +425,15 @@ void ana::Loop(){
                 h_acc_L       ->Fill(mm_L);
                 h_ct_wK_z_acc ->Fill( ct );
 	     }
+=======
+            } // if Kaon
+          //tree_out//
+          tr.missing_mass = mm          ; tr.coin_time =ct         ;
+          tr.momR         = R_tr_p[rt]  ; tr.momL      =L_tr_p[lt] ;
+          tr.zR           = R_tr_vz[rt] ; tr.zL        =L_tr_vz[lt];
+          tr.AC1_sum      = R_a1_asum_c ; tr.AC2_sum   =R_a2_asum_c;
+          tree_out->Fill();
+>>>>>>> 8c243f6a03d28ad81b5bd77df796aeba3a9f8f69
           } // if L_Tr && L_FP && R_Tr && R_FP
         } // for NRtr
       } // for NLtr
@@ -707,6 +717,18 @@ void ana::Draw(){
 
 /* +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+ */
 void ana::MakeHist(){
+  
+  tree_out = new TTree("tree","tree");
+  //tree_out ->Branch("branch name",variable ,"branch name/type");
+  tree_out ->Branch("missing_mass",&tr.missing_mass ,"missing_mass/D");
+  tree_out ->Branch("coin_time"   ,&tr.coin_time ,"coin_time/D");
+  tree_out ->Branch("momR"        ,&tr.momR      ,"momR/D"     );
+  tree_out ->Branch("momL"        ,&tr.momL      ,"momL/D"     );
+  tree_out ->Branch("zR"          ,&tr.zR        ,"zR/D"       );
+  tree_out ->Branch("zL"          ,&tr.zL        ,"zL/D"       );
+  tree_out ->Branch("AC1_sum"     ,&tr.AC1_sum   ,"AC1_sum/D"  );
+  tree_out ->Branch("AC1_sum"     ,&tr.AC1_sum   ,"AC1_sum/D"  );
+
 // Hist name is defined by "h + LorR + variable" for TH1.
 //                         "h + LorR + variableY + variableX" for TH2.
 /////////////

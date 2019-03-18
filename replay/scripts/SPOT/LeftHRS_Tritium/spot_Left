@@ -5,7 +5,7 @@ currentdir=`pwd`
 
 case $1 in 
 "" | "last")
-    runnum=`cat ~adaq/datafile/rcRunNumberL`
+    runnum=`cat ~adaq/datafile/rcRunNumberR`
     CFILE=/adaq1/data1/triton_$runnum.dat.0
     if [ ! -f $CFILE ]
     then  CFILE=/adaq1/data1/triton_$runnum.dat.0
@@ -140,7 +140,6 @@ yes_or_no "Upload these plots to logbook HALOG? " && \
     --logbook "HALOG" \
     --tag Autolog \
     --title "Spot check using Left HRS run ${runnum}" \
-    --attach ${spot_dir}/Tritium_${runnum}.pdf \
     --attach ${spot_dir}/FADC_Tritium_${runnum}.pdf
-
+#    --attach ${spot_dir}/Tritium_${runnum}.pdf \
 

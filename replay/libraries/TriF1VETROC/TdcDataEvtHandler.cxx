@@ -91,8 +91,8 @@ Int_t TdcDataEvtHandler::Analyze(THaEvData *evdata)
     f1     = dynamic_cast <Decoder::TstF1TDCModule* > (evdata->GetModule(31,16));
   }
   else if(nameArm=="RTDC") { // RIGHT HRS:
-  //if(f1==0) { // it was not the left arm, so try the right arm now
-    vetroc = dynamic_cast <Decoder::VETROCtdcModule* > (evdata->GetModule(20,19));
+  //if(f1==0) { // it was not the left arm, so try the right arm now - was slot 19 - in slot 5 for ee'K 
+    vetroc = dynamic_cast <Decoder::VETROCtdcModule* > (evdata->GetModule(20,5));
     f1     = dynamic_cast <Decoder::TstF1TDCModule* > (evdata->GetModule(20,8));
     //cout << "Nf1 = " << f1->GetNumSlots() << endl;
     //f1     = dynamic_cast <Decoder::TstF1TDCModule* > (evdata->GetModule(20,10));

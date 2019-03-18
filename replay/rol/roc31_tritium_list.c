@@ -29,13 +29,13 @@
 /* FADC Defaults/Globals */
 
 /*Used in faSetProcMode() */
-#define FADC_MODE          10 // 9 - Pulse Parameter (ped, sum, time);  10 - Debug Mode (9 + Raw Samples) 
-#define FADC_WINDOW_WIDTH  88 // was 55
-#define FADC_LATENCY       88 // 
-#define FADC_LA_Sh         73 //was 78 // was 62 
-#define FADC_WD_Sh         60 // was 
+#define FADC_MODE          9 // 9 - Pulse Parameter (ped, sum, time);  10 - Debug Mode (9 + Raw Samples) 
+#define FADC_WINDOW_WIDTH  55//215 //was 88 // was 55
+#define FADC_LATENCY       220// was 215 // was 88// 
+#define FADC_LA_Sh         215// was 205 //was 200//was 73 //was 78 // was 62 
+#define FADC_WD_Sh         60 // was 60
 #define FADC_NSB           2  // # of samples *before* Threshold crossing (TC) to include in sum
-#define FADC_NSA           60 // # of samples *after* Threshold crossing (TC) to include in sum
+#define FADC_NSA           15 // # of samples *after* Threshold crossing (TC) to include in sum
 #define FADC_THRESHOLD     5 // changed 8/6/2017 from 300 : cosmic signals are not large enough to be above threshold
 #define chan_mask  0x0000 // chan mask for threshold setting 
 
@@ -148,9 +148,9 @@ rocDownload()
       
      if(WANT_THRESHOLD)
        {
-       if(islot==0)      faSetThreshold(faSlot(islot), 300+25 , 0xffff);	//GC,SO,Ref
-       else if(islot==1) faSetThreshold(faSlot(islot), 300+25 , 0xffff);	//S2
-       else if(islot==2) faSetThreshold(faSlot(islot), 300+25 , 0xffff);	//S2
+       if(islot==0)      faSetThreshold(faSlot(islot), 300+15 , 0xffff);	//GC,SO,Ref
+       else if(islot==1) faSetThreshold(faSlot(islot), 300+8 , 0xffff);	//S2
+       else if(islot==2) faSetThreshold(faSlot(islot), 300+8 , 0xffff);	//S2
        else              faSetThreshold(faSlot(islot), 1, 0xffff); //raster, BPMs, PRL1, PRL2
        }
      else
@@ -261,12 +261,12 @@ if(islot==2){
       // faSetProcMode(faSlot(islot), 10, 85, 40, 5, 60, 1, 4,250,2);
        if(WANT_THRESHOLD)
          if(islot==3||islot==4||islot==5||islot==6||islot==7)
-             faSetProcMode(faSlot(islot), FADC_MODE, FADC_LA_Sh, FADC_WD_Sh, FADC_NSB, FADC_NSA, 1, 15,800,1);
-         else faSetProcMode(faSlot(islot), FADC_MODE, FADC_LATENCY, FADC_LATENCY, 2, 15, 1, 15,400,4);
+             faSetProcMode(faSlot(islot), FADC_MODE, FADC_LA_Sh, FADC_WD_Sh, 0, FADC_WD_Sh, 1, 15,800,1);
+         else faSetProcMode(faSlot(islot), FADC_MODE, FADC_LATENCY, FADC_LATENCY, FADC_NSB, FADC_NSA, 1, 15,400,4);
        else{
          if(islot==3||islot==4||islot==5||islot==6||islot==7)
-             faSetProcMode(faSlot(islot), FADC_MODE, FADC_LA_Sh, FADC_WD_Sh, FADC_NSB, FADC_NSA, 1, 15,800,1);
-         else faSetProcMode(faSlot(islot), FADC_MODE, FADC_LATENCY, FADC_WINDOW_WIDTH, FADC_NSB, FADC_NSA, 1, 15,400,1);
+             faSetProcMode(faSlot(islot), FADC_MODE, FADC_LA_Sh, FADC_WD_Sh, 0, FADC_WD_Sh, 1, 15,800,1);
+         else faSetProcMode(faSlot(islot), FADC_MODE, FADC_LATENCY, FADC_WINDOW_WIDTH, 0, FADC_WINDOW_WIDTH, 1, 15,400,1);
        }
       //  faSetProcMode(faSlot(islot), 9, 135, 135, 5, 30, 1, 4,250,1);
 
