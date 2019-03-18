@@ -149,7 +149,7 @@ void replay_coinc_new(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t 
 	//==================================
 	if(bBeam){	
 
-		THaIdealBeam* ib = new THaIdealBeam("ib","Ideal beam");
+	THaIdealBeam* ib = new THaIdealBeam("ib","Ideal beam");
 		gHaApps->Add(ib);
 
 		//==================================
