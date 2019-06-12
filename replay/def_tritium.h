@@ -37,14 +37,14 @@
 //Used for setting paths. %s is necessary so that it can be used to Form the paths.
 //This allows changing the directory in fewer places for ease of portability.
 const char* REPLAY_DIR_PREFIX = "./%s";
-<<<<<<< HEAD
+
 //const char* ROOTFILE_DIR_PREFIX = "/data1/rootfiles/%s";
-const char* ROOTFILE_DIR_PREFIX = "/t2root/%s";
-=======
-const char* ROOTFILE_DIR_PREFIX = "./t2root/%s"; 
+//const char* ROOTFILE_DIR_PREFIX = "/t2root/%s";
+
+//const char* ROOTFILE_DIR_PREFIX = "./t2root/%s";
+const char* ROOTFILE_DIR_PREFIX = "./data1/test/%s";
 //const char* ROOTFILE_DIR_PREFIX = "./rootfiles/";
 
->>>>>>> 8c243f6a03d28ad81b5bd77df796aeba3a9f8f69
   //"/volatile/halla/triton/eep_Rootfiles/%s";
 
 typedef struct _sReplaySetUp
